@@ -59,6 +59,7 @@
     "babel-plugin-ignite-ignore-reactotron": "^0.3.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react-native": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
     "ignite-andross": "^3.0.1",
@@ -99,7 +100,11 @@
     ],
     "preset": "react-native"
   },
-  "config": {},
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "standard": {
     "parser": "babel-eslint",
     "globals": [
