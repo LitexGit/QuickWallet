@@ -1,8 +1,16 @@
-import { StyleSheet } from 'react-native'
-import { Colors } from '../../Themes/'
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../Themes/';
 
 export default StyleSheet.create({
-  header: {
-    backgroundColor: Colors.backgroundColor
-  }
-})
+    header: {
+        backgroundColor: Colors.backgroundColor,
+        // backgroundColor: 'red',
+        borderBottomColor: 'black'
+    },
+    tab: {
+        backgroundColor: Colors.backgroundColor,
+        // backgroundColor: 'cyan',
+        borderTopColor: 'black',
+        paddingTop: 5
+    }
+});

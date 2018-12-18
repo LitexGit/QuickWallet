@@ -25,12 +25,12 @@ const BottomTabNav = createBottomTabNavigator({
     tabBarPosition: 'bottom',
     animationEnabled: false,
     tabBarOptions: {
-        activeTintColor: Colors.activeTint,
-        inactiveTintColor: Colors.inActiveTint,
+        activeTintColor: Colors.activeTintColor,
+        inactiveTintColor: Colors.inactiveTintColor,
         tabStyle: styles.tab,
         showIcon: true,
         style: {
-            backgroundColor: Colors.casinoBlue
+            backgroundColor: Colors.backgroundColor
         }
     }
 });
@@ -56,8 +56,8 @@ const PrimaryNav = createStackNavigator({
     initialRouteName: 'BottomTab',
     navigationOptions: {
         headerStyle: styles.header,
-        // headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
-        headerTintColor: Colors.snow,
+        headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
+        headerTintColor: Colors.darkColor,
     },
 });
 
