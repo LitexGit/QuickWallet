@@ -1,1 +1,19 @@
-{}
+{
+  "FoundTabBarLabel":"发现",
+  "MineTabBarLabel":"我的",
+
+  "FoundTabTitle":"发现",
+  "AccountTabTitle":"我的账户",
+  "TransferTabTitle":"转账",
+  "TransferRecordTabTitle":"转账记录",
+  "CurrencyTabTitle":"货币单位设置",
+  "LanguageTabTitle":"语言设置",
+  "SettingTabTitle":"使用设置",
+  "AssetsTabTitle":"我的资产",
+  "BackupTabTitle":"备份账户",
+  "PreBackupTabTitle":"备份账户",
+  "ImportTabTitle":"导入账户",
+  "NewWalletTabTitle":"创建账户",
+  "PreAccountTabTitle":"我的",
+  "SearchTabTitle":"搜索"
+}

@@ -14,13 +14,13 @@ import AccountScreen from '../Containers/AccountScreen';
 import SearchScreen from '../Containers/SearchScreen';
 import MineScreen from '../Containers/MineScreen';
 import FoundScreen from '../Containers/FoundScreen';
-import LaunchScreen from '../Containers/LaunchScreen';
 import styles from './Styles/NavigationStyles';
 import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
     Found: { screen: FoundScreen },
-    Account: { screen: AccountScreen },
+    Mine: { screen: MineScreen },
+
 }, {
     tabBarPosition: 'bottom',
     animationEnabled: false,
@@ -49,8 +49,7 @@ const PrimaryNav = createStackNavigator({
     NewWalletScreen: { screen: NewWalletScreen },
     PreAccountScreen: { screen: PreAccountScreen },
     SearchScreen: { screen: SearchScreen },
-    MineScreen: { screen: MineScreen },
-    LaunchScreen: { screen: LaunchScreen }
+    AccountScreen: { screen: AccountScreen },
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'transparent'},

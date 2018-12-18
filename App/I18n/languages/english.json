@@ -22,5 +22,24 @@
    "themeSettings": "Theme Settings",
    "deviceDetails": "Device Details",
    "noItems": "No Items",
-   "search": "Search"
+   "search": "Search",
+
+
+   "FoundTabBarLabel":"Found",
+   "MineTabBarLabel":"Mine",
+
+   "FoundTabTitle":"Found",
+   "AccountTabTitle":"My account",
+   "TransferTabTitle":"Transfer",
+   "TransferRecordTabTitle":"Transfer Record",
+   "CurrencyTabTitle":"Monetary Unit Setting",
+   "LanguageTabTitle":"Language Settings",
+   "SettingTabTitle":"Use Settings",
+   "AssetsTabTitle":"My Assets",
+   "BackupTabTitle":"Backup Account",
+   "PreBackupTabTitle":"Backup Account",
+   "ImportTabTitle":"Import Account",
+   "NewWalletTabTitle":"New Account",
+   "PreAccountTabTitle":"Mine",
+   "SearchTabTitle":"Search"
 }
