@@ -17,5 +17,35 @@ export default StyleSheet.create({
     searchBar:{
         width: '100%',
         height:48 + 16,
+    },
+    scrollView:{
+        flex:1,
+        marginHorizontal:Metrics.baseMargin,
+        paddingVertical: Metrics.baseMargin,
+
+    },
+    contentContainer:{
+        flexDirection:'row',
+        flexWrap:'wrap',
+        justifyContent:'flex-start'
+    },
+    itemBack:{
+        width: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5,
+        height: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5 + 20,
+    },
+    itemStyle:{
+        flex:1,
+        width: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5,
+        height: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5 + 20,
+    },
+    imageItem:{
+        width: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5 - 25,
+        height: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5 - 25,
+        borderRadius: ((Metrics.screenWidth - Metrics.baseMargin * 2) / 5 - 25) * 0.5,
+        alignSelf:'center',
+    },
+    titleItem:{
+        textAlign:'center',
+        marginTop:Metrics.smallMargin,
     }
 });
