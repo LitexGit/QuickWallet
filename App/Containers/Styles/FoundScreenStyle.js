@@ -12,7 +12,7 @@ export default StyleSheet.create({
         width: '100%',
     },
     banner:{
-        flex:1
+        flex:1,
     },
     searchBar:{
         width: '100%',

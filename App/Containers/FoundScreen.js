@@ -40,8 +40,11 @@ class FoundScreen extends Component {
 
   _renderBanner = (item,key)=>{
       const {img_url=''} = item;
+      console.log('=============img_url=======================');
+      console.log(img_url);
+      console.log('============img_url========================');
       return (
-          <TouchableOpacity key={key} onPress={(item)=>this._onPressBanner(item)}>
+          <TouchableOpacity key={key} style={styles.banner} onPress={(item)=>this._onPressBanner(item)}>
               <Image style={styles.banner} source={{ uri: img_url }} />
           </TouchableOpacity>
       );
@@ -62,7 +65,7 @@ class FoundScreen extends Component {
 
   render () {
       const banners = [
-          {'img_url': 'http://img18.3lian.com/d/file/201709/21/d8768c389b316e95ef29276c53a1e964.jpg'},
+          {'img_url': 'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg'},
           {'img_url': 'http://img18.3lian.com/d/file/201709/21/f498e01633b5b704ebfe0385f52bad20.jpg'},
           {'img_url': 'http://pic1.16pic.com/00/10/09/16pic_1009413_b.jpg'}
       ];
