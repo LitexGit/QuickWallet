@@ -1,6 +1,6 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import TransferScreen from '../Containers/TransferScreen'
-import TransferRecordScreen from '../Containers/TransferRecordScreen'
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import TransferScreen from '../Containers/TransferScreen';
+import TransferRecordScreen from '../Containers/TransferRecordScreen';
 import CurrencyScreen from '../Containers/CurrencyScreen';
 import LanguageScreen from '../Containers/LanguageScreen';
 import SettingScreen from '../Containers/SettingScreen';
@@ -15,13 +15,30 @@ import SearchScreen from '../Containers/SearchScreen';
 import MineScreen from '../Containers/MineScreen';
 import FoundScreen from '../Containers/FoundScreen';
 import LaunchScreen from '../Containers/LaunchScreen';
-
 import styles from './Styles/NavigationStyles';
+import Colors from '../Themes/Colors';
 
-// Manifest of possible screens
+const BottomTabNav = createBottomTabNavigator({
+    Found: { screen: FoundScreen },
+    Account: { screen: AccountScreen },
+}, {
+    tabBarPosition: 'bottom',
+    animationEnabled: false,
+    tabBarOptions: {
+        activeTintColor: Colors.activeTint,
+        inactiveTintColor: Colors.inActiveTint,
+        tabStyle: styles.tab,
+        showIcon: true,
+        style: {
+            backgroundColor: Colors.casinoBlue
+        }
+    }
+});
+
 const PrimaryNav = createStackNavigator({
-  TransferScreen: { screen: TransferScreen },
-  TransferRecordScreen: { screen: TransferRecordScreen },
+    BottomTab: {screen: BottomTabNav},
+    TransferScreen: { screen: TransferScreen },
+    TransferRecordScreen: { screen: TransferRecordScreen },
     CurrencyScreen: { screen: CurrencyScreen },
     LanguageScreen: { screen: LanguageScreen },
     SettingScreen: { screen: SettingScreen },
@@ -31,18 +48,18 @@ const PrimaryNav = createStackNavigator({
     ImportScreen: { screen: ImportScreen },
     NewWalletScreen: { screen: NewWalletScreen },
     PreAccountScreen: { screen: PreAccountScreen },
-    AccountScreen: { screen: AccountScreen },
     SearchScreen: { screen: SearchScreen },
     MineScreen: { screen: MineScreen },
-    FoundScreen: { screen: FoundScreen },
     LaunchScreen: { screen: LaunchScreen }
 }, {
-    // Default config for all screens
-    headerMode: 'none',
-    initialRouteName: 'LaunchScreen',
+    headerMode: 'float',
+    cardStyle: {shadowColor: 'transparent'},
+    initialRouteName: 'BottomTab',
     navigationOptions: {
-        headerStyle: styles.header
-    }
+        headerStyle: styles.header,
+        // headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
+        headerTintColor: Colors.snow,
+    },
 });
 
 export default createAppContainer(PrimaryNav);
