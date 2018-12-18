@@ -1,51 +1,51 @@
-import React, { Component } from 'react'
-import { View, Text, ListView } from 'react-native'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { View, Text, ListView } from 'react-native';
+import { connect } from 'react-redux';
 
 // For empty lists
 // import AlertMessage from '../Components/AlertMessage'
 
 // Styles
-import styles from './Styles/GridExampleStyle'
+import styles from './Styles/GridExampleStyle';
 
 class GridExample extends Component {
-  constructor (props) {
-    super(props)
-    // If you need scroll to bottom, consider http://bit.ly/2bMQ2BZ
+    constructor (props) {
+        super(props);
+        // If you need scroll to bottom, consider http://bit.ly/2bMQ2BZ
 
-    /* ***********************************************************
+        /* ***********************************************************
     * STEP 1
     * This is an array of objects with the properties you desire
     * Usually this should come from Redux mapStateToProps
     *************************************************************/
-    const dataObjects = [
-      {title: 'First Title', description: 'First Description'},
-      {title: 'Second Title', description: 'Second Description'},
-      {title: 'Third Title', description: 'Third Description'},
-      {title: 'Fourth Title', description: 'Fourth Description'},
-      {title: 'Fifth Title', description: 'Fifth Description'},
-      {title: 'Sixth Title', description: 'Sixth Description'},
-      {title: 'Seventh Title', description: 'Seventh Description'}
-    ]
+        const dataObjects = [
+            {title: 'First Title', description: 'First Description'},
+            {title: 'Second Title', description: 'Second Description'},
+            {title: 'Third Title', description: 'Third Description'},
+            {title: 'Fourth Title', description: 'Fourth Description'},
+            {title: 'Fifth Title', description: 'Fifth Description'},
+            {title: 'Sixth Title', description: 'Sixth Description'},
+            {title: 'Seventh Title', description: 'Seventh Description'}
+        ];
 
-    /* ***********************************************************
+        /* ***********************************************************
     * STEP 2
     * Teach datasource how to detect if rows are different
     * Make this function fast!  Perhaps something like:
     *   (r1, r2) => r1.id !== r2.id}
     *************************************************************/
-    const rowHasChanged = (r1, r2) => r1 !== r2
+        const rowHasChanged = (r1, r2) => r1 !== r2;
 
-    // DataSource configured
-    const ds = new ListView.DataSource({rowHasChanged})
+        // DataSource configured
+        const ds = new ListView.DataSource({rowHasChanged});
 
-    // Datasource is always in state
-    this.state = {
-      dataSource: ds.cloneWithRows(dataObjects)
+        // Datasource is always in state
+        this.state = {
+            dataSource: ds.cloneWithRows(dataObjects)
+        };
     }
-  }
 
-  /* ***********************************************************
+    /* ***********************************************************
   * STEP 3
   * `_renderRow` function -How each cell/row should be rendered
   * It's our best practice to place a single component here:
@@ -53,16 +53,16 @@ class GridExample extends Component {
   * e.g.
     return <MyCustomCell title={rowData.title} description={rowData.description} />
   *************************************************************/
-  _renderRow (rowData) {
-    return (
-      <View style={styles.row}>
-        <Text style={styles.boldLabel}>{rowData.title}</Text>
-        <Text style={styles.label}>{rowData.description}</Text>
-      </View>
-    )
-  }
+    _renderRow (rowData) {
+        return (
+            <View style={styles.row}>
+                <Text style={styles.boldLabel}>{rowData.title}</Text>
+                <Text style={styles.label}>{rowData.description}</Text>
+            </View>
+        );
+    }
 
-  /* ***********************************************************
+    /* ***********************************************************
   * STEP 4
   * If your datasource is driven by Redux, you'll need to
   * reset it when new data arrives.
@@ -80,44 +80,38 @@ class GridExample extends Component {
     }
   *************************************************************/
 
-  // Used for friendly AlertMessage
-  // returns true if the dataSource is empty
-  _noRowData () {
-    return this.state.dataSource.getRowCount() === 0
-  }
+    // Used for friendly AlertMessage
+    // returns true if the dataSource is empty
+    _noRowData () {
+        return this.state.dataSource.getRowCount() === 0;
+    }
 
   // Render a footer.
-  _renderFooter = () => {
-    return (
+  _renderFooter = () => (
       <Text> - Footer - </Text>
-    )
-  }
+  )
 
   render () {
-    return (
-      <View style={styles.container}>
-        <ListView
-          contentContainerStyle={styles.listContent}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow}
-          renderFooter={this._renderFooter}
-          enableEmptySections
-          pageSize={15}
-        />
-      </View>
-    )
+      return (
+          <View style={styles.container}>
+              <ListView
+                  contentContainerStyle={styles.listContent}
+                  dataSource={this.state.dataSource}
+                  renderRow={this._renderRow}
+                  renderFooter={this._renderFooter}
+                  enableEmptySections
+                  pageSize={15}
+              />
+          </View>
+      );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => ({
     // ...redux state to props here
-  }
-}
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(GridExample)
+export default connect(mapStateToProps, mapDispatchToProps)(GridExample);

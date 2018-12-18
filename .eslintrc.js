@@ -1,25 +1,25 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
-        "react-native/react-native": true
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    'jest':true,
+    "es6": true,
+    "react-native/react-native": true
+},
+"extends": ["react-native"],
+"parserOptions": {
+    "ecmaFeatures": {
+        "experimentalObjectRestSpread": true,
+        "jsx": true
     },
-    "extends": "eslint:recommended",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true,
-            "experimentalObjectRestSpread": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "react-native"
-    ],
-    "rules": {
-      "indent": [
+    "sourceType": "module"
+},
+"plugins": [
+    "react",
+    "react-native"
+],
+"rules": {
+    "indent": [
         "error",
         4
     ],
@@ -57,5 +57,5 @@ module.exports = {
     "no-extra-boolean-cast":0,
     "no-debugger":0,
     "react/no-multi-comp": 0
-    }
+}
 };

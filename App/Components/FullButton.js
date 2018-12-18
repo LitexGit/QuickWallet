@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { TouchableOpacity, Text } from 'react-native'
-import styles from './Styles/FullButtonStyles'
-import ExamplesRegistry from '../Services/ExamplesRegistry'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { TouchableOpacity, Text } from 'react-native';
+import styles from './Styles/FullButtonStyles';
+import ExamplesRegistry from '../Services/ExamplesRegistry';
 
 // Note that this file (App/Components/FullButton) needs to be
 // imported in your app somewhere, otherwise your component won't be
@@ -11,24 +11,24 @@ import ExamplesRegistry from '../Services/ExamplesRegistry'
 // Ignore in coverage report
 /* istanbul ignore next */
 ExamplesRegistry.addComponentExample('Full Button', () =>
-  <FullButton
-    text='Hey there'
-    onPress={() => window.alert('Full Button Pressed!')}
-  />
-)
+    (<FullButton
+        text='Hey there'
+        onPress={() => window.alert('Full Button Pressed!')}
+    />)
+);
 
 export default class FullButton extends Component {
   static propTypes = {
-    text: PropTypes.string,
-    onPress: PropTypes.func,
-    styles: PropTypes.object
+      text: PropTypes.string,
+      onPress: PropTypes.func,
+      styles: PropTypes.object
   }
 
   render () {
-    return (
-      <TouchableOpacity style={[styles.button, this.props.styles]} onPress={this.props.onPress}>
-        <Text style={styles.buttonText}>{this.props.text && this.props.text.toUpperCase()}</Text>
-      </TouchableOpacity>
-    )
+      return (
+          <TouchableOpacity style={[styles.button, this.props.styles]} onPress={this.props.onPress}>
+              <Text style={styles.buttonText}>{this.props.text && this.props.text.toUpperCase()}</Text>
+          </TouchableOpacity>
+      );
   }
 }
