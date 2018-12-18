@@ -18,9 +18,8 @@ import styles from './Styles/NavigationStyles';
 import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
-    Found: { screen: FoundScreen },
     Mine: { screen: MineScreen },
-
+    Found: { screen: FoundScreen },
 }, {
     tabBarPosition: 'bottom',
     animationEnabled: false,
