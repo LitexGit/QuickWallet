@@ -13,5 +13,9 @@ export default StyleSheet.create({
     },
     banner:{
         flex:1
+    },
+    searchBar:{
+        width: '100%',
+        height:48 + 16,
     }
 });

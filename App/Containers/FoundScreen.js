@@ -5,6 +5,7 @@ import I18n from '../I18n';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
+import SearchBar from '../Components/SearchCompont';
 
 // Styles
 import styles from './Styles/FoundScreenStyle';
@@ -58,8 +59,8 @@ class FoundScreen extends Component {
               <View style={styles.topSection}>
                   {swiper}
               </View>
-              <View>
-
+              <View style={styles.searchBar}>
+                  <SearchBar/>
               </View>
               <ScrollView >
                   <KeyboardAvoidingView behavior='position'>
