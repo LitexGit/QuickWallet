@@ -8,12 +8,14 @@ import {AccountConfig} from '../Config/MineConfig';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Metrics , Colors } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
+import { NavigationActions } from 'react-navigation';
 
 class AccountScreen extends Component {
   static navigationOptions = {
       title:'我的账户',
   }
   _onPressBackup=()=>{
+      this.props.navigate('PreBackupScreen');
 
   }
 
@@ -79,6 +81,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);
