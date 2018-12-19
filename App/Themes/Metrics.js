@@ -1,6 +1,6 @@
 import {Dimensions, Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {getStatusBarHeight, getBottomSpace} from 'react-native-iphone-x-helper';
 const { width, height } = Dimensions.get('window');
 
 // Used via Metrics.baseMargin
@@ -19,6 +19,7 @@ const metrics = {
     buttonRadius: 4,
     bottomTabIconSize: 24,
     statusBarHeight: getStatusBarHeight(),
+    bottomSpace:getBottomSpace(),
     timeZone: DeviceInfo.getTimezone(),
     icons: {
         tiny: 15,

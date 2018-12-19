@@ -27,6 +27,17 @@ export default StyleSheet.create({
         flex:1,
     },
     bottomSection:{
+        flex:1,
+        justifyContent:'flex-end',
+    },
+    containerViewStyle:{
+        marginBottom:Metrics.bottomSpace,
+    },
+    buttonStyle:{
 
-    }
+    },
+    btnTitle:{
+        fontSize:Fonts.size.input,
+    },
+
 });

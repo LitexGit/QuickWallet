@@ -8,6 +8,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, Fonts, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
+import { Button } from 'react-native-elements';
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
@@ -21,12 +22,17 @@ class NewWalletScreen extends Component {
       console.log('============_onPressEyeImg========================');
   }
 
+  _onPressBtn=()=>{
+      console.log('============_onPressBtn========================');
+  }
+
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');
   }
 
   render () {
       const isShowPassword = true;
+      const isCanPress = true;
 
       const inputs = Object.values(InputInfoConfig).map((config, index)=>{
           const {key, placeholder, placeholderColor, clearButtonMode, maxLength, keyboardType, returnKeyType} = config;
@@ -62,7 +68,15 @@ class NewWalletScreen extends Component {
                       {inputs}
                   </View>
               </KeyboardAvoidingView>
-              <View style={styles.bottomSection}></View>
+              <View style={styles.bottomSection}>
+                  <Button onPress={()=>this._onPressBtn()}
+                      containerViewStyle={styles.containerViewStyle}
+                      buttonStyle={styles.buttonStyle}
+                      textStyle={styles.btnTitle}
+                      backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
+                      disabled={!isCanPress}
+                      title='创建'/>
+              </View>
           </View>
       );
   }
