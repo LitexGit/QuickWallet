@@ -2,20 +2,16 @@ import React, { Component } from 'react';
 import { FlatList, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Metrics , Colors, Fonts, } from '../Themes';
+import { Metrics , Colors } from '../Themes';
 import styles from './Styles/MineScreenStyle';
 import { View } from 'react-native-animatable';
-import MineConfig from '../Config/MineConfig';
+import {MineConfig} from '../Config/MineConfig';
 import { NavigationActions } from 'react-navigation';
 import { Avatar } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-
-
-
 
 
 class MineScreen extends Component {
@@ -34,6 +30,26 @@ class MineScreen extends Component {
   }
 
   _onPressItem=(key)=>{
+      const {navigate} = this.props;
+      switch (key) {
+      case MineConfig.setting.key:
+          navigate('SettingScreen');
+          break;
+      case MineConfig.help.key:
+
+          break;
+      case MineConfig.agreement.key:
+
+          break;
+      case MineConfig.about.key:
+
+          break;
+      case MineConfig.share.key:
+
+          break;
+      default:
+          break;
+      }
 
   }
 
@@ -68,7 +84,7 @@ class MineScreen extends Component {
           break;
       }
 
-      return ( <TouchableOpacity onPress={this._onPressItem()}>
+      return ( <TouchableOpacity onPress={()=>this._onPressItem(key)}>
           <View style={styles.itemContainer}>
               <View style={styles.itemLeft}>
                   {typeImg}
@@ -125,6 +141,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 
 });
 

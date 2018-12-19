@@ -39,7 +39,6 @@ export default StyleSheet.create({
         marginTop:Metrics.smallMargin,
     },
     itemContainer:{
-
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
