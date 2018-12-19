@@ -1,26 +1,36 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles, Colors, Fonts} from '../../Themes';
+import { ApplicationStyles, Colors, Fonts, Metrics} from '../../Themes';
 
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     topSection:{
-        height:150,
+        height:200,
+    },
+    avatarSection:{
+        flex:1,
+        width:'100%',
+        backgroundColor:Colors.darkColor,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    assetsSection:{
+        height:50,
         backgroundColor:Colors.backColor,
         justifyContent:'center',
         alignItems:'center',
     },
+    avatar:{
+        marginBottom:Metrics.baseMargin,
+    },
     bottomSection:{
-        flex:3,
+        flex:1,
     },
-    buttonStyle:{
-        height:40,
-        marginTop: 50,
-        marginHorizontal:60,
-    },
-    titleStyle:{
+    nameText:{
+        fontSize:Fonts.size.input,
         color:'#FFFFFF',
-        fontSize:Fonts.size.h6,
-        marginTop: 10,
     },
-
+    assetsStyle:{
+        fontSize:Fonts.size.input,
+        color:'#FFFFFF',
+    }
 });
