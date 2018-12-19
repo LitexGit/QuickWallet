@@ -7,6 +7,7 @@ import { View } from 'react-native-animatable';
 import {AccountConfig} from '../Config/MineConfig';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Metrics , Colors } from '../Themes';
+import QRCode from 'react-native-qrcode-svg';
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -57,7 +58,9 @@ class AccountScreen extends Component {
                           <FontAwesome name={'copy'} size={Metrics.icons.small} color={Colors.textColor}/>
                       </TouchableOpacity>
                   </View>
-                  <View></View>
+                  <QRCode
+                      value="http://awesome.link.qr"
+                  />
               </View>
               <View style={styles.bottomSection}>
                   <Button onPress={()=>this._onPressBackup()}
