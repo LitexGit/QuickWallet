@@ -5,6 +5,8 @@ import styles from './Styles/ImportScreenStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors, Metrics } from '../Themes';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
+import MnemonicCompont from '../Components/MnemonicCompont';
+import KeyStoreCompont from '../Components/KeyStoreCompont';
 
 class ImportScreen extends Component {
   static navigationOptions = {
@@ -30,13 +32,13 @@ class ImportScreen extends Component {
                       tabBarActiveTextColor={Colors.textColor}
                       tabBarInactiveTextColor={Colors.separateLineColor}
                       tabBarUnderlineStyle={styles.tabBarUnderline}
-                      renderTabBar={() => <DefaultTabBar style={{borderBottomWidth: 2}}/>}
+                      renderTabBar={() => <DefaultTabBar/>}
                       onChangeTab={()=>this._onChangeTab()}>
-                      <View tabLabel='助记词' style={{flex:1, backgroundColor:'green'}}>
-
+                      <View tabLabel='助记词' style={styles.container}>
+                          <MnemonicCompont/>
                       </View>
-                      <View tabLabel='私钥' style={{flex:1, backgroundColor:'yellow'}}>
-
+                      <View tabLabel='私钥' style={styles.container}>
+                          <KeyStoreCompont/>
                       </View>
                   </ScrollableTabView>
               </View>
