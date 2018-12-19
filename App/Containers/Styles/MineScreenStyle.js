@@ -24,6 +24,7 @@ export default StyleSheet.create({
     },
     bottomSection:{
         flex:1,
+        // paddingHorizontal:Metrics.baseMargin,
     },
     nameText:{
         fontSize:Fonts.size.input,
@@ -32,5 +33,24 @@ export default StyleSheet.create({
     assetsStyle:{
         fontSize:Fonts.size.input,
         color:'#FFFFFF',
+    },
+    flatList:{
+        flex:1,
+        marginTop:Metrics.smallMargin,
+    },
+    itemContainer:{
+
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        marginHorizontal:Metrics.baseMargin,
+    },
+    itemLeft:{
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    titleColor:{
+        marginLeft:Metrics.smallMargin,
+        color:Colors.textColor,
     }
 });

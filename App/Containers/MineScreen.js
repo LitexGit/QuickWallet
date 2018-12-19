@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { FlatList, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Metrics , Colors, Fonts, } from '../Themes';
 import styles from './Styles/MineScreenStyle';
 import { View } from 'react-native-animatable';
-import CreatConfig from '../Config/CreatConfig';
+import MineConfig from '../Config/MineConfig';
 import { NavigationActions } from 'react-navigation';
 import { Avatar } from 'react-native-elements';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+
+
+
+
+
 
 class MineScreen extends Component {
   static navigationOptions = {
@@ -24,22 +33,59 @@ class MineScreen extends Component {
       console.log('===========_onPressAssets=========================');
   }
 
+  _onPressItem=(key)=>{
+
+  }
+
 
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');
   }
 
+  _renderItem=({item})=>{
+      const {key='', title='', isNext=false} = item;
+      const nextImg = isNext ? (<View>
+          <MaterialIcons name={'navigate-next'} size={Metrics.icons.medium} color={Colors.textColor}/>
+      </View>) : null;
+      let typeImg = null;
+      switch (key) {
+      case MineConfig.setting.key:
+          typeImg = <AntDesign name={'setting'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          break;
+      case MineConfig.help.key:
+          typeImg = <MaterialCommunityIcons name={'headset'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          break;
+      case MineConfig.agreement.key:
+          typeImg = <Entypo name={'feather'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          break;
+      case MineConfig.about.key:
+          typeImg = <MaterialCommunityIcons name={'clover'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          break;
+      case MineConfig.share.key:
+          typeImg = <AntDesign name={'sharealt'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          break;
+      default:
+          break;
+      }
+
+      return ( <TouchableOpacity onPress={this._onPressItem()}>
+          <View style={styles.itemContainer}>
+              <View style={styles.itemLeft}>
+                  {typeImg}
+                  <Text style={styles.titleColor}>{title}</Text>
+              </View>
+              {nextImg}
+          </View>
+      </TouchableOpacity>);
+  }
+
+  _renderItemSeparator= ()=><View style={styles.itemSeparator}/>
+
   render () {
       const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
       const name = '1号';
       const assets = '资产总价值：￥100.00';
-
-
-
-
-      const btns = Object.values(CreatConfig).map((config, index)=>{
-
-      });
+      const data = Object.values(MineConfig);
 
       return (
           <View style={styles.container}>
@@ -61,7 +107,15 @@ class MineScreen extends Component {
                   </TouchableOpacity>
 
               </View>
-              <View style={styles.bottomSection}></View>
+              <View style={styles.bottomSection}>
+                  <FlatList
+                      style={styles.flatList}
+                      data={data}
+                      keyExtractor={(item,index)=>''+index}
+                      renderItem={ this._renderItem }
+                      ItemSeparatorComponent = {this._renderItemSeparator}
+                  />
+              </View>
           </View>
       );
   }
