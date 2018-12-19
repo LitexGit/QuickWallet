@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles, Colors, Fonts} from '../../Themes/';
+import { ApplicationStyles, Colors, Fonts} from '../../Themes';
 
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     topSection:{
-        flex:1,
+        height:150,
         backgroundColor:Colors.backColor,
         justifyContent:'center',
         alignItems:'center',
@@ -21,5 +21,6 @@ export default StyleSheet.create({
         color:'#FFFFFF',
         fontSize:Fonts.size.h6,
         marginTop: 10,
-    }
+    },
+
 });

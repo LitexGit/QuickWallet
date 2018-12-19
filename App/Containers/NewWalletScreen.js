@@ -1,23 +1,69 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView } from 'react-native';
+import { ScrollView, Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
+import I18n from '../I18n';
 import styles from './Styles/NewWalletScreenStyle';
+import { View } from 'react-native-animatable';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Colors, Fonts, Metrics } from '../Themes';
+import InputInfoConfig from '../Config/InputInfoConfig';
 
 class NewWalletScreen extends Component {
+  static navigationOptions = {
+      title:'创建账户',
+  }
+  _onChangeText=(key, text)=>{
+      console.log('==============text======================');
+  }
+
+  _onPressEyeImg = ()=>{
+      console.log('============_onPressEyeImg========================');
+  }
+
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');
   }
+
   render () {
+      const isShowPassword = true;
+
+      const inputs = Object.values(InputInfoConfig).map((config, index)=>{
+          const {key, placeholder, placeholderColor, clearButtonMode, maxLength, keyboardType, returnKeyType} = config;
+          const eyeImg = (
+              <TouchableOpacity onPress={()=>this._onPressEyeImg()}>
+                  {isShowPassword ? <Ionicons name={'md-eye'} size={Metrics.icons.small} color={Colors.separateLineColor}/> : <Ionicons name={'md-eye-off'} size={Metrics.icons.small} color={Colors.separateLineColor}/>}
+              </TouchableOpacity>);
+          return (
+              <View key={index} style={styles.inputView}>
+                  <TextInput style={styles.textInput}
+                      placeholder={ placeholder }
+                      placeholderTextColor = { placeholderColor }
+                      clearButtonMode={ clearButtonMode }
+                      maxLength={ maxLength }
+                      secureTextEntry={ key !== 'name' ? !isShowPassword : false }
+                      keyboardType={ keyboardType }
+                      returnKeyType= {returnKeyType}
+                      underlineColorAndroid="transparent"
+                      onChangeText={(text)=>this._onChangeText(key, text)}
+                  />
+                  {key === 'confirm' ? eyeImg : null}
+              </View>
+          );
+      });
       return (
-          <ScrollView style={styles.container}>
-              <KeyboardAvoidingView behavior='position'>
-                  <Text>NewWalletScreen</Text>
+          <View style={styles.container}>
+              <View style={styles.topSection}>
+                  <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
+                  <Text style={styles.titleStytle}>创建账户</Text>
+              </View>
+              <KeyboardAvoidingView>
+                  <View style={styles.inputSection}>
+                      {inputs}
+                  </View>
               </KeyboardAvoidingView>
-          </ScrollView>
+              <View style={styles.bottomSection}></View>
+          </View>
       );
   }
 }
