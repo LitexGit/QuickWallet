@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
+import { Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
 import styles from './Styles/NewWalletScreenStyle';
 import { View } from 'react-native-animatable';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Colors, Fonts, Metrics } from '../Themes';
+import { Colors, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
 
