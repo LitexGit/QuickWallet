@@ -29,7 +29,7 @@ const colors = {
     darkColor:'#44495C',
     backColor:'#31406C',
     textColor:'#185582',
-    dividingLineColor:'#31406C',
+    dividingLineColor:'#CFCDCF',
     separateLineColor:'#A4A4A4',
 
     activeTintColor:'#185582',

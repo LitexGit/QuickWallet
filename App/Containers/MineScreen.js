@@ -22,11 +22,11 @@ class MineScreen extends Component {
   }
 
   _onPressAvatar=()=>{
-      console.log('===========_onPressAvatar=========================');
+      this.props.navigate('AccountScreen');
   }
 
   _onPressAssets=()=>{
-      console.log('===========_onPressAssets=========================');
+      this.props.navigate('AssetsScreen');
   }
 
   _onPressItem=(key)=>{

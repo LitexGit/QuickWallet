@@ -47,4 +47,28 @@ export const SettingConfig = {
     }
 };
 
+export const AccountConfig = {
+    avatar:{
+        key:'avatar',
+        index:0,
+        title:'头像',
+        details:'',
+        type:1,
+    },
+    account:{
+        key:'account',
+        index:1,
+        title:'账户名',
+        details:'',
+        type:2,
+    },
+    inviteCode:{
+        key:'inviteCode',
+        index:2,
+        title:'邀请码',
+        details:'',
+        type:2,
+    }
+};
+
 
