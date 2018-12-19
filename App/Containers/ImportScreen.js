@@ -13,7 +13,7 @@ class ImportScreen extends Component {
       title:'导入账户',
   }
   _onChangeTab=()=>{
-
+      console.log('===============_onChangeTab=====================');
   }
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');

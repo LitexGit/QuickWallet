@@ -31,7 +31,7 @@ class NewWalletScreen extends Component {
   }
 
   render () {
-      const isShowPassword = true;
+      const isShowPassword = false;
       const isCanPress = true;
 
       const inputs = Object.values(InputInfoConfig).map((config, index)=>{
