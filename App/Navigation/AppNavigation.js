@@ -19,6 +19,7 @@ import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
     Mine: { screen: MineScreen },
+    PreAccount: { screen: PreAccountScreen },
     Found: { screen: FoundScreen },
 }, {
     tabBarPosition: 'bottom',
@@ -46,7 +47,6 @@ const PrimaryNav = createStackNavigator({
     PreBackupScreen: { screen: PreBackupScreen },
     ImportScreen: { screen: ImportScreen },
     NewWalletScreen: { screen: NewWalletScreen },
-    PreAccountScreen: { screen: PreAccountScreen },
     SearchScreen: { screen: SearchScreen },
     AccountScreen: { screen: AccountScreen },
 }, {
