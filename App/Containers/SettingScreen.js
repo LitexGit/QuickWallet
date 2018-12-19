@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {SettingConfig} from '../Config/MineConfig';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Metrics , Colors } from '../Themes';
+import { NavigationActions } from 'react-navigation';
 
 // Styles
 import styles from './Styles/SettingScreenStyle';
@@ -12,6 +13,20 @@ class SettingScreen extends Component {
 
   static navigationOptions = {
       title:'使用设置',
+  }
+
+  _onPressItem=(key)=>{
+      const {navigate} = this.props;
+      switch (key) {
+      case SettingConfig.language.key:
+          navigate('LanguageScreen');
+          break;
+      case SettingConfig.currency.key:
+          navigate('CurrencyScreen');
+          break;
+      default:
+          break;
+      }
   }
 
   componentDidMount=()=>{
@@ -61,6 +76,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingScreen);

@@ -8,6 +8,11 @@ import { connect } from 'react-redux';
 import styles from './Styles/LanguageScreenStyle';
 
 class LanguageScreen extends Component {
+
+  static navigationOptions = {
+      title:'语言设置',
+  }
+
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');
   }
