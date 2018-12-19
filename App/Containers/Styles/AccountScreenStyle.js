@@ -32,14 +32,13 @@ export default StyleSheet.create({
         width: '60%',
         flexWrap:'nowrap',
         flexDirection:'row',
+        marginBottom:Metrics.section,
     },
     address:{
         color:Colors.darkColor,
         marginRight:Metrics.baseMargin,
         fontSize: Fonts.size.input,
-
     },
-
     bottomSection:{
         marginBottom:Metrics.bottomSpace,
     },

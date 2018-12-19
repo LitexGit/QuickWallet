@@ -58,9 +58,7 @@ class AccountScreen extends Component {
                           <FontAwesome name={'copy'} size={Metrics.icons.small} color={Colors.textColor}/>
                       </TouchableOpacity>
                   </View>
-                  <QRCode
-                      value="http://awesome.link.qr"
-                  />
+                  <QRCode value={avatar_url} size={120}/>
               </View>
               <View style={styles.bottomSection}>
                   <Button onPress={()=>this._onPressBackup()}
