@@ -5,6 +5,7 @@ import styles from './Styles/PreBackupScreenStyle';
 import { Button } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors, Metrics } from '../Themes';
+import { NavigationActions } from 'react-navigation';
 
 
 class PreBackupScreen extends Component {
@@ -12,7 +13,7 @@ class PreBackupScreen extends Component {
       title:'备份账户',
   }
   _onPressBtn=()=>{
-
+      this.props.navigate('BackupScreen');
   }
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');
@@ -20,6 +21,7 @@ class PreBackupScreen extends Component {
   render () {
       const remind = '请仔细抄写下方助记词，我们将在下一步验证';
       const mnemonic = 'text styles remind container icons container mnemonic container colors container container';
+
       return (
           <View style={styles.container}>
               <View style={styles.topSection}>
@@ -48,6 +50,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreBackupScreen);

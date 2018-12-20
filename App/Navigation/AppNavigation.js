@@ -52,7 +52,7 @@ const PrimaryNav = createStackNavigator({
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'transparent'},
-    initialRouteName: 'PreBackupScreen',
+    initialRouteName: 'BackupScreen',
     navigationOptions: {
         headerStyle: styles.header,
         headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
