@@ -14,6 +14,8 @@ import AccountScreen from '../Containers/AccountScreen';
 import SearchScreen from '../Containers/SearchScreen';
 import MineScreen from '../Containers/MineScreen';
 import FoundScreen from '../Containers/FoundScreen';
+import ScanScreen from '../Containers/ScanScreen';
+
 import styles from './Styles/NavigationStyles';
 import Colors from '../Themes/Colors';
 
@@ -49,6 +51,7 @@ const PrimaryNav = createStackNavigator({
     NewWalletScreen: { screen: NewWalletScreen },
     SearchScreen: { screen: SearchScreen },
     AccountScreen: { screen: AccountScreen },
+    ScanScreen: { screen: ScanScreen },
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'transparent'},

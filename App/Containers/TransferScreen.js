@@ -6,6 +6,7 @@ import styles from './Styles/TransferScreenStyle';
 import { Colors } from '../Themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { NavigationActions } from 'react-navigation';
 
 class TransferScreen extends Component {
 
@@ -23,7 +24,7 @@ class TransferScreen extends Component {
   }
 
   _onPressBtn=()=>{
-      this.props.navigate('TransferScreen');
+      console.log('===========_onPressBtn=========================');
   }
   _onChangeBalance=(text)=>{
       console.log('===========_onChangeBalance=========================');
@@ -37,8 +38,9 @@ class TransferScreen extends Component {
       console.log('===========_onChangeNote=========================');
       console.log(text);
   }
-  _onPressScanning=()=>{
-      console.log('===========_onPressScanning=========================');
+  _onPressScan=()=>{
+      this.props.navigate('ScanScreen');
+      console.log('===========_onPressScan=========================');
   }
 
   _onSlidingComplete=(gas)=>{
@@ -86,7 +88,7 @@ class TransferScreen extends Component {
                       <View style={styles.addressSection}>
                           <View style={styles.bananceTopView}>
                               <Text style={styles.titleText}>收款地址</Text>
-                              <TouchableOpacity onPress={this._onPressScanning}>
+                              <TouchableOpacity onPress={()=>this._onPressScan()}>
                                   <Ionicons name={'ios-qr-scanner'} size={24} color={'#A4A4A4'}/>
                               </TouchableOpacity>
                           </View>
@@ -136,6 +138,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferScreen);
