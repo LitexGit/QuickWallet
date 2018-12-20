@@ -62,7 +62,9 @@ class ScanScreen extends Component {
                   </View>
                   <View style={styles.scanBeside}></View>
               </View>
-              <View style={styles.bottomSection}></View>
+              <View style={styles.bottomSection}>
+                  <Text style={styles.textStyle}>将二维码放入框内，即可自动扫描</Text>
+              </View>
           </RNCamera>);
   }
 }

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles } from '../../Themes/';
+import { ApplicationStyles, Fonts } from '../../Themes/';
 
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
@@ -13,7 +13,8 @@ export default StyleSheet.create({
     },
     bottomSection:{
         flex:1.5,
-        backgroundColor:'rgba(0,0,0,0.5)'
+        backgroundColor:'rgba(0,0,0,0.5)',
+        alignItems: 'center',
     },
     scanerView:{
         width:250,
@@ -28,5 +29,11 @@ export default StyleSheet.create({
         position:'absolute',
         left: 0,
         top: 0,
-    }
+    },
+    textStyle:{
+        color:'#FFFFFF',
+        marginTop:30,
+        fontWeight:'bold',
+        fontSize:Fonts.size.input,
+    },
 });
