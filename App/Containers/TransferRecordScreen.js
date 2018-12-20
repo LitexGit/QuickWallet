@@ -6,6 +6,7 @@ import styles from './Styles/TransferRecordScreenStyle';
 import ListFooterComponent from '../Components/ListFooterComponent';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
 import { Button } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 
 
 class TransferRecordScreen extends Component {
@@ -23,7 +24,7 @@ class TransferRecordScreen extends Component {
   }
 
   _onPressBtn=()=>{
-      console.log('===========_onPressBtn=========================');
+      this.props.navigate('TransferScreen');
   }
 
   componentDidMount=()=>{
@@ -77,7 +78,7 @@ class TransferRecordScreen extends Component {
   render () {
       const refreshing = false;
       const loading = false;
-      const sections = [{'key':1, data:[{},{}]}, {'key':2, data:[{},{}]}];
+      const sections = [{'key':1, data:[{},{},{},{},{},{},{},{},{},{}]}, {'key':2, data:[{},{}]}];
       const btnTitle = '发起转账';
       const isBalance = false;
 
@@ -118,6 +119,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferRecordScreen);

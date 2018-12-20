@@ -37,7 +37,6 @@ export default class SearchCompont extends Component {
 
 
     render () {
-        const {} = this.props;
         const searchBar = (
             <SearchBar
                 lightTheme

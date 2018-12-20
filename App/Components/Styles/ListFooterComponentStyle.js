@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Fonts } from '../../Themes';
+import { Colors, Fonts, Metrics } from '../../Themes';
 
 export default StyleSheet.create({
     container: {
@@ -12,5 +12,6 @@ export default StyleSheet.create({
     },
     footerText: {
         color: Colors.textColor,
+        padding : Metrics.section,
     }
 });
