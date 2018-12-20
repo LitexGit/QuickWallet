@@ -142,7 +142,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineScreen);

@@ -52,7 +52,7 @@ const PrimaryNav = createStackNavigator({
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'transparent'},
-    initialRouteName: 'AssetsScreen',
+    initialRouteName: 'TransferRecordScreen',
     navigationOptions: {
         headerStyle: styles.header,
         headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},

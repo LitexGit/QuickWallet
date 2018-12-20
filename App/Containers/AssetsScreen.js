@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styles from './Styles/AssetsScreenStyle';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
 import { Colors } from '../Themes';
+import { NavigationActions } from 'react-navigation';
 
 class AssetsScreen extends Component {
   static navigationOptions = {
@@ -16,7 +17,7 @@ class AssetsScreen extends Component {
 
   _onPressItem=({item})=>{
       // TODO 点击切换ECR20
-
+      this.props.navigate('TransferRecordScreen');
   }
 
   componentDidMount=()=>{
@@ -75,6 +76,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetsScreen);
