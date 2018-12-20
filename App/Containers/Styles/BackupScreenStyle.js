@@ -14,7 +14,7 @@ export default StyleSheet.create({
     titleStytle:{
         fontSize:Fonts.size.input,
         color:Colors.backColor,
-        marginTop: 10,
+        marginTop: Metrics.baseMargin,
     },
     remindSection:{
         margin:Metrics.section,
@@ -61,5 +61,15 @@ export default StyleSheet.create({
         marginRight:Metrics.baseMargin,
         padding:Metrics.smallMargin,
         backgroundColor:Colors.backgroundColor,
+    },
+    toastView:{
+        justifyContent:'center',
+        alignItems:'center',
+        margin:Metrics.baseMargin,
+        marginTop:0,
+    },
+    toastText:{
+        color:'red',
+        fontSize:Fonts.small,
     }
 });

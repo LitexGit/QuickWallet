@@ -20,11 +20,16 @@ class BackupScreen extends Component {
           words:[],
           pressArray:[],
           unPressArray:[],
-      };
 
+          isSorted:true,
+      };
   }
 
   _onPressCheck=()=>{
+
+  }
+
+  _checkMnemonicSort=()=>{
 
   }
 
@@ -52,6 +57,8 @@ class BackupScreen extends Component {
       this.setState({
           pressArray:removeArray,
           unPressArray:sortArray,
+      },()=>{
+          this._checkMnemonicSort();
       });
   }
 
@@ -72,6 +79,8 @@ class BackupScreen extends Component {
       this.setState({
           pressArray,
           unPressArray:removeArray,
+      },()=>{
+          this._checkMnemonicSort();
       });
   }
 
@@ -92,6 +101,12 @@ class BackupScreen extends Component {
       const remind = '请桉顺序点击助记词,以确认您的正确身份。';
       const isCanPress = true;
       const { pressArray, unPressArray} = this.state;
+      const toast = '助记词顺序不正确，请校对';
+      const isSorted = false;
+
+      const toastView = !isSorted ? (<View style={styles.toastView}>
+          <Text style={styles.toastText}>{toast}</Text>
+      </View>):null;
 
       const pressWord = pressArray.map((item, key)=>{
           const {title} = item;
@@ -123,6 +138,7 @@ class BackupScreen extends Component {
                   <View style={styles.remindSection}>
                       <Text style={styles.remindText}>{remind}</Text>
                   </View>
+                  {toastView}
                   <View style={styles.pressWordView}>
                       {pressWord}
                   </View>
