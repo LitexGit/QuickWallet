@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements';
 import styles from './Styles/TransferScreenStyle';
 import { Colors } from '../Themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 class TransferScreen extends Component {
 
@@ -50,7 +51,7 @@ class TransferScreen extends Component {
       this.setState({
           displayGas: gas
       });
-      // ReactNativeHapticFeedback.trigger();
+      ReactNativeHapticFeedback.trigger();
   }
 
   componentDidMount=()=>{
