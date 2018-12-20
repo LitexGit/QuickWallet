@@ -1,23 +1,47 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Text, KeyboardAvoidingView, FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
 import styles from './Styles/AssetsScreenStyle';
+import ListEmptyComponent from '../Components/ListEmptyComponent';
 
 class AssetsScreen extends Component {
+  static navigationOptions = {
+      title:'我的资产',
+  }
+
+  _onRefresh=()=>{
+      console.log('============_onRefresh========================');
+  }
+
   componentDidMount=()=>{
       console.log('===========componentDidMount=========================');
   }
+
+  _renderItem=()=>{
+
+  }
+  _renderListHeader=()=><View/>
+  _renderListEmpty=()=><ListEmptyComponent/>
+
   render () {
+      const refreshing = false;
       return (
-          <ScrollView style={styles.container}>
-              <KeyboardAvoidingView behavior='position'>
-                  <Text>AssetsScreen</Text>
-              </KeyboardAvoidingView>
-          </ScrollView>
+          <View >
+              <FlatList
+                  refreshControl={<RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={this._onRefresh}
+                      tintColor='red'
+                      title='Refreshing...'
+                      titleColor='cyan'
+                  />}
+                  data={[]}
+                  extraData={this.props}
+                  renderItem={this._renderItem}
+                  ListHeaderComponent={this._renderListHeader}
+                  ListEmptyComponent={this._renderListEmpty}
+              />
+          </View>
       );
   }
 }
