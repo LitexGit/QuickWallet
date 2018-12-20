@@ -5,6 +5,7 @@ import { Colors } from '../Themes';
 import styles from './Styles/TransferRecordScreenStyle';
 import ListFooterComponent from '../Components/ListFooterComponent';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
+import { Button } from 'react-native-elements';
 
 
 class TransferRecordScreen extends Component {
@@ -19,6 +20,10 @@ class TransferRecordScreen extends Component {
   }
   _onPressItem=()=>{
       console.log('===========_onPressItem=========================');
+  }
+
+  _onPressBtn=()=>{
+      console.log('===========_onPressBtn=========================');
   }
 
   componentDidMount=()=>{
@@ -73,6 +78,10 @@ class TransferRecordScreen extends Component {
       const refreshing = false;
       const loading = false;
       const sections = [{'key':1, data:[{},{}]}, {'key':2, data:[{},{}]}];
+      const btnTitle = '发起转账';
+      const isBalance = false;
+
+
 
       return (
           <View style={styles.container}>
@@ -94,7 +103,12 @@ class TransferRecordScreen extends Component {
                       loading={loading}
                       onPress={this._loadMore}/>}
               />
-              <View style={styles.bottomSection}></View>
+              <View style={styles.bottomSection}>
+                  <Button onPress={()=>this._onPressBtn()}
+                      backgroundColor={Colors.textColor}
+                      disabled={isBalance}
+                      title={btnTitle}/>
+              </View>
           </View>
       );
   }

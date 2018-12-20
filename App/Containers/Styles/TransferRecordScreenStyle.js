@@ -34,7 +34,7 @@ export default StyleSheet.create({
     },
     assetsStyle:{
         fontSize:Fonts.size.small,
-        color:Colors.separateLineColor,
+        color:'#666666',
     },
     // section
     sectionContainer:{
@@ -91,6 +91,11 @@ export default StyleSheet.create({
         borderWidth: 1 / PixelRatio.get(),
         backgroundColor:'green',
         marginLeft:Metrics.baseMargin,
+    },
+    bottomSection:{
+        // backgroundColor:'red',
+        marginBottom:Metrics.bottomSpace,
     }
+
 
 });
