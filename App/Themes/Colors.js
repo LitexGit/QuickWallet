@@ -34,6 +34,8 @@ const colors = {
 
     activeTintColor:'#185582',
     inactiveTintColor:'#A4A4A4',
+
+
 };
 
 export default colors;

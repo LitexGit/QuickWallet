@@ -52,7 +52,7 @@ const PrimaryNav = createStackNavigator({
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'transparent'},
-    initialRouteName: 'BottomTab',
+    initialRouteName: 'AssetsScreen',
     navigationOptions: {
         headerStyle: styles.header,
         headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
