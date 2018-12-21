@@ -6,11 +6,12 @@ import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
 import SearchBar from '../Components/SearchCompont';
-
-// Styles
 import styles from './Styles/FoundScreenStyle';
+import { getLanguages } from 'react-native-i18n';
+
 class FoundScreen extends Component {
   static navigationOptions = {
+      tabBarLabel: I18n.t('FoundTabBarLabel'),
       tabBarIcon: ({tintColor}) => (
           <Material name={'cube-outline'} size={Metrics.bottomTabIconSize} color={tintColor}/>
       )
@@ -35,7 +36,9 @@ class FoundScreen extends Component {
   }
 
   componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
+      console.log('==============componentDidMount======================');
+      console.log(I18n);
+      console.log('===============componentDidMount=====================');
   }
 
   _renderBanner = (item,key)=>{
