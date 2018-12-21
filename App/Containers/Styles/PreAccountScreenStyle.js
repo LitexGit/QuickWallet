@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles, Colors, Fonts} from '../../Themes';
+import { ApplicationStyles, Colors, Fonts, Metrics} from '../../Themes';
 
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     topSection:{
-        height:150,
+        height:200 + Metrics.statusBarHeight,
         backgroundColor:Colors.backColor,
         justifyContent:'center',
         alignItems:'center',

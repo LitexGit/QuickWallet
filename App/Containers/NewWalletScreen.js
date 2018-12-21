@@ -10,6 +10,9 @@ import { Colors, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
 
+import { NavigationActions } from 'react-navigation';
+import UserActions from '../Redux/UserRedux';
+
 class NewWalletScreen extends Component {
   static navigationOptions = {
       title:'创建账户',
@@ -23,7 +26,12 @@ class NewWalletScreen extends Component {
   }
 
   _onPressBtn=()=>{
-      console.log('============_onPressBtn========================');
+      const address = '0X11111';
+      const type = 1;
+      const params = {address, type};
+      const {register} = this.props;
+      register(params);
+
   }
 
   componentDidMount=()=>{
@@ -86,6 +94,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    register: (params) => dispatch(UserActions.registerRequest(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

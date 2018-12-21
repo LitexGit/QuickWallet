@@ -20,6 +20,7 @@ import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
     Found: { screen: FoundScreen },
+    PreAccount: { screen: PreAccountScreen },
     Mine: { screen: MineScreen },
 }, {
     tabBarPosition: 'bottom',

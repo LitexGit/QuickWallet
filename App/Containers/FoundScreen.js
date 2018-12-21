@@ -25,9 +25,6 @@ class FoundScreen extends Component {
       };
   }
 
-  componentWillMount=()=>{
-
-  }
   componentDidMount=()=>{
       const {getBanner} = this.props;
       getBanner();
@@ -106,9 +103,9 @@ class FoundScreen extends Component {
 }
 
 const mapStateToProps = (state) =>{
-    console.log('============state========================');
-    console.log(state);
-    console.log('============state========================');
+    // console.log('============state========================');
+    // console.log(state);
+    // console.log('============state========================');
     const {found:{bannerList}} = state;
     return { bannerList };
 };

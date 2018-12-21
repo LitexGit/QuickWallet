@@ -5,12 +5,14 @@ import DebugConfig from '../Config/DebugConfig';
 
 /* ------------- Types ------------- */
 import { FoundTypes } from '../Redux/FoundRedux';
+import { UserTypes } from '../Redux/UserRedux';
 
 import { StartupTypes } from '../Redux/StartupRedux';
 import { GithubTypes } from '../Redux/GithubRedux';
 
 /* ------------- Sagas ------------- */
 import { getBanner } from './FoundSaga';
+import { register } from './UserSaga';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
@@ -26,6 +28,7 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create();
 export default function * root () {
     yield all([
         takeLatest(FoundTypes.GET_BANNER_REQUEST, getBanner, api),
+        takeLatest(UserTypes.REGISTER_REQUEST, register, api),
 
 
         // some sagas only receive an action

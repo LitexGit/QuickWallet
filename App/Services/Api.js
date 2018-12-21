@@ -40,7 +40,7 @@ const create = (baseURL = Config.API_URL) => {
      * os        用户系统平台 ios或android
      * phoneinfo 用户手机详细信息
      */
-    const submitRegistInfo=({address, type, os, phoneinfo})=>api.put('',{address, type, os, phoneinfo});
+    const register=({address, type})=>api.put('',{address, type});
     /**
      * 用户基本信息获取接口
      *
@@ -61,7 +61,7 @@ const create = (baseURL = Config.API_URL) => {
     const getERC20Token = () =>api.get('');
 
     return {
-        submitRegistInfo,
+        register,
         getUserInfo,
         getBanner,
         getSystemConfig,
