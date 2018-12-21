@@ -10,6 +10,10 @@ const { Types, Creators } = createActions({
     registerRequest: ['data'],
     registerSuccess: ['data'],
     registerFailure: null,
+
+    getUserInfoRequest: ['data'],
+    getUserInfoSuccess: ['data'],
+    getUserInfoFailure: null,
 });
 
 export const UserTypes = Types;
@@ -31,13 +35,14 @@ export const INITIAL_STATE = Immutable({
 
     uid:0,
     nickname:'我怎这么好看',
-    sharecode:'SHARECODE'
+    sharecode:'SHARECODE',
+    created_at:'1',
+    last_login:'2018:12:21'
 });
 
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-    selectUid: state => state.user.uid,
     selectNickname: state => state.user.nickname,
     selectSharecode: state => state.user.sharecode,
 };
@@ -67,5 +72,9 @@ export const failure = (state) =>
 export const reducer = createReducer(INITIAL_STATE, {
     [Types.REGISTER_REQUEST]: request,
     [Types.REGISTER_SUCCESS]: success,
-    [Types.REGISTER_FAILURE]: failure
+    [Types.REGISTER_FAILURE]: failure,
+
+    [Types.GET_USER_INFO_REQUEST]: request,
+    [Types.GET_USER_INFO_SUCCESS]: success,
+    [Types.GET_USER_INFO_FAILURE]: failure
 });

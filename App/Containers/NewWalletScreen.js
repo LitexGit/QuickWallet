@@ -31,11 +31,6 @@ class NewWalletScreen extends Component {
       const params = {address, type};
       const {register} = this.props;
       register(params);
-
-  }
-
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
   }
 
   render () {

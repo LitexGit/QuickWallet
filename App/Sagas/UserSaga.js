@@ -23,7 +23,7 @@ export function * register (api, action) {
     };
     const phoneinfo = JSON.stringify(info);
 
-    const response = yield call(api.getBanner, {address, type, os, phoneinfo});
+    const response = yield call(api.register, {address, type, os, phoneinfo});
     console.log('======response==============================');
     console.log(response);
     console.log('======response==============================');
@@ -36,14 +36,19 @@ export function * register (api, action) {
     // yield put(UserActions.registerFailure(data));
 }
 
-export function * register001 (api, action) {
+export function * getUserInfo (api, action) {
     const {data:params} = action;
-    const {address, type, os, phoneinfo} = params;
-    const response = yield call(api.getBanner, {address, type, os, phoneinfo});
-    const {status, data} = response;
-    if (status) {
-        yield put(UserActions.registerSuccess(data));
-        return;
-    }
-    yield put(UserActions.registerFailure(data));
+    const {address} = params;
+    const response = yield call(api.getUserInfo, {address});
+
+    console.log('======response==============================');
+    console.log(response);
+    console.log('======response==============================');
+
+    // const {status, data} = response;
+    // if (status) {
+    //     yield put(UserActions.getUserInfoSuccess(data));
+    //     return;
+    // }
+    // yield put(UserActions.getUserInfoFailure(data));
 }
