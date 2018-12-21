@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, PixelRatio} from 'react-native';
 import { Colors, Fonts, Metrics } from '../../Themes/';
 
 export default StyleSheet.create({
@@ -9,21 +9,21 @@ export default StyleSheet.create({
         flex:1,
         marginHorizontal: 10,
         marginVertical: 8,
-        borderRadius:24,
-        borderColor:Colors.separateLineColor,
-        borderWidth: 1,
-
-        flexDirection:'row',
         backgroundColor:Colors.backgroundColor,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:20,
+        borderColor:Colors.separateLineColor,
+        borderWidth: 1/PixelRatio.get(),
     },
-    searchBar:{
-        flex: 1,
-        backgroundColor: Colors.backgroundColor,
-        borderRadius:24,
+    searchIcon:{
+        marginHorizontal:Metrics.smallMargin,
     },
-    inputStyle:{
+    textInput:{
+        flex:1,
         fontSize:Fonts.size.medium,
-        backgroundColor: Colors.backgroundColor,
+        color:Colors.textColor,
     },
     scanSection:{
         width: 40,

@@ -14,6 +14,7 @@ export default StyleSheet.create({
         alignItems:'center',
         borderBottomColor:Colors.separateLineColor,
         borderBottomWidth:1 / PixelRatio.get(),
+        paddingHorizontal:Metrics.doubleBaseMargin,
     },
     titleStyle:{
         color:Colors.darkColor,

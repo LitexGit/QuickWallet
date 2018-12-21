@@ -7,7 +7,7 @@ export default StyleSheet.create({
         flex:1,
     },
     bottomSection:{
-        marginBottom:Metrics.bottomSpace,
+        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
     },
     titleText:{
         color:Colors.darkColor,

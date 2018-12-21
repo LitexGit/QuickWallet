@@ -15,7 +15,7 @@ export default StyleSheet.create({
     },
     bottomSection:{
         flex:1,
-        marginBottom:Metrics.bottomSpace,
+        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
     },
     tabBarUnderline:{
         backgroundColor:Colors.textColor,

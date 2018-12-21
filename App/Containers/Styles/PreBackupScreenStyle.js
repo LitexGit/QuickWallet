@@ -36,6 +36,6 @@ export default StyleSheet.create({
         justifyContent:'flex-end',
     },
     btnStyle:{
-        marginBottom:Metrics.bottomSpace,
+        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
     }
 });

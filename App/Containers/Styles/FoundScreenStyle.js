@@ -8,7 +8,7 @@ export default StyleSheet.create({
         backgroundColor: Colors.transparent
     },
     topSection:{
-        height: 200,
+        height: 200 + Metrics.statusBarHeight,
         width: '100%',
     },
     banner:{
@@ -16,7 +16,7 @@ export default StyleSheet.create({
     },
     searchBar:{
         width: '100%',
-        height:48 + 16,
+        height:40 + 16,
     },
     scrollView:{
         flex:1,

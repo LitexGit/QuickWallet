@@ -31,7 +31,7 @@ export default StyleSheet.create({
         justifyContent:'flex-end',
     },
     containerViewStyle:{
-        marginBottom:Metrics.bottomSpace,
+        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
     },
     buttonStyle:{
 

@@ -4,13 +4,13 @@ import { ApplicationStyles, Colors, Fonts, Metrics} from '../../Themes';
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     topSection:{
-        height:200,
+        height:200 + Metrics.statusBarHeight,
     },
     avatarSection:{
         flex:1,
         width:'100%',
         backgroundColor:Colors.darkColor,
-        justifyContent:'center',
+        // justifyContent:'center',
         alignItems:'center',
     },
     assetsSection:{
@@ -21,6 +21,7 @@ export default StyleSheet.create({
     },
     avatar:{
         marginBottom:Metrics.baseMargin,
+        marginTop:70,
     },
     bottomSection:{
         flex:1,

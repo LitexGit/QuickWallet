@@ -94,7 +94,7 @@ export default StyleSheet.create({
     },
     bottomSection:{
         // backgroundColor:'red',
-        marginBottom:Metrics.bottomSpace,
+        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
     }
 
 
