@@ -13,6 +13,7 @@ import { NavigationActions } from 'react-navigation';
 class AccountScreen extends Component {
   static navigationOptions = {
       title:'我的账户',
+      backgroundColor: 'red',
   }
   _onPressBackup=()=>{
       this.props.navigate('PreBackupScreen');

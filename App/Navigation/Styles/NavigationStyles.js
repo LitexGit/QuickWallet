@@ -1,16 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, PixelRatio } from 'react-native';
 import { Colors } from '../../Themes/';
 
 export default StyleSheet.create({
     header: {
-        // backgroundColor: Colors.backgroundColor,
-        backgroundColor: 'red',
-        borderBottomColor: 'black'
+        backgroundColor: Colors.backgroundColor,
+        borderBottomWidth: 1 / PixelRatio.get(),
+        borderTopColor: Colors.separateLineColor,
     },
     tab: {
-        // backgroundColor: Colors.backgroundColor,
-        backgroundColor: 'cyan',
-        borderTopColor: 'black',
-        paddingTop: 5
+        backgroundColor: Colors.backgroundColor,
+        borderTopColor: Colors.separateLineColor,
+        borderTopWidth: 1 / PixelRatio.get(),
     }
 });

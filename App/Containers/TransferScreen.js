@@ -10,18 +10,18 @@ import { NavigationActions } from 'react-navigation';
 
 class TransferScreen extends Component {
 
-  static navigationOptions = {
-      title:'我的资产',
-  }
+    static navigationOptions = {
+        title:'我的资产',
+    }
 
-  constructor(props){
-      super(props);
-      this.setState({
-          displayGas:10,
-          minGas: 1,
-          maxGas: 100,
-      });
-  }
+    constructor(props){
+        super(props);
+        this.setState({
+            displayGas:10,
+            minGas: 1,
+            maxGas: 100,
+        });
+    }
 
   _onPressBtn=()=>{
       console.log('===========_onPressBtn=========================');
