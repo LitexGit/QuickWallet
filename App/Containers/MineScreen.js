@@ -6,12 +6,15 @@ import { Metrics , Colors } from '../Themes';
 import styles from './Styles/MineScreenStyle';
 import { View } from 'react-native-animatable';
 import {MineConfig} from '../Config/MineConfig';
-import { NavigationActions } from 'react-navigation';
+
 import { Avatar } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+
+import { NavigationActions } from 'react-navigation';
+import UserActions from '../Redux/UserRedux';
 
 
 class MineScreen extends Component {
@@ -19,6 +22,12 @@ class MineScreen extends Component {
       tabBarIcon: ({tintColor}) => (
           <Ionicons name={'md-person'} size={Metrics.bottomTabIconSize} color={tintColor}/>
       )
+  }
+
+  componentDidMount=()=>{
+      const address = '0X2222222';
+      const {getUserInfo} = this.props;
+      getUserInfo(address);
   }
 
   _onPressAvatar=()=>{
@@ -54,9 +63,7 @@ class MineScreen extends Component {
   }
 
 
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-  }
+
 
   _renderItem=({item})=>{
       const {key='', title='', isNext=false} = item;
@@ -142,6 +149,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    getUserInfo: (params) => dispatch(UserActions.getUserInfoRequest(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineScreen);
