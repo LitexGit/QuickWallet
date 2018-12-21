@@ -3,13 +3,13 @@ import { Colors } from '../../Themes/';
 
 export default StyleSheet.create({
     header: {
-        backgroundColor: Colors.backgroundColor,
-        // backgroundColor: 'red',
+        // backgroundColor: Colors.backgroundColor,
+        backgroundColor: 'red',
         borderBottomColor: 'black'
     },
     tab: {
-        backgroundColor: Colors.backgroundColor,
-        // backgroundColor: 'cyan',
+        // backgroundColor: Colors.backgroundColor,
+        backgroundColor: 'cyan',
         borderTopColor: 'black',
         paddingTop: 5
     }

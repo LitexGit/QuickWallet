@@ -20,9 +20,8 @@ import styles from './Styles/NavigationStyles';
 import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
-    Mine: { screen: MineScreen },
-    PreAccount: { screen: PreAccountScreen },
     Found: { screen: FoundScreen },
+    Mine: { screen: MineScreen },
 }, {
     tabBarPosition: 'bottom',
     animationEnabled: false,
@@ -34,6 +33,9 @@ const BottomTabNav = createBottomTabNavigator({
         style: {
             backgroundColor: Colors.backgroundColor
         }
+    },
+    navigationOptions:{
+        header:null,
     }
 });
 
@@ -52,10 +54,11 @@ const PrimaryNav = createStackNavigator({
     SearchScreen: { screen: SearchScreen },
     AccountScreen: { screen: AccountScreen },
     ScanScreen: { screen: ScanScreen },
+    PreAccount: { screen: PreAccountScreen },
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'transparent'},
-    initialRouteName: 'TransferScreen',
+    initialRouteName: 'BottomTab',
     navigationOptions: {
         headerStyle: styles.header,
         headerTitleStyle: {textAlign: 'center', alignSelf: 'center', flex: 1},
