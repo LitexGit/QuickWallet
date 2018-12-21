@@ -14,6 +14,22 @@ const create = (baseURL = Config.API_URL) => {
     const getUser = (username) => api.get('search/users', {q: username});
 
     /**
+     * Api 接口响应格式
+     */
+    // {
+    //   'data':{
+    //     'status':Boolean,
+    //     'data':{
+    //       'key1':'value1',
+    //       'key2':'value2'
+    //       'key3':'value3'
+    //       'key4':'value4'
+    //       'key5':'value5'
+    //     }
+    //   }
+    // }
+
+    /**
      * 用户信息注册接口
      *
      * address   用户地址
