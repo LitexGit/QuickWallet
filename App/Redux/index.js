@@ -6,6 +6,8 @@ import ReduxPersist from '../Config/ReduxPersist';
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
+    found: require('./FoundRedux').reducer,
+
     nav: require('./NavigationRedux').reducer,
     github: require('./GithubRedux').reducer,
     search: require('./SearchRedux').reducer

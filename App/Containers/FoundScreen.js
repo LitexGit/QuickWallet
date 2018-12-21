@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView, View, TouchableOpacity, Image} from 'react-native';
+import { ScrollView, Text, View, TouchableOpacity, Image} from 'react-native';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,7 +7,9 @@ import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
 import SearchBar from '../Components/SearchCompont';
 import styles from './Styles/FoundScreenStyle';
-import { getLanguages } from 'react-native-i18n';
+
+import { NavigationActions } from 'react-navigation';
+import FoundActions from '../Redux/FoundRedux';
 
 class FoundScreen extends Component {
   static navigationOptions = {
@@ -23,10 +25,17 @@ class FoundScreen extends Component {
       };
   }
 
+  componentWillMount=()=>{
+
+  }
+  componentDidMount=()=>{
+      const {getBanner} = this.props;
+      getBanner();
+  }
+
   _onPressBanner = (item)=>{
-      console.log('============_onPressBanner========================');
-      console.log(item);
-      console.log('============_onPressBanner========================');
+      const {type, url} = item;
+      console.log('type:'+type+'url:'+url);
   }
 
   _onPressItem = (item)=>{
@@ -35,20 +44,11 @@ class FoundScreen extends Component {
       console.log('============_onPressItem========================');
   }
 
-  componentDidMount=()=>{
-      console.log('==============componentDidMount======================');
-      console.log(I18n);
-      console.log('===============componentDidMount=====================');
-  }
-
   _renderBanner = (item,key)=>{
-      const {img_url=''} = item;
-      console.log('=============img_url=======================');
-      console.log(img_url);
-      console.log('============img_url========================');
+      const {image=''} = item;
       return (
-          <TouchableOpacity key={key} style={styles.banner} onPress={(item)=>this._onPressBanner(item)}>
-              <Image style={styles.banner} source={{ uri: img_url }} />
+          <TouchableOpacity key={key} style={styles.banner} onPress={()=>this._onPressBanner(item)}>
+              <Image style={styles.banner} source={{ uri: image }} />
           </TouchableOpacity>
       );
   }
@@ -56,22 +56,18 @@ class FoundScreen extends Component {
   _renderItem = (item,key)=>{
       const {img_url='', title=''} = item;
       return (
-          <TouchableOpacity key={key} style={styles.itemBack}  onPress={(item)=>this._onPressItem(item)}>
+          <TouchableOpacity key={key} style={styles.itemBack}  onPress={()=>this._onPressItem(item)}>
               <View style={styles.itemStyle}>
                   <Image style={styles.imageItem} source={{ uri: img_url }} />
                   <Text style={styles.titleItem}>{title}</Text>
               </View>
           </TouchableOpacity>
       );
-
   }
 
   render () {
-      const banners = [
-          {'img_url': 'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg'},
-          {'img_url': 'http://img18.3lian.com/d/file/201709/21/f498e01633b5b704ebfe0385f52bad20.jpg'},
-          {'img_url': 'http://pic1.16pic.com/00/10/09/16pic_1009413_b.jpg'}
-      ];
+      const {bannerList} = this.props;
+
       const items = [
           {'img_url': 'http://img18.3lian.com/d/file/201709/21/d8768c389b316e95ef29276c53a1e964.jpg','title':'1号'},
           {'img_url': 'http://img18.3lian.com/d/file/201709/21/f498e01633b5b704ebfe0385f52bad20.jpg','title':'2号'},
@@ -86,8 +82,8 @@ class FoundScreen extends Component {
       ];
 
       const  swiper = (
-          <Swiper key={banners.length} autoplay loop showsPagination>
-              { !!banners && banners.map((item, i) => this._renderBanner(item, i)) }
+          <Swiper key={bannerList.length} autoplay loop showsPagination>
+              { !!bannerList && bannerList.map((item, i) => this._renderBanner(item, i)) }
           </Swiper>
       );
 
@@ -109,10 +105,17 @@ class FoundScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) =>{
+    console.log('============state========================');
+    console.log(state);
+    console.log('============state========================');
+    const {found:{bannerList}} = state;
+    return { bannerList };
+};
 
 const mapDispatchToProps = (dispatch) => ({
+    navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
+    getBanner: () => dispatch(FoundActions.getBannerRequest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundScreen);
