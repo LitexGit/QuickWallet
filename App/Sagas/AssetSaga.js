@@ -32,6 +32,17 @@ export function * getTxlist (action) {
         const api = require('etherscan-api').init(apiKey, environment, timeout);
         const response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
         const {status, message, result:txlist} = response;
+
+        // const txlist = result.map((item) => {
+        //     const {createdAt} = item;
+        //     const date = Moment(createdAt).format('YYYY-MM-DD');
+        //     const time = Moment(createdAt).format('HH:mm:ss');
+        //     // let { timeZone } = require('../Themes/Metrics')
+        //     // time = new Date(`${date}T${time}`)
+        //     //   .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
+        //     return {...item, time, date};
+        // });
+
         if (status) {
             yield put(AssetActions.getTxlistSuccess({txlist}));
             return;

@@ -21,13 +21,13 @@ class TransferRecordScreen extends Component {
       const offset = 20;
       const { getTxlist } = this.props;
 
-      // const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
-      // getTxlist({address, page, offset});
+      const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
+      getTxlist({address, page, offset});
 
-      const tokenSymbol = 'MKR';
-      const MKRcontractaddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
-      const MKRaddress = '0x4e83362442b8d1bec281594cea3050c8eb01311c';
-      getTxlist({address:MKRaddress, page, offset, tokenSymbol, contractAddress:MKRcontractaddress});
+      // const tokenSymbol = 'MKR';
+      // const MKRcontractaddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
+      // const MKRaddress = '0x4e83362442b8d1bec281594cea3050c8eb01311c';
+      // getTxlist({address:MKRaddress, page, offset, tokenSymbol, contractAddress:MKRcontractaddress});
   }
 
   _onRefresh=()=>{
@@ -43,8 +43,6 @@ class TransferRecordScreen extends Component {
   _onPressBtn=()=>{
       this.props.navigate('TransferScreen');
   }
-
-
 
 
   _renderItem=({item})=>{
@@ -96,8 +94,6 @@ class TransferRecordScreen extends Component {
       const sections = [{'key':1, data:[{},{},{},{},{},{},{},{},{},{}]}, {'key':2, data:[{},{}]}];
       const btnTitle = '发起转账';
       const isBalance = false;
-
-
 
       return (
           <View style={styles.container}>
