@@ -22,12 +22,37 @@ class FoundScreen extends Component {
   constructor(props) {
       super(props);
       this.state = {
+          webLink:'',
+          autoFocus:false
       };
   }
 
   componentDidMount=()=>{
-      const {getBanner} = this.props;
-      getBanner();
+      this.props.getBanner();
+  }
+
+  _onChangeText=(text)=>{
+      this.setState({
+          webLink:text,
+      });
+  }
+
+  _onPressScan=()=>{
+      this.props.navigate('ScanScreen',{
+          callback:(params)=>{
+              const {data=''} = params;
+              this.setState({
+                  webLink:data,
+                  autoFocus:true
+              },()=>{
+                  // TODO 003: Url 合法校验 ==> 自动打开链接
+              });
+          }
+      });
+  }
+
+  _onSubmitEditing=()=>{
+      console.log('================_onSubmitEditing====================');
   }
 
   _onPressBanner = (item)=>{
@@ -64,6 +89,7 @@ class FoundScreen extends Component {
 
   render () {
       const {bannerList} = this.props;
+      const {webLink, autoFocus} = this.state;
 
       const items = [
           {'img_url': 'http://img18.3lian.com/d/file/201709/21/d8768c389b316e95ef29276c53a1e964.jpg','title':'1号'},
@@ -90,7 +116,13 @@ class FoundScreen extends Component {
                   {swiper}
               </View>
               <View style={styles.searchBar}>
-                  <SearchBar/>
+                  <SearchBar
+                      autoFocus={autoFocus}
+                      ref={(ref)=>this.searchBar = ref}
+                      setValue={webLink}
+                      onChangeText={(text)=>this._onChangeText(text)}
+                      onPressScan={()=>this._onPressScan()}
+                      onSubmitEditing={(text)=>this._onSubmitEditing(text)}/>
               </View>
               <ScrollView style={styles.scrollView}
                   contentContainerStyle={styles.contentContainer}>
@@ -103,9 +135,6 @@ class FoundScreen extends Component {
 }
 
 const mapStateToProps = (state) =>{
-    // console.log('============state========================');
-    // console.log(state);
-    // console.log('============state========================');
     const {found:{bannerList}} = state;
     return { bannerList };
 };

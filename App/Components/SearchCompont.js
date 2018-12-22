@@ -1,56 +1,60 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { View, TouchableOpacity, TextInput} from 'react-native';
 import styles from './Styles/SearchCompontStyle';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { Colors, Fonts, Metrics } from '../Themes';
+import { Colors } from '../Themes';
 
 
 export default class SearchCompont extends Component {
-    // // Prop type warnings
-    // static propTypes = {
-    //   someProperty: PropTypes.object,
-    //   someSetting: PropTypes.bool.isRequired,
-    // }
-    //
-    // // Defaults for props
-    // static defaultProps = {
-    //   someSetting: false
-    // }
-
-    _onChangeText=(text)=>{
-        console.log('================_onChangeText====================');
-        console.log(text);
+    static propTypes = {
+        onChangeText: PropTypes.func,
+        onPressScan: PropTypes.func,
+        onSubmitEditing: PropTypes.func,
+        placeholder: PropTypes.string,
+        setValue: PropTypes.string,
+        autoFocus: PropTypes.bool,
     }
 
-    _onPressScan=()=>{
-        console.log('================_onPressScan====================');
-
+    static defaultProps = {
+        placeholder:'搜索应用',
+        setValue:'',
+        autoFocus:false
     }
 
-    _onSubmitEditing=()=>{
-        console.log('================_onSubmitEditing====================');
+    componentWillReceiveProps=(nextProps)=>{
+        const {autoFocus} = nextProps;
+        if (autoFocus) {
+            this.textInput.focus();
+        }
     }
 
+    componentDidMount=()=>{
+        console.log('SearchCompont->componentDidMount ');
+    }
 
     render () {
+        const {placeholder, onChangeText, onPressScan, onSubmitEditing, setValue, autoFocus} = this.props;
         const textInput = (
             <TextInput style={styles.textInput}
+                ref={(ref)=>this.textInput = ref}
+                autoFocus={autoFocus}
+                value={setValue}
+                placeholder={placeholder}
                 blurOnSubmit
-                placeholder='搜索应用'
                 returnKeyType='go'
                 keyboardType='url'
                 placeholderTextColor={ Colors.separateLineColor }
                 clearButtonMode='while-editing'
-                onChangeText={(text) => this._onChangeText(text)}
-                onSubmitEditing={(text)=>this._onSubmitEditing(text)}/>
+                onChangeText={onChangeText}
+                onSubmitEditing={onSubmitEditing}/>
         );
         return (
             <View style={styles.searchSection}>
                 <EvilIcons style={styles.searchIcon} name={'search'} size={24} color={'#A4A4A4'}/>
                 {textInput}
-                <TouchableOpacity onPress={()=>this._onPressScan()}>
+                <TouchableOpacity onPress={onPressScan}>
                     <View style={styles.scanSection}>
                         <Ionicons name={'ios-qr-scanner'} size={24} color={'#A4A4A4'}/>
                     </View>

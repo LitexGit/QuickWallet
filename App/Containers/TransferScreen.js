@@ -16,57 +16,69 @@ class TransferScreen extends Component {
 
     constructor(props){
         super(props);
-        this.setState({
+        this.state = {
             displayGas:10,
             minGas: 1,
             maxGas: 100,
-        });
+
+            inputBalance:'',
+            inputAddress:'',
+            inputGas:'',
+        };
+        this.inputNote = '';
+        this.inputGas = '';
     }
 
   _onPressBtn=()=>{
       console.log('===========_onPressBtn=========================');
   }
+
   _onChangeBalance=(text)=>{
-      console.log('===========_onChangeBalance=========================');
-      console.log(text);
-  }
-  _onChangeAddress=(text)=>{
-      console.log('===========_onChangeAddress=========================');
-      console.log(text);
-  }
-  _onChangeNote=(text)=>{
-      console.log('===========_onChangeNote=========================');
-      console.log(text);
-  }
-  _onPressScan=()=>{
-      this.props.navigate('ScanScreen');
-      console.log('===========_onPressScan=========================');
+      // TODO 005 输入金额大于当前余额 toast
+      this.setState({
+          inputBalance:text,
+      });
   }
 
+  _onChangeAddress=(text)=>{
+      this.setState({
+          inputAddress:text,
+      });
+  }
+
+  _onChangeNote=(text)=>{ this.inputNote = text; }
+
+  _onPressScan=()=>{
+      this.props.navigate('ScanScreen',{
+          callback:(params)=>{
+              const {data=''} = params;
+              this.setState({
+                  inputAddress:data
+              },()=>{
+              // TODO 004: 添加对地址合法性校验
+              });
+          }
+      });
+  }
+
+
   _onSlidingComplete=(gas)=>{
-      console.log('===========_onSlidingComplete=========================');
-      console.log(gas);
+      this.inputGas = gas;
   }
   _onSliderChange=(gas)=>{
-      console.log('===========_onSliderChange=========================');
-      console.log(gas);
       this.setState({
           displayGas: gas
       });
       ReactNativeHapticFeedback.trigger();
   }
 
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-      // 计算gas费用更新state
-  }
   render () {
       const btnTitle = '下一步';
       const isCanTransfer = true;
       const symbol = 'ETH';
       const assets = 0;
 
-      const {displayGas=10,  minGas=1, maxGas=100} = this.state||{};
+      const {displayGas=10,  minGas=1, maxGas=100, inputAddress=''} = this.state;
       return (
           <View style={styles.container}>
               <ScrollView style={styles.scrollView}>
@@ -93,6 +105,7 @@ class TransferScreen extends Component {
                               </TouchableOpacity>
                           </View>
                           <TextInput style={styles.addressInput}
+                              value={inputAddress}
                               clearButtonMode='while-editing'
                               placeholder="输入以太坊地址"
                               placeholderTextColor={Colors.separateLineColor}

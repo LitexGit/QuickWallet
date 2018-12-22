@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, InteractionManager, Animated, Easing, Image, Dimensions, Platform,
-    Alert,
-    Vibration } from 'react-native';
+import { View, Text, Animated, Easing, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/ScanScreenStyle';
 import { RNCamera } from 'react-native-camera';
@@ -14,14 +12,22 @@ class ScanScreen extends Component {
 
   constructor(props) {
       super(props);
+
       this.state = {
           animation: new Animated.Value(0),
       };
   }
 
   _onBarCodeRead(e) {
-      console.log('============e========================');
-      console.log(e.data);
+      if (!e || e.data) {
+          // TODO 001: toast
+          return;
+      }
+      // TODO 002: 校验 是否为 url
+      const {data} = e;
+      const {state} = this.props.navigation;
+      state.params.callback({data});
+      this.props.navigation.goBack();
   }
 
   _startAnimation(){
@@ -33,10 +39,15 @@ class ScanScreen extends Component {
       }).start(()=>this._startAnimation());
   }
 
-  componentDidMount(){
-      InteractionManager.runAfterInteractions(()=>this._startAnimation());
-  }
+  componentDidMount=()=>{
+      this._startAnimation();
 
+      setTimeout(()=>{
+          const {state} = this.props.navigation;
+          state.params.callback({data:'0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'});
+          this.props.navigation.goBack();
+      }, 3000);
+  }
 
   render() {
       const barcodeType = Platform.OS === 'ios' ? [RNCamera.Constants.BarCodeType.qr] : RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE;
