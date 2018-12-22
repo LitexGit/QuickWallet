@@ -15,7 +15,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
-
+import AssetActions from '../Redux/AssetRedux';
 
 class MineScreen extends Component {
   static navigationOptions = {
@@ -25,9 +25,10 @@ class MineScreen extends Component {
   }
 
   componentDidMount=()=>{
-      const address = '0X2222222';
-      const {getUserInfo} = this.props;
+      const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
+      const {getUserInfo, getBalance} = this.props;
       getUserInfo(address);
+      getBalance({address});
   }
 
   _onPressAvatar=()=>{
@@ -61,9 +62,6 @@ class MineScreen extends Component {
       }
 
   }
-
-
-
 
   _renderItem=({item})=>{
       const {key='', title='', isNext=false} = item;
@@ -150,6 +148,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     getUserInfo: (params) => dispatch(UserActions.getUserInfoRequest(params)),
+    getBalance: (params) => dispatch(AssetActions.getBalanceRequest(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineScreen);

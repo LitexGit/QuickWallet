@@ -7,6 +7,7 @@ import DebugConfig from '../Config/DebugConfig';
 import { FoundTypes } from '../Redux/FoundRedux';
 import { UserTypes } from '../Redux/UserRedux';
 import { ConfigTypes } from '../Redux/ConfigRedux';
+import { AssetTypes } from '../Redux/AssetRedux';
 
 import { StartupTypes } from '../Redux/StartupRedux';
 import { GithubTypes } from '../Redux/GithubRedux';
@@ -16,6 +17,7 @@ import { GithubTypes } from '../Redux/GithubRedux';
 import { getBanner } from './FoundSaga';
 import { register, getUserInfo } from './UserSaga';
 import { getConfig } from './ConfigSaga';
+import { getBalance, getTxlist } from './AssetSaga';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
@@ -34,6 +36,8 @@ export default function * root () {
         takeLatest(UserTypes.GET_USER_INFO_REQUEST, register, api),
         takeLatest(UserTypes.REGISTER_REQUEST, getUserInfo, api),
         takeLatest(ConfigTypes.GET_CONFIG_REQUEST, getConfig, api),
+        takeLatest(AssetTypes.GET_BALANCE_REQUEST, getBalance),
+        takeLatest(AssetTypes.GET_TXLIST_REQUEST, getTxlist),
 
 
         // some sagas only receive an action
