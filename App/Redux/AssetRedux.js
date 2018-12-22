@@ -35,6 +35,8 @@ export const INITIAL_STATE = Immutable({
 
     balances:[],
     txlist:[],
+    //
+    ethBanance:'',
 });
 
 /* ------------- Selectors ------------- */
@@ -55,10 +57,9 @@ export const request = (state, { data }) =>
 ;
 
 // successful avatar lookup
-export const success = (state, action) => {
-    const { payload } = action;
-    return state.merge({ refreshing: false, loading: false, error: null, ...payload });
-};
+export const success = (state, { data }) =>
+    state.merge({ refreshing: false, loading: false, error: null, ...data });
+
 
 // failed to get the avatar
 export const failure = (state) =>

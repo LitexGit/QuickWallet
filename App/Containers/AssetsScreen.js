@@ -45,6 +45,7 @@ class AssetsScreen extends Component {
   _renderListEmpty=()=><ListEmptyComponent containerStyle={styles.emptycontainer}/>
 
   render () {
+
       const refreshing = false;
       const data = [
           {'img_url':'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg','symbol':'ETH','count':18,'assets':'$1.00'},
@@ -73,6 +74,7 @@ class AssetsScreen extends Component {
 }
 
 const mapStateToProps = (state) => ({
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

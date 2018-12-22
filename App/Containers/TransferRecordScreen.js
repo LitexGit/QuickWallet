@@ -6,13 +6,30 @@ import styles from './Styles/TransferRecordScreenStyle';
 import ListFooterComponent from '../Components/ListFooterComponent';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
 import { Button } from 'react-native-elements';
+
 import { NavigationActions } from 'react-navigation';
+import AssetActions from '../Redux/AssetRedux';
 
 
 class TransferRecordScreen extends Component {
   static navigationOptions = {
       title:'转账记录',
   }
+
+  componentDidMount=()=>{
+      const page = 1;
+      const offset = 20;
+      const { getTxlist } = this.props;
+
+      // const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
+      // getTxlist({address, page, offset});
+
+      const tokenSymbol = 'MKR';
+      const MKRcontractaddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
+      const MKRaddress = '0x4e83362442b8d1bec281594cea3050c8eb01311c';
+      getTxlist({address:MKRaddress, page, offset, tokenSymbol, contractAddress:MKRcontractaddress});
+  }
+
   _onRefresh=()=>{
       console.log('===========_onRefresh=========================');
   }
@@ -27,9 +44,7 @@ class TransferRecordScreen extends Component {
       this.props.navigate('TransferScreen');
   }
 
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-  }
+
 
 
   _renderItem=({item})=>{
@@ -115,11 +130,19 @@ class TransferRecordScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        assets:{txlist}
+    } = state;
+    console.log('============txlist========================');
+    console.log(txlist);
+    console.log('=============txlist=======================');
+    return {txlist};
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    getTxlist: (params) => dispatch(AssetActions.getTxlistRequest(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferRecordScreen);

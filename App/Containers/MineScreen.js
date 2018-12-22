@@ -142,8 +142,15 @@ class MineScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        assets:{ethBanance}
+    } = state;
+    console.log('======mapStateToProps==============================');
+    console.log(ethBanance);
+    console.log('======mapStateToProps==============================');
+    return { ethBanance };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
