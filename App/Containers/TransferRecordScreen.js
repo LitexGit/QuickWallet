@@ -9,6 +9,8 @@ import { Button } from 'react-native-elements';
 
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
+import {sectionlize} from '../Lib/Format';
+import {getTxDirection} from '../Lib/Utils';
 
 
 class TransferRecordScreen extends Component {
@@ -46,9 +48,13 @@ class TransferRecordScreen extends Component {
 
 
   _renderItem=({item})=>{
-      const {img_url='http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg',isrReceived=false, time='23:12:45', received='+2.000000ETH', payment='-2.000000ETH',address='0xHIYHBYU0xHIYHBYUBYUGYUBYU0xHIYHBYUBYUGYUBYUBYUGYUBYU', state=0} = item;
-      const title = isrReceived ? '收款' : '付款';
-      const from = isrReceived ? 'From:' : 'To:';
+      const img_url = 'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg';
+
+      const { from='', to='', time='', value='', txreceipt_status='1'} = item;
+      const isInput =  getTxDirection({from, to});
+      const title = isInput ? '收款' : '付款';
+      const direction = isInput ? 'From:'+from : 'To:'+to;
+
 
       return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>
           <View style={styles.itemContainer}>
@@ -61,17 +67,21 @@ class TransferRecordScreen extends Component {
               </View>
               <View style={styles.itemRight}>
                   <View style={styles.itemRightView}>
-                      <Text style={styles.titleStyle}>{received}</Text>
-                      <Text style={styles.timeStyle} numberOfLines={1} ellipsizeMode='middle'>{from}{address}</Text>
+                      <Text style={styles.titleStyle} numberOfLines={1}>{value}</Text>
+                      <Text style={styles.timeStyle} numberOfLines={1} ellipsizeMode='middle'>{direction}</Text>
                   </View>
                   <View style={styles.dotStyle}/>
               </View>
           </View>
       </TouchableOpacity>);
   }
-  _renderSectionHeader=()=>(<View style={styles.sectionContainer}>
-      <Text style={styles.assetsStyle}>昨天</Text>
-  </View>)
+  _renderSectionHeader=({section})=>{
+      const {key} = section;
+      return (<View style={styles.sectionContainer}>
+          <Text style={styles.assetsStyle}>{key}</Text>
+      </View>);
+  }
+
   _renderListHeader=()=>{
       const item = {};
       const {img_url='http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg', symbol='ETH', count=0, assets='$1.00'} = item;
@@ -91,10 +101,10 @@ class TransferRecordScreen extends Component {
   render () {
       const refreshing = false;
       const loading = false;
-      const sections = [{'key':1, data:[{},{},{},{},{},{},{},{},{},{}]}, {'key':2, data:[{},{}]}];
       const btnTitle = '发起转账';
       const isBalance = false;
 
+      const {txlist} = this.props;
       return (
           <View style={styles.container}>
               <SectionList style={styles.sectionList}
@@ -105,13 +115,14 @@ class TransferRecordScreen extends Component {
                       title='Refreshing...'
                       titleColor={Colors.textColor}
                   />}
-                  sections={sections}
+                  sections={txlist}
                   extraData={this.props}
+                  keyExtractor={(item,index)=>''+index}
                   renderSectionHeader={this._renderSectionHeader}
                   renderItem={this._renderItem}
                   ListEmptyComponent={this._renderListEmpty}
                   ListHeaderComponent={this._renderListHeader}
-                  ListFooterComponent={sections && sections.length && <ListFooterComponent
+                  ListFooterComponent={txlist && txlist.length && <ListFooterComponent
                       loading={loading}
                       onPress={this._loadMore}/>}
               />
@@ -130,10 +141,8 @@ const mapStateToProps = (state) => {
     const {
         assets:{txlist}
     } = state;
-    console.log('============txlist========================');
-    console.log(txlist);
-    console.log('=============txlist=======================');
-    return {txlist};
+
+    return {txlist:sectionlize(txlist)};
 };
 
 const mapDispatchToProps = (dispatch) => ({

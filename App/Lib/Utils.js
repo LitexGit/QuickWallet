@@ -18,6 +18,18 @@ export function runGenerator(generatorFUN, initialValue) {
     }
 }
 
-export function runGenerator001() {
-    console.log('============runGenerator001========================');
+/**
+ * 判断    转入/支出
+ * @param {*} from
+ * @param {*} to
+ *
+ * return 1 转入
+ * return 0 支出
+ */
+export function getTxDirection({from, to}) {
+    const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+    if (address === to && address !== from) {
+        return 1;
+    }
+    return 0;
 }

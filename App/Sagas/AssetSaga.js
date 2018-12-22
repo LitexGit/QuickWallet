@@ -3,6 +3,10 @@ import Config from 'react-native-config';
 
 import AssetActions from '../Redux/AssetRedux';
 
+import Moment from 'moment';
+import cn from 'moment/locale/zh-cn';
+Moment.locale('zh-cn');
+
 const apiKey = Config.API_URL;
 const environment = 'rinkeby';
 const timeout = 1000;
@@ -27,36 +31,22 @@ export function * getTxlist (action) {
     const startblock = 0;
     const endblock='999999999';
     const sort='desc';
+    const api = require('etherscan-api').init(apiKey, environment, timeout);
 
+    let response = {};
     if (tokenSymbol === 'ETH') {
-        const api = require('etherscan-api').init(apiKey, environment, timeout);
-        const response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
-        const {status, message, result:txlist} = response;
-
-        // const txlist = result.map((item) => {
-        //     const {createdAt} = item;
-        //     const date = Moment(createdAt).format('YYYY-MM-DD');
-        //     const time = Moment(createdAt).format('HH:mm:ss');
-        //     // let { timeZone } = require('../Themes/Metrics')
-        //     // time = new Date(`${date}T${time}`)
-        //     //   .toLocaleTimeString('zh-CN', {timeZone, hour12: false})
-        //     return {...item, time, date};
-        // });
-
-        if (status) {
-            yield put(AssetActions.getTxlistSuccess({txlist}));
-            return;
-        }
-        yield put(AssetActions.getTxlistFailure(message));
-        return;
+        response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
+    } else {
+        response = yield call(api.account.tokentx, address, contractAddress, startblock, endblock, page, offset, sort);
     }
 
-    const api = require('etherscan-api').init(apiKey, environment, timeout);
-    const response = yield call(api.account.tokentx, address, contractAddress, startblock, endblock, page, offset, sort);
-    const {status, message, result:txlist} = response;
-    console.log('===============txlist=====================');
-    console.log(txlist);
-    console.log('===============txlist=====================');
+    const {status, message, result} = response;
+    const txlist = result.map((item) => {
+        const {timeStamp=''} = item;
+        const date = Moment.unix(timeStamp).format('YYYY-MM-DD');
+        const time = Moment.unix(timeStamp).format('HH:mm:ss');
+        return {...item, time, date};
+    });
     if (status) {
         yield put(AssetActions.getTxlistSuccess({txlist}));
         return;

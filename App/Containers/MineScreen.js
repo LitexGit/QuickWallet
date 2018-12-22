@@ -146,9 +146,6 @@ const mapStateToProps = (state) => {
     const {
         assets:{ethBanance}
     } = state;
-    console.log('======mapStateToProps==============================');
-    console.log(ethBanance);
-    console.log('======mapStateToProps==============================');
     return { ethBanance };
 };
 
