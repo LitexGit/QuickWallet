@@ -54,7 +54,7 @@ const create = (baseURL = Config.API_URL) => {
     /**
      * 系统配置信息接口
      */
-    const getSystemConfig = () =>api.get('');
+    const getConfig = () =>api.get('');
     /**
      * token列表接口
      */
@@ -64,7 +64,7 @@ const create = (baseURL = Config.API_URL) => {
         register,
         getUserInfo,
         getBanner,
-        getSystemConfig,
+        getConfig,
         getERC20Token,
 
 

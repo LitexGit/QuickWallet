@@ -4,9 +4,9 @@ import DeviceInfo from 'react-native-device-info';
 
 
 export function * register (api, action) {
-    console.log('======action==============================');
-    console.log(action);
-    console.log('======action==============================');
+    // console.log('======action==============================');
+    // console.log(action);
+    // console.log('======action==============================');
 
     const {data:params} = action;
     const {address, type} = params;
@@ -24,9 +24,9 @@ export function * register (api, action) {
     const phoneinfo = JSON.stringify(info);
 
     const response = yield call(api.register, {address, type, os, phoneinfo});
-    console.log('======response==============================');
-    console.log(response);
-    console.log('======response==============================');
+    // console.log('======response==============================');
+    // console.log(response);
+    // console.log('======response==============================');
 
     // const {status, data} = response;
     // if (status) {
@@ -41,9 +41,9 @@ export function * getUserInfo (api, action) {
     const {address} = params;
     const response = yield call(api.getUserInfo, {address});
 
-    console.log('======response==============================');
-    console.log(response);
-    console.log('======response==============================');
+    // console.log('======response==============================');
+    // console.log(response);
+    // console.log('======response==============================');
 
     // const {status, data} = response;
     // if (status) {

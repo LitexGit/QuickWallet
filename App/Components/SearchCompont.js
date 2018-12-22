@@ -33,10 +33,6 @@ export default class SearchCompont extends Component {
         console.log('================_onSubmitEditing====================');
     }
 
-    componentDidMount=()=>{
-        console.log('================_componentDidMount====================');
-    }
-
 
     render () {
         const textInput = (

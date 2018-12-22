@@ -6,6 +6,7 @@ import RootContainer from './RootContainer';
 import createStore from '../Redux';
 import ScheduleTasks from '../Lib/ScheduleTasks';
 
+
 // create our store
 const store = createStore();
 
@@ -19,11 +20,15 @@ const store = createStore();
  * We separate like this to play nice with React Native's hot reloading.
  */
 class App extends Component {
+
   componentDidMount=()=>{
+      console.log('===========App=======componentDidMount==================');
       ScheduleTasks.executeOnceInLifetime();
       ScheduleTasks.executeOncePerVersion();
       ScheduleTasks.executeOnceDaily();
       ScheduleTasks.executeOncePerLaunch();
+      ScheduleTasks.executeOncePerSession();
+
   }
 
   render () {

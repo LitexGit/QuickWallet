@@ -7,40 +7,32 @@ const { Types, Creators } = createActions({
     request: ['data'],
     success: ['data'],
 
-    getBannerRequest: ['data'],
-    getBannerSuccess: ['data'],
-    getBannerFailure: null,
+    getConfigRequest: ['data'],
+    getConfigSuccess: ['data'],
+    getConfigFailure: null,
 });
 
-export const FoundTypes = Types;
+export const ConfigTypes = Types;
 export default Creators;
 
 /* ------------- Initial State ------------- */
 /**
- * banner
+ * user
  *
- * url   点击banner后打开的连接
- * image banner图片
- * type  1用webview打开链接 2跳转到app特定页面
+ * uid      用户ID
+ * nickname 用户名称
+ * type     用户邀请码
  */
-
-const bannerList = [
-    {'url':'https://github.com/','image':'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg', 'type':1},
-    {'url':'https://www.baidu.com/','image':'http://img18.3lian.com/d/file/201709/21/f498e01633b5b704ebfe0385f52bad20.jpg', 'type':1},
-    {'url':'https://www.google.com.sg/','image':'http://pic1.16pic.com/00/10/09/16pic_1009413_b.jpg', 'type':1}];
-
 export const INITIAL_STATE = Immutable({
     refreshing: null,
     loading: null,
     failure: null,
     error: null,
-    bannerList,
 });
 
 /* ------------- Selectors ------------- */
 
-export const GithubSelectors = {
-    selectBannerList: state => state.found.bannerList
+export const ConfigSelectors = {
 };
 
 /* ------------- Reducers ------------- */
@@ -66,7 +58,7 @@ export const failure = (state) =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.GET_BANNER_REQUEST]: request,
-    [Types.GET_BANNER_SUCCESS]: success,
-    [Types.GET_BANNER_FAILURE]: failure
+    [Types.GET_CONFIG_REQUEST]: request,
+    [Types.GET_CONFIG_SUCCESS]: success,
+    [Types.GET_CONFIG_FAILURE]: failure
 });

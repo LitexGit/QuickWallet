@@ -3,9 +3,9 @@ import FoundActions from '../Redux/FoundRedux';
 
 export function * getBanner (api, action) {
     const response = yield call(api.getBanner);
-    console.log('======response==============================');
-    console.log(response);
-    console.log('======response==============================');
+    // console.log('======response==============================');
+    // console.log(response);
+    // console.log('======response==============================');
 
     // const {status, data} = response;
     // if (status) {

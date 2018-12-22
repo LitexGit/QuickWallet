@@ -50,12 +50,12 @@ export const UserSelectors = {
 /* ------------- Reducers ------------- */
 
 // request the avatar for a user
-export const request = (state, { data }) =>{
-    console.log('================data====================');
-    console.log(data);
-    console.log('================data====================');
-    return state.merge({ refreshing: true, data, payload: null });
-};
+export const request = (state, { data }) =>
+    // console.log('================data====================');
+    // console.log(data);
+    // console.log('================data====================');
+    state.merge({ refreshing: true, data, payload: null })
+;
 
 // successful avatar lookup
 export const success = (state, action) => {

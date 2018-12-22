@@ -5,13 +5,13 @@ const missingTranslationRegex = /^\[missing ".*" translation\]$/;
 // This function is a wrapper to avoid exception wich leads in a crash
 const translateOrFallback = (initialMsg, options) => {
     getLanguages().then(languages => {
-        console.log('=============getLanguages=======================');
-        console.log(languages); // ['en-US', 'en']
-        console.log('=============getLanguages=======================');
+        // console.log('=============getLanguages=======================');
+        // console.log(languages); // ['en-US', 'en']
+        // console.log('=============getLanguages=======================');
     });
-    console.log('=============initialMsg=======================');
-    console.log(options);
-    console.log('=============initialMsg=======================');
+    // console.log('=============initialMsg=======================');
+    // console.log(options);
+    // console.log('=============initialMsg=======================');
     // We tried to translate something else than a string
     // The native I18n function will simply crash instead of rejecting the attempt with an error message
     if (typeof initialMsg !== 'string') {
