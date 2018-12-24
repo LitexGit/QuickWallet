@@ -28,6 +28,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
 		2322F53721D0A33400F9F04C /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2322F53621D0A33400F9F04C /* Geth.framework */; };
+		2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53A21D0A45800F9F04C /* RCTGethModule.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -458,6 +459,8 @@
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
 		2322F51721D0A21F00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Frameworks/Geth.framework; sourceTree = "<group>"; };
 		2322F53621D0A33400F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
+		2322F53921D0A45800F9F04C /* RCTGethModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTGethModule.h; sourceTree = "<group>"; };
+		2322F53A21D0A45800F9F04C /* RCTGethModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTGethModule.m; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* QuickWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -684,6 +687,7 @@
 		2322F51921D0A2B600F9F04C /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
+				2322F53821D0A44600F9F04C /* RCTGeth */,
 			);
 			path = NativeModules;
 			sourceTree = "<group>";
@@ -695,6 +699,16 @@
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
+		};
+		2322F53821D0A44600F9F04C /* RCTGeth */ = {
+			isa = PBXGroup;
+			children = (
+				2322F53921D0A45800F9F04C /* RCTGethModule.h */,
+				2322F53A21D0A45800F9F04C /* RCTGethModule.m */,
+			);
+			name = RCTGeth;
+			path = QuickWallet/NativeModules/RCTGeth;
+			sourceTree = SOURCE_ROOT;
 		};
 		232F1B5421C7BD4800F2C490 /* Recovered References */ = {
 			isa = PBXGroup;
@@ -1562,6 +1576,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
