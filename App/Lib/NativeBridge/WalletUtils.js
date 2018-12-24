@@ -1,6 +1,13 @@
 import { NativeModules} from 'react-native';
 const gethModule = NativeModules.GethModule;
 
+function init(){
+    const isLogin = true;
+    const rawurl = 'ws://rinkeby03.milewan.com:8546';
+    const passphrase = '11111111';
+    gethModule.init(isLogin, rawurl, passphrase);
+}
+
 async function  newAccount(){
     const passphrase = '11111111';
     return await gethModule.newAccount(passphrase);
@@ -18,9 +25,15 @@ async function importPrivateKey(){
     return await gethModule.importPrivateKey(privateKey, passphrase);
 }
 
+async function exportPrivateKey(){
+    const passphrase = '11111111';
+    return await gethModule.exportPrivateKey(passphrase);
+}
 
 export default {
+    init,
     newAccount,
     importMnemonic,
     importPrivateKey,
+    exportPrivateKey,
 };

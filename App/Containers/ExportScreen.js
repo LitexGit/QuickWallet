@@ -6,13 +6,22 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
 import styles from './Styles/ExportScreenStyle';
 import QRCode from 'react-native-qrcode-svg';
+import GethModule from '../Lib/NativeBridge/WalletUtils';
 
 class ExportScreen extends Component {
   static navigationOptions = {
       title:'备份账户',
   }
+
 _onPressBtn=()=>{
 
+}
+
+componentDidMount= async()=>{
+    const privateKey =  await GethModule.exportPrivateKey();
+    console.log('=================privateKey===================');
+    console.log(privateKey);
+    console.log('=================privateKey===================');
 }
 
 render () {
