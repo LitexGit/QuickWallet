@@ -16,7 +16,7 @@ class AccountScreen extends Component {
       backgroundColor: 'red',
   }
   _onPressBackup=()=>{
-      this.props.navigate('PreBackupScreen');
+      this.props.navigate('PreExportScreen');
 
   }
 
