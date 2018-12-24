@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements';
 import { Colors, Metrics } from '../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import GethModule from '../Lib/NativeBridge/WalletUtils';
 
 export default class KeyStoreCompont extends Component {
     // // Prop type warnings
@@ -18,8 +19,11 @@ export default class KeyStoreCompont extends Component {
     // static defaultProps = {
     //   someSetting: false
     // }
-    _onPressBtn=()=>{
-        console.log('==============_onPressBtn=====================');
+    _onPressBtn= async ()=>{
+        const address = await GethModule.importPrivateKey();
+        console.log('=======RN======address=======================');
+        console.log(address);
+        console.log('=======RN======address=======================');
     }
 
     _onChangePrivateKey=()=>{

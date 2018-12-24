@@ -15,6 +15,8 @@ import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
+import GethModule from '../Lib/NativeBridge/WalletUtils';
+
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
@@ -29,12 +31,22 @@ class NewWalletScreen extends Component {
       console.log('============_onPressEyeImg========================');
   }
 
-  _onPressBtn=()=>{
-      const address = '0X11111';
-      const type = 1;
-      const params = {address, type};
-      const {register} = this.props;
-      register(params);
+  _onPressBtn= async ()=>{
+      // const address = '0X11111';
+      // const type = 1;
+      // const params = {address, type};
+      // const {register} = this.props;
+      // register(params);
+
+      /*
+        1:新建钱包
+        01:success: => register
+        02:failure: => TODO 应该不存在失败
+      */
+      const address = await GethModule.newAccount();
+      console.log('=============RN=======================');
+      console.log(address);
+      console.log('=============RN=======================');
   }
 
   componentDidMount= async ()=>{
@@ -71,7 +83,7 @@ class NewWalletScreen extends Component {
       });
       return (
           <View style={styles.container}>
-              <UserTermsAlert isShow/>
+              <UserTermsAlert isShow={false}/>
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
                   <Text style={styles.titleStytle}>创建账户</Text>

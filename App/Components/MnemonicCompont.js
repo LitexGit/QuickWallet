@@ -7,6 +7,7 @@ import { Colors, Metrics } from '../Themes';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import GethModule from '../Lib/NativeBridge/WalletUtils';
 
 
 export default class MnemonicCompont extends Component {
@@ -21,8 +22,11 @@ export default class MnemonicCompont extends Component {
     //   someSetting: false
     // }
 
-  _onPressBtn=()=>{
-      console.log('==============_onPressBtn=====================');
+  _onPressBtn= async ()=>{
+      const address = await GethModule.importMnemonic();
+      console.log('=======RN======address=======================');
+      console.log(address);
+      console.log('=======RN======address=======================');
   }
 
   _onChangeMnemonic=()=>{
