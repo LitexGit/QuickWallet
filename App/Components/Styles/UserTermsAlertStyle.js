@@ -15,8 +15,7 @@ export default StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.0)',
     },
     container: {
-        width:'100%',
-        height:'100%',
+        flex:1,
         backgroundColor:Colors.backgroundColor,
     },
     topSection:{
