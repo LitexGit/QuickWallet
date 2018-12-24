@@ -49,6 +49,7 @@
     "react-native-gesture-handler": "1.0.9",
     "react-native-haptic-feedback": "^1.4.2",
     "react-native-i18n": "2.0.14",
+    "react-native-modal-overlay": "^1.2.3",
     "react-native-qrcode-scanner": "^1.1.0",
     "react-native-qrcode-svg": "^5.1.1",
     "react-native-scrollable-tab-view": "^0.10.0",

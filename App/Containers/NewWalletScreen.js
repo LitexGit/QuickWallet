@@ -9,14 +9,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
+import UserTermsAlert from '../Components/UserTermsAlert';
 
 import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
       title:'创建账户',
   }
+
   _onChangeText=(key, text)=>{
       console.log('==============text======================');
   }
@@ -31,6 +35,11 @@ class NewWalletScreen extends Component {
       const params = {address, type};
       const {register} = this.props;
       register(params);
+  }
+
+  componentDidMount= async ()=>{
+      DeviceStorage.saveItem(Keys.IS_SELECTED_USE_TERMS, true);
+      const isUserTerms = await DeviceStorage.getItem(Keys.IS_SELECTED_USE_TERMS);
   }
 
   render () {
@@ -62,6 +71,7 @@ class NewWalletScreen extends Component {
       });
       return (
           <View style={styles.container}>
+              <UserTermsAlert isShow/>
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
                   <Text style={styles.titleStytle}>创建账户</Text>
