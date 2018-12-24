@@ -27,8 +27,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
-		231D7DFC21D090510070E53A /* Framework in Resources */ = {isa = PBXBuildFile; fileRef = 231D7DFB21D090500070E53A /* Framework */; };
-		231D7E0B21D090FD0070E53A /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 231D7E0A21D090FD0070E53A /* Geth.framework */; };
+		2322F53721D0A33400F9F04C /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2322F53621D0A33400F9F04C /* Geth.framework */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -456,8 +455,9 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1DBEECDFBF684B429C213CCE /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2074D8872D0F428FA52DC517 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		231D7DFB21D090500070E53A /* Framework */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Framework; path = QuickWallet/Framework; sourceTree = "<group>"; };
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
+		2322F51721D0A21F00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Frameworks/Geth.framework; sourceTree = "<group>"; };
+		2322F53621D0A33400F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* QuickWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -509,7 +509,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				231D7E0B21D090FD0070E53A /* Geth.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -530,6 +529,7 @@
 				37B716FF3B6346508AACCFE4 /* libRNSVG.a in Frameworks */,
 				6081B1B5DF9A4833893F81B2 /* libRNReactNativeHapticFeedback.a in Frameworks */,
 				FCB99AB884BB46859F4BBE83 /* libRNCamera.a in Frameworks */,
+				2322F53721D0A33400F9F04C /* Geth.framework in Frameworks */,
 				0F629AF1AE04470EB203CF65 /* libReactNativePermissions.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,6 +645,8 @@
 		13B07FAE1A68108700A75B9A /* QuickWallet */ = {
 			isa = PBXGroup;
 			children = (
+				2322F53521D0A2F200F9F04C /* Frameworks */,
+				2322F51921D0A2B600F9F04C /* NativeModules */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -652,7 +654,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				231D7DFB21D090500070E53A /* Framework */,
 			);
 			name = QuickWallet;
 			sourceTree = "<group>";
@@ -678,6 +679,21 @@
 				2DF0FFED2056DD460020B375 /* libprivatedata-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2322F51921D0A2B600F9F04C /* NativeModules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NativeModules;
+			sourceTree = "<group>";
+		};
+		2322F53521D0A2F200F9F04C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2322F53621D0A33400F9F04C /* Geth.framework */,
+			);
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		232F1B5421C7BD4800F2C490 /* Recovered References */ = {
@@ -778,6 +794,7 @@
 			isa = PBXGroup;
 			children = (
 				231D7E0A21D090FD0070E53A /* Geth.framework */,
+				2322F51721D0A21F00F9F04C /* Geth.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 			);
 			name = Frameworks;
@@ -1467,7 +1484,6 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				F00DDC856A494FDC8FF24210 /* AntDesign.ttf in Resources */,
-				231D7DFC21D090510070E53A /* Framework in Resources */,
 				9A6C6836FACC4B0CB8D86FAA /* Entypo.ttf in Resources */,
 				BF7E63B82A5540D4B97F96CB /* EvilIcons.ttf in Resources */,
 				B154B398E7964E58B4616B93 /* Feather.ttf in Resources */,
@@ -1701,6 +1717,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/QuickWallet/Framework",
+					"$(PROJECT_DIR)/QuickWallet/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1736,6 +1754,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/QuickWallet/Framework",
+					"$(PROJECT_DIR)/QuickWallet/Frameworks",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
