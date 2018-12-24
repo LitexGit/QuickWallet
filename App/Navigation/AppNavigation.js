@@ -14,7 +14,6 @@ import AccountScreen from '../Containers/AccountScreen';
 import MineScreen from '../Containers/MineScreen';
 import FoundScreen from '../Containers/FoundScreen';
 import ScanScreen from '../Containers/ScanScreen';
-import PreExportScreen from '../Containers/PreExportScreen';
 import ExportScreen from '../Containers/ExportScreen';
 
 
@@ -109,16 +108,13 @@ const PrimaryNav = createStackNavigator({
             headerStyle: styles.header,
             headerTintColor: Colors.darkColor,
         }},
-    PreExportScreen: { screen: PreExportScreen ,
-        navigationOptions:{
-            headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
-        }},
     ExportScreen: { screen: ExportScreen ,
         navigationOptions:{
             headerStyle: styles.header,
             headerTintColor: Colors.darkColor,
-        }},
+        }}
+
+
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'BottomTab'},
