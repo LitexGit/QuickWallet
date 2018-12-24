@@ -83,7 +83,7 @@ class NewWalletScreen extends Component {
       });
       return (
           <View style={styles.container}>
-              <UserTermsAlert isShow={false}/>
+              <UserTermsAlert isShow/>
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
                   <Text style={styles.titleStytle}>创建账户</Text>

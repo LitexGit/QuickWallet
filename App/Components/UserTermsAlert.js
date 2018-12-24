@@ -5,6 +5,7 @@ import styles from './Styles/UserTermsAlertStyle';
 import Overlay from 'react-native-modal-overlay';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Metrics, Colors } from '../Themes';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default class UserTermsAlert extends Component {
 
@@ -30,8 +31,14 @@ export default class UserTermsAlert extends Component {
     }
 
     render () {
+        const remin001 = '我已仔细阅读并同意以上条款以及';
+        const remin002 = 'Cookiss的使用说明';
+
+
         const {isShow} = this.props;
         const {isOpen} = this.state;
+        const isSelected = true;
+        const selectedImg = isSelected ? <AntDesign name={'checkcircle'} size={Metrics.icons.small} color={Colors.textColor}/> : <AntDesign name={'checkcircleo'} size={Metrics.icons.small} color={Colors.separateLineColor}/>;
         return (
             <Overlay
                 containerStyle={styles.overlay}
@@ -45,7 +52,14 @@ export default class UserTermsAlert extends Component {
                         <FontAwesome name={'compass'} size={Metrics.icons.small} color={Colors.textColor}/>
                     </View>
                     <ScrollView style={styles.scrollView}>
-
+                        <View style={styles.contentTop}></View>
+                        <View style={styles.bottomContent}>
+                            {selectedImg}
+                            <View style={styles.remindView}>
+                                <Text style={styles.remind}>{remin001}</Text>
+                                <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{remin002}</Text>
+                            </View>
+                        </View>
                     </ScrollView>
                     <TouchableOpacity onPress={()=>this._onPressBtn()}>
                         <View style={styles.bottomSection}>
