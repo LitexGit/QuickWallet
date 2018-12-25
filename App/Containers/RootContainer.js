@@ -16,7 +16,7 @@ class RootContainer extends Component {
             this.props.startup();
         }
         const {gethInit} = this.props;
-        const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED);
+        const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
         const rawurl = 'ws://rinkeby03.milewan.com:8546';
         const passphrase = '11111111';
         gethInit({isLogin, rawurl, passphrase});

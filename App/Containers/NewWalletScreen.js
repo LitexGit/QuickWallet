@@ -11,7 +11,7 @@ import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
 import UserTermsAlert from '../Components/UserTermsAlert';
 
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import WalletActions from '../Redux/WalletRedux';
 
@@ -74,9 +74,8 @@ class NewWalletScreen extends Component {
     02:failure: => TODO 应该不存在失败
   */
   _onPressBtn = ()=>{
-      // this.props.gethNewAccount({passphrase:this.password});
-      this.props.navigate('PreBackupScreen');
-
+      this.props.gethNewAccount({passphrase:this.password});
+      // this.props.navigate('PreBackupScreen');
   }
 
   _checkInputIsValid=()=>{
@@ -91,6 +90,7 @@ class NewWalletScreen extends Component {
   }
 
   componentDidMount= async ()=>{
+      this.props.setLoading({loading:false});
       const isAgreedUseTerms = await DeviceStorage.getItem(Keys.IS_SELECTED_USE_TERMS);
       this.setState({ isAgreedUseTerms });
   }
@@ -177,8 +177,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    // navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     gethNewAccount: (params) => dispatch(WalletActions.gethNewAccount(params)),
+    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

@@ -16,7 +16,7 @@ const { Types, Creators } = createActions({
 
     setLoading: ['data'],
     gethRandomMnemonicSuccess:['data'],
-
+    savePassphrase:['data'],
 });
 
 export const WalletTypes = Types;
@@ -36,6 +36,7 @@ export const INITIAL_STATE = Immutable({
     failure: null,
     error: null,
     mnemonic:'',
+    passphrase:'',
 });
 
 /* ------------- Selectors ------------- */
@@ -44,6 +45,9 @@ export const WalletSelectors = {
 };
 
 /* ------------- Reducers ------------- */
+export const savePassphrase = (state, {data}) =>
+    state.merge({...data});
+
 export const gethRandomMnemonicSuccess = (state, {data}) =>
     state.merge({...data});
 
@@ -69,5 +73,6 @@ export const failure = (state) =>
 export const reducer = createReducer(INITIAL_STATE, {
     [Types.SET_LOADING]: setLoading,
     [Types.GETH_RANDOM_MNEMONIC_SUCCESS]:gethRandomMnemonicSuccess,
+    [Types.SAVE_PASSPHRASE]:savePassphrase,
 
 });

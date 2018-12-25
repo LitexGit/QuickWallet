@@ -27,7 +27,8 @@ class BackupScreen extends Component {
   }
 
   _onPressCheck=()=>{
-
+      const {mnemonic, passphrase} = this.props;
+      this.props.gethImportMnemonic({mnemonic, passphrase});
   }
 
   _checkMnemonicSort=()=>{
@@ -172,7 +173,7 @@ class BackupScreen extends Component {
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
                       <Button onPress={()=>this._onPressCheck()}
-                          disabled={!isCanPress}
+                          // disabled={!isCanPress}
                           backgroundColor={Colors.textColor}
                           title='完成'/>
                   </View>
@@ -184,15 +185,15 @@ class BackupScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        wallet:{mnemonic, loading}
+        wallet:{mnemonic, loading, passphrase}
     } = state;
-    return { mnemonic, loading };
+    return { mnemonic, loading, passphrase};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
-
+    gethImportMnemonic: (params) => dispatch(WalletActions.gethImportMnemonic(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupScreen);
