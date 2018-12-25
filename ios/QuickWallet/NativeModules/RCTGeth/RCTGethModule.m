@@ -160,47 +160,48 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   _resolveBlock(@[address]);
 }
 
+///**
+// * ExportECSDAKey exports as a ECSDA key, encrypted with newPassphrase.
+// */
+//- (NSData*)exportECSDAKey:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
+///**
+// * ExportECSDAKeyHex exports as a ECSDA key, encrypted with newPassphrase.
+// */
+//- (NSString*)exportECSDAKeyHex:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
+
 RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;
-  NSString *keyPath = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
-  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keyPath];
-  if (!data) {
-    _rejectBlock(@"iOS", @"keyStore_data", nil);
+  
+  NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
+  [FileManager createDirectoryIfNotExists:keyTemp];
+  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  
+  NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
+  BOOL isExists = [FileManager fileExistsAtPath:keydir];
+  if (!isExists) {
+    // TODO  异常流程 登录状态不存在 keystore
+    //    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
+    //    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
+    _rejectBlock(@"iOS", @"keydir_isExists", nil);
     return;
   }
-  
-  NSString *keyStoreJson = [self dataToJson:data];
-  NSLog(@"keystoreJson==> %@",keyStoreJson);
-  NSError * jsonErr = nil;
-  if (!keyStoreJson) {
-    _rejectBlock(@"iOS", @"keyStore_toJson", jsonErr);
+  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
+  NSError *err = nil;
+  self.account = [keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
+  if (err) {
+    // TODO  异常流程 keyStore 导入异常
+    _rejectBlock(@"iOS", @"importKey_importKey", err);
     return;
   }
-  _resolveBlock(@[keyStoreJson]);
-  
-  
-//  NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
-//  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-//  NSError *err = nil;
-//  self.account = [keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
-//  if (err) {
-//    _rejectBlock(@"iOS", @"importKey", err);
-//    return;
-//  }
-//
-//  NSError *exportErr = nil;
-//  NSData *keyData = [keyStore exportKey:self.account passphrase:passphrase newPassphrase:passphrase error:&exportErr];
-//  if (exportErr) {
-//    _rejectBlock(@"iOS", @"exportKey", err);
-//    return;
-//  }
-//  NSString *keyStoreJson = [self dataToJson:keyData];
-//    if (!keyStoreJson) {
-//      _rejectBlock(@"iOS", @"keyStore_toJson", nil);
-//      return;
-//    }
-//    _resolveBlock(@[keyStoreJson]);
+  NSError *exportErr = nil;
+  NSString *privateKey = [keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&exportErr];
+  if (exportErr) {
+    // TODO  异常流程 keyStore 导入异常
+    _rejectBlock(@"iOS", @"export_privateKey", exportErr);
+    return;
+  }
+  _resolveBlock(@[privateKey]);
 }
 
 

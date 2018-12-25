@@ -6,7 +6,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
 import styles from './Styles/ExportScreenStyle';
 import QRCode from 'react-native-qrcode-svg';
-import GethModule from '../Lib/NativeBridge/WalletUtils';
+import WalletActions from '../Redux/WalletRedux';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class ExportScreen extends Component {
   static navigationOptions = {
@@ -14,21 +15,19 @@ class ExportScreen extends Component {
   }
 
 _onPressBtn=()=>{
-
 }
 
-componentDidMount= async()=>{
-    const privateKey =  await GethModule.exportPrivateKey();
-    console.log('=================privateKey===================');
-    console.log(privateKey);
-    console.log('=================privateKey===================');
+componentDidMount=()=>{
 }
 
 render () {
-    const privateKey = '55A0DB7143F14E22BA0EED6C58425B2E9170CD78B458EEA38B1A56BCDAFA6182';
+    const {loading=false, privateKey} = this.props;
 
     return (
         <View style={styles.container}>
+            <Spinner visible={loading} cancelable
+                textContent={'Loading...'}
+                textStyle={styles.spinnerText}/>
             <View style={styles.topSection}>
                 <View style={styles.topView}>
                     <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>
@@ -49,10 +48,16 @@ render () {
 }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        wallet:{loading, privateKey}
+    } = state;
+    return { loading, privateKey };
+};
 
 const mapDispatchToProps = (dispatch) => ({
+    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExportScreen);

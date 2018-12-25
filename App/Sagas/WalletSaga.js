@@ -73,9 +73,13 @@ export function *gethImportPrivateKey (action) {
 export function *gethExportPrivateKey (action) {
     const {data:params} = action;
     const {passphrase=''} = params;
+
     yield put(WalletActions.setLoading({loading:true}));
-    yield GethModule.init({passphrase});
+    const result = yield GethModule.exportPrivateKey({passphrase});
     yield put(WalletActions.setLoading({loading:false}));
+    const privateKey =  Ramda.head(result);
+    yield put(WalletActions.savePrivateKey({privateKey}));
+
 }
 
 

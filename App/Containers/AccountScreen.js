@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Metrics , Colors } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
 import { NavigationActions } from 'react-navigation';
+import WalletActions from '../Redux/WalletRedux';
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -16,8 +17,9 @@ class AccountScreen extends Component {
       backgroundColor: 'red',
   }
   _onPressBackup=()=>{
+      const passphrase = '11111111';
+      this.props.gethExportPrivateKey({passphrase});
       this.props.navigate('ExportScreen');
-
   }
 
   _onPressLogOut=()=>{
@@ -83,6 +85,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    gethExportPrivateKey: (params) => dispatch(WalletActions.gethExportPrivateKey(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);
