@@ -25,6 +25,18 @@ async function exportPrivateKey({passphrase}){
     return await gethModule.exportPrivateKey(passphrase);
 }
 
+function getDisplayedPrivateKey(key){
+    const reg = RegExp(/0x/);
+    if(key.match(reg)) return key;
+    return '0x'+key;
+}
+
+function getGethPrivateKey(key){
+    const reg = RegExp(/0x/);
+    if(!key.match(reg)) return key;
+    return key.replace(reg,'');
+}
+
 export default {
     init,
     newAccount,
@@ -32,4 +44,6 @@ export default {
     importMnemonic,
     importPrivateKey,
     exportPrivateKey,
+    getDisplayedPrivateKey,
+    getGethPrivateKey,
 };

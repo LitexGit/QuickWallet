@@ -3,7 +3,6 @@ import GethModule from '../Lib/NativeBridge/WalletUtils';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
 import { NavigationActions } from 'react-navigation';
-
 import Ramda from 'ramda';
 
 
@@ -65,8 +64,14 @@ export function *gethImportPrivateKey (action) {
     const {data:params} = action;
     const {privateKey='', passphrase=''} = params;
     yield put(WalletActions.setLoading({loading:true}));
-    yield GethModule.importPrivateKey({privateKey, passphrase});
+    const gethKey = GethModule.getGethPrivateKey(privateKey);
+    const result = yield GethModule.importPrivateKey({privateKey:gethKey, passphrase});
     yield put(WalletActions.setLoading({loading:false}));
+    // TODO 添加数组校验
+    const address =  Ramda.head(result);
+    // TODO 添加地址校验
+    yield put(UserActions.registerRequest({address, type:1}));
+    // TODO account ？？ ||  register ？？ ==> 备份助记词
 }
 
 // const passphrase = '11111111';
@@ -78,8 +83,8 @@ export function *gethExportPrivateKey (action) {
     const result = yield GethModule.exportPrivateKey({passphrase});
     yield put(WalletActions.setLoading({loading:false}));
     const privateKey =  Ramda.head(result);
-    yield put(WalletActions.savePrivateKey({privateKey}));
-
+    const displayKey = GethModule.getDisplayedPrivateKey(privateKey);
+    yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
 }
 
 
