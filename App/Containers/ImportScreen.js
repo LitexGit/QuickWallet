@@ -8,16 +8,14 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 import MnemonicCompont from '../Components/MnemonicCompont';
 import KeyStoreCompont from '../Components/KeyStoreCompont';
 
+
 class ImportScreen extends Component {
   static navigationOptions = {
       title:'导入账户',
   }
-  _onChangeTab=()=>{
-      console.log('===============_onChangeTab=====================');
-  }
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-  }
+
+  _onChangeTab=()=>console.log();
+
   render () {
       return (
           <View style={styles.container}>
@@ -48,6 +46,7 @@ class ImportScreen extends Component {
 }
 
 const mapStateToProps = (state) => ({
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

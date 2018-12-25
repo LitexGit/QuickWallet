@@ -83,5 +83,9 @@ export default StyleSheet.create({
     },
     passwordInput:{
         flex:1,
+    },
+    spinnerText:{
+        fontSize:Fonts.size.medium,
+        color:Colors.textColor,
     }
 });
