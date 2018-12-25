@@ -210,7 +210,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
-  GethContext *context = [[GethContext alloc] init];
+  GethContext *context = [[GethContext alloc] initWithRef:@"transferEth"];
   GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
   int64_t number = -1;
   int64_t nonce = 0x0;
@@ -246,6 +246,71 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   }
   _resolveBlock(@[@YES]);
 }
+
+RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress tokenAddress:(NSString *)tokenAddress value:(int64_t)value resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+  _resolveBlock = resolver;
+  _rejectBlock = reject;
+  
+  GethContext *context = [[GethContext alloc] initWithRef:@"transferTokens"];
+  GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
+  int64_t number = -1;
+  int64_t nonce = 0x0;
+  NSError *nonceErr = nil;
+  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
+  if (!isGet || nonceErr) {
+    _rejectBlock(@"iOS", @"getNonceAt", nonceErr);
+    return;
+  }
+  
+  GethAddress *to = [[GethAddress alloc] initFromHex:tokenAddress];
+  GethBigInt *amount = [[GethBigInt alloc] init:0];
+  NSError *gasErr = nil;
+  GethBigInt *gasPrice = [self.ethClient suggestGasPrice:context error:&gasErr];
+  if (!isGet || nonceErr) {
+    _rejectBlock(@"iOS", @"suggestGasPrice", gasErr);
+    return;
+  }
+  
+  GethCallMsg *callMsg = [[GethCallMsg alloc] init];
+  [callMsg setFrom:from];
+  [callMsg setGasPrice:gasPrice];
+  [callMsg setTo:[[GethAddress alloc] initFromHex:toAddress]];
+  [callMsg setValue:[[GethBigInt alloc] init:value]];
+  
+  NSError *limitErr = nil;
+  int64_t gasLimit = 21000;
+  BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&limitErr];
+  if (!isLimit || limitErr) {
+    _rejectBlock(@"iOS", @"estimateGas", limitErr);
+    return;
+  }
+  
+  NSData *data = [NSData data];
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
+  
+  GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
+  if (!signedTx) {
+    _rejectBlock(@"iOS", @"signTxWithKeyStore", nil);
+  }
+  
+  NSError *sendErr = nil;
+  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
+  if (!isSend || sendErr) {
+    _rejectBlock(@"iOS", @"sendTransaction", sendErr);
+    return;
+  }
+  _resolveBlock(@[@YES]);
+}
+
+
+
+
+
+
+
+
+
+
 
 - (GethTransaction *)signTxWithKeyStore:(GethKeyStore *)keyStore Account:(GethAccount *)account passphrase:(NSString *)passphrase transaction:(GethTransaction *)transaction{
   int64_t chainId = 4;
