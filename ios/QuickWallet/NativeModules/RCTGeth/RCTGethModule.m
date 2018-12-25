@@ -80,6 +80,7 @@ RCT_EXPORT_METHOD(newAccount:(NSString *)passphrase resolver:(RCTPromiseResolveB
   [FileManager createDirectoryIfNotExists:keydir];
   
   GethKeyStore *keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  // 创建钱包生成 keyStore
   NSError * err = nil;
   self.account = [keyStore newAccount:passphrase error:&err];
   if (err) {
@@ -90,8 +91,21 @@ RCT_EXPORT_METHOD(newAccount:(NSString *)passphrase resolver:(RCTPromiseResolveB
   NSString *address = [[self.account getAddress] getHex];
   NSLog(@"newAccount address ====> %@",address);
   _resolveBlock(@[address]);
-  
 }
+
+RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
+  _resolveBlock = resolver;
+  _rejectBlock = reject;
+  NSError *error =nil;
+  NSString *mnemonic = GethCreateRandomMnemonic(&error);
+  if (error) {
+    _rejectBlock(@"iOS", @"randomMnemonic", error);
+    return;
+  }
+  _resolveBlock(@[mnemonic]);
+}
+
+
 
 RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   

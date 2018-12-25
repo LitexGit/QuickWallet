@@ -9,6 +9,10 @@ async function  newAccount({passphrase}){
     return await gethModule.newAccount(passphrase);
 }
 
+async function  randomMnemonic(){
+    return await gethModule.randomMnemonic();
+}
+
 async function importMnemonic({mnemonic, passphrase}){
     return await gethModule.importMnemonic(mnemonic, passphrase);
 }
@@ -24,6 +28,7 @@ async function exportPrivateKey({passphrase}){
 export default {
     init,
     newAccount,
+    randomMnemonic,
     importMnemonic,
     importPrivateKey,
     exportPrivateKey,

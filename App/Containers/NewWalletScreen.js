@@ -12,7 +12,6 @@ import { Button } from 'react-native-elements';
 import UserTermsAlert from '../Components/UserTermsAlert';
 
 import { NavigationActions } from 'react-navigation';
-import UserActions from '../Redux/UserRedux';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import WalletActions from '../Redux/WalletRedux';
 
@@ -69,18 +68,15 @@ class NewWalletScreen extends Component {
           isShowPassword:!isShowPassword
       });
   }
-  // const address = '0X11111';
-  // const type = 1;
-  // const params = {address, type};
-  // const {register} = this.props;
-  // register(params);
   /*
     1:新建钱包
     01:success: => register
     02:failure: => TODO 应该不存在失败
   */
   _onPressBtn = ()=>{
-      this.props.gethNewAccount({passphrase:this.password});
+      // this.props.gethNewAccount({passphrase:this.password});
+      this.props.navigate('PreBackupScreen');
+
   }
 
   _checkInputIsValid=()=>{
@@ -104,9 +100,6 @@ class NewWalletScreen extends Component {
       const remind002 = 'QuickWallet 不存储密码,也无法帮您找回,请务必牢记';
 
       const {loading} = this.props;
-      console.log('===========loading=========================');
-      console.log(loading);
-      console.log('===========loading=========================');
 
       const {isAgreedUseTerms, isShowRemind, isInputValid, isShowPassword}=this.state;
 
@@ -185,7 +178,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    register: (params) => dispatch(UserActions.registerRequest(params)),
     gethNewAccount: (params) => dispatch(WalletActions.gethNewAccount(params)),
 });
 

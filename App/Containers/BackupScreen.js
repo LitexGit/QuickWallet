@@ -7,6 +7,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import { Colors, Metrics } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import Ramda from 'ramda';
+import Spinner from 'react-native-loading-spinner-overlay';
+import WalletActions from '../Redux/WalletRedux';
 
 
 class BackupScreen extends Component {
@@ -20,7 +22,6 @@ class BackupScreen extends Component {
           words:[],
           pressArray:[],
           unPressArray:[],
-
           isSorted:true,
       };
   }
@@ -30,7 +31,23 @@ class BackupScreen extends Component {
   }
 
   _checkMnemonicSort=()=>{
-
+      // TODO 比较数组顺序是否完全一致
+      const {pressArray} = this.state;
+      if (!pressArray.length) {
+          this.setState({isSorted:true});
+          return;
+      }
+      // TODO Redux 统一处理
+      const {mnemonic} = this.props;
+      const array = mnemonic.split(' ');
+      pressArray.forEach((press, index)=>{
+          const {title} = press;
+          if (title !== Ramda.nth(index)(array)) {
+              this.setState({isSorted:false});
+              return;
+          }
+          this.setState({isSorted:true});
+      });
   }
 
   _onPressSelected=(item)=>{
@@ -85,8 +102,11 @@ class BackupScreen extends Component {
   }
 
   componentDidMount=()=>{
-      const mnemonic = 'text styles remind container icons container mnemonic container colors container container colors';
+      this.props.setLoading({loading:false});
+
+      const {mnemonic} = this.props;
       const array = mnemonic.split(' ');
+      array.sort(() => .5 - Math.random());
       const words = array.map((title, key)=>{
           const wordObj = {title, key, sort:key};
           return wordObj;
@@ -99,10 +119,10 @@ class BackupScreen extends Component {
 
   render () {
       const remind = '请桉顺序点击助记词,以确认您的正确身份。';
-      const isCanPress = true;
-      const { pressArray, unPressArray} = this.state;
       const toast = '助记词顺序不正确，请校对';
-      const isSorted = false;
+      const {loading} = this.props;
+      const { pressArray, unPressArray, isSorted} = this.state;
+      const isCanPress = isSorted && !unPressArray.length;
 
       const toastView = !isSorted ? (<View style={styles.toastView}>
           <Text style={styles.toastText}>{toast}</Text>
@@ -130,6 +150,9 @@ class BackupScreen extends Component {
 
       return (
           <View style={styles.container}>
+              <Spinner visible={loading} cancelable
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerText}/>
               <View style={styles.topSection}>
                   <View style={styles.topView}>
                       <Feather name={'check'} size={30} color={Colors.separateLineColor}/>
@@ -159,11 +182,17 @@ class BackupScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        wallet:{mnemonic, loading}
+    } = state;
+    return { mnemonic, loading };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupScreen);

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, KeyboardAvoidingView } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/PreBackupScreenStyle';
 import { Button } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Colors, Metrics } from '../Themes';
+import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
+import WalletActions from '../Redux/WalletRedux';
 
 
 class PreBackupScreen extends Component {
@@ -16,11 +17,11 @@ class PreBackupScreen extends Component {
       this.props.navigate('BackupScreen');
   }
   componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
+      this.props.gethRandomMnemonic();
   }
   render () {
       const remind = '请仔细抄写下方助记词，我们将在下一步验证';
-      const mnemonic = 'text styles remind container icons container mnemonic container colors container container';
+      const {mnemonic} = this.props;
 
       return (
           <View style={styles.container}>
@@ -46,11 +47,21 @@ class PreBackupScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    console.log('===========state=========================');
+    console.log(state);
+    console.log('===========state=========================');
+    const {
+        wallet:{mnemonic}
+    } = state;
+    return {
+        mnemonic
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    gethRandomMnemonic: () => dispatch(WalletActions.gethRandomMnemonic()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreBackupScreen);

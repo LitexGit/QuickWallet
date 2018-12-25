@@ -27,6 +27,18 @@ export function *gethNewAccount (action) {
     // TODO account ？？ ||  register ？？ ==> 备份助记词
 }
 
+
+export function *gethRandomMnemonic () {
+    const result =  yield GethModule.randomMnemonic();
+    // TODO 添加数组校验
+    const mnemonic =  Ramda.head(result);
+    console.log('==========gethRandomMnemonic=========================');
+    console.log(mnemonic);
+    console.log('==========gethRandomMnemonic==========================');
+    // TODO 添加mnemonic校验
+    yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
+}
+
 // const mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
 // const passphrase = '11111111';
 export function *gethImportMnemonic (action) {

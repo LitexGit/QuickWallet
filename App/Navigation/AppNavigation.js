@@ -118,7 +118,7 @@ const PrimaryNav = createStackNavigator({
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'BottomTab'},
-    initialRouteName: 'BottomTab',
+    initialRouteName: 'PreBackupScreen',
     navigationOptions:{
         headerStyle: styles.header,
         headerTintColor: Colors.darkColor,
