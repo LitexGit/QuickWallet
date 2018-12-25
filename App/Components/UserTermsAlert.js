@@ -28,7 +28,7 @@ export default class UserTermsAlert extends Component {
 
     _onPressBtn=()=>{
         this.setState({ isOpen:false });
-        // TODO 每次创建 都需要提示？？？
+        DeviceStorage.saveItem(Keys.IS_SELECTED_USE_TERMS, true);
     }
     _onPressReadBtn=()=>{
         const {isAgreed} = this.state;

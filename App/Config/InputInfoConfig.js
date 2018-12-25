@@ -1,5 +1,5 @@
 
-import { Colors, Fonts } from '../Themes';
+import { Colors } from '../Themes';
 
 const InputInfoConfig = {
     name:{
@@ -17,7 +17,8 @@ const InputInfoConfig = {
         placeholderTextColor:Colors.separateLineColor,
         clearButtonMode:'while-editing',
         maxLength:20,
-        keyboardType:'number-pad',
+        keyboardType:'default',
+        // keyboardType:'number-pad',
         returnKeyType:'next',
     },
     confirm:{
@@ -26,7 +27,8 @@ const InputInfoConfig = {
         placeholderTextColor:Colors.separateLineColor,
         clearButtonMode:'while-editing',
         maxLength:20,
-        keyboardType:'number-pad',
+        keyboardType:'default',
+        // keyboardType:'number-pad',
         returnKeyType:'done',
     }
 };

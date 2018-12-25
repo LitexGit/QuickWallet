@@ -39,5 +39,24 @@ export default StyleSheet.create({
     btnTitle:{
         fontSize:Fonts.size.input,
     },
+    remindView:{
+        width:Metrics.screenWidth - Metrics.section * 2,
+        backgroundColor:'#FED605',
+        position:'absolute',
+        alignSelf:'center',
+        bottom:85,
+
+        flexDirection:'row',
+        padding:Metrics.doubleBaseMargin,
+        alignItems:'center',
+        borderRadius:10,
+    },
+    rightRemind:{
+        flex:1,
+        paddingLeft:Metrics.doubleBaseMargin,
+    },
+    remindText:{
+        fontSize:Fonts.size.small,
+    }
 
 });
