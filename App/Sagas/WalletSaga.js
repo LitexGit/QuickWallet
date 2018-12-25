@@ -1,6 +1,9 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import WalletActions from '../Redux/WalletRedux';
+import UserActions  from '../Redux/UserRedux';
+
+import Ramda from 'ramda';
 
 
 export function *gethInit (action) {
@@ -15,11 +18,13 @@ export function *gethInit (action) {
 export function *gethNewAccount (action) {
     const {passphrase=''} = action;
     yield put(WalletActions.setLoading({loading:true}));
-    const address = yield GethModule.newAccount({passphrase});
-    console.log('===========address=========================');
-    console.log(address);
-    console.log('===========address=========================');
+    const result = yield GethModule.newAccount({passphrase});
+    // TODO 添加数组校验
     yield put(WalletActions.setLoading({loading:false}));
+    const address =  Ramda.head(result);
+    // TODO 添加地址校验
+    yield put(UserActions.registerRequest({address, type:1}));
+    // TODO account ？？ ||  register ？？ ==> 备份助记词
 }
 
 // const mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';

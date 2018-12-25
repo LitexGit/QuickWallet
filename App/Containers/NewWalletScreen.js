@@ -16,6 +16,8 @@ import UserActions from '../Redux/UserRedux';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import WalletActions from '../Redux/WalletRedux';
 
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
@@ -101,6 +103,11 @@ class NewWalletScreen extends Component {
       const remind001 = '密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要';
       const remind002 = 'QuickWallet 不存储密码,也无法帮您找回,请务必牢记';
 
+      const {loading} = this.props;
+      console.log('===========loading=========================');
+      console.log(loading);
+      console.log('===========loading=========================');
+
       const {isAgreedUseTerms, isShowRemind, isInputValid, isShowPassword}=this.state;
 
       const remindView = isShowRemind ? (<View style={styles.remindView}>
@@ -138,6 +145,9 @@ class NewWalletScreen extends Component {
       });
       return (
           <View style={styles.container}>
+              <Spinner visible={loading} cancelable
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerText}/>
               <UserTermsAlert isShow={!isAgreedUseTerms}/>
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
@@ -168,9 +178,6 @@ const mapStateToProps = (state) => {
     const {
         wallet:{loading}
     } = state;
-    console.log('===========loading=========================');
-    console.log(loading);
-    console.log('===========loading=========================');
     return {
         loading
     };

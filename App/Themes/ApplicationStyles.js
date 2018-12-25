@@ -51,7 +51,13 @@ const ApplicationStyles = {
             height: 1 / PixelRatio.get(),
             backgroundColor:Colors.separateLineColor,
             marginVertical: Metrics.baseMargin,
+        },
+        spinnerText:{
+            fontSize:Fonts.size.medium,
+            color:Colors.textColor,
         }
+
+
 
     },
     darkLabelContainer: {

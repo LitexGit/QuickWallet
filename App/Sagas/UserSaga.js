@@ -4,12 +4,11 @@ import DeviceInfo from 'react-native-device-info';
 
 
 export function * register (api, action) {
-    // console.log('======action==============================');
-    // console.log(action);
-    // console.log('======action==============================');
-
     const {data:params} = action;
     const {address, type} = params;
+    console.log('======action==============================');
+    console.log(action);
+    console.log('======action==============================');
 
     const os = DeviceInfo.getSystemName();
     const info = {

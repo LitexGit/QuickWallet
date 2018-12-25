@@ -35,8 +35,8 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create();
 export default function * root () {
     yield all([
         takeLatest(FoundTypes.GET_BANNER_REQUEST, getBanner, api),
-        takeLatest(UserTypes.GET_USER_INFO_REQUEST, register, api),
-        takeLatest(UserTypes.REGISTER_REQUEST, getUserInfo, api),
+        takeLatest(UserTypes.GET_USER_INFO_REQUEST, getUserInfo, api),
+        takeLatest(UserTypes.REGISTER_REQUEST, register, api),
         takeLatest(ConfigTypes.GET_CONFIG_REQUEST, getConfig, api),
         takeLatest(AssetTypes.GET_BALANCE_REQUEST, getBalance),
         takeLatest(AssetTypes.GET_TXLIST_REQUEST, getTxlist),
