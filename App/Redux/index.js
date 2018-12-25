@@ -10,6 +10,7 @@ export const reducers = combineReducers({
     user: require('./UserRedux').reducer,
     config: require('./ConfigRedux').reducer,
     assets: require('./AssetRedux').reducer,
+    wallet: require('./WalletRedux').reducer,
 
     nav: require('./NavigationRedux').reducer,
     github: require('./GithubRedux').reducer,

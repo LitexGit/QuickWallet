@@ -32,7 +32,11 @@ static NSString *keyStoreFileDir  = @"keystore_file_dir";
 RCT_EXPORT_MODULE();
 
 // 初始化客户端
-RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSString *)passphrase) {
+RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
+  
+  _resolveBlock = resolver;
+  _rejectBlock = reject;
+  
   if (!isLogin) return;
   if (!rawurl || !rawurl.length) return;
   if (!passphrase || !passphrase.length) return;
@@ -48,6 +52,7 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
     // TODO  异常流程 登录状态不存在 keystore
 //    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
 //    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
+    _rejectBlock(@"iOS", @"keydir_isExists", nil);
     return;
   }
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
@@ -55,11 +60,13 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
   self.account = [keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
   if (err) {
     // TODO  异常流程 keyStore 导入异常
+    _rejectBlock(@"iOS", @"importKey_importKey", err);
     return;
   }
   NSString *address = [[self.account getAddress] getHex];
   NSLog(@"init address ====> %@",address);
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+  _resolveBlock(@[@YES]);
 }
 
 

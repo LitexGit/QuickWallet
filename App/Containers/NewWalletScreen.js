@@ -32,6 +32,7 @@ class NewWalletScreen extends Component {
           isAgreedUseTerms:true,
           isShowRemind:false,
           isInputValid:false,
+          isShowPassword:false,
       };
   }
 
@@ -62,7 +63,10 @@ class NewWalletScreen extends Component {
   }
 
   _onPressEyeImg = ()=>{
-      console.log('============_onPressEyeImg========================');
+      const {isShowPassword} = this.state;
+      this.setState({
+          isShowPassword:!isShowPassword
+      });
   }
 
   _onPressBtn= async ()=>{
@@ -102,9 +106,7 @@ class NewWalletScreen extends Component {
       const remind001 = '密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要';
       const remind002 = 'QuickWallet 不存储密码,也无法帮您找回,请务必牢记';
 
-      const isShowPassword = false;
-
-      const {isAgreedUseTerms, isShowRemind, isInputValid}=this.state;
+      const {isAgreedUseTerms, isShowRemind, isInputValid, isShowPassword}=this.state;
 
       const remindView = isShowRemind ? (<View style={styles.remindView}>
           <Ionicons name={'ios-lock'} size={Metrics.icons.small} color={Colors.separateLineColor}/>
