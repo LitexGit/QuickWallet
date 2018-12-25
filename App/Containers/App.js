@@ -28,7 +28,6 @@ class App extends Component {
       ScheduleTasks.executeOnceDaily();
       ScheduleTasks.executeOncePerLaunch();
       ScheduleTasks.executeOncePerSession();
-
   }
 
   render () {

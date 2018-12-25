@@ -14,8 +14,7 @@ import UserTermsAlert from '../Components/UserTermsAlert';
 import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
-
-import GethModule from '../Lib/NativeBridge/WalletUtils';
+import WalletActions from '../Redux/WalletRedux';
 
 
 class NewWalletScreen extends Component {
@@ -68,22 +67,18 @@ class NewWalletScreen extends Component {
           isShowPassword:!isShowPassword
       });
   }
-
-  _onPressBtn= async ()=>{
-      // const address = '0X11111';
-      // const type = 1;
-      // const params = {address, type};
-      // const {register} = this.props;
-      // register(params);
-      /*
-        1:新建钱包
-        01:success: => register
-        02:failure: => TODO 应该不存在失败
-      */
-      const address = await GethModule.newAccount();
-      console.log('=============RN=======================');
-      console.log(address);
-      console.log('=============RN=======================');
+  // const address = '0X11111';
+  // const type = 1;
+  // const params = {address, type};
+  // const {register} = this.props;
+  // register(params);
+  /*
+    1:新建钱包
+    01:success: => register
+    02:failure: => TODO 应该不存在失败
+  */
+  _onPressBtn = ()=>{
+      this.props.gethNewAccount({passphrase:this.password});
   }
 
   _checkInputIsValid=()=>{
@@ -168,12 +163,23 @@ class NewWalletScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+
+    const {
+        wallet:{loading}
+    } = state;
+    console.log('===========loading=========================');
+    console.log(loading);
+    console.log('===========loading=========================');
+    return {
+        loading
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     register: (params) => dispatch(UserActions.registerRequest(params)),
+    gethNewAccount: (params) => dispatch(WalletActions.gethNewAccount(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

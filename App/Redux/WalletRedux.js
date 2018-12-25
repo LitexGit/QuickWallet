@@ -12,6 +12,8 @@ const { Types, Creators } = createActions({
     gethImportMnemonic: ['data'],
     gethImportPrivateKey: ['data'],
     gethExportPrivateKey: ['data'],
+
+    setLoading: ['data'],
 });
 
 export const WalletTypes = Types;
@@ -40,6 +42,9 @@ export const WalletSelectors = {
 
 /* ------------- Reducers ------------- */
 
+export const setLoading = (state, {data}) =>
+    state.merge({...data});
+
 // request the avatar for a user
 export const request = (state, { data }) =>
     // console.log('================data====================');
@@ -61,5 +66,6 @@ export const failure = (state) =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+    [Types.SET_LOADING]: setLoading,
 
 });

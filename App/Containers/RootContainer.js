@@ -4,18 +4,23 @@ import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import StartupActions from '../Redux/StartupRedux';
 import ReduxPersist from '../Config/ReduxPersist';
-
-// Styles
 import styles from './Styles/RootContainerStyles';
 
+import WalletActions from '../Redux/WalletRedux';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+
+
 class RootContainer extends Component {
-    componentDidMount () {
-    // if redux persist is not active fire startup action
+    async componentDidMount  () {
         if (!ReduxPersist.active) {
             this.props.startup();
         }
+        const {gethInit} = this.props;
+        const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED);
+        const rawurl = 'ws://rinkeby03.milewan.com:8546';
+        const passphrase = '11111111';
+        gethInit({isLogin, rawurl, passphrase});
     }
-
     render () {
         return (
             <View style={styles.applicationView}>
@@ -26,9 +31,13 @@ class RootContainer extends Component {
     }
 }
 
-// wraps dispatch to create nicer functions to call within our component
-const mapDispatchToProps = (dispatch) => ({
-    startup: () => dispatch(StartupActions.startup())
+const mapStateToProps = (state) => ({
 });
 
-export default connect(null, mapDispatchToProps)(RootContainer);
+const mapDispatchToProps = (dispatch) => ({
+    startup: () => dispatch(StartupActions.startup()),
+    gethInit: (params) => dispatch(WalletActions.gethInit(params)),
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);
