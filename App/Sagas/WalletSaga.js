@@ -32,9 +32,6 @@ export function *gethRandomMnemonic () {
     const result =  yield GethModule.randomMnemonic();
     // TODO 添加数组校验
     const mnemonic =  Ramda.head(result);
-    console.log('==========gethRandomMnemonic=========================');
-    console.log(mnemonic);
-    console.log('==========gethRandomMnemonic==========================');
     // TODO 添加mnemonic校验
     yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
 }

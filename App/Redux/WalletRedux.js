@@ -44,13 +44,8 @@ export const WalletSelectors = {
 };
 
 /* ------------- Reducers ------------- */
-export const gethRandomMnemonicSuccess = (state, {data}) =>{
-    console.log('===========state.merge({...data})=========================');
-    console.log(state.merge({...data}));
-    console.log('===========state.merge({...data})=========================');
-    return state.merge({...data});
-};
-
+export const gethRandomMnemonicSuccess = (state, {data}) =>
+    state.merge({...data});
 
 export const setLoading = (state, {data}) =>
     state.merge({...data});
