@@ -981,6 +981,14 @@ If a contains no filename, the address must match a unique key.
  */
 - (BOOL)deleteAccount:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
 /**
+ * ExportECSDAKey exports as a ECSDA key, encrypted with newPassphrase.
+ */
+- (NSData*)exportECSDAKey:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
+/**
+ * ExportECSDAKeyHex exports as a ECSDA key, encrypted with newPassphrase.
+ */
+- (NSString*)exportECSDAKeyHex:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
+/**
  * ExportKey exports as a JSON key, encrypted with newPassphrase.
  */
 - (NSData*)exportKey:(GethAccount*)account passphrase:(NSString*)passphrase newPassphrase:(NSString*)newPassphrase error:(NSError**)error;
