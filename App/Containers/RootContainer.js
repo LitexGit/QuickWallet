@@ -37,7 +37,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     startup: () => dispatch(StartupActions.startup()),
     gethInit: (params) => dispatch(WalletActions.gethInit(params)),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

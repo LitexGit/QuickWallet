@@ -8,11 +8,19 @@ import Ramda from 'ramda';
 
 
 export function *gethInit (action) {
-    const {data:params} = action;
-    const {isLogin=false, rawurl='', passphrase=''} = params;
-    yield put(WalletActions.setLoading({loading:true}));
-    yield GethModule.init({isLogin, rawurl, passphrase});
-    yield put(WalletActions.setLoading({loading:false}));
+    try {
+        const {data:params} = action;
+        const {isLogin=false, rawurl='', passphrase=''} = params;
+        yield put(WalletActions.setLoading({loading:true}));
+        yield GethModule.init({isLogin, rawurl, passphrase});
+        yield put(WalletActions.setLoading({loading:false}));
+    } catch (error) {
+        // TODO 初始化 异常处理逻辑
+        console.log('==============error======================');
+        console.log(error);
+        console.log('==============error======================');
+    }
+
 
 }
 

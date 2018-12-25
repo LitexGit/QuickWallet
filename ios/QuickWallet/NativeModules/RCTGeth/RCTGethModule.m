@@ -214,11 +214,14 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
     NSScanner* scanner = [NSScanner scannerWithString:hexStr];
     unsigned int intValue;
     [scanner scanHexInt:&intValue];
-    
+
     [data appendBytes:&intValue length:1];
   }
   return data;
 }
+
+
+
 
 - (NSString *)dataToJson:(id)data{
   NSString *jsonStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
