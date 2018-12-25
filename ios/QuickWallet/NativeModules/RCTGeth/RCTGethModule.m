@@ -19,6 +19,8 @@ static NSString *keyStoreFileDir  = @"keystore_file_dir";
 
 @property(nonatomic, strong) GethAccount *account;
 
+@property(nonatomic, strong) GethKeyStore *keyStore;
+
 @property(nonatomic, strong) GethEthereumClient *ethClient;
 
 @property(nonatomic, copy) RCTPromiseResolveBlock resolveBlock;
@@ -202,6 +204,58 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
     return;
   }
   _resolveBlock(@[privateKey]);
+}
+
+RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress value:(int64_t)value resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+  _resolveBlock = resolver;
+  _rejectBlock = reject;
+  
+  GethContext *context = [[GethContext alloc] init];
+  GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
+  int64_t number = -1;
+  int64_t nonce = 0x0;
+  NSError *nonceErr = nil;
+  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
+  if (!isGet || nonceErr) {
+    _rejectBlock(@"iOS", @"getNonceAt", nonceErr);
+    return;
+  }
+
+  GethAddress *to = [[GethAddress alloc] initFromHex:toAddress];
+  GethBigInt *amount = [[GethBigInt alloc] init:value];
+  ino64_t gasLimit = 21000;
+  NSError *gasErr = nil;
+  GethBigInt *gasPrice = [self.ethClient suggestGasPrice:context error:&gasErr];
+  if (!isGet || nonceErr) {
+    _rejectBlock(@"iOS", @"suggestGasPrice", gasErr);
+    return;
+  }
+
+  NSData *data = [NSData data];
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
+  GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
+  if (!signedTx) {
+    _rejectBlock(@"iOS", @"signTxWithKeyStore", nil);
+  }
+  
+  NSError *sendErr = nil;
+  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
+  if (!isSend || sendErr) {
+    _rejectBlock(@"iOS", @"sendTransaction", sendErr);
+    return;
+  }
+  _resolveBlock(@[@YES]);
+}
+
+- (GethTransaction *)signTxWithKeyStore:(GethKeyStore *)keyStore Account:(GethAccount *)account passphrase:(NSString *)passphrase transaction:(GethTransaction *)transaction{
+  int64_t chainId = 4;
+  GethBigInt *chainID = [[GethBigInt alloc] init:chainId];
+  NSError *err = nil;
+  GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&err];
+  if (err) {
+    return nil;
+  }
+  return signedTx;
 }
 
 
