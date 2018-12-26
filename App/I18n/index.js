@@ -1,45 +1,44 @@
-import I18n , { getLanguages }from 'react-native-i18n';
+import I18n from 'react-native-i18n';
 
-const missingTranslationRegex = /^\[missing ".*" translation\]$/;
+import en from './languages/english.json';
+import zh from './languages/zh.json';
 
-// This function is a wrapper to avoid exception wich leads in a crash
-const translateOrFallback = (initialMsg, options) => {
-    getLanguages().then(languages => {
-        // console.log('=============getLanguages=======================');
-        // console.log(languages); // ['en-US', 'en']
-        // console.log('=============getLanguages=======================');
-    });
-    // console.log('=============initialMsg=======================');
-    // console.log(options);
-    // console.log('=============initialMsg=======================');
-    // We tried to translate something else than a string
-    // The native I18n function will simply crash instead of rejecting the attempt with an error message
-    if (typeof initialMsg !== 'string') {
-        __DEV__ &&
-      console.log(
-          `I18n: you must give a string to translate instead of "${typeof initialMsg}"`
-      );
-
-        return ''; // We don't return any message as we don't know what to send
-    }
-
-    const localMsg = I18n.t(initialMsg, options);
-
-    // The translation does not exist, the default message is not very sexy
-    // Instead we return the message we tried to translate
-    if (missingTranslationRegex.test(localMsg)) {
-        __DEV__ &&
-      console.log(
-          `translation "${initialMsg}" does not exists in translations files`
-      );
-
-        return initialMsg;
-    }
-
-    return localMsg;
+I18n.defaultLocale = 'en';
+I18n.fallbacks = true;
+I18n.translations = {
+    en,
+    zh,
 };
 
-export default {
-    ...I18n,
-    t: translateOrFallback
-};
+export default I18n;
+
+
+// const missingTranslationRegex = /^\[missing ".*" translation\]$/;
+
+// // This function is a wrapper to avoid exception wich leads in a crash
+// const translateOrFallback = initialMsg => {
+//     // We tried to translate something else than a string
+//     // The native I18n function will simply crash instead of rejecting the attempt with an error message
+//     if (typeof initialMsg !== 'string') {
+//         __DEV__ && console.log(`I18n: you must give a string to translate instead of "${typeof initialMsg}"`);
+
+//         return ''; // We don't return any message as we don't know what to send
+//     }
+
+//     const localMsg = I18n.t(initialMsg);
+
+//     // The translation does not exist, the default message is not very sexy
+//     // Instead we return the message we tried to translate
+//     if (missingTranslationRegex.test(localMsg)) {
+//         __DEV__ && console.log(`translation "${initialMsg}" does not exists in translations files`);
+
+//         return initialMsg;
+//     }
+
+//     return localMsg;
+// };
+
+// export default {
+//     ...I18n,
+//     t: translateOrFallback
+// };

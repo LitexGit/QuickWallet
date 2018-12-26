@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import {Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Avatar } from 'react-native-elements';
 import styles from './Styles/AccountScreenStyle';
@@ -10,10 +10,11 @@ import { Metrics , Colors } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
+import I18n from '../I18n';
 
 class AccountScreen extends Component {
   static navigationOptions = {
-      title:'我的账户',
+      title:I18n.t('AccountTabTitle'),
       backgroundColor: 'red',
   }
   _onPressBackup=()=>{

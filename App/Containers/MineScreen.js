@@ -16,9 +16,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
 import AssetActions from '../Redux/AssetRedux';
+import I18n from '../I18n';
 
 class MineScreen extends Component {
   static navigationOptions = {
+      tabBarLabel: I18n.t('MineTabBarLabel'),
       tabBarIcon: ({tintColor}) => (
           <Ionicons name={'md-person'} size={Metrics.bottomTabIconSize} color={tintColor}/>
       )

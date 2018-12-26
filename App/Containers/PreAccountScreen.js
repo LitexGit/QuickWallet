@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, KeyboardAvoidingView } from 'react-native';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Metrics , Colors, Fonts, } from '../Themes';
+import { Metrics , Colors } from '../Themes';
 import { Button } from 'react-native-elements';
 import styles from './Styles/PreAccountScreenStyle';
 import { View } from 'react-native-animatable';
 import CreatConfig from '../Config/CreatConfig';
 import { NavigationActions } from 'react-navigation';
+import I18n from '../I18n';
 
 class PreAccountScreen extends Component {
   static navigationOptions = {
+      tabBarLabel: I18n.t('MineTabBarLabel'),
       tabBarIcon: ({tintColor}) => (
           <Ionicons name={'md-person'} size={Metrics.bottomTabIconSize} color={tintColor}/>
       )

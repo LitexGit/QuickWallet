@@ -12,10 +12,6 @@ I18n.translations = {
 
 const languageCode = I18n.locale.substr(0, 2);
 
-console.log('=======languageCode=============================');
-console.log(languageCode);
-console.log('========languageCode============================');
-
 // All other translations for the app goes to the respective language file:
 switch (languageCode) {
 case 'af':
@@ -51,14 +47,13 @@ case 'es':
 case 'et':
     I18n.translations.et = require('./languages/et.json');
     break;
-case 'fi':{
+case 'fi':
     const addCode = I18n.locale.substr(0, 3);
     if (addCode === 'fil') {
         I18n.translations.fil = require('./languages/fil.json');
     } else {
         I18n.translations.fi = require('./languages/fi.json');
     }
-}
     break;
 case 'fr':
     I18n.translations.fr = require('./languages/fr.json');
@@ -74,6 +69,9 @@ case 'hr':
     break;
 case 'hu':
     I18n.translations.hu = require('./languages/hu.json');
+    break;
+case 'in':
+    I18n.translations.in = require('./languages/id.json');
     break;
 case 'id':
     I18n.translations.id = require('./languages/id.json');

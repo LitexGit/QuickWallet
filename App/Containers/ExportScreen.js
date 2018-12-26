@@ -8,10 +8,11 @@ import styles from './Styles/ExportScreenStyle';
 import QRCode from 'react-native-qrcode-svg';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import I18n from '../I18n';
 
 class ExportScreen extends Component {
   static navigationOptions = {
-      title:'备份账户',
+      title:I18n.t('ExportTabTitle'),
   }
 
 _onPressBtn=()=>{

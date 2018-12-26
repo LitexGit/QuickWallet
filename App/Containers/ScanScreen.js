@@ -3,11 +3,12 @@ import { View, Text, Animated, Easing, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/ScanScreenStyle';
 import { RNCamera } from 'react-native-camera';
+import I18n from '../I18n';
 
 class ScanScreen extends Component {
 
   static navigationOptions = {
-      title: '扫码',
+      title:I18n.t('ScanTabTitle'),
   };
 
   constructor(props) {

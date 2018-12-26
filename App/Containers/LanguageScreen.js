@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import I18n from '../I18n';
 
 // Styles
 import styles from './Styles/LanguageScreenStyle';
@@ -10,7 +9,7 @@ import styles from './Styles/LanguageScreenStyle';
 class LanguageScreen extends Component {
 
   static navigationOptions = {
-      title:'语言设置',
+      title:I18n.t('LanguageTabTitle'),
   }
 
   componentDidMount=()=>{

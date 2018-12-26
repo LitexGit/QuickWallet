@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { View, KeyboardAvoidingView, Text} from 'react-native';
+import { View, Text} from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/ImportScreenStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Colors, Metrics } from '../Themes';
+import { Colors } from '../Themes';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import MnemonicCompont from '../Components/MnemonicCompont';
 import KeyStoreCompont from '../Components/KeyStoreCompont';
+import I18n from '../I18n';
 
 
 class ImportScreen extends Component {
   static navigationOptions = {
-      title:'导入账户',
+      title:I18n.t('ImportTabTitle'),
   }
 
   _onChangeTab=()=>console.log();

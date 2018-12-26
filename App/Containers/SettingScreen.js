@@ -5,14 +5,13 @@ import {SettingConfig} from '../Config/MineConfig';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Metrics , Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
-
-// Styles
+import I18n from '../I18n';
 import styles from './Styles/SettingScreenStyle';
 
 class SettingScreen extends Component {
 
   static navigationOptions = {
-      title:'使用设置',
+      title:I18n.t('SettingTabTitle'),
   }
 
   _onPressItem=(key)=>{

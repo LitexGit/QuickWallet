@@ -1,4 +1,5 @@
 import { Colors, Fonts } from '../Themes';
+import I18n from '../I18n';
 
 const CreatConfig = {
     import:{

@@ -7,11 +7,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
+import I18n from '../I18n';
 
 
 class PreBackupScreen extends Component {
   static navigationOptions = {
-      title:'备份账户',
+      title:I18n.t('PreBackupTabTitle'),
   }
   _onPressBtn=()=>{
       this.props.navigate('BackupScreen');

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, SectionList, Text, KeyboardAvoidingView, RefreshControl, Image, TouchableOpacity} from 'react-native';
+import { View, SectionList, Text, RefreshControl, Image, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { Colors } from '../Themes';
 import styles from './Styles/TransferRecordScreenStyle';
@@ -11,11 +11,12 @@ import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
 import {sectionlize} from '../Lib/Format';
 import {getTxDirection} from '../Lib/Utils';
+import I18n from '../I18n';
 
 
 class TransferRecordScreen extends Component {
   static navigationOptions = {
-      title:'转账记录',
+      title:I18n.t('TransferRecordTabTitle'),
   }
 
   componentDidMount=()=>{

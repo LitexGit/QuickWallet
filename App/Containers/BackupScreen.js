@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/BackupScreenStyle';
 import { Button } from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
-import { Colors, Metrics } from '../Themes';
+import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import Ramda from 'ramda';
 import Spinner from 'react-native-loading-spinner-overlay';
 import WalletActions from '../Redux/WalletRedux';
+import I18n from '../I18n';
 
 
 class BackupScreen extends Component {
   static navigationOptions = {
-      title:'备份账户',
+      title:I18n.t('BackupTabTitle'),
   }
 
   constructor (props) {

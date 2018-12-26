@@ -5,10 +5,11 @@ import styles from './Styles/AssetsScreenStyle';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
 import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
+import I18n from '../I18n';
 
 class AssetsScreen extends Component {
   static navigationOptions = {
-      title:'我的资产',
+      title:I18n.t('AccountTabTitle'),
   }
 
   _onRefresh=()=>{

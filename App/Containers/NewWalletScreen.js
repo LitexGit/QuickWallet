@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import I18n from '../I18n';
 import styles from './Styles/NewWalletScreenStyle';
 import { View } from 'react-native-animatable';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -16,11 +15,11 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import WalletActions from '../Redux/WalletRedux';
 
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import I18n from '../I18n';
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
-      title:'创建账户',
+      title:I18n.t('NewWalletTabTitle'),
   }
 
   constructor (props) {

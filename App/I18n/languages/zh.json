@@ -12,10 +12,12 @@
   "AssetsTabTitle":"我的资产",
   "BackupTabTitle":"备份账户",
   "PreBackupTabTitle":"备份账户",
+  "ExportTabTitle":"备份账户",
   "ImportTabTitle":"导入账户",
   "NewWalletTabTitle":"创建账户",
   "PreAccountTabTitle":"我的",
-  "SearchTabTitle":"搜索"
+  "SearchTabTitle":"搜索",
+  "ScanTabTitle":"扫码"
 }
 
  // 搜索应用

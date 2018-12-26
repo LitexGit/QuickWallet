@@ -8,11 +8,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
+import I18n from '../I18n';
 
 class TransferScreen extends Component {
 
     static navigationOptions = {
-        title:'我的资产',
+        title:I18n.t('AssetsTabTitle'),
     }
 
     constructor(props){
