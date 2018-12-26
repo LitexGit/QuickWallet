@@ -11,11 +11,14 @@
 #import "FileManager.h"
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
+static NSString *rawurlKey  = @"raw_url_key";
+
 
 
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
 @interface RCTGethModule()
+@property(nonatomic, strong) NSString *rawurl;
 
 @property(nonatomic, strong) GethAccount *account;
 
@@ -36,6 +39,8 @@ RCT_EXPORT_MODULE();
 // 初始化客户端
 RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   
+  [[NSUserDefaults standardUserDefaults] setObject:rawurl forKey:rawurlKey];
+  
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
@@ -44,7 +49,6 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
   if (!passphrase || !passphrase.length) return;
   
   if (self.account && self.ethClient) return;
-  
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
   
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
@@ -55,8 +59,6 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
     // TODO  异常流程 登录状态不存在 keystore
-//    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
-//    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
     _rejectBlock(@"iOS", @"keydir_isExists", nil);
     return;
   }
@@ -78,13 +80,16 @@ RCT_EXPORT_METHOD(newAccount:(NSString *)passphrase resolver:(RCTPromiseResolveB
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
-  NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
-  [FileManager removeFileAtPath:keydir];
-  [FileManager createDirectoryIfNotExists:keydir];
-  
-  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-  NSLog(@"keyStore => %@", keyStore);
+  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
+  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
   _resolveBlock(@[@YES]);
+  
+//  NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
+//  [FileManager removeFileAtPath:keydir];
+//  [FileManager createDirectoryIfNotExists:keydir];
+//
+//  self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+//  NSLog(@"keyStore => %@", self.keyStore);
 //  // 创建钱包生成 keyStore
 //  NSError * err = nil;
 //  self.account = [keyStore newAccount:passphrase error:&err];
@@ -116,15 +121,18 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  
+  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
+  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
 
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
   [FileManager createDirectoryIfNotExists:keydir];
   
   NSData *ECDSAKey = [self byteStringToData:privateKey];
-  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
   NSError * err = nil;
-  self.account = [keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&err];
+  self.account = [self.keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&err];
   if (err) {
     _rejectBlock(@"iOS", @"import_privateKey_newAccount", err);
     return;
@@ -140,6 +148,9 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
+  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
+  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+  
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
   [FileManager createDirectoryIfNotExists:keydir];
@@ -150,9 +161,9 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
     _rejectBlock(@"iOS", @"mnemonic_privateKey", keyErr);
     return;
   }
-  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
   NSError * err = nil;
-  self.account = [keyStore importECDSAKey:privateKey passphrase:passphrase error:&err];
+  self.account = [self.keyStore importECDSAKey:privateKey passphrase:passphrase error:&err];
   if (err) {
     _rejectBlock(@"iOS", @"import_privateKey_newAccount", err);
     return;
@@ -178,27 +189,25 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
   [FileManager createDirectoryIfNotExists:keyTemp];
-  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
   
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
     // TODO  异常流程 登录状态不存在 keystore
-    //    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
-    //    UTC--2018-12-24T10-12-35.102375000Z--b5538753f2641a83409d2786790b42ac857c5340
     _rejectBlock(@"iOS", @"keydir_isExists", nil);
     return;
   }
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
   NSError *err = nil;
-  self.account = [keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
+  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
   if (err) {
     // TODO  异常流程 keyStore 导入异常
     _rejectBlock(@"iOS", @"importKey_importKey", err);
     return;
   }
   NSError *exportErr = nil;
-  NSString *privateKey = [keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&exportErr];
+  NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&exportErr];
   if (exportErr) {
     // TODO  异常流程 keyStore 导入异常
     _rejectBlock(@"iOS", @"export_privateKey", exportErr);
