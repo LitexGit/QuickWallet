@@ -5,6 +5,7 @@ import styles from './Styles/SearchCompontStyle';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Colors } from '../Themes';
+import I18n from '../I18n';
 
 
 export default class SearchCompont extends Component {
@@ -17,7 +18,7 @@ export default class SearchCompont extends Component {
     }
 
     static defaultProps = {
-        placeholder:'搜索应用',
+        placeholder:I18n.t('SearchApplication'),
         setValue:'',
     }
 

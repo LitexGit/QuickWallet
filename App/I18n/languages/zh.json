@@ -17,48 +17,44 @@
   "NewWalletTabTitle":"创建账户",
   "PreAccountTabTitle":"我的",
   "SearchTabTitle":"搜索",
-  "ScanTabTitle":"扫码"
-}
+  "ScanTabTitle":"扫码",
 
- // 搜索应用
- // 创建你的第一个
- // Layer2加速账户
- // 创建账户
- // 身份名
- // 密码
- // 重复输入密码
- // 创建
- // 导入账户
- // 导入
- // 输入助记词，用空格分隔离
- // 设置密码
- // 钱包密码
- // 重复输入密码
- // 输入明文私钥
- // 数据加载中…
- // 点击重新加载
- // 已加载全部数据
- // 暂时没有相关数据
- // 资产总价值：
- // 使用设置
- // 多语言
- // 货币单位
- // 下一步
- // 确认助记词
- // 完成
- // Refreshing...
- // 资产
- // 加载更多
- // 加载中...
- // 余额
- // 输入金额
- // 收款地址
- // 输入以太坊地址
- //(选填)
- // 备注
- // 继续
- // 使用条款
- // 完成
- // 备份账户
- // Loading... 请稍后...
+  "SearchApplication":"搜索应用",
+  "CreateYourFirst":"创建你的第一个",
+  "Layer2Account":"Layer2加速账户",
+  "Identity":"身份名",
+  "Password":"密码",
+  "ConfirmPassword":"重复输入密码",
+  "Create":"创建",
+  "ImportAccount":"导入账户",
+  "Import":"导入",
+  "EnterMnemonicRemind":"输入助记词，用空格分隔离",
+  "SetPassword":"设置密码",
+  "WalletPassword":"钱包密码",
+  "DataLoading":"数据加载中",
+  "ClickReload":"点击重新加载",
+  "DataLoaded":"已加载全部数据",
+  "NoDataAvailable":"暂时没有相关数据",
+  "AssetsValue":"资产总价值",
+  "UseSetting":"使用设置",
+  "multilingual":"多语言",
+  "MonetaryUnit":"货币单位",
+  "NextStep":"下一步",
+  "ConfirmMnemonic":"确认助记词",
+  "Complete":"完成",
+  "Refreshing":"Refreshing...",
+  "Assets":"资产",
+  "LoadMore":"加载更多",
+  "Loading":"加载中...",
+  "Balance":"余额",
+  "EnterAmount":"输入金额",
+  "ToAddress":"收款地址",
+  "EnterEthAddress":"输入以太坊地址",
+  "Optional":"(选填)",
+  "Note":"备注",
+  "Continue":"继续",
+  "TermsOfUse":"使用条款",
+  "BackupAccount":"备份账户",
+  "PleaseLater":"请稍后...",
+}
 
