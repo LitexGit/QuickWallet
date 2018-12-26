@@ -30,6 +30,8 @@
 		2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53A21D0A45800F9F04C /* RCTGethModule.m */; };
 		2322F53E21D0AB8400F9F04C /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53D21D0AB8400F9F04C /* FileManager.m */; };
 		2322F58621D247FE00F9F04C /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2322F58521D247FE00F9F04C /* Geth.framework */; };
+		239728C321D3510600047AE0 /* RCTZJWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 239728C021D3510600047AE0 /* RCTZJWebView.m */; };
+		239728C421D3510600047AE0 /* RCTZJWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 239728C121D3510600047AE0 /* RCTZJWebViewManager.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -464,6 +466,10 @@
 		2322F53C21D0AB8400F9F04C /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		2322F53D21D0AB8400F9F04C /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		2322F58521D247FE00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
+		239728BF21D3510600047AE0 /* RCTZJWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTZJWebViewManager.h; sourceTree = "<group>"; };
+		239728C021D3510600047AE0 /* RCTZJWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTZJWebView.m; sourceTree = "<group>"; };
+		239728C121D3510600047AE0 /* RCTZJWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTZJWebViewManager.m; sourceTree = "<group>"; };
+		239728C221D3510600047AE0 /* RCTZJWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTZJWebView.h; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* QuickWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -690,6 +696,7 @@
 		2322F51921D0A2B600F9F04C /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
+				239728BE21D3510600047AE0 /* RCTZJWebView */,
 				2322F53821D0A44600F9F04C /* RCTGeth */,
 			);
 			path = NativeModules;
@@ -808,6 +815,18 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		239728BE21D3510600047AE0 /* RCTZJWebView */ = {
+			isa = PBXGroup;
+			children = (
+				239728BF21D3510600047AE0 /* RCTZJWebViewManager.h */,
+				239728C121D3510600047AE0 /* RCTZJWebViewManager.m */,
+				239728C221D3510600047AE0 /* RCTZJWebView.h */,
+				239728C021D3510600047AE0 /* RCTZJWebView.m */,
+			);
+			name = RCTZJWebView;
+			path = QuickWallet/NativeModules/RCTZJWebView;
+			sourceTree = SOURCE_ROOT;
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
@@ -1583,8 +1602,10 @@
 			files = (
 				2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				239728C321D3510600047AE0 /* RCTZJWebView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2322F53E21D0AB8400F9F04C /* FileManager.m in Sources */,
+				239728C421D3510600047AE0 /* RCTZJWebViewManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

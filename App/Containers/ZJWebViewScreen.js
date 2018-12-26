@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { WebView} from 'react-native';
+import {} from 'react-native';
 import { connect } from 'react-redux';
+import ZJWebView from '../NativeComponent/ZJWebView';
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
 import styles from './Styles/ZJWebViewScreenStyle';
 
-const DEFAULT_URI = 'https://github.com/facebook/react-native';
+const DEFAULT_URI = 'https://www.baidu.com';
 
 class ZJWebViewScreen extends Component {
   componentDidMount=()=>{
@@ -16,7 +17,7 @@ class ZJWebViewScreen extends Component {
   render () {
       const url = DEFAULT_URI;
       return (
-          <WebView style={styles.container} source={{url}} useWebKit/>);
+          <ZJWebView style={styles.container} source={{url}} useWebKit/>);
   }
 }
 

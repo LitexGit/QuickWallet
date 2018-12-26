@@ -34,8 +34,6 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
 
 
 
-
-
 function getDisplayedPrivateKey(key){
     const reg = RegExp(/0x/);
     if(key.match(reg)) return key;
