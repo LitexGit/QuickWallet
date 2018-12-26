@@ -27,13 +27,13 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
-		2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53A21D0A45800F9F04C /* RCTGethModule.m */; };
-		2322F53E21D0AB8400F9F04C /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53D21D0AB8400F9F04C /* FileManager.m */; };
 		2322F58621D247FE00F9F04C /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2322F58521D247FE00F9F04C /* Geth.framework */; };
-		2397293021D3903E00047AE0 /* RNCUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292921D3903D00047AE0 /* RNCUIWebView.m */; };
-		2397293121D3903E00047AE0 /* RNCWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292A21D3903D00047AE0 /* RNCWKWebView.m */; };
-		2397293221D3903E00047AE0 /* RNCWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292B21D3903D00047AE0 /* RNCWKWebViewManager.m */; };
-		2397293321D3903E00047AE0 /* RNCUIWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292F21D3903E00047AE0 /* RNCUIWebViewManager.m */; };
+		2397295021D3972A00047AE0 /* RNCUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294321D3972A00047AE0 /* RNCUIWebView.m */; };
+		2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294421D3972A00047AE0 /* RNCWKWebView.m */; };
+		2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */; };
+		2397295321D3972A00047AE0 /* RNCUIWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */; };
+		2397295421D3972A00047AE0 /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294D21D3972A00047AE0 /* RCTGethModule.m */; };
+		2397295521D3972A00047AE0 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294E21D3972A00047AE0 /* FileManager.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -463,19 +463,19 @@
 		2074D8872D0F428FA52DC517 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
 		2322F51721D0A21F00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Frameworks/Geth.framework; sourceTree = "<group>"; };
-		2322F53921D0A45800F9F04C /* RCTGethModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTGethModule.h; sourceTree = "<group>"; };
-		2322F53A21D0A45800F9F04C /* RCTGethModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTGethModule.m; sourceTree = "<group>"; };
-		2322F53C21D0AB8400F9F04C /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
-		2322F53D21D0AB8400F9F04C /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		2322F58521D247FE00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
-		2397292821D3903D00047AE0 /* RNCUIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebView.h; sourceTree = "<group>"; };
-		2397292921D3903D00047AE0 /* RNCUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebView.m; sourceTree = "<group>"; };
-		2397292A21D3903D00047AE0 /* RNCWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebView.m; sourceTree = "<group>"; };
-		2397292B21D3903D00047AE0 /* RNCWKWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebViewManager.m; sourceTree = "<group>"; };
-		2397292C21D3903D00047AE0 /* RNCWKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebView.h; sourceTree = "<group>"; };
-		2397292D21D3903E00047AE0 /* RNCWKWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebViewManager.h; sourceTree = "<group>"; };
-		2397292E21D3903E00047AE0 /* RNCUIWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebViewManager.h; sourceTree = "<group>"; };
-		2397292F21D3903E00047AE0 /* RNCUIWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebViewManager.m; sourceTree = "<group>"; };
+		2397294321D3972A00047AE0 /* RNCUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebView.m; sourceTree = "<group>"; };
+		2397294421D3972A00047AE0 /* RNCWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebView.m; sourceTree = "<group>"; };
+		2397294521D3972A00047AE0 /* RNCWKWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebViewManager.h; sourceTree = "<group>"; };
+		2397294621D3972A00047AE0 /* RNCUIWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebViewManager.h; sourceTree = "<group>"; };
+		2397294721D3972A00047AE0 /* RNCUIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebView.h; sourceTree = "<group>"; };
+		2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebViewManager.m; sourceTree = "<group>"; };
+		2397294921D3972A00047AE0 /* RNCWKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebView.h; sourceTree = "<group>"; };
+		2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebViewManager.m; sourceTree = "<group>"; };
+		2397294C21D3972A00047AE0 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		2397294D21D3972A00047AE0 /* RCTGethModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTGethModule.m; sourceTree = "<group>"; };
+		2397294E21D3972A00047AE0 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
+		2397294F21D3972A00047AE0 /* RCTGethModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTGethModule.h; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* QuickWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -663,8 +663,8 @@
 		13B07FAE1A68108700A75B9A /* QuickWallet */ = {
 			isa = PBXGroup;
 			children = (
+				2397294121D3972A00047AE0 /* NativeModules */,
 				2322F53521D0A2F200F9F04C /* Frameworks */,
-				2322F51921D0A2B600F9F04C /* NativeModules */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -699,15 +699,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2322F51921D0A2B600F9F04C /* NativeModules */ = {
-			isa = PBXGroup;
-			children = (
-				239728BE21D3510600047AE0 /* RCTZJWebView */,
-				2322F53821D0A44600F9F04C /* RCTGeth */,
-			);
-			path = NativeModules;
-			sourceTree = "<group>";
-		};
 		2322F53521D0A2F200F9F04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -715,18 +706,6 @@
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
-		};
-		2322F53821D0A44600F9F04C /* RCTGeth */ = {
-			isa = PBXGroup;
-			children = (
-				2322F53921D0A45800F9F04C /* RCTGethModule.h */,
-				2322F53A21D0A45800F9F04C /* RCTGethModule.m */,
-				2322F53C21D0AB8400F9F04C /* FileManager.h */,
-				2322F53D21D0AB8400F9F04C /* FileManager.m */,
-			);
-			name = RCTGeth;
-			path = QuickWallet/NativeModules/RCTGeth;
-			sourceTree = SOURCE_ROOT;
 		};
 		232F1B5421C7BD4800F2C490 /* Recovered References */ = {
 			isa = PBXGroup;
@@ -822,21 +801,41 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		239728BE21D3510600047AE0 /* RCTZJWebView */ = {
+		2397294121D3972A00047AE0 /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
-				2397292821D3903D00047AE0 /* RNCUIWebView.h */,
-				2397292921D3903D00047AE0 /* RNCUIWebView.m */,
-				2397292E21D3903E00047AE0 /* RNCUIWebViewManager.h */,
-				2397292F21D3903E00047AE0 /* RNCUIWebViewManager.m */,
-				2397292C21D3903D00047AE0 /* RNCWKWebView.h */,
-				2397292A21D3903D00047AE0 /* RNCWKWebView.m */,
-				2397292D21D3903E00047AE0 /* RNCWKWebViewManager.h */,
-				2397292B21D3903D00047AE0 /* RNCWKWebViewManager.m */,
+				2397294221D3972A00047AE0 /* RCTWebView */,
+				2397294B21D3972A00047AE0 /* RCTGeth */,
 			);
-			name = RCTZJWebView;
-			path = QuickWallet/NativeModules/RCTZJWebView;
-			sourceTree = SOURCE_ROOT;
+			name = NativeModules;
+			path = QuickWallet/NativeModules;
+			sourceTree = "<group>";
+		};
+		2397294221D3972A00047AE0 /* RCTWebView */ = {
+			isa = PBXGroup;
+			children = (
+				2397294321D3972A00047AE0 /* RNCUIWebView.m */,
+				2397294421D3972A00047AE0 /* RNCWKWebView.m */,
+				2397294521D3972A00047AE0 /* RNCWKWebViewManager.h */,
+				2397294621D3972A00047AE0 /* RNCUIWebViewManager.h */,
+				2397294721D3972A00047AE0 /* RNCUIWebView.h */,
+				2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */,
+				2397294921D3972A00047AE0 /* RNCWKWebView.h */,
+				2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */,
+			);
+			path = RCTWebView;
+			sourceTree = "<group>";
+		};
+		2397294B21D3972A00047AE0 /* RCTGeth */ = {
+			isa = PBXGroup;
+			children = (
+				2397294C21D3972A00047AE0 /* FileManager.h */,
+				2397294D21D3972A00047AE0 /* RCTGethModule.m */,
+				2397294E21D3972A00047AE0 /* FileManager.m */,
+				2397294F21D3972A00047AE0 /* RCTGethModule.h */,
+			);
+			path = RCTGeth;
+			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
@@ -1610,14 +1609,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */,
+				2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */,
+				2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				2397293021D3903E00047AE0 /* RNCUIWebView.m in Sources */,
-				2322F53E21D0AB8400F9F04C /* FileManager.m in Sources */,
-				2397293321D3903E00047AE0 /* RNCUIWebViewManager.m in Sources */,
-				2397293221D3903E00047AE0 /* RNCWKWebViewManager.m in Sources */,
-				2397293121D3903E00047AE0 /* RNCWKWebView.m in Sources */,
+				2397295521D3972A00047AE0 /* FileManager.m in Sources */,
+				2397295321D3972A00047AE0 /* RNCUIWebViewManager.m in Sources */,
+				2397295021D3972A00047AE0 /* RNCUIWebView.m in Sources */,
+				2397295421D3972A00047AE0 /* RCTGethModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
