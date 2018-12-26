@@ -25,8 +25,7 @@ async function exportPrivateKey({passphrase}){
     return await gethModule.exportPrivateKey(passphrase);
 }
 
-async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress='', value=0, gasPrice=0}){
-    const  decimal=1e9;
+async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress='', value=0, gasPrice=0, decimal}){
     const amount = value * decimal;
     if (symbol === 'ETH') {
         return await gethModule.transferEth(passphrase, fromAddress, toAddress, amount, gasPrice);

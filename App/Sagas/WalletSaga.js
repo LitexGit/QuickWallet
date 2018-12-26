@@ -125,10 +125,10 @@ export function *gethTransfer (action) {
         console.log('============params========================');
         console.log(params);
         console.log('============params========================');
-        const {symbol, passphrase, fromAddress, toAddress, value, gasPrice} = params;
+        const {symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal} = params;
         // TODO 参数异常校验
         yield put(WalletActions.setLoading({loading:true}));
-        const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice});
+        const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal});
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const isSend =  Ramda.head(result);

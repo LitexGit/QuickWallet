@@ -36,8 +36,9 @@ class TransferScreen extends Component {
       address = '0xb5538753F2641A83409D2786790b42aC857C5340';
 
       const symbol = 'ETH';
+      const decimal = 1e9;
       const {inputBalance, inputAddress} = this.state;
-      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas});
+      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas, decimal});
   }
 
   _onChangeBalance=(text)=>{
