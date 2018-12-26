@@ -234,9 +234,6 @@ class WebView extends React.Component<WebViewSharedProps, State> {
           NativeWebView = NativeWebView || RNCUIWebView;
       }
 
-      console.log('==========webView==========================');
-      console.log('render');
-      console.log('==========webView==========================');
       const webView = (
           <NativeWebView
               ref={this.webViewRef}
@@ -315,8 +312,6 @@ class WebView extends React.Component<WebViewSharedProps, State> {
    * Reloads the current page.
    */
   reload = () => {
-      console.log('============reload========================');
-      console.log('============reload========================');
       this.setState({ viewState: WebViewState.LOADING });
       UIManager.dispatchViewManagerCommand(
           this.getWebViewHandle(),

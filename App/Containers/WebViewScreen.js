@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { WebView, Share, Platform } from 'react-native';
 import { connect } from 'react-redux';
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
 import styles from './Styles/WebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
 
-const DEFAULT_URI = 'https://github.com/facebook/react-native';
+const DEFAULT_URI = 'http://litex.io/';
 
 class WebViewScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-      title:'Ethereum Accounts',
+      title:'WebView',
       headerRight: (
           <RightComponent
               onPressRefresh={navigation.getParam('onPressRefresh')}
@@ -70,15 +66,30 @@ _onPressShare= async ()=>{
     }
 }
 
-
-
 render () {
     const url = DEFAULT_URI;
     return (
         <WebView useWebKit
             ref ={ref=>this.webview = ref}
             style={styles.container}
-            source={{url}}/>);
+            source={{url}}
+            onError={(e)=>{
+                console.log('===========onError=========================');
+                console.log(e);
+            }}
+            onLoad={(e)=>{
+                console.log('===========onLoad=========================');
+                console.log(e);
+            }}
+            onLoadEnd={(e)=>{
+                console.log('===========onLoadEnd=========================');
+                console.log(e);
+            }}
+            onLoadStart={(e)=>{
+                console.log('===========onLoadStart=========================');
+                console.log(e);
+            }}
+        />);
 }
 }
 
@@ -89,23 +100,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WebViewScreen);
-
-// onError onLoad onLoadEnd onLoadStart renderError [startInLoadingState, renderLoading]
-// originWhitelist 白名单
-// dataDetectorTypes 监测关键字
-
-// onLoadStart={this._onLoadStart}
-// onLoad={this._onLoad}
-// onLoadEnd={this._onLoadEnd}
-
-// _onLoad=(e)=>{
-//   console.log('=============_onLoad=======================');
-// }
-// _onLoadStart=(e)=>{
-//   console.log('=============_onLoadStart=======================');
-// }
-// _onLoadEnd=(e)=>{
-//   console.log('=============_onLoadEnd=======================');
-// }
 
 

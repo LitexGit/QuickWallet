@@ -10,7 +10,6 @@ import styles from './Styles/FoundScreenStyle';
 
 import { NavigationActions } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
-
 class FoundScreen extends Component {
   static navigationOptions = {
       tabBarLabel: I18n.t('FoundTabBarLabel'),
@@ -52,15 +51,14 @@ class FoundScreen extends Component {
   }
 
   _onSubmitEditing=()=>{
-      console.log('================_onSubmitEditing====================');
+      this.props.navigate('ZJWebViewScreen');
   }
 
-  _onPressBanner = (item)=>{
-      const {type, url} = item;
-      console.log('type:'+type+'url:'+url);
+  _onPressBanner = ()=>{
+      this.props.navigate('WebViewScreen');
   }
 
-  _onPressItem = (item)=>{
+  _onPressItem = ()=>{
       this.props.navigate('ZJWebViewScreen');
   }
 
