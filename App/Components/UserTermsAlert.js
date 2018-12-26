@@ -51,36 +51,44 @@ export default class UserTermsAlert extends Component {
         const agreedImg = isAgreed ? <AntDesign name={'checkcircle'} size={Metrics.icons.small} color={Colors.textColor}/> : <AntDesign name={'checkcircleo'} size={Metrics.icons.small} color={Colors.separateLineColor}/>;
         const btnStyle = isAgreed ? {backgroundColor:Colors.textColor} : {backgroundColor:Colors.dividingLineColor};
         return (
-            <Overlay
-                containerStyle={styles.overlay}
-                childrenWrapperStyle={styles.content}
-                visible={isShow && isOpen}
-                animationType='zoomIn'
-                animationDuration={300}>
-                <View style={styles.container}>
-                    <View style={styles.topSection}>
-                        <Text style={styles.titleStyle}>使用条款</Text>
-                        <FontAwesome name={'compass'} size={Metrics.icons.small} color={Colors.textColor}/>
-                    </View>
-                    <ScrollView style={styles.scrollView}>
-                        <View style={styles.contentTop}></View>
-                        <View style={styles.bottomContent}>
-                            <TouchableOpacity onPress={()=>this._onPressReadBtn()}>
-                                {agreedImg}
-                            </TouchableOpacity>
-                            <View style={styles.remindView}>
-                                <Text style={styles.remind}>{remin001}</Text>
-                                <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{remin002}</Text>
-                            </View>
-                        </View>
-                    </ScrollView>
-                    <TouchableOpacity disabled={!isAgreed} onPress={()=>this._onPressBtn()}>
-                        <View style={[styles.bottomSection, btnStyle]}>
-                            <Text style={styles.btnTitle}>继续</Text>
-                        </View>
-                    </TouchableOpacity>
+            <View style={styles.container}>
+                <View style={styles.topSection}>
+                    <Text style={styles.titleStyle}>使用条款</Text>
+                    <FontAwesome name={'compass'} size={Metrics.icons.small} color={Colors.textColor}/>
                 </View>
-            </Overlay>
+                <ScrollView style={styles.scrollView}>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text>{remin001}{remin002}</Text>
+                    <Text/>
+                </ScrollView>
+                <View style={styles.bottomContent}>
+                    <TouchableOpacity onPress={()=>this._onPressReadBtn()}>
+                        {agreedImg}
+                    </TouchableOpacity>
+                    <View style={styles.remindView}>
+                        <Text style={styles.remind}>{remin001}</Text>
+                        <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{remin002}</Text>
+                    </View>
+                </View>
+                <TouchableOpacity disabled={!isAgreed} onPress={()=>this._onPressBtn()}>
+                    <View style={[styles.bottomSection, btnStyle]}>
+                        <Text style={styles.btnTitle}>继续</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         );
     }
 }

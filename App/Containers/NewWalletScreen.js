@@ -136,12 +136,15 @@ class NewWalletScreen extends Component {
               </View>
           );
       });
+      const userTermsView = (!isAgreedUseTerms ? (<View zIndex={999} style={styles.userTermsStyle}>
+          <UserTermsAlert/>
+      </View>): null);
       return (
           <View style={styles.container}>
+              {userTermsView}
               <Spinner visible={loading} cancelable
                   textContent={'Loading...'}
                   textStyle={styles.spinnerText}/>
-              <UserTermsAlert isShow={!isAgreedUseTerms}/>
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
                   <Text style={styles.titleStytle}>创建账户</Text>
