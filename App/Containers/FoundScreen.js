@@ -22,7 +22,6 @@ class FoundScreen extends Component {
       super(props);
       this.state = {
           webLink:'',
-          autoFocus:false
       };
   }
 
@@ -42,9 +41,9 @@ class FoundScreen extends Component {
               const {data=''} = params;
               this.setState({
                   webLink:data,
-                  autoFocus:true
               },()=>{
                   // TODO 003: Url 合法校验 ==> 自动打开链接
+                  // this.props.navigate('ZJWebViewScreen');
               });
           }
       });
@@ -85,7 +84,7 @@ class FoundScreen extends Component {
 
   render () {
       const {bannerList} = this.props;
-      const {webLink, autoFocus} = this.state;
+      const {webLink} = this.state;
 
       const items = [
           {'img_url': 'http://img18.3lian.com/d/file/201709/21/d8768c389b316e95ef29276c53a1e964.jpg','title':'1号'},
@@ -113,7 +112,6 @@ class FoundScreen extends Component {
               </View>
               <View style={styles.searchBar}>
                   <SearchBar
-                      autoFocus={autoFocus}
                       ref={(ref)=>this.searchBar = ref}
                       setValue={webLink}
                       onChangeText={(text)=>this._onChangeText(text)}

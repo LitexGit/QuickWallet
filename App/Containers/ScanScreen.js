@@ -12,19 +12,21 @@ class ScanScreen extends Component {
 
   constructor(props) {
       super(props);
-
+      this.data='';
       this.state = {
           animation: new Animated.Value(0),
       };
   }
 
   _onBarCodeRead(e) {
-      if (!e || e.data) {
+      if (!e || !e.data) {
           // TODO 001: toast
           return;
       }
+      if (this.data.length) return;
       // TODO 002: 校验 是否为 url
       const {data} = e;
+      this.data = data;
       const {state} = this.props.navigation;
       state.params.callback({data});
       this.props.navigation.goBack();
@@ -40,8 +42,8 @@ class ScanScreen extends Component {
   }
 
   componentDidMount=()=>{
+      this.data='';
       this._startAnimation();
-
       setTimeout(()=>{
           const {state} = this.props.navigation;
           state.params.callback({data:'0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'});

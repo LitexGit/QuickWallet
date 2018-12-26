@@ -14,32 +14,23 @@ export default class SearchCompont extends Component {
         onSubmitEditing: PropTypes.func,
         placeholder: PropTypes.string,
         setValue: PropTypes.string,
-        autoFocus: PropTypes.bool,
     }
 
     static defaultProps = {
         placeholder:'搜索应用',
         setValue:'',
-        autoFocus:false
-    }
-
-    componentWillReceiveProps=(nextProps)=>{
-        const {autoFocus} = nextProps;
-        if (autoFocus) {
-            this.textInput.focus();
-        }
     }
 
     componentDidMount=()=>{
         console.log('SearchCompont->componentDidMount ');
+        // this.textInput.focus();
     }
 
     render () {
-        const {placeholder, onChangeText, onPressScan, onSubmitEditing, setValue, autoFocus} = this.props;
+        const {placeholder, onChangeText, onPressScan, onSubmitEditing, setValue} = this.props;
         const textInput = (
             <TextInput style={styles.textInput}
                 ref={(ref)=>this.textInput = ref}
-                autoFocus={autoFocus}
                 value={setValue}
                 placeholder={placeholder}
                 blurOnSubmit

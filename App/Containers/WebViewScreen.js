@@ -73,22 +73,22 @@ render () {
             ref ={ref=>this.webview = ref}
             style={styles.container}
             source={{url}}
-            onError={(e)=>{
-                console.log('===========onError=========================');
-                console.log(e);
-            }}
-            onLoad={(e)=>{
-                console.log('===========onLoad=========================');
-                console.log(e);
-            }}
-            onLoadEnd={(e)=>{
-                console.log('===========onLoadEnd=========================');
-                console.log(e);
-            }}
-            onLoadStart={(e)=>{
-                console.log('===========onLoadStart=========================');
-                console.log(e);
-            }}
+            // onError={(e)=>{
+            //     console.log('===========onError=========================');
+            //     console.log(e);
+            // }}
+            // onLoad={(e)=>{
+            //     console.log('===========onLoad=========================');
+            //     console.log(e);
+            // }}
+            // onLoadEnd={(e)=>{
+            //     console.log('===========onLoadEnd=========================');
+            //     console.log(e);
+            // }}
+            // onLoadStart={(e)=>{
+            //     console.log('===========onLoadStart=========================');
+            //     console.log(e);
+            // }}
         />);
 }
 }
