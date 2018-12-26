@@ -1,39 +1,32 @@
-//
-//  RCTZJWebView.h
-//  AppResearch
-//
-//  Created by zhoujian on 2018/12/14.
-//  Copyright © 2018 Facebook. All rights reserved.
-//
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 #import <React/RCTView.h>
 #import <React/RCTDefines.h>
 #import <WebKit/WebKit.h>
-//#import "Layer2.h"
-//#import "RealLayer2.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class RNCWKWebView;
 
-@class RCTZJWebView;
+@protocol RNCWKWebViewDelegate <NSObject>
 
-@protocol RCTZJWebViewDelegate <NSObject>
-
-- (BOOL)webView:(RCTZJWebView *)webView
+- (BOOL)webView:(RNCWKWebView *)webView
 shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
    withCallback:(RCTDirectEventBlock)callback;
 
 @end
 
-@interface RCTZJWebView : RCTView
+@interface RNCWKWebView : RCTView
 
-//@property (nonatomic, strong) Layer2 *layer2;
-//@property (nonatomic, strong) RealLayer2 *realLayer2;
-
-@property (nonatomic, weak) id<RCTZJWebViewDelegate> delegate;
+@property (nonatomic, weak) id<RNCWKWebViewDelegate> delegate;
 @property (nonatomic, copy) NSDictionary *source;
 @property (nonatomic, assign) BOOL messagingEnabled;
 @property (nonatomic, copy) NSString *injectedJavaScript;
 @property (nonatomic, assign) BOOL scrollEnabled;
+@property (nonatomic, assign) BOOL pagingEnabled;
 @property (nonatomic, assign) CGFloat decelerationRate;
 @property (nonatomic, assign) BOOL allowsInlineMediaPlayback;
 @property (nonatomic, assign) BOOL bounces;
@@ -43,9 +36,11 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 #endif
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
+@property (nonatomic, assign) BOOL hideKeyboardAccessoryView;
+@property (nonatomic, assign) BOOL allowsBackForwardNavigationGestures;
+@property (nonatomic, copy) NSString *userAgent;
+@property (nonatomic, assign) BOOL allowsLinkPreview;
 
-
-+ (void)setClientAuthenticationCredential:(nullable NSURLCredential*)credential;
 - (void)postMessage:(NSString *)message;
 - (void)injectJavaScript:(NSString *)script;
 - (void)goForward;
@@ -54,5 +49,3 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 - (void)stopLoading;
 
 @end
-
-NS_ASSUME_NONNULL_END

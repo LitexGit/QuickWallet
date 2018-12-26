@@ -30,8 +30,10 @@
 		2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53A21D0A45800F9F04C /* RCTGethModule.m */; };
 		2322F53E21D0AB8400F9F04C /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2322F53D21D0AB8400F9F04C /* FileManager.m */; };
 		2322F58621D247FE00F9F04C /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2322F58521D247FE00F9F04C /* Geth.framework */; };
-		239728C321D3510600047AE0 /* RCTZJWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 239728C021D3510600047AE0 /* RCTZJWebView.m */; };
-		239728C421D3510600047AE0 /* RCTZJWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 239728C121D3510600047AE0 /* RCTZJWebViewManager.m */; };
+		2397293021D3903E00047AE0 /* RNCUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292921D3903D00047AE0 /* RNCUIWebView.m */; };
+		2397293121D3903E00047AE0 /* RNCWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292A21D3903D00047AE0 /* RNCWKWebView.m */; };
+		2397293221D3903E00047AE0 /* RNCWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292B21D3903D00047AE0 /* RNCWKWebViewManager.m */; };
+		2397293321D3903E00047AE0 /* RNCUIWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397292F21D3903E00047AE0 /* RNCUIWebViewManager.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -466,10 +468,14 @@
 		2322F53C21D0AB8400F9F04C /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		2322F53D21D0AB8400F9F04C /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		2322F58521D247FE00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
-		239728BF21D3510600047AE0 /* RCTZJWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTZJWebViewManager.h; sourceTree = "<group>"; };
-		239728C021D3510600047AE0 /* RCTZJWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTZJWebView.m; sourceTree = "<group>"; };
-		239728C121D3510600047AE0 /* RCTZJWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTZJWebViewManager.m; sourceTree = "<group>"; };
-		239728C221D3510600047AE0 /* RCTZJWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTZJWebView.h; sourceTree = "<group>"; };
+		2397292821D3903D00047AE0 /* RNCUIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebView.h; sourceTree = "<group>"; };
+		2397292921D3903D00047AE0 /* RNCUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebView.m; sourceTree = "<group>"; };
+		2397292A21D3903D00047AE0 /* RNCWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebView.m; sourceTree = "<group>"; };
+		2397292B21D3903D00047AE0 /* RNCWKWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebViewManager.m; sourceTree = "<group>"; };
+		2397292C21D3903D00047AE0 /* RNCWKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebView.h; sourceTree = "<group>"; };
+		2397292D21D3903E00047AE0 /* RNCWKWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebViewManager.h; sourceTree = "<group>"; };
+		2397292E21D3903E00047AE0 /* RNCUIWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebViewManager.h; sourceTree = "<group>"; };
+		2397292F21D3903E00047AE0 /* RNCUIWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebViewManager.m; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* QuickWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -819,10 +825,14 @@
 		239728BE21D3510600047AE0 /* RCTZJWebView */ = {
 			isa = PBXGroup;
 			children = (
-				239728BF21D3510600047AE0 /* RCTZJWebViewManager.h */,
-				239728C121D3510600047AE0 /* RCTZJWebViewManager.m */,
-				239728C221D3510600047AE0 /* RCTZJWebView.h */,
-				239728C021D3510600047AE0 /* RCTZJWebView.m */,
+				2397292821D3903D00047AE0 /* RNCUIWebView.h */,
+				2397292921D3903D00047AE0 /* RNCUIWebView.m */,
+				2397292E21D3903E00047AE0 /* RNCUIWebViewManager.h */,
+				2397292F21D3903E00047AE0 /* RNCUIWebViewManager.m */,
+				2397292C21D3903D00047AE0 /* RNCWKWebView.h */,
+				2397292A21D3903D00047AE0 /* RNCWKWebView.m */,
+				2397292D21D3903E00047AE0 /* RNCWKWebViewManager.h */,
+				2397292B21D3903D00047AE0 /* RNCWKWebViewManager.m */,
 			);
 			name = RCTZJWebView;
 			path = QuickWallet/NativeModules/RCTZJWebView;
@@ -1602,10 +1612,12 @@
 			files = (
 				2322F53B21D0A45800F9F04C /* RCTGethModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				239728C321D3510600047AE0 /* RCTZJWebView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				2397293021D3903E00047AE0 /* RNCUIWebView.m in Sources */,
 				2322F53E21D0AB8400F9F04C /* FileManager.m in Sources */,
-				239728C421D3510600047AE0 /* RCTZJWebViewManager.m in Sources */,
+				2397293321D3903E00047AE0 /* RNCUIWebViewManager.m in Sources */,
+				2397293221D3903E00047AE0 /* RNCWKWebViewManager.m in Sources */,
+				2397293121D3903E00047AE0 /* RNCWKWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
