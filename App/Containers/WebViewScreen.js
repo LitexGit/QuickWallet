@@ -70,29 +70,15 @@ _onPressShare= async ()=>{
     }
 }
 
-_onLoad=(e)=>{
-    console.log('=============_onLoad=======================');
-}
 
-_onLoadStart=(e)=>{
-    console.log('=============_onLoadStart=======================');
-}
-
-_onLoadEnd=(e)=>{
-    console.log('=============_onLoadEnd=======================');
-}
 
 render () {
     const url = DEFAULT_URI;
     return (
-        <WebView
+        <WebView useWebKit
             ref ={ref=>this.webview = ref}
             style={styles.container}
-            source={{url}}
-            // useWebKit
-            onLoadStart={this._onLoadStart}
-            onLoad={this._onLoad}
-            onLoadEnd={this._onLoadEnd}/>);
+            source={{url}}/>);
 }
 }
 
@@ -103,6 +89,23 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WebViewScreen);
+
 // onError onLoad onLoadEnd onLoadStart renderError [startInLoadingState, renderLoading]
 // originWhitelist 白名单
 // dataDetectorTypes 监测关键字
+
+// onLoadStart={this._onLoadStart}
+// onLoad={this._onLoad}
+// onLoadEnd={this._onLoadEnd}
+
+// _onLoad=(e)=>{
+//   console.log('=============_onLoad=======================');
+// }
+// _onLoadStart=(e)=>{
+//   console.log('=============_onLoadStart=======================');
+// }
+// _onLoadEnd=(e)=>{
+//   console.log('=============_onLoadEnd=======================');
+// }
+
+
