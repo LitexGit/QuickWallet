@@ -61,7 +61,7 @@ class FoundScreen extends Component {
   }
 
   _onPressItem = (item)=>{
-      this.props.navigate('WebViewScreen');
+      this.props.navigate('ZJWebViewScreen');
   }
 
   _renderBanner = (item,key)=>{

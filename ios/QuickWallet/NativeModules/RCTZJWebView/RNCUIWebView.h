@@ -18,7 +18,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 
 @end
 
-@int/Users/zhoujian/Desktop/WorkSpace/QuickWallet/ios/QuickWallet/NativeModules/RCTZJWebView/RNCUIWebView.herface RNCUIWebView : RCTView
+@interface RNCUIWebView : RCTView
 
 @property (nonatomic, weak) id<RNCUIWebViewDelegate> delegate;
 

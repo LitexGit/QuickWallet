@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import {View} from 'react-native';
+import {} from 'react-native';
 import { connect } from 'react-redux';
-import ZJWebView from '../NativeComponent/ZJWebView';
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
+import WebView from '../NativeComponent/WebView';
 import styles from './Styles/ZJWebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
 
@@ -27,49 +23,19 @@ class ZJWebViewScreen extends Component {
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
   }
 
-
   _onPressRefresh=()=>{
-      console.log('==============this.webView======================');
-      console.log(this.webView);
-      this.webView.goBack(0);
-      console.log('=============this.webView=======================');
+      WebView.reload();
   }
 
-  _onPressShare=()=>{
-      console.log('===========_onPressShare=========================');
-  }
-
-  _onLoad=(e)=>{
-      console.log('=============_onLoad=======================');
-      console.log(e);
-      console.log('=============_onLoad=======================');
-
-  }
-
-  _onLoadStart=(e)=>{
-      console.log('=============_onLoadStart=======================');
-      console.log(e);
-      console.log('=============_onLoadStart=======================');
-  }
-
-  _onLoadEnd=(e)=>{
-      console.log('=============_onLoadEnd=======================');
-      console.log(e);
-      console.log('=============_onLoadEnd=======================');
-  }
-
+  _onPressShare=()=> console.log();
 
   render () {
       const url = DEFAULT_URI;
       return (
-          <ZJWebView
+          <WebView useWebKit
               ref ={ref=>this.webview = ref}
               style={styles.container}
-              source={{url}}
-              // useWebKit
-              onLoadStart={this._onLoadStart}
-              onLoad={this._onLoad}
-              onLoadEnd={this._onLoadEnd}/>);
+              source={{url}}/>);
   }
 }
 
@@ -80,6 +46,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ZJWebViewScreen);
-// onError onLoad onLoadEnd onLoadStart renderError [startInLoadingState, renderLoading]
-// originWhitelist 白名单
-// dataDetectorTypes 监测关键字
