@@ -25,7 +25,7 @@ class TransferScreen extends Component {
             inputBalance:'0',
             inputAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
         };
-        this.inputGas = '10';
+        this.inputGas = 10;
     }
 
   _onPressBtn=()=>{

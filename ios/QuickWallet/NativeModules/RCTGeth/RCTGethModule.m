@@ -49,7 +49,7 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
   
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
   [FileManager createDirectoryIfNotExists:keyTemp];
-  GethKeyStore *keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
   
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
@@ -62,7 +62,7 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
   }
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
   NSError *err = nil;
-  self.account = [keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
+  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
   if (err) {
     // TODO  异常流程 keyStore 导入异常
     _rejectBlock(@"iOS", @"importKey_importKey", err);
@@ -207,11 +207,11 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   _resolveBlock(@[privateKey]);
 }
 
-RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress value:(int64_t)value gas:(int64_t)gas  resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress value:(nonnull NSNumber *)value gas:(nonnull NSNumber *)gas  resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
-  GethContext *context = [[GethContext alloc] initWithRef:@"transferEth"];
+  GethContext *context = [[GethContext alloc] init];
   GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
   int64_t number = -1;
   int64_t nonce = 0x0;
@@ -223,9 +223,9 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   }
 
   GethAddress *to = [[GethAddress alloc] initFromHex:toAddress];
-  GethBigInt *amount = [[GethBigInt alloc] init:value];
+  GethBigInt *amount = [[GethBigInt alloc] init:[value intValue]];
   ino64_t gasLimit = 21000;
-  GethBigInt *gasPrice = [[GethBigInt alloc] init:gas];;
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas intValue]];;
   
   NSData *data = [NSData data];
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];

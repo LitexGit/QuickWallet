@@ -27,8 +27,8 @@ class MineScreen extends Component {
   componentDidMount=()=>{
       const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
       const {getUserInfo, getBalance} = this.props;
-      getUserInfo(address);
-      getBalance({address});
+      // getUserInfo(address);
+      // getBalance({address});
   }
 
   _onPressAvatar=()=>{

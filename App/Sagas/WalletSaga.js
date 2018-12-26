@@ -125,16 +125,16 @@ export function *gethTransfer (action) {
         console.log('============params========================');
         console.log(params);
         console.log('============params========================');
-        // const {symbol, passphrase, fromAddress, toAddress, value, gasPrice} = params;
+        const {symbol, passphrase, fromAddress, toAddress, value, gasPrice} = params;
         // TODO 参数异常校验
         yield put(WalletActions.setLoading({loading:true}));
-        // const result =  yield GethModule.transfer(symbol, passphrase, fromAddress, toAddress, value, gasPrice);
+        const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice});
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
-        // const isSend =  Ramda.head(result);
-        // console.log('================isSend====================');
-        // console.log(isSend);
-        // console.log('================isSend====================');
+        const isSend =  Ramda.head(result);
+        console.log('================isSend====================');
+        console.log(isSend);
+        console.log('================isSend====================');
     } catch (error) {
         // TODO 生成助记词 异常处理逻辑
         console.log('==============error======================');
