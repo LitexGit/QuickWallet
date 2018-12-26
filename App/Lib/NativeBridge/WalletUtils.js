@@ -25,6 +25,16 @@ async function exportPrivateKey({passphrase}){
     return await gethModule.exportPrivateKey(passphrase);
 }
 
+async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress='', value=0, gasPrice=0}){
+    if (symbol === 'ETH') {
+        return await gethModule.transferEth(passphrase, fromAddress, toAddress, value, gasPrice);
+    }
+}
+
+
+
+
+
 function getDisplayedPrivateKey(key){
     const reg = RegExp(/0x/);
     if(key.match(reg)) return key;
@@ -44,6 +54,7 @@ export default {
     importMnemonic,
     importPrivateKey,
     exportPrivateKey,
+    transfer,
     getDisplayedPrivateKey,
     getGethPrivateKey,
 };

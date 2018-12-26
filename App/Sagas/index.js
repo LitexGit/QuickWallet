@@ -19,7 +19,7 @@ import { getBanner } from './FoundSaga';
 import { register, getUserInfo } from './UserSaga';
 import { getConfig } from './ConfigSaga';
 import { getBalance, getTxlist } from './AssetSaga';
-import { gethInit, gethNewAccount, gethImportMnemonic, gethImportPrivateKey, gethExportPrivateKey, gethRandomMnemonic} from './WalletSaga';
+import { gethInit, gethNewAccount, gethImportMnemonic, gethImportPrivateKey, gethExportPrivateKey, gethRandomMnemonic, gethTransfer} from './WalletSaga';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
@@ -46,6 +46,8 @@ export default function * root () {
         takeLatest(WalletTypes.GETH_IMPORT_PRIVATE_KEY, gethImportPrivateKey),
         takeLatest(WalletTypes.GETH_EXPORT_PRIVATE_KEY, gethExportPrivateKey),
         takeLatest(WalletTypes.GETH_RANDOM_MNEMONIC, gethRandomMnemonic),
+        takeLatest(WalletTypes.GETH_TRANSFER, gethTransfer),
+
 
 
         // some sagas only receive an action

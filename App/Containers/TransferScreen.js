@@ -7,6 +7,7 @@ import { Colors } from '../Themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { NavigationActions } from 'react-navigation';
+import WalletActions from '../Redux/WalletRedux';
 
 class TransferScreen extends Component {
 
@@ -21,32 +22,36 @@ class TransferScreen extends Component {
             minGas: 1,
             maxGas: 100,
 
-            inputBalance:'',
-            inputAddress:'',
-            inputGas:'',
+            inputBalance:'0',
+            inputAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
         };
-        this.inputNote = '';
-        this.inputGas = '';
+        this.inputGas = '10';
     }
 
   _onPressBtn=()=>{
-      console.log('===========_onPressBtn=========================');
+      let {passphrase='', address=''} = this.props;
+      // util 统一对 passphrase 做校验
+      passphrase = '11111111';
+      // util 统一对 address 做校验
+      address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+
+      const symbol = 'ETH';
+      const {inputBalance, inputAddress} = this.state;
+      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas});
   }
 
   _onChangeBalance=(text)=>{
       // TODO 005 输入金额大于当前余额 toast
       this.setState({
           inputBalance:text,
-      });
+      },()=>this._checkInputIsValid());
   }
 
   _onChangeAddress=(text)=>{
       this.setState({
           inputAddress:text,
-      });
+      },()=>this._checkInputIsValid());
   }
-
-  _onChangeNote=(text)=>{ this.inputNote = text; }
 
   _onPressScan=()=>{
       this.props.navigate('ScanScreen',{
@@ -64,12 +69,21 @@ class TransferScreen extends Component {
 
   _onSlidingComplete=(gas)=>{
       this.inputGas = gas;
+      this._checkInputIsValid();
   }
   _onSliderChange=(gas)=>{
       this.setState({
           displayGas: gas
       });
       ReactNativeHapticFeedback.trigger();
+  }
+
+  _checkInputIsValid=()=>{
+      console.log('==============_checkInputIsValid======================');
+  }
+
+  componentDidMount=()=>{
+      this._checkInputIsValid();
   }
 
   render () {
@@ -138,11 +152,16 @@ class TransferScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        wallet:{ passphrase, address}
+    } = state;
+    return { passphrase, address};
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferScreen);
