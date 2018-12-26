@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {} from 'react-native';
+import {View} from 'react-native';
 import { connect } from 'react-redux';
 import ZJWebView from '../NativeComponent/ZJWebView';
 // Add Actions - replace 'Your' with whatever your reducer is called :)
@@ -7,10 +7,19 @@ import ZJWebView from '../NativeComponent/ZJWebView';
 
 // Styles
 import styles from './Styles/ZJWebViewScreenStyle';
+import RightComponent from '../Components/RightComponent';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
 class ZJWebViewScreen extends Component {
+  static navigationOptions = {
+      title:'Ethereum Accounts',
+      headerRight: (
+          <RightComponent/>
+      ),
+  }
+
+
   componentDidMount=()=>{
       console.log('====================================');
   }
