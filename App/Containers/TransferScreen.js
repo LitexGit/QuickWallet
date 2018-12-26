@@ -111,15 +111,6 @@ class TransferScreen extends Component {
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
                               onChangeText={this._onChangeAddress}/>
-                          <View style={styles.noteSection}>
-                              <Text style={styles.titleText}>备注</Text>
-                              <TextInput style={styles.noteInput}
-                                  clearButtonMode='while-editing'
-                                  placeholder="(选填)"
-                                  placeholderTextColor={Colors.separateLineColor}
-                                  underlineColorAndroid={'transparent'}
-                                  onChangeText={this._onChangeNote}/>
-                          </View>
                       </View>
                   </KeyboardAvoidingView>
                   <View style={styles.gaseSection}>
