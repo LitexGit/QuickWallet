@@ -15,6 +15,8 @@ import MineScreen from '../Containers/MineScreen';
 import FoundScreen from '../Containers/FoundScreen';
 import ScanScreen from '../Containers/ScanScreen';
 import ExportScreen from '../Containers/ExportScreen';
+import WebViewScreen from '../Containers/WebViewScreen';
+import ZJWebViewScreen from '../Containers/ZJWebViewScreen';
 
 
 import styles from './Styles/NavigationStyles';
@@ -112,9 +114,17 @@ const PrimaryNav = createStackNavigator({
         navigationOptions:{
             headerStyle: styles.header,
             headerTintColor: Colors.darkColor,
+        }},
+    WebViewScreen: { screen: WebViewScreen ,
+        navigationOptions:{
+            headerStyle: styles.header,
+            headerTintColor: Colors.darkColor,
+        }},
+    ZJWebViewScreen: { screen: ZJWebViewScreen ,
+        navigationOptions:{
+            headerStyle: styles.header,
+            headerTintColor: Colors.darkColor,
         }}
-
-
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'BottomTab'},
