@@ -1726,6 +1726,11 @@ by the foundation running the V5 discovery protocol.
 FOUNDATION_EXPORT GethEnodes* GethFoundationBootnodes(void);
 
 /**
+ * GenerateERC20TransferData create data for transaction
+ */
+FOUNDATION_EXPORT NSData* GethGenerateERC20TransferData(GethAddress* toAddress, GethBigInt* amount, NSError** error);
+
+/**
  * GetPrivateKeyFromMnemonic will convert mnemonic to privatekey
  */
 FOUNDATION_EXPORT NSData* GethGetPrivateKeyFromMnemonic(NSString* mnemonic, NSError** error);

@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   NSError *sendErr = nil;
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
   if (!isSend || sendErr) {
-    _rejectBlock(@"iOS", @"sendTransaction", sendErr);
+    _rejectBlock(@"iOS", @"sendTransaction eth", sendErr);
     return;
   }
   _resolveBlock(@[@YES]);
@@ -277,11 +277,23 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   }
   
   GethCallMsg *callMsg = [[GethCallMsg alloc] init];
+  
+  GethAddress *dataAddress = [[GethAddress alloc] initFromHex:toAddress];
+  GethBigInt *dataAmount = [[GethBigInt alloc] init:value];
+  
   [callMsg setFrom:from];
   [callMsg setGasPrice:gasPrice];
-  [callMsg setTo:[[GethAddress alloc] initFromHex:toAddress]];
-  [callMsg setValue:[[GethBigInt alloc] init:value]];
+  [callMsg setTo:dataAddress];
+  [callMsg setValue:dataAmount];
   
+//  NSData* GethGenerateERC20TransferData(GethAddress* toAddress, GethBigInt* amount, NSError** error);
+  NSError *error = nil;
+  NSData *tokenData = GethGenerateERC20TransferData(dataAddress, dataAmount, &error);
+  if (!error || !tokenData) {
+    _rejectBlock(@"iOS", @"GethGenerateERC20TransferData", gasErr);
+  }
+  [callMsg setData:tokenData];
+
   NSError *limitErr = nil;
   int64_t gasLimit = 21000;
   BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&limitErr];
@@ -290,8 +302,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
     return;
   }
   
-  NSData *data = [NSData data];
-  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];
   
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
@@ -301,7 +312,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSError *sendErr = nil;
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
   if (!isSend || sendErr) {
-    _rejectBlock(@"iOS", @"sendTransaction", sendErr);
+    _rejectBlock(@"iOS", @"sendTransaction token", sendErr);
     return;
   }
   _resolveBlock(@[@YES]);

@@ -161,7 +161,7 @@ class NewWalletScreen extends Component {
                       buttonStyle={styles.buttonStyle}
                       textStyle={styles.btnTitle}
                       backgroundColor={isInputValid ? Colors.textColor : Colors.separateLineColor}
-                      title='创建'/>
+                      title={I18n.t('Create')}/>
               </View>
           </View>
       );

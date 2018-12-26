@@ -27,13 +27,13 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
-		2322F58621D247FE00F9F04C /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2322F58521D247FE00F9F04C /* Geth.framework */; };
 		2397295021D3972A00047AE0 /* RNCUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294321D3972A00047AE0 /* RNCUIWebView.m */; };
 		2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294421D3972A00047AE0 /* RNCWKWebView.m */; };
 		2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */; };
 		2397295321D3972A00047AE0 /* RNCUIWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */; };
 		2397295421D3972A00047AE0 /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294D21D3972A00047AE0 /* RCTGethModule.m */; };
 		2397295521D3972A00047AE0 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294E21D3972A00047AE0 /* FileManager.m */; };
+		2397299D21D3C00600047AE0 /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2397299C21D3C00600047AE0 /* Geth.framework */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -463,7 +463,6 @@
 		2074D8872D0F428FA52DC517 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
 		2322F51721D0A21F00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Frameworks/Geth.framework; sourceTree = "<group>"; };
-		2322F58521D247FE00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
 		2397294321D3972A00047AE0 /* RNCUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebView.m; sourceTree = "<group>"; };
 		2397294421D3972A00047AE0 /* RNCWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebView.m; sourceTree = "<group>"; };
 		2397294521D3972A00047AE0 /* RNCWKWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebViewManager.h; sourceTree = "<group>"; };
@@ -476,6 +475,7 @@
 		2397294D21D3972A00047AE0 /* RCTGethModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTGethModule.m; sourceTree = "<group>"; };
 		2397294E21D3972A00047AE0 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		2397294F21D3972A00047AE0 /* RCTGethModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTGethModule.h; sourceTree = "<group>"; };
+		2397299C21D3C00600047AE0 /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* QuickWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuickWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -543,7 +543,7 @@
 				558AE28174584E47944DF548 /* libRNGestureHandler.a in Frameworks */,
 				ABC4CF5D9D1F4B7FB16F1808 /* libRNVectorIcons.a in Frameworks */,
 				22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */,
-				2322F58621D247FE00F9F04C /* Geth.framework in Frameworks */,
+				2397299D21D3C00600047AE0 /* Geth.framework in Frameworks */,
 				C3BF47B619FD4DD886619944 /* libReactNativeConfig.a in Frameworks */,
 				37B716FF3B6346508AACCFE4 /* libRNSVG.a in Frameworks */,
 				6081B1B5DF9A4833893F81B2 /* libRNReactNativeHapticFeedback.a in Frameworks */,
@@ -702,7 +702,7 @@
 		2322F53521D0A2F200F9F04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2322F58521D247FE00F9F04C /* Geth.framework */,
+				2397299C21D3C00600047AE0 /* Geth.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";

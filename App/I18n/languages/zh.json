@@ -26,6 +26,7 @@
   "Password":"密码",
   "ConfirmPassword":"重复输入密码",
   "Create":"创建",
+  "CreatAccount":"创建账户",
   "ImportAccount":"导入账户",
   "Import":"导入",
   "EnterMnemonicRemind":"输入助记词，用空格分隔离",

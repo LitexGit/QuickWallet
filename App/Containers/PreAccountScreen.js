@@ -47,8 +47,8 @@ render () {
     return (
         <View style={styles.container}>
             <View style={styles.topSection}>
-                <Text style={styles.titleStyle}>创建你的第一个</Text>
-                <Text style={styles.titleStyle}>Layer2加速账户</Text>
+                <Text style={styles.titleStyle}>{I18n.t('CreateYourFirst')}</Text>
+                <Text style={styles.titleStyle}>{I18n.t('Layer2Account')}</Text>
             </View>
             <View style={styles.bottomSection}>
                 {btns}

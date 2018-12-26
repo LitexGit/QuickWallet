@@ -1,10 +1,11 @@
 
 import { Colors } from '../Themes';
+import I18n from '../I18n';
 
 const InputInfoConfig = {
     name:{
         key:'name',
-        placeholder:'身份名',
+        placeholder: I18n.t('Identity'),
         placeholderTextColor:Colors.separateLineColor,
         clearButtonMode:'never',
         maxLength:20,
@@ -13,22 +14,20 @@ const InputInfoConfig = {
     },
     password:{
         key:'password',
-        placeholder:'密码',
+        placeholder: I18n.t('Password'),
         placeholderTextColor:Colors.separateLineColor,
         clearButtonMode:'while-editing',
         maxLength:20,
         keyboardType:'default',
-        // keyboardType:'number-pad',
         returnKeyType:'next',
     },
     confirm:{
         key:'confirm',
-        placeholder:'重复输入密码',
+        placeholder:I18n.t('ConfirmPassword'),
         placeholderTextColor:Colors.separateLineColor,
         clearButtonMode:'while-editing',
         maxLength:20,
         keyboardType:'default',
-        // keyboardType:'number-pad',
         returnKeyType:'done',
     }
 };
