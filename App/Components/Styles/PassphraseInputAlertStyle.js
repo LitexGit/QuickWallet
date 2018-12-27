@@ -1,5 +1,5 @@
 import { StyleSheet, PixelRatio } from 'react-native';
-import { ApplicationStyles, Colors, Fonts, Metrics } from '../../Themes/';
+import { Colors, Metrics } from '../../Themes/';
 
 
 export default StyleSheet.create({

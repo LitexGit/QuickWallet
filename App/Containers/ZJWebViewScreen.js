@@ -5,6 +5,8 @@ import WebView from '../NativeComponent/WebView';
 import styles from './Styles/ZJWebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
+import SignTxResultAlert from '../Components/SignTxResultAlert';
+import SignMsgResultAlert from '../Components/SignMsgResultAlert';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -23,6 +25,8 @@ class ZJWebViewScreen extends Component {
       super(props);
       this.state={
           isShowPassphrase:false,
+          isShowSignTx:true,
+          isShowSignMsg:false,
       };
   }
 
@@ -36,6 +40,7 @@ class ZJWebViewScreen extends Component {
       // 交易
       // 消息
 
+      // 签名结果
   }
 
   _onPressConfirm=()=>this._signInfo();
@@ -92,10 +97,12 @@ class ZJWebViewScreen extends Component {
 
   render () {
       const url = DEFAULT_URI;
-      const {isShowPassphrase} = this.state;
+      const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
       return (
           <View style={styles.container}>
-              <PassphraseInputAlert isInit={!isShowPassphrase} onPressConfirm={this._onPressConfirm}/>
+              <PassphraseInputAlert isInit={isShowPassphrase} onPressConfirm={this._onPressConfirm}/>
+              <SignTxResultAlert isInit={isShowSignTx}/>
+              {/* <SignMsgResultAlert isInit={isShowSignMsg}/> */}
               <WebView useWebKit
                   ref ={ref=>this.webview = ref}
                   style={styles.container}
