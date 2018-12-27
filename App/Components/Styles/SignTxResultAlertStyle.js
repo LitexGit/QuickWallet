@@ -25,7 +25,6 @@ export default StyleSheet.create({
         fontWeight:'bold',
         textAlign:'center',
         paddingVertical:Metrics.baseMargin,
-
     },
     direction:{
         flexDirection:'row',

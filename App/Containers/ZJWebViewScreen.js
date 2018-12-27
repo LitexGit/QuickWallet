@@ -26,7 +26,7 @@ class ZJWebViewScreen extends Component {
       this.state={
           isShowPassphrase:false,
           isShowSignTx:true,
-          isShowSignMsg:false,
+          isShowSignMsg:true,
       };
   }
 
@@ -101,8 +101,8 @@ class ZJWebViewScreen extends Component {
       return (
           <View style={styles.container}>
               <PassphraseInputAlert isInit={isShowPassphrase} onPressConfirm={this._onPressConfirm}/>
-              <SignTxResultAlert isInit={isShowSignTx}/>
-              {/* <SignMsgResultAlert isInit={isShowSignMsg}/> */}
+              {/* <SignTxResultAlert isInit={isShowSignTx}/> */}
+              <SignMsgResultAlert isInit={isShowSignMsg}/>
               <WebView useWebKit
                   ref ={ref=>this.webview = ref}
                   style={styles.container}

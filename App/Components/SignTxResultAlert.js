@@ -60,7 +60,6 @@ render () {
                 <Text style={styles.itemValue}>{fiatValue}</Text>
             </View>
         </View>);
-
     });
 
     return (
