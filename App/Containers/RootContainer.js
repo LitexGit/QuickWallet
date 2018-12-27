@@ -9,17 +9,20 @@ import styles from './Styles/RootContainerStyles';
 import WalletActions from '../Redux/WalletRedux';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
+import UserActions from '../Redux/UserRedux';
 
 class RootContainer extends Component {
     async componentDidMount  () {
         if (!ReduxPersist.active) {
             this.props.startup();
         }
-        const {gethInit} = this.props;
+        const {gethInit, saveUserInfo} = this.props;
         const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
+        saveUserInfo({isLoginApp:isLogin});
         const rawurl = 'ws://rinkeby03.milewan.com:8546';
         const passphrase = '11111111';
         gethInit({isLogin, rawurl, passphrase});
+
     }
     render () {
         return (
@@ -37,6 +40,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     startup: () => dispatch(StartupActions.startup()),
     gethInit: (params) => dispatch(WalletActions.gethInit(params)),
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

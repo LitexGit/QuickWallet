@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Metrics } from '../Themes';
 import styles from './Styles/MineScreenStyle';
@@ -9,7 +10,7 @@ import PreMineComponent from '../Components/PreMineComponent';
 import MineComponent from '../Components/MineComponent';
 
 
-export default class MineScreen extends Component {
+class MineScreen extends Component {
   static navigationOptions = {
       tabBarLabel: I18n.t('MineTabBarLabel'),
       tabBarIcon: ({tintColor}) => (
@@ -18,16 +19,30 @@ export default class MineScreen extends Component {
   }
 
   componentDidMount=()=>{
-      console.log('===========MineScreen=========================');
+      console.log('====================================');
   }
 
   render () {
-
+      const {isLoginApp} = this.props;
       return (
           <View style={styles.container}>
-              <PreMineComponent/>
-              {/* <MineComponent/> */}
+              {isLoginApp ? <MineComponent/> : <PreMineComponent/>}
           </View>
       );
   }
 }
+
+const mapStateToProps = (state) => {
+    const {
+        user:{isLoginApp}
+    } = state;
+    return {
+        isLoginApp
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MineScreen);

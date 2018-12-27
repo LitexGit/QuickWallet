@@ -169,7 +169,6 @@ class NewWalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-
     const {
         wallet:{loading}
     } = state;

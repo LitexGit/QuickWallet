@@ -7,6 +7,8 @@ const { Types, Creators } = createActions({
     request: ['data'],
     success: ['data'],
 
+    saveUserInfo: ['data'],
+
     registerRequest: ['data'],
     registerSuccess: ['data'],
     registerFailure: null,
@@ -37,7 +39,9 @@ export const INITIAL_STATE = Immutable({
     nickname:'我怎这么好看',
     sharecode:'SHARECODE',
     created_at:'1',
-    last_login:'2018:12:21'
+    last_login:'2018:12:21',
+
+    isLoginApp:false,
 });
 
 /* ------------- Selectors ------------- */
@@ -49,11 +53,11 @@ export const UserSelectors = {
 
 /* ------------- Reducers ------------- */
 
+export const saveUserInfo = (state, { data }) =>
+    state.merge({ data, payload: null});
+
 // request the avatar for a user
 export const request = (state, { data }) =>
-    // console.log('================data====================');
-    // console.log(data);
-    // console.log('================data====================');
     state.merge({ refreshing: true, data, payload: null })
 ;
 
@@ -70,11 +74,11 @@ export const failure = (state) =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.REGISTER_REQUEST]: request,
     [Types.REGISTER_SUCCESS]: success,
     [Types.REGISTER_FAILURE]: failure,
 
-    [Types.GET_USER_INFO_REQUEST]: request,
     [Types.GET_USER_INFO_SUCCESS]: success,
-    [Types.GET_USER_INFO_FAILURE]: failure
+    [Types.GET_USER_INFO_FAILURE]: failure,
+
+    [Types.SAVE_USER_INFO]: saveUserInfo,
 });
