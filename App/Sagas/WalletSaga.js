@@ -4,6 +4,7 @@ import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
 import { NavigationActions } from 'react-navigation';
 import Ramda from 'ramda';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
 
 export function *gethInit (action) {
@@ -52,8 +53,9 @@ export function *gethImportMnemonic (action) {
         const address =  Ramda.head(result);
         yield put(WalletActions.savePrivateKey({address}));
         // TODO 添加地址校验
-        yield put(UserActions.registerRequest({address, type:1}));
+        // yield put(UserActions.registerRequest({address, type:1}));
         // TODO account ？？ ||  register ？？ ==> 备份助记词
+        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
     } catch (error) {
         // TODO 导入助记词 异常处理逻辑
         console.log('==============error======================');
@@ -74,8 +76,9 @@ export function *gethImportPrivateKey (action) {
         const address =  Ramda.head(result);
         yield put(WalletActions.savePrivateKey({address}));
         // TODO 添加地址校验
-        yield put(UserActions.registerRequest({address, type:1}));
+        // yield put(UserActions.registerRequest({address, type:1}));
         // TODO account ？？ ||  register ？？ ==> 备份助记词
+        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
     } catch (error) {
         // TODO 导入私钥 异常处理逻辑
         console.log('==============error======================');

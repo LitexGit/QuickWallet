@@ -1,10 +1,9 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import UserActions from '../Redux/UserRedux';
 import DeviceInfo from 'react-native-device-info';
-import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+
 
 export function * register (api, action) {
-    DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
     const {data:params} = action;
     const {address, type} = params;
     const os = DeviceInfo.getSystemName();

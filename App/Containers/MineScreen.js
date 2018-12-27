@@ -23,10 +23,10 @@ class MineScreen extends Component {
   }
 
   render () {
-      const {isLoginApp} = this.props;
+      const {isLoginInfo} = this.props;
       return (
           <View style={styles.container}>
-              {isLoginApp ? <MineComponent/> : <PreMineComponent/>}
+              {isLoginInfo ? <MineComponent/> : <PreMineComponent/>}
           </View>
       );
   }
@@ -34,10 +34,10 @@ class MineScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{isLoginApp}
+        user:{isLoginInfo}
     } = state;
     return {
-        isLoginApp
+        isLoginInfo
     };
 };
 
