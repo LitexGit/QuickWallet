@@ -41,7 +41,7 @@ class AssetsScreen extends Component {
       </TouchableOpacity>);
   }
   _renderListHeader=()=>(<View style={styles.headerStyle}>
-      <Text style={styles.headTitle}>资产</Text>
+      <Text style={styles.headTitle}>{I18n.t('Assets')}</Text>
   </View>)
   _renderListEmpty=()=><ListEmptyComponent containerStyle={styles.emptycontainer}/>
 
@@ -60,7 +60,7 @@ class AssetsScreen extends Component {
                       refreshing={refreshing}
                       onRefresh={this._onRefresh}
                       tintColor={Colors.textColor}
-                      title='Refreshing...'
+                      title={ I18n.t('Refreshing')}
                       titleColor={Colors.textColor}
                   />}
                   data={data}

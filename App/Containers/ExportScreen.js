@@ -32,7 +32,7 @@ render () {
             <View style={styles.topSection}>
                 <View style={styles.topView}>
                     <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>
-                    <Text style={styles.titleStytle}>备份账户</Text>
+                    <Text style={styles.titleStytle}>{I18n.t('BackupAccounts')}</Text>
                 </View>
                 <Text style={styles.mnemonicText}>{privateKey}</Text>
                 <QRCode value={privateKey} size={120}/>
@@ -41,7 +41,7 @@ render () {
                 <View style={styles.btnStyle}>
                     <Button onPress={()=>this._onPressBtn()}
                         backgroundColor={Colors.textColor}
-                        title='完成'/>
+                        title={ I18n.t('Complete')}/>s
                 </View>
             </View>
         </View>

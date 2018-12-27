@@ -113,7 +113,7 @@ class TransferRecordScreen extends Component {
                       refreshing={refreshing}
                       onRefresh={this._onRefresh}
                       tintColor={Colors.textColor}
-                      title='Refreshing...'
+                      title={ I18n.t('Refreshing')}
                       titleColor={Colors.textColor}
                   />}
                   sections={txlist}

@@ -23,7 +23,7 @@ export default class ListFooterComponent extends Component {
 
   render () {
       const {loading, text, onPress} = this.props;
-      const loadingText = '加载中...';
+      const loadingText =  I18n.t('Loading');
       return (
           <View style={styles.container}>
               <TouchableOpacity style={styles.footerButton} onPress={onPress}>

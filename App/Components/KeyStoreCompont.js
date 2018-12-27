@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import I18n from '../I18n';
 
 class KeyStoreCompont extends Component {
     // // Prop type warnings
@@ -119,7 +120,7 @@ class KeyStoreCompont extends Component {
                             <KeyboardAvoidingView style={styles.section}>
                                 <TextInput style={styles.passwordInput}
                                     // multiline
-                                    placeholder='钱包密码'
+                                    placeholder={ I18n.t('WalletPassword')}
                                     placeholderTextColor={ Colors.separateLineColor }
                                     underlineColorAndroid={ 'transparent' }
                                     clearButtonMode='while-editing'
@@ -146,7 +147,7 @@ class KeyStoreCompont extends Component {
                         textStyle={styles.btnTitle}
                         backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
                         disabled={!isCanPress}
-                        title='导入'/>
+                        title={I18n.t('Import')}/>
                 </View>
             </View>
         );

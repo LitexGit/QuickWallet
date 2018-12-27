@@ -102,12 +102,12 @@ class TransferScreen extends Component {
                       <View style={styles.bananceSection}>
                           <View style={styles.bananceTopView}>
                               <Text style={styles.titleText}>{symbol}</Text>
-                              <Text style={styles.balanceText}>余额:{assets}{symbol}</Text>
+                              <Text style={styles.balanceText}>{ I18n.t('Balance')}:{assets}{symbol}</Text>
                           </View>
                           <TextInput autoFocus style={styles.balanceInput}
                               clearButtonMode='while-editing'
                               multiline={false}
-                              placeholder="输入金额"
+                              placeholder={I18n.t('EnterAmount')}
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
                               keyboardType='number-pad'
@@ -115,7 +115,7 @@ class TransferScreen extends Component {
                       </View>
                       <View style={styles.addressSection}>
                           <View style={styles.bananceTopView}>
-                              <Text style={styles.titleText}>收款地址</Text>
+                              <Text style={styles.titleText}>{ I18n.t('ToAddress')}</Text>
                               <TouchableOpacity onPress={()=>this._onPressScan()}>
                                   <Ionicons name={'ios-qr-scanner'} size={24} color={'#A4A4A4'}/>
                               </TouchableOpacity>
@@ -123,7 +123,7 @@ class TransferScreen extends Component {
                           <TextInput style={styles.addressInput}
                               value={inputAddress}
                               clearButtonMode='while-editing'
-                              placeholder="输入以太坊地址"
+                              placeholder={ I18n.t('EnterEthAddress')}
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
                               onChangeText={this._onChangeAddress}/>

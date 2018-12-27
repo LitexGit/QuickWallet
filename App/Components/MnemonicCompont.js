@@ -10,7 +10,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import I18n from '../I18n';
 
 class MnemonicCompont extends Component {
     // // Prop type warnings
@@ -106,7 +106,7 @@ class MnemonicCompont extends Component {
                       <KeyboardAvoidingView>
                           <TextInput
                               multiline
-                              placeholder='输入助记词，用空格分隔离'
+                              placeholder={ I18n.t('EnterMnemonicRemind')}
                               placeholderTextColor={ Colors.separateLineColor }
                               underlineColorAndroid={ 'transparent' }
                               style={ styles.mnemonicInput }
@@ -129,7 +129,7 @@ class MnemonicCompont extends Component {
                       </View>
                       <View style={ styles.sectionView }>
                           <View style={ styles.section }>
-                              <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>设置密码</Text>
+                              <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
                               <AntDesign name={'warning'} size={Metrics.icons.tiny} color={Colors.separateLineColor} style={styles.warning}/>
                           </View>
                           <KeyboardAvoidingView style={styles.section}>
@@ -163,7 +163,7 @@ class MnemonicCompont extends Component {
                       textStyle={styles.btnTitle}
                       backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
                       disabled={!isCanPress}
-                      title='导入'/>
+                      title={I18n.t('Import')}/>
               </View>
           </View>
       );

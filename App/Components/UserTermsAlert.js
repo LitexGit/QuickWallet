@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from './Styles/UserTermsAlertStyle';
-import Overlay from 'react-native-modal-overlay';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Metrics, Colors } from '../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import I18n from '../I18n';
 
 export default class UserTermsAlert extends Component {
 
@@ -46,14 +46,13 @@ export default class UserTermsAlert extends Component {
         const remin001 = '我已仔细阅读并同意以上条款以及';
         const remin002 = 'Cookiss的使用说明';
 
-        const {isShow} = this.props;
-        const {isOpen, isAgreed} = this.state;
+        const {isAgreed} = this.state;
         const agreedImg = isAgreed ? <AntDesign name={'checkcircle'} size={Metrics.icons.small} color={Colors.textColor}/> : <AntDesign name={'checkcircleo'} size={Metrics.icons.small} color={Colors.separateLineColor}/>;
         const btnStyle = isAgreed ? {backgroundColor:Colors.textColor} : {backgroundColor:Colors.dividingLineColor};
         return (
             <View style={styles.container}>
                 <View style={styles.topSection}>
-                    <Text style={styles.titleStyle}>使用条款</Text>
+                    <Text style={styles.titleStyle}>{I18n.t('TermsOfUse')}</Text>
                     <FontAwesome name={'compass'} size={Metrics.icons.small} color={Colors.textColor}/>
                 </View>
                 <ScrollView style={styles.scrollView}>
@@ -85,7 +84,7 @@ export default class UserTermsAlert extends Component {
                 </View>
                 <TouchableOpacity disabled={!isAgreed} onPress={()=>this._onPressBtn()}>
                     <View style={[styles.bottomSection, btnStyle]}>
-                        <Text style={styles.btnTitle}>继续</Text>
+                        <Text style={styles.btnTitle}>{ I18n.t('Continue')}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

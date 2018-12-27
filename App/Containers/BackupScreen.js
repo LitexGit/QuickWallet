@@ -158,7 +158,7 @@ class BackupScreen extends Component {
               <View style={styles.topSection}>
                   <View style={styles.topView}>
                       <Feather name={'check'} size={30} color={Colors.separateLineColor}/>
-                      <Text style={styles.titleStytle}>确认助记词</Text>
+                      <Text style={styles.titleStytle}>{I18n.t('ConfirmMnemonic')}</Text>
                   </View>
                   <View style={styles.remindSection}>
                       <Text style={styles.remindText}>{remind}</Text>
@@ -176,7 +176,7 @@ class BackupScreen extends Component {
                       <Button onPress={()=>this._onPressCheck()}
                           // disabled={!isCanPress}
                           backgroundColor={Colors.textColor}
-                          title='完成'/>
+                          title={ I18n.t('Complete')}/>
                   </View>
               </View>
           </View>

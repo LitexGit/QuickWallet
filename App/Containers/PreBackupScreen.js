@@ -40,7 +40,7 @@ class PreBackupScreen extends Component {
                   <View style={styles.btnStyle}>
                       <Button onPress={()=>this._onPressBtn()}
                           backgroundColor={Colors.textColor}
-                          title='下一步'/>
+                          title={I18n.t('NextSteps')}/>
                   </View>
               </View>
           </View>
