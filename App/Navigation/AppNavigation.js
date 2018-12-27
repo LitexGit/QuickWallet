@@ -9,7 +9,6 @@ import BackupScreen from '../Containers/BackupScreen';
 import PreBackupScreen from '../Containers/PreBackupScreen';
 import ImportScreen from '../Containers/ImportScreen';
 import NewWalletScreen from '../Containers/NewWalletScreen';
-import PreAccountScreen from '../Containers/PreAccountScreen';
 import AccountScreen from '../Containers/AccountScreen';
 import MineScreen from '../Containers/MineScreen';
 import FoundScreen from '../Containers/FoundScreen';
@@ -24,7 +23,6 @@ import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
     Found: { screen: FoundScreen },
-    PreAccount: { screen: PreAccountScreen },
     Mine: { screen: MineScreen },
 }, {
     tabBarPosition: 'bottom',
@@ -101,11 +99,6 @@ const PrimaryNav = createStackNavigator({
             headerTintColor: Colors.darkColor,
         }},
     ScanScreen: { screen: ScanScreen ,
-        navigationOptions:{
-            headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
-        }},
-    PreAccount: { screen: PreAccountScreen ,
         navigationOptions:{
             headerStyle: styles.header,
             headerTintColor: Colors.darkColor,

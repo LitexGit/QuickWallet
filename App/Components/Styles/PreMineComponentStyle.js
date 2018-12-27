@@ -22,5 +22,4 @@ export default StyleSheet.create({
         fontSize:Fonts.size.h6,
         marginTop: 10,
     },
-
 });
