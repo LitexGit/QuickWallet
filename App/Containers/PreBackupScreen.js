@@ -8,6 +8,8 @@ import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
+import MnemonicWarningAlert from '../Components/MnemonicWarningAlert';
+
 
 
 class PreBackupScreen extends Component {
@@ -26,6 +28,7 @@ class PreBackupScreen extends Component {
 
       return (
           <View style={styles.container}>
+              <MnemonicWarningAlert/>
               <View style={styles.topSection}>
                   <View style={styles.topView}>
                       <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>

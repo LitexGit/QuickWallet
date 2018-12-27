@@ -90,7 +90,7 @@ class NewWalletScreen extends Component {
       const remind001 = '密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要';
       const remind002 = 'QuickWallet 不存储密码,也无法帮您找回,请务必牢记';
 
-      const {loading, isAgree} = this.props;
+      const {isAgree} = this.props;
 
       const {isShowRemind, isInputValid, isShowPassword}=this.state;
 
@@ -145,7 +145,7 @@ class NewWalletScreen extends Component {
               </KeyboardAvoidingView>
               <View style={styles.bottomSection}>
                   <Button onPress={()=>this._onPressBtn()}
-                      disabled={!isInputValid}
+                      // disabled={!isInputValid}
                       containerViewStyle={styles.containerViewStyle}
                       buttonStyle={styles.buttonStyle}
                       textStyle={styles.btnTitle}
