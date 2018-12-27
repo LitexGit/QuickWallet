@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Share, Platform } from 'react-native';
+import { Share, Platform, View } from 'react-native';
 import { connect } from 'react-redux';
 import WebView from '../NativeComponent/WebView';
 import styles from './Styles/ZJWebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
+import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -18,13 +19,38 @@ class ZJWebViewScreen extends Component {
       ),
   });
 
+  constructor(props){
+      super(props);
+      this.state={
+          isShowPassphrase:false,
+      };
+  }
+
   componentDidMount() {
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
   }
 
+  _signInfo=()=>{
+      console.log('==============_signInfo======================');
+      // 交易
+      // 消息
+
+  }
+
+  _onPressConfirm=()=>this._signInfo();
+
   _onPressRefresh=()=>{
-      this.webview.reload();
+      // this.webview.reload();
+      const { passphrase } = this.props;
+      // TODO 验证密码有效
+      if (passphrase && passphrase.length > 7) {
+          this._signInfo();
+          return;
+      }
+      this.setState({
+          isShowPassphrase:true,
+      });
   }
 
   _onPressShare= async()=> {
@@ -49,16 +75,13 @@ class ZJWebViewScreen extends Component {
               if (activityType) {
                   console.log('===========activityType=========================');
                   console.log(activityType);
-                  console.log('===========activityType=========================');
               } else {
                   console.log('===========dismissedAction=========================');
                   console.log(activityType);
-                  console.log('===========dismissedAction=========================');
               }
           } else if (action === Share.dismissedAction){
               console.log('===========dismissedAction=========================');
               console.log(Share.dismissedAction);
-              console.log('===========dismissedAction=========================');
           }
       } catch (error) {
           console.log('====================================');
@@ -69,33 +92,24 @@ class ZJWebViewScreen extends Component {
 
   render () {
       const url = DEFAULT_URI;
+      const {isShowPassphrase} = this.state;
       return (
-          <WebView useWebKit
-              ref ={ref=>this.webview = ref}
-              style={styles.container}
-              source={{url}}
-              // onError={(e)=>{
-              //     console.log('===========onError=========================');
-              //     console.log(e);
-              // }}
-              // onLoad={(e)=>{
-              //     console.log('===========onLoad=========================');
-              //     console.log(e);
-              // }}
-              // onLoadEnd={(e)=>{
-              //     console.log('===========onLoadEnd=========================');
-              //     console.log(e);
-              // }}
-              // onLoadStart={(e)=>{
-              //     console.log('===========onLoadStart=========================');
-              //     console.log(e);
-              // }}
-          />);
+          <View style={styles.container}>
+              <PassphraseInputAlert isInit={!isShowPassphrase} onPressConfirm={this._onPressConfirm}/>
+              <WebView useWebKit
+                  ref ={ref=>this.webview = ref}
+                  style={styles.container}
+                  source={{url}}/>
+          </View>);
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        wallet:{ passphrase }
+    } = state;
+    return { passphrase };
+};
 
 const mapDispatchToProps = (dispatch) => ({
 });
