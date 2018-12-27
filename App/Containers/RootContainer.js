@@ -18,11 +18,14 @@ class RootContainer extends Component {
         }
         const {gethInit, saveUserInfo} = this.props;
         const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
-        saveUserInfo({isLoginApp:isLogin});
+        saveUserInfo({isLoginInfo:isLogin});
+
         const rawurl = 'ws://rinkeby03.milewan.com:8546';
         const passphrase = '11111111';
         gethInit({isLogin, rawurl, passphrase});
 
+        const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
+        saveUserInfo({isAgreeInfo:isAgree});
     }
     render () {
         return (

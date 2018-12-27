@@ -74,35 +74,6 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSStr
   _resolveBlock(@[address]);
 }
 
-
-RCT_EXPORT_METHOD(newAccount:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
-  
-  _resolveBlock = resolver;
-  _rejectBlock = reject;
-  
-  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
-  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
-  _resolveBlock(@[@YES]);
-  
-//  NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
-//  [FileManager removeFileAtPath:keydir];
-//  [FileManager createDirectoryIfNotExists:keydir];
-//
-//  self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-//  NSLog(@"keyStore => %@", self.keyStore);
-//  // 创建钱包生成 keyStore
-//  NSError * err = nil;
-//  self.account = [keyStore newAccount:passphrase error:&err];
-//  if (err) {
-//    _rejectBlock(@"iOS", @"newAccount", err);
-//    return;
-//  }
-//  [self saveKeystorePath:self.account];
-//  NSString *address = [[self.account getAddress] getHex];
-//  NSLog(@"newAccount address ====> %@",address);
-//  _resolveBlock(@[address]);
-}
-
 RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;

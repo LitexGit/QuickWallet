@@ -41,7 +41,8 @@ export const INITIAL_STATE = Immutable({
     created_at:'1',
     last_login:'2018:12:21',
 
-    isLoginApp:false,
+    isLoginInfo:false,
+    isAgreeInfo:false,
 });
 
 /* ------------- Selectors ------------- */
@@ -53,8 +54,8 @@ export const UserSelectors = {
 
 /* ------------- Reducers ------------- */
 
-export const saveUserInfo = (state, { data }) =>
-    state.merge({ data, payload: null});
+export const saveUserInfo = (state, { data }) =>state.merge(data);
+
 
 // request the avatar for a user
 export const request = (state, { data }) =>

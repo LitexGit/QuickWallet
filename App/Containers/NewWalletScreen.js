@@ -10,11 +10,9 @@ import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
 import UserTermsAlert from '../Components/UserTermsAlert';
 
-// import { NavigationActions } from 'react-navigation';
-import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 
-import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
 
 class NewWalletScreen extends Component {
@@ -28,7 +26,6 @@ class NewWalletScreen extends Component {
       this.password = '';
       this.confirm = '';
       this.state = {
-          isAgreedUseTerms:true,
           isShowRemind:false,
           isInputValid:false,
           isShowPassword:false,
@@ -73,13 +70,13 @@ class NewWalletScreen extends Component {
     02:failure: => TODO 应该不存在失败
   */
   _onPressBtn = ()=>{
-      this.props.gethNewAccount({passphrase:this.password});
-      // this.props.navigate('PreBackupScreen');
+      this.props.savePassphrase({passphrase:this.password});
+      this.props.navigate('PreBackupScreen');
   }
 
   _checkInputIsValid=()=>{
       // TODO
-      if (this.name.length && this.password.length > 7 &&  this.confirm.length > 7) {
+      if (this.password.length > 7 &&  this.confirm.length > 7) {
           if (this.password === this.confirm) {
               this.setState({isInputValid:true});
               return;
@@ -88,19 +85,14 @@ class NewWalletScreen extends Component {
       this.setState({isInputValid:false});
   }
 
-  componentDidMount= async ()=>{
-      this.props.setLoading({loading:false});
-      const isAgreedUseTerms = await DeviceStorage.getItem(Keys.IS_SELECTED_USE_TERMS);
-      this.setState({ isAgreedUseTerms });
-  }
 
   render () {
       const remind001 = '密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要';
       const remind002 = 'QuickWallet 不存储密码,也无法帮您找回,请务必牢记';
 
-      const {loading} = this.props;
+      const {loading, isAgree} = this.props;
 
-      const {isAgreedUseTerms, isShowRemind, isInputValid, isShowPassword}=this.state;
+      const {isShowRemind, isInputValid, isShowPassword}=this.state;
 
       const remindView = isShowRemind ? (<View style={styles.remindView}>
           <Ionicons name={'ios-lock'} size={Metrics.icons.small} color={Colors.separateLineColor}/>
@@ -135,15 +127,12 @@ class NewWalletScreen extends Component {
               </View>
           );
       });
-      const userTermsView = (!isAgreedUseTerms ? (<View zIndex={999} style={styles.userTermsStyle}>
+      const userTermsView = (!isAgree ? (<View zIndex={999} style={styles.userTermsStyle}>
           <UserTermsAlert/>
       </View>): null);
       return (
           <View style={styles.container}>
               {userTermsView}
-              <Spinner visible={loading} cancelable
-                  textContent={'Loading...'}
-                  textStyle={styles.spinnerText}/>
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
                   <Text style={styles.titleStytle}>创建账户</Text>
@@ -169,18 +158,23 @@ class NewWalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('========state============================');
+    console.log(state);
+    console.log('========state============================');
     const {
-        wallet:{loading}
+        wallet:{loading},
+        user:{
+            isAgreeInfo:isAgree
+        }
     } = state;
     return {
-        loading
+        loading, isAgree
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    // navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    gethNewAccount: (params) => dispatch(WalletActions.gethNewAccount(params)),
-    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    savePassphrase: ({passphrase}) => dispatch(WalletActions.savePassphrase({passphrase})),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

@@ -25,22 +25,6 @@ export function *gethInit (action) {
     }
 }
 
-export function *gethNewAccount (action) {
-    try {
-        const {data:params} = action;
-        const {passphrase=''} = params;
-        yield put(WalletActions.setLoading({loading:true}));
-        yield GethModule.newAccount({passphrase});
-        yield put(WalletActions.setLoading({loading:false}));
-        yield put(NavigationActions.navigate({routeName:'PreBackupScreen'}));
-    } catch (error) {
-        // TODO 新建账户 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
-    }
-}
-
 export function *gethRandomMnemonic () {
     try {
         const result =  yield GethModule.randomMnemonic();

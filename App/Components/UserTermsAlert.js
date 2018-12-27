@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from './Styles/UserTermsAlertStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -7,48 +6,39 @@ import { Metrics, Colors } from '../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import I18n from '../I18n';
+import { connect } from 'react-redux';
+import UserActions from '../Redux/UserRedux';
 
-export default class UserTermsAlert extends Component {
-
-    static propTypes = {
-        isShow: PropTypes.bool,
-    }
-
-    static defaultProps = {
-        isShow: false
-    }
+class UserTermsAlert extends Component {
 
     constructor (props) {
         super(props);
         this.state = {
-            isOpen:true,
-            isAgreed:false,
+            isAgree:false,
         };
     }
 
     _onPressBtn=()=>{
-        this.setState({ isOpen:false });
-        DeviceStorage.saveItem(Keys.IS_SELECTED_USE_TERMS, true);
+        DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, true);
+        this.props.saveUserInfo({isAgreeInfo:true});
     }
     _onPressReadBtn=()=>{
-        const {isAgreed} = this.state;
-        this.setState({ isAgreed:!isAgreed });
-        DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, !isAgreed);
-
+        const {isAgree} = this.state;
+        this.setState({ isAgree:!isAgree });
     }
 
-    componentDidMount=async()=>{
-        const isAgreed = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE);
-        this.setState({ isAgreed });
+    componentDidMount=()=>{
+        const {isAgree} = this.props;
+        this.setState({ isAgree });
     }
 
     render () {
         const remin001 = '我已仔细阅读并同意以上条款以及';
         const remin002 = 'Cookiss的使用说明';
 
-        const {isAgreed} = this.state;
-        const agreedImg = isAgreed ? <AntDesign name={'checkcircle'} size={Metrics.icons.small} color={Colors.textColor}/> : <AntDesign name={'checkcircleo'} size={Metrics.icons.small} color={Colors.separateLineColor}/>;
-        const btnStyle = isAgreed ? {backgroundColor:Colors.textColor} : {backgroundColor:Colors.dividingLineColor};
+        const {isAgree} = this.state;
+        const agreedImg = isAgree ? <AntDesign name={'checkcircle'} size={Metrics.icons.small} color={Colors.textColor}/> : <AntDesign name={'checkcircleo'} size={Metrics.icons.small} color={Colors.separateLineColor}/>;
+        const btnStyle = isAgree ? {backgroundColor:Colors.textColor} : {backgroundColor:Colors.dividingLineColor};
         return (
             <View style={styles.container}>
                 <View style={styles.topSection}>
@@ -82,7 +72,7 @@ export default class UserTermsAlert extends Component {
                         <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{remin002}</Text>
                     </View>
                 </View>
-                <TouchableOpacity disabled={!isAgreed} onPress={()=>this._onPressBtn()}>
+                <TouchableOpacity disabled={!isAgree} onPress={()=>this._onPressBtn()}>
                     <View style={[styles.bottomSection, btnStyle]}>
                         <Text style={styles.btnTitle}>{ I18n.t('Continue')}</Text>
                     </View>
@@ -91,5 +81,23 @@ export default class UserTermsAlert extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    const {
+        user:{
+            isAgreeInfo:isAgree
+        }
+    } = state;
+    return {
+        isAgree
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserTermsAlert);
 
 
