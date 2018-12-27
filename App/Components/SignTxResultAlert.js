@@ -43,6 +43,8 @@ _onPressConfirm=()=>{
 
 render () {
     const title = '确认信息';
+    const from = '0xb5538753F2641A83409D2786790b42aC857C5340';
+    const to = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db';
 
     const {isInit} = this.props;
     const {isShow} = this.state;
@@ -72,13 +74,13 @@ render () {
                 <View style={styles.topSection}>
                     <View style={styles.addressSection}>
                         <Text style={styles.titleStyle}>{title}</Text>
-                        <AccountComponent/>
+                        <AccountComponent address={from}/>
                         <View style={styles.direction}>
                             <View style={styles.separateLine}/>
                             <EvilIcons name={'arrow-down'} size={Metrics.bottomTabIconSize} color={Colors.textColor}/>
                             <View style={styles.separateLine}/>
                         </View>
-                        <AccountComponent/>
+                        <AccountComponent address={to}/>
                     </View>
                     <View style={styles.txSection}>
                         {signInfos}
@@ -97,4 +99,8 @@ render () {
     );
 }
 }
+
+
+
+
 
