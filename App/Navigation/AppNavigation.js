@@ -16,7 +16,7 @@ import ScanScreen from '../Containers/ScanScreen';
 import ExportScreen from '../Containers/ExportScreen';
 import WebViewScreen from '../Containers/WebViewScreen';
 import ZJWebViewScreen from '../Containers/ZJWebViewScreen';
-
+import PreMineScreen from '../Containers/PreMineScreen';
 
 import styles from './Styles/NavigationStyles';
 import Colors from '../Themes/Colors';
@@ -24,6 +24,7 @@ import Colors from '../Themes/Colors';
 const BottomTabNav = createBottomTabNavigator({
     Found: { screen: FoundScreen },
     Mine: { screen: MineScreen },
+    PreMine: { screen: PreMineScreen },
 }, {
     tabBarPosition: 'bottom',
     animationEnabled: false,

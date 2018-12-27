@@ -191,6 +191,11 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
+  if (!self.account || !self.keyStore || !self.ethClient) {
+    _rejectBlock(@"iOS", @"keyStore nil,Init Error", nil);
+    return;
+  }
+  
   GethContext *context = [[GethContext alloc] init];
   GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
   int64_t number = -1;
