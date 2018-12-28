@@ -27,6 +27,7 @@ export function *gethUnlockAccount (action) {
         const result =  yield GethModule.unlockAccount({passphrase});
         const address =  Ramda.head(result);
         // TODO 解锁钱包 可以导出&&转账
+        yield put(WalletActions.saveAddress({address}));
     } catch (error) {
         // TODO 解锁钱包 异常处理逻辑
         console.log('==============error======================');
@@ -67,6 +68,7 @@ export function *gethImportMnemonic (action) {
         // yield put(UserActions.registerRequest({address, type:1}));
 
         // TODO account ？？ ||  register ？？ ==> 备份助记词
+        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
         yield put(StackActions.popToTop());
@@ -94,6 +96,7 @@ export function *gethImportPrivateKey (action) {
         // yield put(UserActions.registerRequest({address, type:1}));
 
         // TODO account ？？ ||  register ？？ ==> 备份助记词
+        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
         yield put(StackActions.popToTop());

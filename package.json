@@ -55,6 +55,7 @@
     "react-native-modal-overlay": "^1.2.3",
     "react-native-qrcode-scanner": "^1.1.0",
     "react-native-qrcode-svg": "^5.1.1",
+    "react-native-root-toast": "^3.0.2",
     "react-native-scrollable-tab-view": "^0.10.0",
     "react-native-svg": "^8.0.10",
     "react-native-swiper": "^1.5.14",

@@ -50,8 +50,8 @@ export const WalletSelectors = {
 };
 
 /* ------------- Reducers ------------- */
-export const saveAddress = (state, {data}) =>
-    state.merge({...data});
+export const saveAddress = (state, {data}) =>state.merge({...data});
+
 
 export const savePrivateKey = (state, {data}) =>
     state.merge({...data});

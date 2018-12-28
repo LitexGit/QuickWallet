@@ -12,36 +12,53 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import UserActions from '../Redux/UserRedux';
 
 class RootContainer extends Component {
-    async componentDidMount  () {
-        if (!ReduxPersist.active) {
-            this.props.startup();
-        }
-        const {gethInit, saveUserInfo} = this.props;
-        const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
-        saveUserInfo({isLoginInfo:isLogin});
 
-        const rawurl = 'ws://rinkeby03.milewan.com:8546';
-        gethInit({isLogin, rawurl});
+  _initializes= async ()=>{
 
-        const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
-        saveUserInfo({isAgreeInfo:isAgree});
-    }
-    render () {
-        return (
-            <View style={styles.applicationView}>
-                <StatusBar barStyle='light-content' />
-                <ReduxNavigation />
-            </View>
-        );
-    }
+      const {gethInit, saveUserInfo, saveAddress} = this.props;
+
+      const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
+      console.log('==========address==========================');
+      console.log(address);
+      console.log('==========address==========================');
+      saveAddress({address});
+      const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
+      saveUserInfo({isAgreeInfo:isAgree});
+
+      const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
+      saveUserInfo({isLoginInfo:isLogin});
+      const rawurl = 'ws://rinkeby03.milewan.com:8546';
+      gethInit({isLogin, rawurl});
+  }
+
+  componentDidMount  () {
+      if (!ReduxPersist.active) {
+          this.props.startup();
+      }
+      this._initializes();
+  }
+
+  render () {
+      return (
+          <View style={styles.applicationView}>
+              <StatusBar barStyle='light-content' />
+              <ReduxNavigation />
+          </View>
+      );
+  }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    console.log('======RootContainer=====state=========================');
+    console.log(state);
+    console.log('======RootContainer======state========================');
+    return state;
+};
 
 const mapDispatchToProps = (dispatch) => ({
     startup: () => dispatch(StartupActions.startup()),
     gethInit: (params) => dispatch(WalletActions.gethInit(params)),
+    saveAddress: (params) => dispatch(WalletActions.saveAddress(params)),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
 });
 

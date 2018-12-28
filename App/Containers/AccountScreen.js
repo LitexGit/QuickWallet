@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Text, TouchableOpacity } from 'react-native';
+import {Text, TouchableOpacity, Clipboard} from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Avatar } from 'react-native-elements';
 import styles from './Styles/AccountScreenStyle';
@@ -47,15 +47,17 @@ class AccountScreen extends Component {
   }
 
   _onPressCopy=()=>{
-      console.log('===========_onPressCopy=========================');
+      const { address } = this.props;
+      Clipboard.setString(address);
   }
 
   render () {
-      const settings = {'avatar':'', 'account':'1号', 'inviteCode':'2b4a4'};
-      const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
-      const address = '0xdadadadadmdafnanjadnajanddadad';
-      const {isInit} = this.state;
 
+      const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
+
+      const {isInit} = this.state;
+      const {address, nickname, sharecode} = this.props;
+      const settings = {'avatar':'', 'account': nickname, 'inviteCode':sharecode};
 
       const infoView = Object.values(AccountConfig).map((config, index)=>{
           const { key='' } = config;
@@ -63,6 +65,7 @@ class AccountScreen extends Component {
           const { title='', type=1, details='' } = config;
 
           const rightView = type === 1 ? <Avatar small rounded source={{uri: avatar_url}}/> : <Text style={styles.detailsStyle}>{details}</Text>;
+
           return (<View key={index} style={styles.itemView}>
               <Text style={styles.titleStyle}>{title}</Text>
               {rightView}
@@ -78,7 +81,7 @@ class AccountScreen extends Component {
               <View style={styles.centerSection}>
                   <View style={styles.addressSection}>
                       <Text style={styles.address} numberOfLines={1}>{address}</Text>
-                      <TouchableOpacity onPress={()=>this._onPressCopy}>
+                      <TouchableOpacity onPress={()=>this._onPressCopy()}>
                           <FontAwesome name={'copy'} size={Metrics.icons.small} color={Colors.textColor}/>
                       </TouchableOpacity>
                   </View>
@@ -99,8 +102,13 @@ class AccountScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        wallet:{address},
+        user:{nickname, sharecode}
+    } = state;
+    return {address, nickname, sharecode};
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
