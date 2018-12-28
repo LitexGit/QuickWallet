@@ -20,6 +20,23 @@ export function gethInit (action) {
     }
 }
 
+export function *gethUnlockAccount (action) {
+    try {
+        const {data:params} = action;
+        const {passphrase=''} = params;
+        const result =  yield GethModule.unlockAccount({passphrase});
+        const address =  Ramda.head(result);
+        // TODO 解锁钱包 可以导出&&转账
+    } catch (error) {
+        // TODO 解锁钱包 异常处理逻辑
+        console.log('==============error======================');
+        console.log(error);
+        console.log('==============error======================');
+    }
+}
+
+
+
 export function *gethRandomMnemonic () {
     try {
         const result =  yield GethModule.randomMnemonic();
