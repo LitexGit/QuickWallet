@@ -22,7 +22,7 @@ const store = createStore();
 class App extends Component {
 
   componentDidMount=()=>{
-      console.log('===========App=======componentDidMount==================');
+      // console.log('===========App=======componentDidMount==================');
       ScheduleTasks.executeOnceInLifetime();
       ScheduleTasks.executeOncePerVersion();
       ScheduleTasks.executeOnceDaily();

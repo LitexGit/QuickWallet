@@ -23,6 +23,9 @@ export function gethInit (action) {
 export function *gethUnlockAccount (action) {
     try {
         const {data:params} = action;
+        console.log('=============params=======================');
+        console.log(params);
+        console.log('=============params=======================');
         const {passphrase=''} = params;
         const result =  yield GethModule.unlockAccount({passphrase});
         const address =  Ramda.head(result);
@@ -152,9 +155,6 @@ export function *gethTransfer (action) {
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const isSend =  Ramda.head(result);
-        console.log('================isSend====================');
-        console.log(isSend);
-        console.log('================isSend====================');
     } catch (error) {
         // TODO 生成助记词 异常处理逻辑
         console.log('==============error======================');

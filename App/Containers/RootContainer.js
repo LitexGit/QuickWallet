@@ -18,9 +18,6 @@ class RootContainer extends Component {
       const {gethInit, saveUserInfo, saveAddress} = this.props;
 
       const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
-      console.log('==========address==========================');
-      console.log(address);
-      console.log('==========address==========================');
       saveAddress({address});
       const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
       saveUserInfo({isAgreeInfo:isAgree});

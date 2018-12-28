@@ -10,6 +10,8 @@ import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import SignTxResultAlert from '../Components/SignTxResultAlert';
+import PassphraseInputAlert from '../Components/PassphraseInputAlert';
+
 
 class TransferScreen extends Component {
 
@@ -28,33 +30,31 @@ class TransferScreen extends Component {
             inputAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
 
             isShowSignTx:false,
+            isShowPswdInput:false,
         };
         this.inputGas = 10;
     }
 
   _onPressBtn=()=>{
+      this.setState({
+          isShowSignTx:true,
+      });
+
+      // let {passphrase='', address=''} = this.props;
+      // passphrase = '11111111';
+      // address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+      // const symbol = 'ETH';
+      // const decimal = 1e18;
+      // const {inputBalance, inputAddress} = this.state;
 
 
-
-
-
-
-
-      let {passphrase='', address=''} = this.props;
-      passphrase = '11111111';
-      address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-      const symbol = 'ETH';
-      const decimal = 1e18;
-      const {inputBalance, inputAddress} = this.state;
-
-
-      // ETH
-      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas, decimal});
-      // Token
-      // symbol = 'TEST';
-      // decimal = 1e18;
-      // const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
-      // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e18, decimal, tokenAddress});
+      // // ETH
+      // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas, decimal});
+      // // Token
+      // // symbol = 'TEST';
+      // // decimal = 1e18;
+      // // const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
+      // // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e18, decimal, tokenAddress});
   }
 
   _onChangeBalance=(text)=>{
@@ -83,7 +83,6 @@ class TransferScreen extends Component {
       });
   }
 
-
   _onSlidingComplete=(gas)=>{
       this.inputGas = gas;
       this._checkInputIsValid();
@@ -96,11 +95,40 @@ class TransferScreen extends Component {
   }
 
   _checkInputIsValid=()=>{
-      console.log('==============_checkInputIsValid======================');
+      // console.log('==============_checkInputIsValid======================');
   }
 
   componentDidMount=()=>{
       this._checkInputIsValid();
+  }
+
+  // 交易信息确认
+  _signCancel=()=>{
+      this.setState({
+          isShowSignTx:false,
+      });
+  }
+  _signConfirm=()=>{
+      this.setState({
+          isShowSignTx:false,
+      });
+      // 校验钱包是否已经解锁
+      this.setState({
+          isShowPswdInput:true,
+      });
+  }
+
+  // 解锁钱包
+  _pswdInputCancel=()=>{
+      this.setState({
+          isShowPswdInput:false,
+      });
+  }
+  _pswdInputConfirm=(passphrase)=>{
+      this.setState({
+          isShowPswdInput:false,
+      });
+      this.props.gethUnlockAccount({passphrase});
   }
 
   render () {
@@ -109,10 +137,21 @@ class TransferScreen extends Component {
       const symbol = 'ETH';
       const assets = 0;
 
-      const {displayGas=10,  minGas=1, maxGas=100, inputAddress='', isShowSignTx} = this.state;
+      const {displayGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
+
       return (
           <View style={styles.container}>
-              <SignTxResultAlert isInit={isShowSignTx}/>
+              <SignTxResultAlert
+                  isInit={isShowSignTx}
+                  to={inputAddress}
+                  balance={inputBalance}
+                  gas={this.inputGas}
+                  onPressCancel={()=>this._signCancel()}
+                  onPressConfirm={()=>this._signConfirm()}/>
+              <PassphraseInputAlert
+                  isInit={isShowPswdInput}
+                  onPressCancel={()=>this._pswdInputCancel()}
+                  onPressConfirm={(passphrase)=>this._pswdInputConfirm(passphrase)}/>
               <ScrollView style={styles.scrollView}>
                   <KeyboardAvoidingView behavior='position'>
                       <View style={styles.bananceSection}>
@@ -180,6 +219,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
+    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferScreen);

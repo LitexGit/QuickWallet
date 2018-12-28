@@ -50,9 +50,6 @@ export const ConfigSelectors = {
 
 // request the avatar for a user
 export const request = (state, { data }) =>
-    // console.log('================data====================');
-    // console.log(data);
-    // console.log('================data====================');
     state.merge({ refreshing: true, data, payload: null })
 ;
 

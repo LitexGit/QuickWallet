@@ -15,7 +15,7 @@ export default class ListEmptyComponent extends Component {
         containerStyle: {},
     }
     componentDidMount=()=>{
-        console.log('====================================');
+        // console.log('====================================');
     }
     render () {
         const {title, containerStyle} = this.props;
