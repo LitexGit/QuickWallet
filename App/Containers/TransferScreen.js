@@ -9,6 +9,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
+import SignTxResultAlert from '../Components/SignTxResultAlert';
 
 class TransferScreen extends Component {
 
@@ -25,27 +26,35 @@ class TransferScreen extends Component {
 
             inputBalance:'0',
             inputAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+
+            isShowSignTx:false,
         };
         this.inputGas = 10;
     }
 
   _onPressBtn=()=>{
-      let {passphrase='', address=''} = this.props;
-      // util 统一对 passphrase 做校验
-      passphrase = '11111111';
-      // util 统一对 address 做校验
-      address = '0xb5538753F2641A83409D2786790b42aC857C5340';
 
-      let symbol = 'ETH';
-      let decimal = 1e9;
+
+
+
+
+
+
+      let {passphrase='', address=''} = this.props;
+      passphrase = '11111111';
+      address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+      const symbol = 'ETH';
+      const decimal = 1e18;
       const {inputBalance, inputAddress} = this.state;
+
+
       // ETH
-      // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e9, decimal});
+      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas, decimal});
       // Token
-      symbol = 'TEST';
-      decimal = 1e18;
-      const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
-      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e18, decimal, tokenAddress});
+      // symbol = 'TEST';
+      // decimal = 1e18;
+      // const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
+      // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e18, decimal, tokenAddress});
   }
 
   _onChangeBalance=(text)=>{
@@ -100,9 +109,10 @@ class TransferScreen extends Component {
       const symbol = 'ETH';
       const assets = 0;
 
-      const {displayGas=10,  minGas=1, maxGas=100, inputAddress=''} = this.state;
+      const {displayGas=10,  minGas=1, maxGas=100, inputAddress='', isShowSignTx} = this.state;
       return (
           <View style={styles.container}>
+              <SignTxResultAlert isInit={isShowSignTx}/>
               <ScrollView style={styles.scrollView}>
                   <KeyboardAvoidingView behavior='position'>
                       <View style={styles.bananceSection}>
@@ -146,7 +156,7 @@ class TransferScreen extends Component {
                               onSlidingComplete={(gas) => this._onSlidingComplete(gas)}
                               onValueChange={(gas) => this._onSliderChange(gas)}/>
                       </View>
-                      <Text style={styles.gasText}>{displayGas}gwei</Text>
+                      <Text style={styles.gasText}>{displayGas} gwei</Text>
                   </View>
               </ScrollView>
               <View style={styles.bottomSection}>

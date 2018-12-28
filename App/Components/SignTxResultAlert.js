@@ -47,6 +47,7 @@ render () {
     const to = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db';
 
     const {isInit} = this.props;
+
     const {isShow} = this.state;
     const isOpen = isInit && isShow;
 

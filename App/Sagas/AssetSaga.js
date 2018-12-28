@@ -12,47 +12,66 @@ const environment = 'rinkeby';
 const timeout = 1000;
 
 export function * getBalance (action) {
-    const {data:params} = action;
-    const {address} = params;
-    const api = require('etherscan-api').init(apiKey, environment, timeout);
+    try {
+        const {data:params} = action;
+        const {address} = params;
+        const api = require('etherscan-api').init(apiKey, environment, timeout);
 
-    const response =yield call(api.account.balance,address);
-    const {status, message, result:ethBanance} = response;
-    if (status) {
-        yield put(AssetActions.getBalanceSuccess({ethBanance}));
-        return;
+        const response =yield call(api.account.balance,address);
+        const {status, message, result:ethBanance} = response;
+        if (status) {
+            yield put(AssetActions.getBalanceSuccess({ethBanance}));
+            return;
+        }
+        yield put(AssetActions.getBalanceFailure(message));
+    } catch (error) {
+        console.log('==============error======================');
+        console.log();
+        console.log('==============error======================');
     }
-    yield put(AssetActions.getBalanceFailure(message));
 }
 
 export function * getTxlist (action) {
-    const {data:params} = action;
-    const {address, page=1, offset=20, tokenSymbol='ETH', contractAddress=''} = params;
-    const startblock = 0;
-    const endblock='999999999';
-    const sort='desc';
-    const api = require('etherscan-api').init(apiKey, environment, timeout);
+    try {
+        const {data:params} = action;
+        const {address, page=1, offset=20, tokenSymbol='ETH', contractAddress=''} = params;
+        const startblock = 0;
+        const endblock='999999999';
+        const sort='desc';
+        const api = require('etherscan-api').init(apiKey, environment, timeout);
 
-    let response = {};
-    if (tokenSymbol === 'ETH') {
-        response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
-    } else {
-        response = yield call(api.account.tokentx, address, contractAddress, startblock, endblock, page, offset, sort);
+        let response = {};
+        if (tokenSymbol === 'ETH') {
+            response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
+        } else {
+            response = yield call(api.account.tokentx, address, contractAddress, startblock, endblock, page, offset, sort);
+        }
+
+        const {status, message, result} = response;
+        const txlist = result.map((item) => {
+            const {timeStamp=''} = item;
+            const date = Moment.unix(timeStamp).format('YYYY-MM-DD');
+            const time = Moment.unix(timeStamp).format('HH:mm:ss');
+            return {...item, time, date};
+        });
+        if (status) {
+            yield put(AssetActions.getTxlistSuccess({txlist}));
+            return;
+        }
+        yield put(AssetActions.getTxlistFailure(message));
+    } catch (error) {
+        console.log('==============error======================');
+        console.log();
+        console.log('==============error======================');
     }
 
-    const {status, message, result} = response;
-    const txlist = result.map((item) => {
-        const {timeStamp=''} = item;
-        const date = Moment.unix(timeStamp).format('YYYY-MM-DD');
-        const time = Moment.unix(timeStamp).format('HH:mm:ss');
-        return {...item, time, date};
-    });
-    if (status) {
-        yield put(AssetActions.getTxlistSuccess({txlist}));
-        return;
-    }
-    yield put(AssetActions.getTxlistFailure(message));
 }
+
+
+
+
+
+
 
 
 // {

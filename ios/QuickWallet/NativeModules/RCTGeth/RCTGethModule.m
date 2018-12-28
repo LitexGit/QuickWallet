@@ -213,9 +213,9 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   }
 
   GethAddress *to = [[GethAddress alloc] initFromHex:toAddress];
-  GethBigInt *amount = [[GethBigInt alloc] init:[value intValue]];
+  GethBigInt *amount = [[GethBigInt alloc] init:[value longLongValue]];
   ino64_t gasLimit = 21000;
-  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas intValue]];;
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas longLongValue]];;
   
   NSData *data = [NSData data];
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];

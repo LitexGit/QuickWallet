@@ -24,8 +24,8 @@ class TransferRecordScreen extends Component {
       const offset = 20;
       const { getTxlist } = this.props;
 
-      // const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
-      // getTxlist({address, page, offset});
+      const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+      getTxlist({address, page, offset});
 
       // const tokenSymbol = 'TEST';
       // const MKRcontractaddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
