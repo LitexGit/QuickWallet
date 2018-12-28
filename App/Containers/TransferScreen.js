@@ -36,10 +36,16 @@ class TransferScreen extends Component {
       // util 统一对 address 做校验
       address = '0xb5538753F2641A83409D2786790b42aC857C5340';
 
-      const symbol = 'ETH';
-      const decimal = 1e9;
+      let symbol = 'ETH';
+      let decimal = 1e9;
       const {inputBalance, inputAddress} = this.state;
-      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas, decimal});
+      // ETH
+      // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e9, decimal});
+      // Token
+      symbol = 'TEST';
+      decimal = 1e18;
+      const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
+      this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e18, decimal, tokenAddress});
   }
 
   _onChangeBalance=(text)=>{

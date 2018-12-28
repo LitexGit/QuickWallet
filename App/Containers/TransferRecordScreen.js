@@ -24,10 +24,10 @@ class TransferRecordScreen extends Component {
       const offset = 20;
       const { getTxlist } = this.props;
 
-      const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
-      getTxlist({address, page, offset});
+      // const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
+      // getTxlist({address, page, offset});
 
-      // const tokenSymbol = 'MKR';
+      // const tokenSymbol = 'TEST';
       // const MKRcontractaddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
       // const MKRaddress = '0x4e83362442b8d1bec281594cea3050c8eb01311c';
       // getTxlist({address:MKRaddress, page, offset, tokenSymbol, contractAddress:MKRcontractaddress});
@@ -54,7 +54,7 @@ class TransferRecordScreen extends Component {
       const { from='', to='', time='', value='', txreceipt_status='1'} = item;
       const isInput =  getTxDirection({from, to});
       const title = isInput ? '收款' : '付款';
-      const direction = isInput ? 'From:'+from : 'To:'+to;
+      const direction = isInput ? 'From:'+from : 'To:'+ to;
 
 
       return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>

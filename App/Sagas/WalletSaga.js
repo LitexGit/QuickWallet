@@ -109,13 +109,13 @@ export function *gethExportPrivateKey (action) {
 export function *gethTransfer (action) {
     try {
         const {data:params} = action;
-        console.log('============params========================');
-        console.log(params);
-        console.log('============params========================');
-        const {symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal} = params;
+        const {symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress} = params;
+        console.log('===================gethTransfer=================');
+        console.log(tokenAddress);
+        console.log('===================gethTransfer=================');
         // TODO 参数异常校验
         yield put(WalletActions.setLoading({loading:true}));
-        const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal});
+        const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress});
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const isSend =  Ramda.head(result);

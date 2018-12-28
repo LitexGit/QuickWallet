@@ -217,6 +217,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
     _rejectBlock(@"iOS", @"signTxWithKeyStore", nil);
+    return;
   }
   
   NSError *sendErr = nil;
@@ -228,11 +229,16 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   _resolveBlock(@[@YES]);
 }
 
-RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress tokenAddress:(NSString *)tokenAddress value:(int64_t)value resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress tokenAddress:(NSString *)tokenAddress value:(nonnull NSNumber *)value gas:(nonnull NSNumber *)gas resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
-  GethContext *context = [[GethContext alloc] initWithRef:@"transferTokens"];
+  if (!self.account || !self.keyStore || !self.ethClient) {
+    _rejectBlock(@"iOS", @"keyStore nil,Init Error", nil);
+    return;
+  }
+
+  GethContext *context = [[GethContext alloc] init];
   GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
   int64_t number = -1;
   int64_t nonce = 0x0;
@@ -245,38 +251,33 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   
   GethAddress *to = [[GethAddress alloc] initFromHex:tokenAddress];
   GethBigInt *amount = [[GethBigInt alloc] init:0];
-  NSError *gasErr = nil;
-  GethBigInt *gasPrice = [self.ethClient suggestGasPrice:context error:&gasErr];
-  if (!isGet || nonceErr) {
-    _rejectBlock(@"iOS", @"suggestGasPrice", gasErr);
-    return;
-  }
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas intValue]];;
   
   GethCallMsg *callMsg = [[GethCallMsg alloc] init];
-  
   GethAddress *dataAddress = [[GethAddress alloc] initFromHex:toAddress];
-  GethBigInt *dataAmount = [[GethBigInt alloc] init:value];
+  GethBigInt *dataAmount = [[GethBigInt alloc] init:[value intValue]];
   
   [callMsg setFrom:from];
   [callMsg setGasPrice:gasPrice];
   [callMsg setTo:dataAddress];
   [callMsg setValue:dataAmount];
   
-//  NSData* GethGenerateERC20TransferData(GethAddress* toAddress, GethBigInt* amount, NSError** error);
+  
   NSError *error = nil;
   NSData *tokenData = GethGenerateERC20TransferData(dataAddress, dataAmount, &error);
-  if (!error || !tokenData) {
-    _rejectBlock(@"iOS", @"GethGenerateERC20TransferData", gasErr);
+  if (error || !tokenData) {
+    _rejectBlock(@"iOS", @"GethGenerateERC20TransferData", error);
+    return;
   }
   [callMsg setData:tokenData];
 
-  NSError *limitErr = nil;
+//  NSError *limitErr = nil;
   int64_t gasLimit = 21000;
-  BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&limitErr];
-  if (!isLimit || limitErr) {
-    _rejectBlock(@"iOS", @"estimateGas", limitErr);
-    return;
-  }
+//  BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&limitErr];
+//  if (!isLimit || limitErr) {
+//    _rejectBlock(@"iOS", @"estimateGas", limitErr);
+//    return;
+//  }
   
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];
   
@@ -295,26 +296,17 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 }
 
 
-
-
-
-
-
-
-
-
-
 - (GethTransaction *)signTxWithKeyStore:(GethKeyStore *)keyStore Account:(GethAccount *)account passphrase:(NSString *)passphrase transaction:(GethTransaction *)transaction{
   int64_t chainId = 4;
   GethBigInt *chainID = [[GethBigInt alloc] init:chainId];
   NSError *err = nil;
   GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&err];
   if (err) {
+    self.rejectBlock(@"iOS", @"getNonceAt", err);
     return nil;
   }
   return signedTx;
 }
-
 
 
 - (NSData*)byteStringToData:(NSString *)byteStr{
@@ -331,8 +323,6 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   }
   return data;
 }
-
-
 
 
 - (NSString *)dataToJson:(id)data{
@@ -353,3 +343,5 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 }
 
 @end
+
+//- (NSData*)signHashPassphrase:(GethAccount*)account passphrase:(NSString*)passphrase hash:(NSData*)hash error:(NSError**)error;
