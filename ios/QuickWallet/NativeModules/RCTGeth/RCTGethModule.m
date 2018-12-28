@@ -60,7 +60,6 @@ RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTP
 }
 
 
-
 RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   
   _resolveBlock = resolver;
@@ -114,18 +113,8 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   }
   [self saveKeystorePath:self.account];
   NSString *address = [[self.account getAddress] getHex];
-  NSLog(@"importMnemonic address ====> %@",address);
   _resolveBlock(@[address]);
 }
-
-///**
-// * ExportECSDAKey exports as a ECSDA key, encrypted with newPassphrase.
-// */
-//- (NSData*)exportECSDAKey:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
-///**
-// * ExportECSDAKeyHex exports as a ECSDA key, encrypted with newPassphrase.
-// */
-//- (NSString*)exportECSDAKeyHex:(GethAccount*)account passphrase:(NSString*)passphrase error:(NSError**)error;
 
 RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;

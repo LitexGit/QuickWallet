@@ -112,8 +112,8 @@ class MineComponent extends Component {
 
   render () {
       const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
-      const name = '1号';
-      const assets = '资产总价值：￥100.00';
+
+      const {nickname, address, ethBanance} = this.props;
       const data = Object.values(MineConfig);
       return (
           <View style={styles.container}>
@@ -125,12 +125,12 @@ class MineComponent extends Component {
                               source={{uri: avatar_url}}
                               onPress={() => console.log('Works!')}
                               activeOpacity={0.7}/>
-                          <Text style={styles.nameText}>{name}</Text>
+                          <Text style={styles.nameText}>{nickname}</Text>
                       </View>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.assetsSection} onPress={()=>this._onPressAssets()}>
                       <View style={styles.assetsSection}>
-                          <Text style={styles.assetsStyle}>{assets}</Text>
+                          <Text style={styles.assetsStyle}>资产总价值：{ethBanance}</Text>
                       </View>
                   </TouchableOpacity>
 
@@ -150,10 +150,15 @@ class MineComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('=============state=======================');
+    console.log(state);
+    console.log('=============state=======================');
     const {
+        user:{nickname},
+        wallet:{address},
         assets:{ethBanance}
     } = state;
-    return { ethBanance };
+    return { ethBanance, nickname, address};
 };
 
 const mapDispatchToProps = (dispatch) => ({

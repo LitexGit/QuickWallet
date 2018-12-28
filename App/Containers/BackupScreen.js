@@ -174,7 +174,7 @@ class BackupScreen extends Component {
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
                       <Button onPress={()=>this._onPressCheck()}
-                          disabled={!isCanPress}
+                          // disabled={!isCanPress}
                           backgroundColor={Colors.textColor}
                           title={ I18n.t('Complete')}/>
                   </View>
@@ -185,6 +185,9 @@ class BackupScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+    // console.log('=============BackupScreen=======================');
+    // console.log(state);
+    // console.log('=============BackupScreen=======================');
     const {
         wallet:{mnemonic, loading, passphrase}
     } = state;

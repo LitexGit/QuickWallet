@@ -12,8 +12,10 @@ import UserTermsAlert from '../Components/UserTermsAlert';
 
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
+import UserActions from '../Redux/UserRedux';
 
 import I18n from '../I18n';
+
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
@@ -70,6 +72,7 @@ class NewWalletScreen extends Component {
     02:failure: => TODO 应该不存在失败
   */
   _onPressBtn = ()=>{
+      this.props.saveUserInfo({nickname:this.name});
       this.props.savePassphrase({passphrase:this.password});
       this.props.navigate('PreBackupScreen');
   }
@@ -158,9 +161,9 @@ class NewWalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('========state============================');
-    console.log(state);
-    console.log('========state============================');
+    // console.log('========NewWalletScreen============================');
+    // console.log(state);
+    // console.log('========NewWalletScreen============================');
     const {
         wallet:{loading},
         user:{
@@ -175,6 +178,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     savePassphrase: ({passphrase}) => dispatch(WalletActions.savePassphrase({passphrase})),
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

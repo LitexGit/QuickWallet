@@ -37,10 +37,10 @@ export const INITIAL_STATE = Immutable({
     loading: null,
     failure: null,
     error: null,
-    mnemonic:'mnemonic',
-    passphrase:'passphrase',
-    privateKey:'privateKey',
-    address:'address',
+    mnemonic:'',
+    passphrase:'',
+    privateKey:'',
+    address:'',
 });
 
 /* ------------- Selectors ------------- */
@@ -49,8 +49,8 @@ export const WalletSelectors = {
 };
 
 /* ------------- Reducers ------------- */
-export const saveAddress = (state, {data}) =>state.merge({...data});
-
+export const saveAddress = (state, {data}) =>
+    state.merge({...data});
 
 export const savePrivateKey = (state, {data}) =>
     state.merge({...data});

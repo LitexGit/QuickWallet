@@ -36,10 +36,10 @@ export const INITIAL_STATE = Immutable({
     error: null,
 
     uid:0,
-    nickname:'我怎这么好看',
-    sharecode:'SHARECODE',
-    created_at:'1',
-    last_login:'2018:12:21',
+    nickname:'',
+    sharecode:'',
+    created_at:'',
+    last_login:'',
 
     isLoginInfo:false,
     isAgreeInfo:false,

@@ -24,6 +24,8 @@ import { gethInit, gethImportMnemonic, gethImportPrivateKey, gethExportPrivateKe
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
 
+
+
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
@@ -46,8 +48,6 @@ export default function * root () {
         takeLatest(WalletTypes.GETH_EXPORT_PRIVATE_KEY, gethExportPrivateKey),
         takeLatest(WalletTypes.GETH_RANDOM_MNEMONIC, gethRandomMnemonic),
         takeLatest(WalletTypes.GETH_TRANSFER, gethTransfer),
-
-
 
         // some sagas only receive an action
         takeLatest(StartupTypes.STARTUP, startup),
