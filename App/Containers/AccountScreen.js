@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Text, TouchableOpacity, Clipboard} from 'react-native';
+import {Text, TouchableOpacity, Clipboard, Alert} from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Avatar } from 'react-native-elements';
 import styles from './Styles/AccountScreenStyle';
@@ -44,8 +44,19 @@ class AccountScreen extends Component {
       this.setState({ isInit:true });
   }
 
+
+  _confirmBtnAction=()=>this.props.logout();
+
   _onPressLogOut=()=>{
-      this.props.logout();
+      const title = '退出当前身份';
+      const content = '即将移除身份及所有导入的钱包，请确保所有钱包已备份。';
+      const action001 = '取消';
+      const action002 = '确认';
+
+      Alert.alert( title,content,
+          [{text: action001, style: 'cancel'}, {text: action002, onPress: () => this._confirmBtnAction()}],
+          { cancelable: false }
+      );
   }
 
   _onPressCopy=()=>{
