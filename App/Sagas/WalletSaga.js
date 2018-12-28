@@ -7,17 +7,11 @@ import Ramda from 'ramda';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
 
-export function *gethInit (action) {
+export function gethInit (action) {
     try {
         const {data:params} = action;
-        const {isLogin=false, rawurl='', passphrase=''} = params;
-        yield put(WalletActions.setLoading({loading:true}));
-        const result = yield GethModule.init({isLogin, rawurl, passphrase});
-        yield put(WalletActions.setLoading({loading:false}));
-        // TODO 添加数组校验
-        const address =  Ramda.head(result);
-        yield put(WalletActions.savePrivateKey({address}));
-        // TODO 添加地址校验
+        const {isLogin=false, rawurl=''} = params;
+        GethModule.init({isLogin, rawurl});
     } catch (error) {
         // TODO 初始化 异常处理逻辑
         console.log('==============error======================');

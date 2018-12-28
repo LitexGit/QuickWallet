@@ -21,8 +21,7 @@ class RootContainer extends Component {
         saveUserInfo({isLoginInfo:isLogin});
 
         const rawurl = 'ws://rinkeby03.milewan.com:8546';
-        const passphrase = '11111111';
-        gethInit({isLogin, rawurl, passphrase});
+        gethInit({isLogin, rawurl});
 
         const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
         saveUserInfo({isAgreeInfo:isAgree});

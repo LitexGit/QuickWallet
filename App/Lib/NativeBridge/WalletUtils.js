@@ -1,8 +1,8 @@
 import { NativeModules} from 'react-native';
 const gethModule = NativeModules.GethModule;
 
-async function init({isLogin, rawurl, passphrase}){
-    return gethModule.init(isLogin, rawurl, passphrase);
+async function init({isLogin, rawurl}){
+    return gethModule.init(isLogin, rawurl);
 }
 
 async function  newAccount({passphrase}){

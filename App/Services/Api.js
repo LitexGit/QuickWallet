@@ -3,9 +3,6 @@ import apisauce from 'apisauce';
 import Config from 'react-native-config';
 
 const create = (baseURL = Config.API_URL) => {
-    console.log('==========baseURL==========================');
-    console.log(baseURL);
-    console.log('==========baseURL==========================');
     const api = apisauce.create({
         baseURL,
         headers: {'Cache-Control': 'no-cache'},

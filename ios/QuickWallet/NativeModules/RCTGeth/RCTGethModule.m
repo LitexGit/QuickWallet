@@ -36,42 +36,15 @@ static NSString *rawurlKey  = @"raw_url_key";
 @implementation RCTGethModule
 RCT_EXPORT_MODULE();
 
-// 初始化客户端
-RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl) {
   
   [[NSUserDefaults standardUserDefaults] setObject:rawurl forKey:rawurlKey];
-  
-  _resolveBlock = resolver;
-  _rejectBlock = reject;
-  
+
   if (!isLogin) return;
   if (!rawurl || !rawurl.length) return;
-  if (!passphrase || !passphrase.length) return;
   
   if (self.account && self.ethClient) return;
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
-  
-  NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
-  [FileManager createDirectoryIfNotExists:keyTemp];
-  self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-  
-  NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
-  BOOL isExists = [FileManager fileExistsAtPath:keydir];
-  if (!isExists) {
-    // TODO  异常流程 登录状态不存在 keystore
-    _rejectBlock(@"iOS", @"keydir_isExists", nil);
-    return;
-  }
-  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
-  NSError *err = nil;
-  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
-  if (err) {
-    // TODO  异常流程 keyStore 导入异常
-    _rejectBlock(@"iOS", @"importKey_importKey", err);
-    return;
-  }
-  NSString *address = [[self.account getAddress] getHex];
-  _resolveBlock(@[address]);
 }
 
 RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
@@ -345,3 +318,40 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 @end
 
 //- (NSData*)signHashPassphrase:(GethAccount*)account passphrase:(NSString*)passphrase hash:(NSData*)hash error:(NSError**)error;
+
+
+
+
+//  [[NSUserDefaults standardUserDefaults] setObject:rawurl forKey:rawurlKey];
+//
+//  _resolveBlock = resolver;
+//  _rejectBlock = reject;
+//
+//  if (!isLogin) return;
+//  if (!rawurl || !rawurl.length) return;
+//  if (!passphrase || !passphrase.length) return;
+//
+//  if (self.account && self.ethClient) return;
+//  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+//
+//  NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
+//  [FileManager createDirectoryIfNotExists:keyTemp];
+//  self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+//
+//  NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
+//  BOOL isExists = [FileManager fileExistsAtPath:keydir];
+//  if (!isExists) {
+//    // TODO  异常流程 登录状态不存在 keystore
+//    _rejectBlock(@"iOS", @"keydir_isExists", nil);
+//    return;
+//  }
+//  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
+//  NSError *err = nil;
+//  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
+//  if (err) {
+//    // TODO  异常流程 keyStore 导入异常
+//    _rejectBlock(@"iOS", @"importKey_importKey", err);
+//    return;
+//  }
+//  NSString *address = [[self.account getAddress] getHex];
+//  _resolveBlock(@[address]);
