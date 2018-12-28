@@ -110,7 +110,6 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   }
   [self saveKeystorePath:self.account];
   NSString *address = [[self.account getAddress] getHex];
-  NSLog(@"importPrivateKey address ====> %@",address);
   _resolveBlock(@[address]);
 }
 

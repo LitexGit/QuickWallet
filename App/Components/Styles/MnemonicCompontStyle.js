@@ -87,5 +87,10 @@ export default StyleSheet.create({
     spinnerText:{
         fontSize:Fonts.size.medium,
         color:Colors.textColor,
+    },
+    remind002:{
+        color:'red',
+        fontSize:Fonts.size.small,
+        marginTop:Metrics.smallMargin,
     }
 });

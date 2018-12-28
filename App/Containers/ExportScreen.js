@@ -16,14 +16,20 @@ class ExportScreen extends Component {
   }
 
 _onPressBtn=()=>{
+
 }
 
 componentDidMount=()=>{
+    this.props.setLoading({loading:false});
+
+
+    const { passphrase} = this.props.navigation.state.params;
+    this.props.gethExportPrivateKey({passphrase});
 }
 
 render () {
-    const {loading=false, privateKey} = this.props;
-
+    //新解锁的钱包没有私钥
+    const { loading=false, privateKey} = this.props;
     return (
         <View style={styles.container}>
             <Spinner visible={loading} cancelable
@@ -32,7 +38,7 @@ render () {
             <View style={styles.topSection}>
                 <View style={styles.topView}>
                     <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>
-                    <Text style={styles.titleStytle}>{I18n.t('BackupAccounts')}</Text>
+                    <Text style={styles.titleStytle}>{I18n.t('BackupAccount')}</Text>
                 </View>
                 <Text style={styles.mnemonicText}>{privateKey}</Text>
                 <QRCode value={privateKey} size={120}/>
@@ -41,7 +47,7 @@ render () {
                 <View style={styles.btnStyle}>
                     <Button onPress={()=>this._onPressBtn()}
                         backgroundColor={Colors.textColor}
-                        title={ I18n.t('Complete')}/>s
+                        title={ I18n.t('Complete')}/>
                 </View>
             </View>
         </View>
@@ -50,6 +56,9 @@ render () {
 }
 
 const mapStateToProps = (state) => {
+    console.log('=============ExportScreen=======================');
+    console.log(state);
+    console.log('==============ExportScreen======================');
     const {
         wallet:{loading, privateKey}
     } = state;
@@ -58,6 +67,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
+    gethExportPrivateKey: (params) => dispatch(WalletActions.gethExportPrivateKey(params)),
 
 });
 

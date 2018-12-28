@@ -11,33 +11,50 @@ import QRCode from 'react-native-qrcode-svg';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
+import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 
 class AccountScreen extends Component {
   static navigationOptions = {
       title:I18n.t('AccountTabTitle'),
       backgroundColor: 'red',
   }
+
+  constructor(props){
+      super(props);
+      this.state={
+          isInit:false,
+      };
+  }
+
+  _onPressCancel=()=>{
+      this.setState({ isInit:false });
+  }
+  _onPressConfirm=(passphrase)=>{
+      this.setState({ isInit:false });
+      // TODO 验证密码是否有效
+      this.props.gethUnlockAccount({passphrase});
+      // 判断解锁后
+      this.props.navigate('ExportScreen', {passphrase});
+  }
+
   _onPressBackup=()=>{
-      const passphrase = '11111111';
-      this.props.gethExportPrivateKey({passphrase});
-      this.props.navigate('ExportScreen');
+      this.setState({ isInit:true });
   }
 
   _onPressLogOut=()=>{
+      console.log('===========_onPressLogOut=========================');
 
   }
 
   _onPressCopy=()=>{
-
+      console.log('===========_onPressCopy=========================');
   }
 
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-  }
   render () {
       const settings = {'avatar':'', 'account':'1号', 'inviteCode':'2b4a4'};
       const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
       const address = '0xdadadadadmdafnanjadnajanddadad';
+      const {isInit} = this.state;
 
 
       const infoView = Object.values(AccountConfig).map((config, index)=>{
@@ -54,6 +71,7 @@ class AccountScreen extends Component {
 
       return (
           <View style={styles.container}>
+              <PassphraseInputAlert isInit={isInit} onPressCancel={()=>this._onPressCancel()} onPressConfirm={(password)=>this._onPressConfirm(password)}/>
               <View style={styles.topSection}>
                   {infoView}
               </View>
@@ -85,8 +103,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    gethExportPrivateKey: (params) => dispatch(WalletActions.gethExportPrivateKey(params)),
+    navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
+    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);

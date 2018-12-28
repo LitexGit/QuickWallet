@@ -15,6 +15,7 @@ export default StyleSheet.create({
     container: {
         paddingTop:Metrics.doubleBaseMargin,
         backgroundColor:Colors.backgroundColor,
+        borderRadius: Metrics.buttonRadius,
     },
     titleStyle:{
         textAlign:'center',

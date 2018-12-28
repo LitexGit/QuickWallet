@@ -84,6 +84,7 @@ class MnemonicCompont extends Component {
   render () {
       const remind = '使用助记词导入时可以修改钱包密码。';
       const path = 'm/44’/60‘/0’/0';
+      const remind002 = '设置新的密码后,旧密码将在导入账户后失效。';
 
       const {isCanPress, isShowPassword} = this.state;
       const {loading} = this.props;
@@ -101,6 +102,7 @@ class MnemonicCompont extends Component {
               <ScrollView style={styles.topSection}>
                   <View style={styles.remindView}>
                       <Text style={styles.remindText}>{remind}</Text>
+                      <Text style={styles.remind002}>{remind002}</Text>
                   </View>
                   <View style={styles.mnemonicView}>
                       <KeyboardAvoidingView>

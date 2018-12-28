@@ -10,6 +10,7 @@ class PassphraseInputAlert extends Component {
     static propTypes = {
         isInit: PropTypes.bool,
         onPressConfirm: PropTypes.func,
+        onPressCancel: PropTypes.func,
     }
 
     static defaultProps = {
@@ -18,9 +19,6 @@ class PassphraseInputAlert extends Component {
 
     constructor(props){
         super(props);
-        this.state={
-            isShow:true,
-        };
         this.password='';
     }
 
@@ -28,21 +26,8 @@ class PassphraseInputAlert extends Component {
         this.password=text;
     }
 
-    _onPressCancel=()=>{
-        this.setState({
-            isShow:false,
-        });
-    }
-
     _onPressConfirm=()=>{
-        // TODO 验证密码是否有效
-        this.props.savePassphrase({passphrase:this.password});
-        this.setState({
-            isShow:false,
-        });
-        // TODO sign
-        const {onPressConfirm} = this.props;
-        onPressConfirm();
+        this.props.onPressConfirm(this.password);
     }
 
     render () {
@@ -50,15 +35,13 @@ class PassphraseInputAlert extends Component {
         const action001 = '取消';
         const action002 = '确认';
 
+        const {isInit, onPressCancel} = this.props;
 
-        const {isInit} = this.props;
-        const {isShow} = this.state;
-        const isOpen = isInit && isShow;
         return (
             <Overlay
                 containerStyle={styles.overlay}
                 childrenWrapperStyle={styles.content}
-                visible={isOpen}
+                visible={isInit}
                 animationType='zoomIn'
                 animationDuration={300}>
                 <View style={styles.container}>
@@ -71,7 +54,7 @@ class PassphraseInputAlert extends Component {
                         underlineColorAndroid={'transparent'}
                         onChangeText={this._onChangeText}/>
                     <View style={styles.bottomSection}>
-                        <TouchableOpacity style={styles.actionView} onPress={()=>this._onPressCancel()}>
+                        <TouchableOpacity style={styles.actionView} onPress={onPressCancel}>
                             <Text style={styles.actionStyle}>{action001}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.actionView}  onPress={()=>this._onPressConfirm()}>
