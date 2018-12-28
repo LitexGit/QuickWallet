@@ -14,7 +14,7 @@ class SignTxResultAlert extends Component {
   static propTypes = {
       isInit: PropTypes.bool,
       to:PropTypes.string,
-      balance:PropTypes.number,
+      balance:PropTypes.string,
       gas:PropTypes.number,
       onPressCancel:PropTypes.func,
       onPressConfirm:PropTypes.func,

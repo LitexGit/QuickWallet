@@ -11,7 +11,7 @@ import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
-
+import Toast from 'react-native-root-toast';
 
 class TransferScreen extends Component {
 
@@ -39,22 +39,6 @@ class TransferScreen extends Component {
       this.setState({
           isShowSignTx:true,
       });
-
-      // let {passphrase='', address=''} = this.props;
-      // passphrase = '11111111';
-      // address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-      // const symbol = 'ETH';
-      // const decimal = 1e18;
-      // const {inputBalance, inputAddress} = this.state;
-
-
-      // // ETH
-      // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:this.inputGas, decimal});
-      // // Token
-      // // symbol = 'TEST';
-      // // decimal = 1e18;
-      // // const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
-      // // this.props.gethTransfer({symbol, passphrase, fromAddress:address, toAddress:inputAddress, value:inputBalance, gasPrice:1e18, decimal, tokenAddress});
   }
 
   _onChangeBalance=(text)=>{
@@ -112,10 +96,35 @@ class TransferScreen extends Component {
       this.setState({
           isShowSignTx:false,
       });
-      // 校验钱包是否已经解锁
-      this.setState({
-          isShowPswdInput:true,
-      });
+
+      // 钱包已解锁
+      const {passphrase='', address=''} = this.props;
+      if (!passphrase.length || !address.length) {
+          console.log('====================================');
+          console.log(passphrase);
+          console.log(address);
+          console.log('====================================');
+          this.setState({
+              isShowPswdInput:true,
+          });
+          return;
+      }
+
+      const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
+      const symbol = 'ETH';
+      const decimal = 1e18;
+      const {inputBalance, inputAddress} = this.state;
+      // ETH
+      this.props.gethTransfer({
+          symbol,
+          passphrase,
+          fromAddress:address,
+          toAddress:inputAddress,
+          value:inputBalance,
+          gasPrice:this.inputGas,
+          decimal,
+          tokenAddress}
+      );
   }
 
   // 解锁钱包
@@ -129,6 +138,7 @@ class TransferScreen extends Component {
           isShowPswdInput:false,
       });
       this.props.gethUnlockAccount({passphrase});
+      // 成功解锁钱包 ===> 发起交易
   }
 
   render () {
@@ -210,6 +220,9 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('===============state=====================');
+    console.log(state);
+    console.log('===============state=====================');
     const {
         wallet:{ passphrase, address}
     } = state;

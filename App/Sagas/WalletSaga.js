@@ -23,9 +23,6 @@ export function gethInit (action) {
 export function *gethUnlockAccount (action) {
     try {
         const {data:params} = action;
-        console.log('=============params=======================');
-        console.log(params);
-        console.log('=============params=======================');
         const {passphrase=''} = params;
         const result =  yield GethModule.unlockAccount({passphrase});
         const address =  Ramda.head(result);

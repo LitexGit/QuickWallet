@@ -74,16 +74,14 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
-    // TODO  异常流程 登录状态不存在 keystore
-    _rejectBlock(@"iOS", @"keydir_isExists", nil);
+    _rejectBlock(@"iOS", @"keyStore does not exist", nil);
     return;
   }
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
   NSError *err = nil;
   self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
   if (err) {
-    // TODO  异常流程 keyStore 导入异常
-    _rejectBlock(@"iOS", @"importKey_importKey", err);
+    _rejectBlock(@"iOS", @"Import keyStore file exception", err);
     return;
   }
   NSString *address = [[self.account getAddress] getHex];
@@ -97,7 +95,7 @@ RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTP
   NSError *error =nil;
   NSString *mnemonic = GethCreateRandomMnemonic(&error);
   if (error) {
-    _rejectBlock(@"iOS", @"randomMnemonic", error);
+    _rejectBlock(@"iOS", @"Generate mnemonic word exceptions", error);
     return;
   }
   _resolveBlock(@[mnemonic]);
@@ -121,7 +119,7 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   NSError * err = nil;
   self.account = [self.keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&err];
   if (err) {
-    _rejectBlock(@"iOS", @"import_privateKey_newAccount", err);
+    _rejectBlock(@"iOS", @"Import private key exception", err);
     return;
   }
   [self saveKeystorePath:self.account];
@@ -144,14 +142,14 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   NSError *keyErr = nil;
   NSData *privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &keyErr);
   if (keyErr) {
-    _rejectBlock(@"iOS", @"mnemonic_privateKey", keyErr);
+    _rejectBlock(@"iOS", @"Mnemonic words derive private key exceptions", keyErr);
     return;
   }
   self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
   NSError * err = nil;
   self.account = [self.keyStore importECDSAKey:privateKey passphrase:passphrase error:&err];
   if (err) {
-    _rejectBlock(@"iOS", @"import_privateKey_newAccount", err);
+    _rejectBlock(@"iOS", @"Import private key exception", err);
     return;
   }
   [self saveKeystorePath:self.account];
@@ -170,8 +168,7 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
-    // TODO  异常流程 登录状态不存在 keystore
-    _rejectBlock(@"iOS", @"keydir_isExists", nil);
+    _rejectBlock(@"iOS", @"keyStore does not exist", nil);
     return;
   }
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
@@ -179,14 +176,14 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
   if (err) {
     // TODO  异常流程 keyStore 导入异常
-    _rejectBlock(@"iOS", @"importKey_importKey", err);
+    _rejectBlock(@"iOS", @"Import keyStore file exception", err);
     return;
   }
   NSError *exportErr = nil;
   NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&exportErr];
   if (exportErr) {
     // TODO  异常流程 keyStore 导入异常
-    _rejectBlock(@"iOS", @"export_privateKey", exportErr);
+    _rejectBlock(@"iOS", @"Export private key exception", exportErr);
     return;
   }
   _resolveBlock(@[privateKey]);
@@ -197,7 +194,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   _rejectBlock = reject;
   
   if (!self.account || !self.keyStore || !self.ethClient) {
-    _rejectBlock(@"iOS", @"keyStore nil,Init Error", nil);
+    _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
     return;
   }
   
@@ -208,7 +205,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   NSError *nonceErr = nil;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
   if (!isGet || nonceErr) {
-    _rejectBlock(@"iOS", @"getNonceAt", nonceErr);
+    _rejectBlock(@"iOS", @"get Nonce exceptions", nonceErr);
     return;
   }
 
@@ -221,14 +218,14 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-    _rejectBlock(@"iOS", @"signTxWithKeyStore", nil);
+    _rejectBlock(@"iOS", @"Signature abnormal", nil);
     return;
   }
   
   NSError *sendErr = nil;
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
   if (!isSend || sendErr) {
-    _rejectBlock(@"iOS", @"sendTransaction eth", sendErr);
+    _rejectBlock(@"iOS", @"Transaction eth failure", sendErr);
     return;
   }
   _resolveBlock(@[@YES]);
@@ -239,7 +236,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   _rejectBlock = reject;
   
   if (!self.account || !self.keyStore || !self.ethClient) {
-    _rejectBlock(@"iOS", @"keyStore nil,Init Error", nil);
+    _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
     return;
   }
 
@@ -250,7 +247,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSError *nonceErr = nil;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
   if (!isGet || nonceErr) {
-    _rejectBlock(@"iOS", @"getNonceAt", nonceErr);
+    _rejectBlock(@"iOS", @"get Nonce exceptions", nonceErr);
     return;
   }
   
@@ -288,13 +285,13 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-    _rejectBlock(@"iOS", @"signTxWithKeyStore", nil);
+    _rejectBlock(@"iOS", @"Signature abnormal", nil);
   }
   
   NSError *sendErr = nil;
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
   if (!isSend || sendErr) {
-    _rejectBlock(@"iOS", @"sendTransaction token", sendErr);
+    _rejectBlock(@"iOS", @"Transaction token failure", sendErr);
     return;
   }
   _resolveBlock(@[@YES]);
@@ -307,7 +304,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSError *err = nil;
   GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&err];
   if (err) {
-    self.rejectBlock(@"iOS", @"getNonceAt", err);
+    self.rejectBlock(@"iOS", @"Signature abnormal", err);
     return nil;
   }
   return signedTx;
