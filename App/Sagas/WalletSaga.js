@@ -5,6 +5,7 @@ import UserActions  from '../Redux/UserRedux';
 import { StackActions } from 'react-navigation';
 import Ramda from 'ramda';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 
 export function gethInit (action) {
@@ -23,11 +24,18 @@ export function gethInit (action) {
 export function *gethUnlockAccount (action) {
     try {
         const {data:params} = action;
-        const {passphrase=''} = params;
+        const {passphrase} = params;
         const result =  yield GethModule.unlockAccount({passphrase});
         const address =  Ramda.head(result);
         // TODO 解锁钱包 可以导出&&转账
+
+        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address); // getUserInfo
+
         yield put(WalletActions.saveAddress({address}));
+        yield put(WalletActions.savePassphrase({passphrase}));
+        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+
+        EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
     } catch (error) {
         // TODO 解锁钱包 异常处理逻辑
         console.log('==============error======================');
@@ -75,14 +83,17 @@ export function *gethImportMnemonic (action) {
 
         // TODO 添加数组校验
         const address =  Ramda.head(result);
-        yield put(WalletActions.saveAddress({address}));
         // TODO 添加地址校验
         // yield put(UserActions.registerRequest({address, type:1}));
 
         // TODO account ？？ ||  register ？？ ==> 备份助记词
         DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+
+        yield put(WalletActions.saveAddress({address}));
+        yield put(WalletActions.savePassphrase({passphrase}));
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+
         yield put(StackActions.popToTop());
     } catch (error) {
         // TODO 导入助记词 异常处理逻辑
@@ -110,7 +121,11 @@ export function *gethImportPrivateKey (action) {
         // TODO account ？？ ||  register ？？ ==> 备份助记词
         DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+
+        yield put(WalletActions.saveAddress({address}));
+        yield put(WalletActions.savePassphrase({passphrase}));
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+
         yield put(StackActions.popToTop());
     } catch (error) {
         // TODO 导入私钥 异常处理逻辑
