@@ -16,10 +16,10 @@ import { GithubTypes } from '../Redux/GithubRedux';
 
 /* ------------- Sagas ------------- */
 import { getBanner } from './FoundSaga';
-import { register, getUserInfo } from './UserSaga';
+import { register, getUserInfo, logout} from './UserSaga';
 import { getConfig } from './ConfigSaga';
 import { getBalance, getTxlist } from './AssetSaga';
-import { gethInit, gethUnlockAccount, gethImportMnemonic, gethImportPrivateKey, gethExportPrivateKey, gethRandomMnemonic, gethTransfer} from './WalletSaga';
+import { gethInit, gethUnlockAccount, gethUnInit, gethImportMnemonic, gethImportPrivateKey, gethExportPrivateKey, gethRandomMnemonic, gethTransfer} from './WalletSaga';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
@@ -38,6 +38,7 @@ export default function * root () {
     yield all([
         takeLatest(FoundTypes.GET_BANNER_REQUEST, getBanner, api),
         takeLatest(UserTypes.GET_USER_INFO_REQUEST, getUserInfo, api),
+        takeLatest(UserTypes.LOGOUT, logout),
         takeLatest(UserTypes.REGISTER_REQUEST, register, api),
         takeLatest(ConfigTypes.GET_CONFIG_REQUEST, getConfig, api),
         takeLatest(AssetTypes.GET_BALANCE_REQUEST, getBalance),
@@ -49,7 +50,7 @@ export default function * root () {
         takeLatest(WalletTypes.GETH_RANDOM_MNEMONIC, gethRandomMnemonic),
         takeLatest(WalletTypes.GETH_TRANSFER, gethTransfer),
         takeLatest(WalletTypes.GETH_UNLOCK_ACCOUNT, gethUnlockAccount),
-
+        takeLatest(WalletTypes.GETH_UNLOCK_ACCOUNT, gethUnInit),
 
         // some sagas only receive an action
         takeLatest(StartupTypes.STARTUP, startup),

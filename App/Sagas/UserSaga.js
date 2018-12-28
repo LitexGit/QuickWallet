@@ -1,6 +1,9 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import UserActions from '../Redux/UserRedux';
 import DeviceInfo from 'react-native-device-info';
+import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
+import WalletActions from '../Redux/WalletRedux';
+import { StackActions } from 'react-navigation';
 
 
 export function * register (api, action) {
@@ -44,4 +47,23 @@ export function * getUserInfo (api, action) {
     //     return;
     // }
     // yield put(UserActions.getUserInfoFailure(data));
+}
+
+
+export function * logout () {
+    DeviceStorage.saveItem(Keys.IS_USER_LOGINED, false);
+    DeviceStorage.saveItem(Keys.IS_SELECTED_USE_TERMS, false);
+    DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, false);
+    DeviceStorage.saveItem(Keys.WALLET_ADDRESS, '');
+
+    yield put(UserActions.saveUserInfo({isLoginInfo:false}));
+    yield put(UserActions.saveUserInfo({isAgreeInfo:false}));
+    // 合并成一个 saveWalletInfo
+    yield put(WalletActions.saveAddress({address:''}));
+    yield put(WalletActions.savePrivateKey({privateKey:''}));
+    yield put(WalletActions.savePassphrase({passphrase:''}));
+
+    yield put(WalletActions.gethUnInit());
+
+    yield put(StackActions.popToTop());
 }

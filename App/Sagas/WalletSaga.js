@@ -2,7 +2,7 @@ import { call, put, select, all } from 'redux-saga/effects';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import Ramda from 'ramda';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
@@ -35,6 +35,18 @@ export function *gethUnlockAccount (action) {
         console.log('==============error======================');
     }
 }
+
+export function *gethUnInit () {
+    try {
+        yield GethModule.unInit();
+    } catch (error) {
+        // TODO 删除文件异常处理逻辑
+        console.log('==============error======================');
+        console.log(error);
+        console.log('==============error======================');
+    }
+}
+
 
 
 

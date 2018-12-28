@@ -47,6 +47,22 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl) {
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
 }
 
+RCT_EXPORT_METHOD(unInit) {
+  if (self.account) {
+    self.account = nil;
+  }
+  if (self.keyStore) {
+    self.keyStore = nil;
+  }
+  if (self.ethClient) {
+    self.ethClient = nil;
+  }
+  NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
+  [FileManager removeFileAtPath:keyTemp];
+  NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
+  [FileManager removeFileAtPath:keydir];
+}
+
 RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;

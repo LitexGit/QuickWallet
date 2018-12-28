@@ -10,9 +10,11 @@ import { Metrics , Colors } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
+import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Toast from 'react-native-root-toast';
+
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -43,8 +45,7 @@ class AccountScreen extends Component {
   }
 
   _onPressLogOut=()=>{
-      console.log('===========_onPressLogOut=========================');
-
+      this.props.logout();
   }
 
   _onPressCopy=()=>{
@@ -118,6 +119,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+    logout: () => dispatch(UserActions.logout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);

@@ -16,6 +16,7 @@ const { Types, Creators } = createActions({
     getUserInfoRequest: ['data'],
     getUserInfoSuccess: ['data'],
     getUserInfoFailure: null,
+    logout:['data'],
 });
 
 export const UserTypes = Types;

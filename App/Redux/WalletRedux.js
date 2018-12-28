@@ -8,6 +8,8 @@ const { Types, Creators } = createActions({
     success: ['data'],
 
     gethInit: ['data'],
+    gethUnInit: null,
+
     gethUnlockAccount:['data'],
     gethRandomMnemonic:['data'],
     gethImportMnemonic: ['data'],
@@ -20,6 +22,8 @@ const { Types, Creators } = createActions({
     savePassphrase:['data'],
     savePrivateKey:['data'],
     saveAddress:['data'],
+
+    removeKeyStore:['data']
 });
 
 export const WalletTypes = Types;
@@ -45,13 +49,11 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* ------------- Selectors ------------- */
-
 export const WalletSelectors = {
 };
 
 /* ------------- Reducers ------------- */
 export const saveAddress = (state, {data}) =>state.merge({...data});
-
 
 export const savePrivateKey = (state, {data}) =>
     state.merge({...data});
