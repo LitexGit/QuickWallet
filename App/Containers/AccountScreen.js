@@ -12,6 +12,7 @@ import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
+import Toast from 'react-native-root-toast';
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -49,6 +50,10 @@ class AccountScreen extends Component {
   _onPressCopy=()=>{
       const { address } = this.props;
       Clipboard.setString(address);
+      Toast.show(I18n.t('AddressCopied'), {
+          shadow:true,
+          position: Toast.positions.CENTER,
+      });
   }
 
   render () {

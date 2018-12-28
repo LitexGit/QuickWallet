@@ -57,7 +57,10 @@
   "EnterEthAddress":"输入以太坊地址",
   "Continue":"继续",
   "TermsOfUse":"使用条款",
-  "BackupAccount":"备份账户"
+  "BackupAccount":"备份账户",
+
+  "AddressCopied": "地址已复制",
+  "PrivateKeyCopied": "私钥已复制"
 }
 
 /*

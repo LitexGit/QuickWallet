@@ -31,6 +31,7 @@ export default StyleSheet.create({
         color:Colors.textColor,
         fontWeight:'500',
         marginBottom:Metrics.section,
+        minWidth:'80%',
     },
     bottomSection:{
         flex:1,
