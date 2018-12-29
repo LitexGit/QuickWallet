@@ -9,7 +9,7 @@ const { Types, Creators } = createActions({
 
     gethInit: ['data'],
     gethUnInit: null,
-
+    gethIsUnlockAccount:null,
     gethUnlockAccount:['data'],
     gethRandomMnemonic:['data'],
     gethImportMnemonic: ['data'],

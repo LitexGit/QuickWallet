@@ -11,8 +11,8 @@ import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
-
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class TransferScreen extends Component {
 
@@ -97,17 +97,8 @@ class TransferScreen extends Component {
       this.setState({
           isShowSignTx:false,
       });
-
-      // 钱包已解锁
-      const {passphrase='', address=''} = this.props;
-      if (!passphrase.length || !address.length) {
-          this.setState({
-              isShowPswdInput:true,
-          });
-          return;
-      }
-      console.log('=============直接转账=======================');
-      this._transfer();
+      // console.log('=============gethIsUnlockAccount=======================');
+      this.props.gethIsUnlockAccount();
   }
 
   // 解锁钱包
@@ -120,13 +111,13 @@ class TransferScreen extends Component {
       this.setState({
           isShowPswdInput:false,
       });
+      // console.log('=============gethUnlockAccount=======================');
       this.props.gethUnlockAccount({passphrase});
-      console.log('=============先解锁再去转账=======================');
   }
 
-  _transfer=()=>{
-      console.log('============转账========================');
 
+  _transfer=()=>{
+      // console.log('=============transfer=======================');
       const {passphrase='', address=''} = this.props;
       const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
       const symbol = 'ETH';
@@ -146,11 +137,23 @@ class TransferScreen extends Component {
   }
 
   componentDidMount=()=>{
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
+          if (isUnlock) {
+              // console.log('=============unlock=======================');
+              this._transfer();
+              return;
+          }
+          // console.log('=============lock=======================');
+          this.setState({
+              isShowPswdInput:true,
+          });
+      });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, this._transfer);
   }
 
   componentWillUnmount=()=>{
       this.lockListener.remove();
+      this.isUnlockListener.remove();
   }
 
   render () {
@@ -160,9 +163,13 @@ class TransferScreen extends Component {
       const assets = 0;
 
       const {displayGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
+      const { loading } = this.props;
 
       return (
           <View style={styles.container}>
+              <Spinner visible={loading} cancelable
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerText}/>
               <SignTxResultAlert
                   isInit={isShowSignTx}
                   to={inputAddress}
@@ -232,20 +239,20 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('===============TransferScreen=====================');
-    console.log(state);
-    console.log('===============TransferScreen=====================');
+    // console.log('===============TransferScreen=====================');
+    // console.log(state);
+    // console.log('===============TransferScreen=====================');
     const {
-        wallet:{ passphrase, address}
+        wallet:{ passphrase, address, loading}
     } = state;
-    return { passphrase, address};
+    return { passphrase, address, loading};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
+    gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
-
+    gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferScreen);

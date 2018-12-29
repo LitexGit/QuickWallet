@@ -21,6 +21,30 @@ export function gethInit (action) {
     }
 }
 
+export function *gethUnInit () {
+    try {
+        yield GethModule.unInit();
+    } catch (error) {
+        // TODO 删除文件异常处理逻辑
+        console.log('==============error======================');
+        console.log(error);
+        console.log('==============error======================');
+    }
+}
+
+export function *gethIsUnlockAccount () {
+    try {
+        const result =  yield GethModule.isUnlockAccount();
+        const isUnlock = yield Ramda.head(result);
+        EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
+    } catch (error) {
+        // TODO 初始化 异常处理逻辑
+        console.log('==============error======================');
+        console.log(error);
+        console.log('==============error======================');
+    }
+}
+
 export function *gethUnlockAccount (action) {
     try {
         const {data:params} = action;
@@ -43,19 +67,6 @@ export function *gethUnlockAccount (action) {
         console.log('==============error======================');
     }
 }
-
-export function *gethUnInit () {
-    try {
-        yield GethModule.unInit();
-    } catch (error) {
-        // TODO 删除文件异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
-    }
-}
-
-
 
 
 export function *gethRandomMnemonic () {
@@ -167,6 +178,7 @@ export function *gethTransfer (action) {
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const isSend =  Ramda.head(result);
+
     } catch (error) {
         // TODO 生成助记词 异常处理逻辑
         console.log('==============error======================');

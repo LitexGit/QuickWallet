@@ -63,6 +63,18 @@ RCT_EXPORT_METHOD(unInit) {
   [FileManager removeFileAtPath:keydir];
 }
 
+RCT_EXPORT_METHOD(isUnlockAccount:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
+  _resolveBlock = resolver;
+  _rejectBlock = reject;
+  if (!self.account || !self.keyStore || !self.ethClient) {
+    _resolveBlock(@[@NO]);
+    return;
+  }
+  _resolveBlock(@[@YES]);
+  return;
+}
+
+
 RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;

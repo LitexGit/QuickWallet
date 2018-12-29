@@ -9,6 +9,10 @@ async function unInit(){
     return gethModule.unInit();
 }
 
+async function isUnlockAccount(){
+    return await gethModule.isUnlockAccount();
+}
+
 async function unlockAccount({passphrase}){
     return await gethModule.unlockAccount(passphrase);
 }
@@ -58,8 +62,9 @@ function getGethPrivateKey(key){
 
 export default {
     init,
-    unlockAccount,
     unInit,
+    isUnlockAccount,
+    unlockAccount,
     newAccount,
     randomMnemonic,
     importMnemonic,
