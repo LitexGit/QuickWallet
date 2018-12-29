@@ -322,6 +322,25 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   return signedTx;
 }
 
+RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSData*)hash resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+    _resolveBlock = resolver;
+    _rejectBlock = reject;
+  
+    if (!self.account || !self.keyStore || !self.ethClient) {
+      _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
+      return;
+    }
+    NSError *error = nil;
+    NSData *signInfo = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hash error:&error];
+    if (error) {
+      _rejectBlock(@"iOS", @"Signature info abnormal", error);
+      return;
+    }
+   _resolveBlock(@[signInfo]);
+}
+
+
+//- (NSData*)signHashPassphrase:(GethAccount*)account passphrase:(NSString*)passphrase hash:(NSData*)hash error:(NSError**)error;
 
 - (NSData*)byteStringToData:(NSString *)byteStr{
   NSMutableData *data = [NSMutableData data];
@@ -357,8 +376,6 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 }
 
 @end
-
-//- (NSData*)signHashPassphrase:(GethAccount*)account passphrase:(NSString*)passphrase hash:(NSData*)hash error:(NSError**)error;
 
 
 

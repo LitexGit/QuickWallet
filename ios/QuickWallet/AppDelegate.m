@@ -14,6 +14,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSArray *imageList = @[@"http://foo.com/bar1.png",
+                         @"http://foo.com/bar2.png"];
+  
+  NSDictionary *props = @{@"images" : imageList};
 
   NSURL *jsCodeLocation;
 
@@ -21,7 +25,7 @@
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"QuickWallet"
-                                               initialProperties:nil
+                                               initialProperties:props
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 

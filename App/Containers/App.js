@@ -31,6 +31,9 @@ class App extends Component {
   }
 
   render () {
+      console.log('=========APP======this.props=====================');
+      console.log(this.props);
+      console.log('=========APP======this.props=====================');
       return (
           <Provider store={store}>
               <RootContainer />

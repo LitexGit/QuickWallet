@@ -4,9 +4,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import styles from './Styles/SignMsgResultAlertStyle';
 import Overlay from 'react-native-modal-overlay';
 import { connect } from 'react-redux';
-import WalletActions from '../Redux/WalletRedux';
 import AccountComponent from '../Components/AccountComponent';
-import { Metrics, Colors } from '../Themes';
+import { Colors } from '../Themes';
 
 export default class SignMsgResultAlert extends Component {
   static propTypes = {
