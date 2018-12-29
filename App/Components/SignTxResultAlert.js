@@ -16,6 +16,7 @@ class SignTxResultAlert extends Component {
       to:PropTypes.string,
       balance:PropTypes.number,
       gas:PropTypes.number,
+
       onPressCancel:PropTypes.func,
       onPressConfirm:PropTypes.func,
   }

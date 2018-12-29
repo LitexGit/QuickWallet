@@ -7,7 +7,8 @@ import RightComponent from '../Components/RightComponent';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import SignTxResultAlert from '../Components/SignTxResultAlert';
 import SignMsgResultAlert from '../Components/SignMsgResultAlert';
-
+import WalletActions from '../Redux/WalletRedux';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 const DEFAULT_URI = 'https://www.baidu.com';
 
 class ZJWebViewScreen extends Component {
@@ -33,37 +34,79 @@ class ZJWebViewScreen extends Component {
   componentDidMount() {
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
+
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
+          if (isUnlock) {
+              this._signInfo();
+              return;
+          }
+          this.setState({
+              isShowPassphrase:true,
+          });
+      });
+      this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>this._signInfo());
+  }
+
+  componentWillUnmount=()=>{
+      this.lockListener.remove();
+      this.isUnlockListener.remove();
   }
 
   _signInfo=()=>{
-      console.log('==============_signInfo======================');
-      // 交易
-      // 消息
-
-      // 签名结果
+      console.log('===============消息签名=====================');
   }
 
-  _onPressConfirm=()=>this._signInfo();
-
   _onPressRefresh=()=>{
-      // const { passphrase } = this.props;
-      // // TODO 验证密码有效
-      // if (passphrase && passphrase.length > 7) {
-      //     this._signInfo();
-      //     return;
-      // }
-      // this.setState({
-      //     isShowPassphrase:true,
-      // });
+      this.webview.reload();
+      // ================================
+      this.setState({
+          isShowSignTx:true,
+      });
+  }
 
+  _signTxCancel=()=>{
+      this.setState({
+          isShowSignTx:false,
+      });
+  }
 
-      // this.webview.reload();
+  _signTxConfirm=()=>{
+      this.setState({
+          isShowSignTx:false,
+      });
+      this.props.gethIsUnlockAccount();
+  }
 
+  _signMsgCancel=()=>{
+      this.setState({
+          isShowSignMsg:false,
+      });
+  }
+
+  _signMsgConfirm=()=>{
+      this.setState({
+          isShowSignMsg:false,
+      });
+      this.props.gethIsUnlockAccount();
+  }
+
+  _pswdCancel=()=>{
+      this.setState({
+          isShowPassphrase:false,
+      });
+  }
+
+  _pswdConfirm=(passphrase)=>{
+      this.setState({
+          isShowPassphrase:false,
+      });
+      this.props.gethUnlockAccount({passphrase});
   }
 
   _onPressShare= async()=> {
-
-
+      this.setState({
+          isShowSignMsg:true,
+      });
 
       // const title = '消息的标题';
       // const message = '要分享的消息';
@@ -89,20 +132,32 @@ class ZJWebViewScreen extends Component {
       //         console.log(Share.dismissedAction);
       //     }
       // } catch (error) {
-      //     console.log('====================================');
       //     console.log(error);
-      //     console.log('====================================');
       // }
   };
 
   render () {
       const url = DEFAULT_URI;
       const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
+      const signInfo = {to:'0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db', balance:100, gas:10};
+      const {to, balance, gas} = signInfo;
       return (
           <View style={styles.container}>
-              <PassphraseInputAlert isInit={isShowPassphrase} onPressConfirm={this._onPressConfirm}/>
-              <SignTxResultAlert isInit={isShowSignTx}/>
-              <SignMsgResultAlert isInit={isShowSignMsg}/>
+              <SignTxResultAlert
+                  isInit={isShowSignTx}
+                  to={to}
+                  balance={balance}
+                  gas={gas}
+                  onPressCancel={()=>this._signTxCancel()}
+                  onPressConfirm={()=>this._signTxConfirm()}/>
+              <PassphraseInputAlert
+                  isInit={isShowPassphrase}
+                  onPressCancel={()=>this._pswdCancel()}
+                  onPressConfirm={(passphrase)=>this._pswdConfirm(passphrase)}/>
+              <SignMsgResultAlert
+                  isInit={isShowSignMsg}
+                  onPressCancel={()=>this._signMsgCancel()}
+                  onPressConfirm={()=>this._signMsgConfirm()}/>
               <WebView useWebKit
                   ref ={ref=>this.webview = ref}
                   style={styles.container}
@@ -119,6 +174,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
+    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ZJWebViewScreen);

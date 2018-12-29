@@ -38,31 +38,21 @@ _onPressShare= async ()=>{
         const dialogTitle = 'Android==>dialogTitle';
         shareParams = {dialogTitle, ...shareParams};
     }
-    console.log('============shareParams========================');
-    console.log(shareParams);
-    console.log('===========shareParams=========================');
+
     try {
         const result = await Share.share(shareParams);
         const {action, activityType} = result;
         if (action === Share.sharedAction) {
             if (activityType) {
-                console.log('===========activityType=========================');
                 console.log(activityType);
-                console.log('===========activityType=========================');
             } else {
-                console.log('===========dismissedAction=========================');
                 console.log(activityType);
-                console.log('===========dismissedAction=========================');
             }
         } else if (action === Share.dismissedAction){
-            console.log('===========dismissedAction=========================');
             console.log(Share.dismissedAction);
-            console.log('===========dismissedAction=========================');
         }
     } catch (error) {
-        console.log('====================================');
         console.log(error);
-        console.log('====================================');
     }
 }
 
