@@ -178,7 +178,8 @@ export function *gethTransfer (action) {
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const isSend =  Ramda.head(result);
-
+        // 交易成功 失败 ==> 详细处理逻辑
+        yield put(StackActions.pop());
     } catch (error) {
         // TODO 生成助记词 异常处理逻辑
         console.log('==============error======================');
