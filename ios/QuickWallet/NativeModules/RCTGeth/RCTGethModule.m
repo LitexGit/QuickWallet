@@ -18,6 +18,7 @@ static NSString *rawurlKey  = @"raw_url_key";
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
 @interface RCTGethModule()
+
 @property(nonatomic, strong) NSString *rawurl;
 
 @property(nonatomic, strong) GethAccount *account;
@@ -32,7 +33,6 @@ static NSString *rawurlKey  = @"raw_url_key";
 
 @end
 
-
 @implementation RCTGethModule
 RCT_EXPORT_MODULE();
 
@@ -42,7 +42,6 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl) {
 
   if (!isLogin) return;
   if (!rawurl || !rawurl.length) return;
-  
   if (self.account && self.ethClient) return;
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
 }

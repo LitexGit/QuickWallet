@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Share, Platform, View } from 'react-native';
+import { Share, Platform, View, NativeModules} from 'react-native';
 import { connect } from 'react-redux';
 import WebView from '../NativeComponent/WebView';
 import styles from './Styles/ZJWebViewScreenStyle';
@@ -46,6 +46,15 @@ class ZJWebViewScreen extends Component {
           });
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>this._signInfo());
+      NativeModules.SignerModule.onSignerCallback((err, data)=>{
+          console.log('==========err==========================');
+          console.log(err);
+          console.log('==========data==========================');
+          console.log(data);
+          this.setState({ isShowSignTx:true });
+      });
+
+
   }
 
   componentWillUnmount=()=>{
@@ -58,10 +67,7 @@ class ZJWebViewScreen extends Component {
   }
 
   _onPressRefresh=()=>{
-      this.setState({
-          isShowSignTx:true,
-      });
-      // this.webview.reload();
+      this.webview.reload();
   }
 
   _signTxCancel=()=>{
