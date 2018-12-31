@@ -23,13 +23,17 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(onSignerCallback:(RCTResponseSenderBlock)signerCallback){
   self.onSignerCallback = signerCallback;
+  
+  
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    NSString *info = @"我怎么这么好看 这么好看怎办";
-    [self signInfo:info];
+    NSString *info = @"我怎么这么";
+    NSDictionary *signInfo = @{@"info":info};
+
+    [self signInfo:signInfo];
   });
 }
 
-- (void)signInfo:(NSString *)signInfo{
+- (void)signInfo:(NSDictionary *)signInfo{
   if (!_onSignerCallback) return;
   self.onSignerCallback(@[[NSNull null], @[signInfo]]);
 }

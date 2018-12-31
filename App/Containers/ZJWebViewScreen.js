@@ -10,6 +10,7 @@ import SignMsgResultAlert from '../Components/SignMsgResultAlert';
 import WalletActions from '../Redux/WalletRedux';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Ramda from 'ramda';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -30,6 +31,7 @@ class ZJWebViewScreen extends Component {
           isShowSignTx:false,
           isShowSignMsg:false,
       };
+      this.passphrase = '';
   }
 
   componentDidMount() {
@@ -46,12 +48,16 @@ class ZJWebViewScreen extends Component {
           });
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>this._signInfo());
+
       NativeModules.SignerModule.onSignerCallback((err, data)=>{
-          console.log('==========err==========================');
-          console.log(err);
           console.log('==========data==========================');
           console.log(data);
+          if (err) {
+              // TODO 异常提示
+              return;
+          }
           this.setState({ isShowSignTx:true });
+          this.hash = Ramda.head(data);
       });
 
 
@@ -63,7 +69,7 @@ class ZJWebViewScreen extends Component {
   }
 
   _signInfo=()=>{
-      console.log('===============消息签名=====================');
+      this.props.gethSignHash({passphrase:'11111111', hash:this.hash});
   }
 
   _onPressRefresh=()=>{
@@ -106,6 +112,7 @@ class ZJWebViewScreen extends Component {
       this.setState({
           isShowPassphrase:false,
       });
+      this.passphrase = passphrase;
       this.props.gethUnlockAccount({passphrase});
   }
 
@@ -160,6 +167,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+    gethSignHash: (params) => dispatch(WalletActions.gethSignHash(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ZJWebViewScreen);

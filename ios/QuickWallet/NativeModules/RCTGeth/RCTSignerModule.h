@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RCTSignerModule : NSObject<RCTBridgeModule>
 
-- (void)signInfo:(NSString *)signInfo;
+- (void)signInfo:(NSDictionary *)signInfo;
 
 @end
 

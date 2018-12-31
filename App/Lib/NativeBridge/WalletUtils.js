@@ -46,6 +46,10 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
     return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, gasPrice);
 }
 
+async function signHash({passphrase, hash}){
+    return await gethModule.signHash(passphrase, hash);
+}
+
 
 
 function getDisplayedPrivateKey(key){
@@ -71,6 +75,7 @@ export default {
     importPrivateKey,
     exportPrivateKey,
     transfer,
+    signHash,
     getDisplayedPrivateKey,
     getGethPrivateKey,
 };

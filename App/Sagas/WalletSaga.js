@@ -71,7 +71,9 @@ export function *gethUnlockAccount (action) {
 
 export function *gethRandomMnemonic () {
     try {
+        yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.randomMnemonic();
+        yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const mnemonic =  Ramda.head(result);
         // TODO 添加mnemonic校验
@@ -188,4 +190,27 @@ export function *gethTransfer (action) {
     }
 }
 
+export function *gethSignHash (action) {
+    try {
+        const {data:params} = action;
+        const {passphrase, hash} = params;
+        console.log('=======gethSignHash======passphrase=======================');
+        console.log(passphrase);
+        yield put(WalletActions.setLoading({loading:false}));
+        const result = yield GethModule.signHash({passphrase, hash});
+        yield put(WalletActions.setLoading({loading:false}));
+
+        const hashData =  Ramda.head(result);
+
+        console.log('=============hashData=======================');
+        console.log(hashData);
+        console.log('=============hashData=======================');
+
+    } catch (error) {
+        // TODO 删除文件异常处理逻辑
+        console.log('==============error======================');
+        console.log(error);
+        console.log('==============error======================');
+    }
+}
 

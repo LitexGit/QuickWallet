@@ -9,6 +9,8 @@
 #import "RCTGethModule.h"
 #import <Geth/Geth.h>
 #import "FileManager.h"
+#import <React/RCTConvert.h>
+
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
 static NSString *rawurlKey  = @"raw_url_key";
@@ -321,7 +323,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   return signedTx;
 }
 
-RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSData*)hash resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSDictionary *)hash resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
     _resolveBlock = resolver;
     _rejectBlock = reject;
   
@@ -329,13 +331,18 @@ RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSData*)hash resolver:(RC
       _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
       return;
     }
+  
+    NSData *hashData = [NSJSONSerialization dataWithJSONObject:hash options:NSJSONWritingPrettyPrinted error:nil];
+  
     NSError *error = nil;
-    NSData *signInfo = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hash error:&error];
+    NSData *signInfo = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hashData error:&error];
     if (error) {
       _rejectBlock(@"iOS", @"Signature info abnormal", error);
       return;
     }
-   _resolveBlock(@[signInfo]);
+  
+    NSString *signer = [[NSString alloc] initWithData:signInfo encoding:NSUTF8StringEncoding];
+   _resolveBlock(@[signer]);
 }
 
 
