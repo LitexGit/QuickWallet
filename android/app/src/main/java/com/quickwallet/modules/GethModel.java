@@ -1,7 +1,5 @@
 package com.quickwallet.modules;
 
-import android.content.SharedPreferences;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -9,7 +7,6 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.uimanager.IllegalViewOperationException;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
 import geth.Account;
