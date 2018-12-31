@@ -1,5 +1,6 @@
 package com.quickwallet.modules;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.quickwallet.utils.FileUtil;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
 import geth.Account;
@@ -23,11 +25,11 @@ public class GethModel extends ReactContextBaseJavaModule {
     private Account account;
     private KeyStore keyStore;
     private EthereumClient ethClient;
+
     private final String GETH_INFO  = "geth_info";
     private final String RAWURL  = "rawurl";
-
-    private  String keystoreTemp = "a/b/c";
-    private  String keystoreDir = "a/c/d";
+    private final String KEY_TEMP = "key_temp";
+    private final String KEY_DIR = "key_dir";
 
     private SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getReactApplicationContext(),GETH_INFO);
 
@@ -61,6 +63,10 @@ public class GethModel extends ReactContextBaseJavaModule {
         if (keyStore != null) keyStore = null;
         if (ethClient != null) ethClient = null;
         sharedPreferencesHelper.put(RAWURL, "");
+        String keyTemp = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_TEMP, ""));
+        FileUtil.deleteFile(keyTemp);
+        String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+        FileUtil.deleteFile(keydir);
     }
 
     @ReactMethod
@@ -82,10 +88,19 @@ public class GethModel extends ReactContextBaseJavaModule {
             Callback successCallback
     ) {
         try {
-            // 01：删除 keystoreTemp 路径下的文件
-            // 02：常数获取
-            keyStore = new KeyStore(keystoreTemp, Geth.StandardScryptN,  Geth.StandardScryptN);
-            // 03：校验 keystoreDir 文件是否存在
+            String keyTemp = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_TEMP, ""));
+            boolean result = FileUtil.createDir(keyTemp);
+            if (!result){
+                errorCallback.invoke("Create a cache file exception");
+                return;
+            }
+            keyStore = new KeyStore(keyTemp, Geth.StandardScryptN,  Geth.StandardScryptN);
+            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+            boolean isExists =  FileUtil.isFileExists(keydir);
+            if (!isExists){
+                errorCallback.invoke("Keystore file does not exist");
+                return;
+            }
             // 04：文件 ==> data
             byte[] data = null;
 
@@ -123,7 +138,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
             // 01:清空 keystoreDir 下的文件
-            keyStore = new KeyStore(keystoreDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+            keyStore = new KeyStore(KEY_DIR, Geth.StandardScryptN,  Geth.StandardScryptN);
             // 02:私钥转data
             byte[] data = null;
             account = keyStore.importECDSAKey(data, passphrase);
@@ -144,7 +159,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
             // 01:清空 keystoreDir 下的文件
-            keyStore = new KeyStore(keystoreDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+            keyStore = new KeyStore(KEY_DIR, Geth.StandardScryptN,  Geth.StandardScryptN);
             // 02:私钥转data
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
             Log.d("TAG", "new privateKeyFromMnemonic is " + new String(privateKeyFromMnemonic));
@@ -162,7 +177,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             Callback successCallback
     ) {
         try {
-            keyStore = new KeyStore(keystoreTemp, Geth.StandardScryptN,  Geth.StandardScryptN);
+            keyStore = new KeyStore(KEY_TEMP, Geth.StandardScryptN,  Geth.StandardScryptN);
             // 01: 校验 keyStore 文件是否存在
             // 02: keyStore 转 data
             byte[] data = null;
@@ -297,6 +312,12 @@ public class GethModel extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
         }
+    }
+
+    public void saveKeystorePath(Account account){
+        String url = account.getURL();
+        String keydir = FileUtil.getFilePath(getReactApplicationContext(), Uri.parse(url));
+        sharedPreferencesHelper.put(KEY_DIR, keydir);
     }
 
 }

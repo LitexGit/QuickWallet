@@ -16,7 +16,33 @@ import java.io.IOException;
 
 public class FileUtil {
 
-    /** 获取文件
+    /**  创建文件夹
+     * @param path 文件路径
+     * @return 是否创建成功
+     */
+    public static boolean isFileExists(String path) {
+        File file = new File(path);
+        if (!file.exists()){
+            return false;
+        }
+        return true;
+    }
+
+    /**  创建文件夹
+     * @param path 文件路径
+     * @return 是否创建成功
+     */
+    public static boolean createDir(String path) {
+        File file = new File(path);
+        if (!file.exists()){
+            return file.mkdirs();
+        }
+        return true;
+    }
+
+
+
+        /** 获取文件
      * @param path 路径
      * @return
      */
