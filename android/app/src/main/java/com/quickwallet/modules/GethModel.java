@@ -8,8 +8,11 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
 import com.quickwallet.utils.SharedPreferencesHelper;
+
+import java.io.File;
 
 import geth.Account;
 import geth.Address;
@@ -101,11 +104,12 @@ public class GethModel extends ReactContextBaseJavaModule {
                 errorCallback.invoke("Keystore file does not exist");
                 return;
             }
-            // 04：文件 ==> data
-            byte[] data = null;
+            File keyFile = FileUtil.getFile(keydir);
+            byte[] data = ByteUtil.getFileToByte(keyFile);
 
             account = keyStore.importKey(data, passphrase, passphrase);
             successCallback.invoke(account.getAddress().getHex());
+
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
         }
@@ -137,10 +141,10 @@ public class GethModel extends ReactContextBaseJavaModule {
         try {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
-            // 01:清空 keystoreDir 下的文件
-            keyStore = new KeyStore(KEY_DIR, Geth.StandardScryptN,  Geth.StandardScryptN);
-            // 02:私钥转data
-            byte[] data = null;
+            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+            FileUtil.deleteFile(keydir);
+            keyStore = new KeyStore(keydir, Geth.StandardScryptN,  Geth.StandardScryptN);
+            byte[] data = privateKey.getBytes();
             account = keyStore.importECDSAKey(data, passphrase);
             successCallback.invoke(account.getAddress().getHex());
         } catch (Exception e) {
@@ -158,9 +162,9 @@ public class GethModel extends ReactContextBaseJavaModule {
         try {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
-            // 01:清空 keystoreDir 下的文件
+            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+            FileUtil.deleteFile(keydir);
             keyStore = new KeyStore(KEY_DIR, Geth.StandardScryptN,  Geth.StandardScryptN);
-            // 02:私钥转data
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
             Log.d("TAG", "new privateKeyFromMnemonic is " + new String(privateKeyFromMnemonic));
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
@@ -178,9 +182,15 @@ public class GethModel extends ReactContextBaseJavaModule {
     ) {
         try {
             keyStore = new KeyStore(KEY_TEMP, Geth.StandardScryptN,  Geth.StandardScryptN);
-            // 01: 校验 keyStore 文件是否存在
-            // 02: keyStore 转 data
-            byte[] data = null;
+            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+            boolean isExists =  FileUtil.isFileExists(keydir);
+            if (!isExists){
+                errorCallback.invoke("Keystore file does not exist");
+                return;
+            }
+            File keyFile = FileUtil.getFile(keydir);
+            byte[] data = ByteUtil.getFileToByte(keyFile);
+
             account = keyStore.importKey(data, passphrase, passphrase);
             String privateKey = keyStore.exportECSDAKeyHex(account, passphrase);
             Log.d("TAG", "new json" + privateKey  );
@@ -221,7 +231,6 @@ public class GethModel extends ReactContextBaseJavaModule {
 
             long chainId = 4;
             BigInt chainID = new BigInt(chainId);
-            // android 签名不需要 passphrase
             Transaction signedTx = keyStore.signTx(account, transaction, chainID);
 
             // 函数无返回值
@@ -304,11 +313,11 @@ public class GethModel extends ReactContextBaseJavaModule {
                 errorCallback.invoke("Wallet not unlocked");
                 return;
             }
-            // 01：hash ==> data
+            ByteUtil.objectToByte(hash);
             byte[] data = null;
             byte[] hashData = keyStore.signHashPassphrase(account, passphrase, data);
-            // data ==> string
-            successCallback.invoke(hashData);
+            String hashStr = new String(hashData);
+            successCallback.invoke(hashStr);
         } catch (Exception e) {
             errorCallback.invoke(e.getMessage());
         }
