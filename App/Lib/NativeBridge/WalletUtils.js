@@ -46,23 +46,12 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
     return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, gasPrice);
 }
 
-async function signHash({passphrase, hash}){
-    const hashJSON = {
-        'type':1,
+async function sign({passphrase, signInfo}){
+    console.log('=======sign======signInfo=======================');
+    console.log(signInfo);
+    console.log('=======sign======signInfo=======================');
 
-        'symbol':'ETH',
-        'decimal':1e18,
-        'tokenAddress':'0x875664e580eea9d5313f056d0c2a43af431c660f',
-
-        'msgInfo':'我怎么这么好看，这么好看怎么办',
-
-        'fromAddress':'0xb5538753F2641A83409D2786790b42aC857C5340',
-        'toAddress':'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
-        'value':1,
-        'gasPrice':100,
-    };
-
-    const {type=1, symbol='ETH', decimal=1e18, tokenAddress='', fromAddress='', toAddress='', value=0, gasPrice=1, msgInfo=''} = hashJSON;
+    const {type=1, symbol='ETH', decimal=1e18, tokenAddress='', fromAddress='', toAddress='', value=0, gasPrice=1, msgInfo=''} = signInfo;
     switch (type) {
     case 1:{// signTx
         const amount = value * decimal;
@@ -112,7 +101,7 @@ export default {
     importPrivateKey,
     exportPrivateKey,
     transfer,
-    signHash,
+    sign,
     getDisplayedPrivateKey,
     getGethPrivateKey,
 };

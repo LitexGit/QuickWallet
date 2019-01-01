@@ -10,7 +10,6 @@ import SignMsgResultAlert from '../Components/SignMsgResultAlert';
 import WalletActions from '../Redux/WalletRedux';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
-import Ramda from 'ramda';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -50,14 +49,26 @@ class ZJWebViewScreen extends Component {
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>this._signInfo());
 
       NativeModules.SignerModule.onSignerCallback((err, data)=>{
-          console.log('==========data==========================');
-          console.log(data);
-          if (err) {
-              // TODO 异常提示
+          if (err) return;
+
+          const signInfo = {
+              'type':1,
+              'symbol':'ETH',
+              'decimal':1e18,
+              'tokenAddress':'0x875664e580eea9d5313f056d0c2a43af431c660f',
+              'msgInfo':'我怎么这么好看，这么好看怎么办',
+              'fromAddress':'0xb5538753F2641A83409D2786790b42aC857C5340',
+              'toAddress':'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+              'value':1,
+              'gasPrice':100,
+          };
+          this.signInfo = signInfo;
+          const {type} = signInfo;
+          if (type === 1) {
+              this.setState({ isShowSignTx:true });
               return;
           }
-          this.setState({ isShowSignTx:true });
-          this.hash = Ramda.head(data);
+          this.setState({ isShowSignMsg:true });
       });
 
 
@@ -69,11 +80,7 @@ class ZJWebViewScreen extends Component {
   }
 
   _signInfo=()=>{
-      this.props.gethSignHash({passphrase:'11111111', hash:this.hash});
-  }
-
-  _onPressRefresh=()=>{
-      this.webview.reload();
+      this.props.gethSignHash({passphrase:'11111111', signInfo:this.signInfo});
   }
 
   _signTxCancel=()=>{
@@ -116,45 +123,72 @@ class ZJWebViewScreen extends Component {
       this.props.gethUnlockAccount({passphrase});
   }
 
-  _onPressShare= async()=> {
-      this.setState({
-          isShowSignMsg:true,
-      });
-  };
-
-  render () {
-      const url = DEFAULT_URI;
-      const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
-      const {loading} = this.props;
-      const signInfo = {to:'0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db', balance:100, gas:10};
-      const {to, balance, gas} = signInfo;
-
-      return (
-          <View style={styles.container}>
-              <SignTxResultAlert
-                  isInit={isShowSignTx}
-                  to={to}
-                  balance={balance}
-                  gas={gas}
-                  onPressCancel={()=>this._signTxCancel()}
-                  onPressConfirm={()=>this._signTxConfirm()}/>
-              <PassphraseInputAlert
-                  isInit={isShowPassphrase}
-                  onPressCancel={()=>this._pswdCancel()}
-                  onPressConfirm={(passphrase)=>this._pswdConfirm(passphrase)}/>
-              <SignMsgResultAlert
-                  isInit={isShowSignMsg}
-                  onPressCancel={()=>this._signMsgCancel()}
-                  onPressConfirm={()=>this._signMsgConfirm()}/>
-              <Spinner visible={loading} cancelable
-                  textContent={'Loading...'}
-                  textStyle={styles.spinnerText}/>
-              <WebView useWebKit
-                  ref ={ref=>this.webview = ref}
-                  style={styles.container}
-                  source={{url}}/>
-          </View>);
+  _onPressRefresh=()=>{
+      this.webview.reload();
   }
+
+_onPressShare= async()=> {
+    const title = '消息的标题';
+    const message = '要分享的消息';
+    let shareParams = {title, message};
+    if (Platform.OS === 'ios') {
+        const url = 'https://github.com/facebook/react-native';
+        const subject = '通过邮件分享的标题';
+        shareParams = {url, subject, ...shareParams};
+    } else {
+        const dialogTitle = 'Android==>dialogTitle';
+        shareParams = {dialogTitle, ...shareParams};
+    }
+    try {
+        const result = await Share.share(shareParams);
+        const {action, activityType} = result;
+        if (action === Share.sharedAction) {
+            if (activityType) {
+                console.log(activityType);
+            } else {
+                console.log(activityType);
+            }
+        } else if (action === Share.dismissedAction){
+            console.log(Share.dismissedAction);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+render () {
+    const url = DEFAULT_URI;
+    const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
+    const {loading} = this.props;
+    const signInfo = {to:'0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db', balance:100, gas:10};
+    const {to, balance, gas} = signInfo;
+
+    return (
+        <View style={styles.container}>
+            <SignTxResultAlert
+                isInit={isShowSignTx}
+                to={to}
+                balance={balance}
+                gas={gas}
+                onPressCancel={()=>this._signTxCancel()}
+                onPressConfirm={()=>this._signTxConfirm()}/>
+            <PassphraseInputAlert
+                isInit={isShowPassphrase}
+                onPressCancel={()=>this._pswdCancel()}
+                onPressConfirm={(passphrase)=>this._pswdConfirm(passphrase)}/>
+            <SignMsgResultAlert
+                isInit={isShowSignMsg}
+                onPressCancel={()=>this._signMsgCancel()}
+                onPressConfirm={()=>this._signMsgConfirm()}/>
+            <Spinner visible={loading} cancelable
+                textContent={'Loading...'}
+                textStyle={styles.spinnerText}/>
+            <WebView useWebKit
+                ref ={ref=>this.webview = ref}
+                style={styles.container}
+                source={{url}}/>
+        </View>);
+}
 }
 
 const mapStateToProps = (state) => {
@@ -173,29 +207,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(ZJWebViewScreen);
 
 
-// const title = '消息的标题';
-// const message = '要分享的消息';
-// let shareParams = {title, message};
-// if (Platform.OS === 'ios') {
-//     const url = 'https://github.com/facebook/react-native';
-//     const subject = '通过邮件分享的标题';
-//     shareParams = {url, subject, ...shareParams};
-// } else {
-//     const dialogTitle = 'Android==>dialogTitle';
-//     shareParams = {dialogTitle, ...shareParams};
-// }
-// try {
-//     const result = await Share.share(shareParams);
-//     const {action, activityType} = result;
-//     if (action === Share.sharedAction) {
-//         if (activityType) {
-//             console.log(activityType);
-//         } else {
-//             console.log(activityType);
-//         }
-//     } else if (action === Share.dismissedAction){
-//         console.log(Share.dismissedAction);
-//     }
-// } catch (error) {
-//     console.log(error);
-// }
+

@@ -193,13 +193,10 @@ export function *gethTransfer (action) {
 export function *gethSignHash (action) {
     try {
         const {data:params} = action;
-        const {passphrase, hash} = params;
-        console.log('=======gethSignHash======passphrase=======================');
-        console.log(passphrase);
+        const {passphrase, signInfo} = params;
         yield put(WalletActions.setLoading({loading:false}));
-        const result = yield GethModule.signHash({passphrase, hash});
+        const result = yield GethModule.sign({passphrase, signInfo});
         yield put(WalletActions.setLoading({loading:false}));
-
         const hashData =  Ramda.head(result);
 
         console.log('=============hashData=======================');

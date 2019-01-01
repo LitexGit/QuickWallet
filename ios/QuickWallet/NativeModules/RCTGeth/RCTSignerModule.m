@@ -24,11 +24,9 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(onSignerCallback:(RCTResponseSenderBlock)signerCallback){
   self.onSignerCallback = signerCallback;
   
-  
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSString *info = @"我怎么这么";
     NSDictionary *signInfo = @{@"info":info};
-
     [self signInfo:signInfo];
   });
 }
@@ -39,13 +37,3 @@ RCT_EXPORT_METHOD(onSignerCallback:(RCTResponseSenderBlock)signerCallback){
 }
 
 @end
-
-
-
-//@property(nonatomic, copy) RCTPromiseResolveBlock resolveBlock;
-//@property(nonatomic, copy) RCTPromiseRejectBlock rejectBlock;
-
-//RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSData*)hash resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
-//  _resolveBlock = resolver;
-//  _rejectBlock = reject;
-//}
