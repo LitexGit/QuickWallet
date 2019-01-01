@@ -36,4 +36,11 @@ RCT_EXPORT_METHOD(onSignerCallback:(RCTResponseSenderBlock)signerCallback){
   self.onSignerCallback(@[[NSNull null], @[signInfo]]);
 }
 
+
+RCT_EXPORT_METHOD(notifyDappSignResult:(NSString *)hash){
+  NSLog(@"notifyDappSignResult==>%@",hash);
+}
+
+
+
 @end

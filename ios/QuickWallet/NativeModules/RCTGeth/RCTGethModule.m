@@ -370,7 +370,7 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
     NSError *sendErr = nil;
     BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
     if (!isSend || sendErr) {
-      _rejectBlock(@"iOS", @"Transaction token failure", sendErr);
+      _rejectBlock(@"iOS", @"Transaction failure", sendErr);
       return;
     }
     

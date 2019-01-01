@@ -1,5 +1,6 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
+import SignerModule from '../Lib/NativeBridge/SignerUtils';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
 import { StackActions } from 'react-navigation';
@@ -198,11 +199,11 @@ export function *gethSignHash (action) {
         const result = yield GethModule.sign({passphrase, signInfo});
         yield put(WalletActions.setLoading({loading:false}));
         const hashData =  Ramda.head(result);
+        yield SignerModule.notifyDappSignResult({hash:hashData});
 
         console.log('=============hashData=======================');
         console.log(hashData);
         console.log('=============hashData=======================');
-
     } catch (error) {
         // TODO 删除文件异常处理逻辑
         console.log('==============error======================');
