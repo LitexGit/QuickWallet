@@ -346,8 +346,6 @@ RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSDictionary *)hash resol
 }
 
 
-//- (NSData*)signHashPassphrase:(GethAccount*)account passphrase:(NSString*)passphrase hash:(NSData*)hash error:(NSError**)error;
-
 - (NSData*)byteStringToData:(NSString *)byteStr{
   NSMutableData *data = [NSMutableData data];
   int index;
