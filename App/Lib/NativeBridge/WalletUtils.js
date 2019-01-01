@@ -47,7 +47,44 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
 }
 
 async function signHash({passphrase, hash}){
-    return await gethModule.signHash(passphrase, hash);
+    const hashJSON = {
+        'type':1,
+
+        'symbol':'ETH',
+        'decimal':1e18,
+        'tokenAddress':'0x875664e580eea9d5313f056d0c2a43af431c660f',
+
+        'msgInfo':'我怎么这么好看，这么好看怎么办',
+
+        'fromAddress':'0xb5538753F2641A83409D2786790b42aC857C5340',
+        'toAddress':'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+        'value':1,
+        'gasPrice':100,
+    };
+
+    const {type=1, symbol='ETH', decimal=1e18, tokenAddress='', fromAddress='', toAddress='', value=0, gasPrice=1, msgInfo=''} = hashJSON;
+    switch (type) {
+    case 1:{// signTx
+        const amount = value * decimal;
+        const gas = gasPrice * 1e9;
+        if (symbol === 'ETH') { // ETH
+            const ethParams = {type, symbol, fromAddress, toAddress, amount, gas};
+            return await gethModule.sign(passphrase, ethParams);
+        } // ERC20 token
+        const tokenParams = {type, symbol, tokenAddress, fromAddress, toAddress, amount, gas};
+        return await gethModule.sign(passphrase, tokenParams);
+    }
+    case 2: { // signMsg
+        const gas = gasPrice * 1e9;
+        const msgParams = {type, symbol, fromAddress, toAddress, gas, msgInfo};
+        return await gethModule.sign(passphrase, msgParams);
+    }
+
+    default:
+        break;
+    }
+
+
 }
 
 

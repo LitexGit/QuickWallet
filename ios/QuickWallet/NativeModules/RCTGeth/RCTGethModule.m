@@ -10,6 +10,7 @@
 #import <Geth/Geth.h>
 #import "FileManager.h"
 #import <React/RCTConvert.h>
+#import "SignModel.h"
 
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
@@ -266,11 +267,11 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   
   GethAddress *to = [[GethAddress alloc] initFromHex:tokenAddress];
   GethBigInt *amount = [[GethBigInt alloc] init:0];
-  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas intValue]];;
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas longLongValue]];;
   
   GethCallMsg *callMsg = [[GethCallMsg alloc] init];
   GethAddress *dataAddress = [[GethAddress alloc] initFromHex:toAddress];
-  GethBigInt *dataAmount = [[GethBigInt alloc] init:[value intValue]];
+  GethBigInt *dataAmount = [[GethBigInt alloc] init:[value longLongValue]];
   
   [callMsg setFrom:from];
   [callMsg setGasPrice:gasPrice];
@@ -323,27 +324,118 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   return signedTx;
 }
 
-RCT_EXPORT_METHOD(signHash:(NSString*)passphrase hash:(NSDictionary *)hash resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
-    _resolveBlock = resolver;
-    _rejectBlock = reject;
+
+RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   
-    if (!self.account || !self.keyStore || !self.ethClient) {
-      _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
+  _resolveBlock = resolver;
+  _rejectBlock = reject;
+  if (!self.account || !self.keyStore || !self.ethClient) {
+    _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
+    return;
+  }
+
+  SignModel *model = [SignModel provinceWithDictionary:signInfo];
+  GethAddress *from = [[GethAddress alloc] initFromHex:model.fromAddress];
+  GethAddress *to = [[GethAddress alloc] initFromHex:model.toAddress];
+  GethBigInt *amount = [[GethBigInt alloc] init:model.amount];
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:model.gas];
+  
+  int64_t nonce = 0x0;
+  GethContext *context = [[GethContext alloc] init];
+  NSError *nonceErr = nil;
+  int64_t number = -1;
+  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
+  if (!isGet || nonceErr) {
+    _rejectBlock(@"iOS", @"get Nonce exceptions", nonceErr);
+    return;
+  }
+  
+  if ([model.type isEqual:@(1)]) { // // signTx
+    GethTransaction *transaction = nil;
+    if ([model.symbol isEqualToString:@"ETH"]) {
+       transaction = [self getETHTx:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
+    } else {
+      GethAddress *tokenAddress = [[GethAddress alloc] initFromHex:model.tokenAddress];
+      transaction = [self getTokenTx:tokenAddress from:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
+    }
+    
+    if (!transaction) {
+      _rejectBlock(@"iOS", @"Build Transaction exceptions", nonceErr);
       return;
     }
-  
-    NSData *hashData = [NSJSONSerialization dataWithJSONObject:hash options:NSJSONWritingPrettyPrinted error:nil];
-  
-    NSError *error = nil;
-    NSData *signInfo = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hashData error:&error];
-    if (error) {
-      _rejectBlock(@"iOS", @"Signature info abnormal", error);
+    GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
+    if (!signedTx) {
+      _rejectBlock(@"iOS", @"Signature abnormal", nil);
+    }
+    NSError *sendErr = nil;
+    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
+    if (!isSend || sendErr) {
+      _rejectBlock(@"iOS", @"Transaction token failure", sendErr);
       return;
     }
+    
+    _resolveBlock(@[[[transaction getHash] getHex]]);
+    return;
+  }
   
-    NSString *signer = [[NSString alloc] initWithData:signInfo encoding:NSUTF8StringEncoding];
-   _resolveBlock(@[signer]);
+  GethCallMsg *callMsg = [self getCallMsg:from to:to gasPrice:gasPrice msgInfo:model.msgInfo];
+  if (!callMsg) {
+    _rejectBlock(@"iOS", @"Build GethCallMsg exceptions", nonceErr);
+    return;
+  }
+  
+  // callMsg ==> data
+  
+//  NSError *error = nil;
+//  NSData *data = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:signData error:&error];
+//  if (error) {
+//    _rejectBlock(@"iOS", @"Signature info abnormal", error);
+//    return;
+//  }
+//
+//  NSError *hashError =nil;
+//  GethHash *hash = GethNewHashFromBytes(data, &hashError);
+  
+  
 }
+
+
+- (GethCallMsg *)getCallMsg:(GethAddress*)from to:(GethAddress*)to gasPrice:(GethBigInt*)gasPrice msgInfo:(NSString *)msgInfo{
+  GethCallMsg *callMsg = [[GethCallMsg alloc] init];
+  [callMsg setFrom:from];
+  [callMsg setTo:to];
+  [callMsg setGasPrice:gasPrice];
+  
+  NSData *data = [msgInfo dataUsingEncoding: NSUTF8StringEncoding];
+  [callMsg setData:data];
+  
+  return callMsg;
+}
+
+- (GethTransaction *)getETHTx:(GethAddress*)from to:(GethAddress*)to nonce:(int64_t)nonce amount:(GethBigInt *)amount gasPrice:(GethBigInt*)gasPrice{
+  
+  ino64_t gasLimit = 21000;
+  NSData *data = [NSData data];
+  
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
+  return transaction;
+}
+
+- (GethTransaction *)getTokenTx:(GethAddress*)tokenAddress from:(GethAddress*)from to:(GethAddress*)to nonce:(int64_t)nonce amount:(GethBigInt *)amount gasPrice:(GethBigInt*)gasPrice{
+  
+  GethBigInt *tokenAmount = [[GethBigInt alloc] init:0];
+  ino64_t gasLimit = 21000;
+  NSError *err = nil;
+  NSData *tokenData = GethGenerateERC20TransferData(to, amount, &err);
+  if (err || !tokenData) {
+    _rejectBlock(@"iOS", @"GethGenerateERC20TransferData", err);
+    return nil;
+  }
+  
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:tokenAddress amount:tokenAmount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];
+  return transaction;
+}
+
 
 
 - (NSData*)byteStringToData:(NSString *)byteStr{
