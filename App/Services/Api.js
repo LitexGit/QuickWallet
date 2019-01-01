@@ -53,16 +53,16 @@ const create = (baseURL = Config.API_URL) => {
      */
     const getConfig = () =>api.get('');
     /**
-     * token列表接口
+     * 获取系统支持的ERC20 token列表
      */
-    const getERC20Token = () =>api.get('');
+    const getTokenList = () =>api.get('');
 
     return {
         register,
         getUserInfo,
         getBanner,
         getConfig,
-        getERC20Token,
+        getTokenList,
 
 
         getRoot,

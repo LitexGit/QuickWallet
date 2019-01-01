@@ -20,27 +20,30 @@ class TransferRecordScreen extends Component {
   }
 
   componentDidMount=()=>{
+      const {selectedToken, address} = this.props;
       const page = 1;
       const offset = 20;
-      const { getTxlist } = this.props;
-
-      const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-      getTxlist({address, page, offset});
-
-      // const tokenSymbol = 'TEST';
-      // const MKRcontractaddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
-      // const MKRaddress = '0x4e83362442b8d1bec281594cea3050c8eb01311c';
-      // getTxlist({address:MKRaddress, page, offset, tokenSymbol, contractAddress:MKRcontractaddress});
+      const {symbol='ETH', tokenAddress=''} = selectedToken;
+      if (symbol === 'ETH') {
+          this.props.getTxlist({address, page, offset, symbol});
+      } else {
+          this.props.getTxlist({address, page, offset, symbol, tokenAddress});
+      }
   }
 
   _onRefresh=()=>{
-      console.log('===========_onRefresh=========================');
+      const {selectedToken, address} = this.props;
+      const page = 1;
+      const offset = 20;
+      const {symbol='ETH', tokenAddress=''} = selectedToken;
+      if (symbol === 'ETH') {
+          this.props.getTxlist({address, page, offset, symbol});
+      } else {
+          this.props.getTxlist({address, page, offset, symbol, tokenAddress});
+      }
   }
   _loadMore=()=>{
       console.log('===========_loadMore=========================');
-  }
-  _onPressItem=()=>{
-      console.log('===========_onPressItem=========================');
   }
 
   _onPressBtn=()=>{
@@ -56,8 +59,8 @@ class TransferRecordScreen extends Component {
       const title = isInput ? '收款' : '付款';
       const direction = isInput ? 'From:'+from : 'To:'+ to;
 
-
-      return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>
+      const bgColor = txreceipt_status === 0 ? {backgroundColor:'#FED605'} : {backgroundColor:'green'};
+      return (<TouchableOpacity style={styles.container}>
           <View style={styles.itemContainer}>
               <View style={styles.itemLeft}>
                   <Image style={styles.symbolImg} source={{ uri: img_url }}/>
@@ -71,7 +74,7 @@ class TransferRecordScreen extends Component {
                       <Text style={styles.titleStyle} numberOfLines={1}>{value}</Text>
                       <Text style={styles.timeStyle} numberOfLines={1} ellipsizeMode='middle'>{direction}</Text>
                   </View>
-                  <View style={styles.dotStyle}/>
+                  <View style={[styles.dotStyle, bgColor]}/>
               </View>
           </View>
       </TouchableOpacity>);
@@ -84,8 +87,8 @@ class TransferRecordScreen extends Component {
   }
 
   _renderListHeader=()=>{
-      const item = {};
-      const {img_url='http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg', symbol='ETH', count=0, assets='$1.00'} = item;
+      const {selectedToken} = this.props;
+      const {img_url='', symbol='ETH', count=0, value=''} = selectedToken;
       return(<View style={styles.headerContainer}>
           <View style={styles.leftSection}>
               <Image style={styles.symbolImg} source={{ uri: img_url }}/>
@@ -93,7 +96,7 @@ class TransferRecordScreen extends Component {
           </View>
           <View style={styles.rightSection}>
               <Text style={styles.countStyle}>{count}</Text>
-              <Text style={styles.assetsStyle}>{assets}</Text>
+              <Text style={styles.assetsStyle}>{value}</Text>
           </View>
       </View>);
   }
@@ -140,10 +143,11 @@ class TransferRecordScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        assets:{txlist}
+        assets:{selectedToken, txlist},
+        wallet:{address}
     } = state;
 
-    return {txlist:sectionlize(txlist)};
+    return {selectedToken, txlist:sectionlize(txlist), address};
 };
 
 const mapDispatchToProps = (dispatch) => ({

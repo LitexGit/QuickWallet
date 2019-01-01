@@ -11,6 +11,38 @@ const apiKey = Config.API_URL;
 const environment = 'rinkeby';
 const timeout = 1000;
 
+export function *getTokenList(api){
+    // const response = yield call(api.getTokenList);
+    // const {status, data} = response;
+
+    const data = {'tokenList':[
+        {
+            'img_url':'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg',
+            'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+            'symbol':'ETH',
+            'decimal':'18',
+            'supply':'',
+            'count':0,
+            'value':0,
+
+        },{
+            'img_url':'http://img3.imgtn.bdimg.com/it/u=3142207919,2669735180&fm=200&gp=0.jpg',
+            'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+            'symbol':'LXT',
+            'decimal':'18',
+            'supply':'',
+            'count':0,
+            'value':0,
+        }
+    ]};
+
+    // if (status) {
+    yield put(AssetActions.getTokenListSuccess(data));
+    //     return;
+    // }
+    // yield put(AssetActions.getTokenListFailure());
+}
+
 export function * getBalance (action) {
     try {
         const {data:params} = action;
@@ -34,17 +66,20 @@ export function * getBalance (action) {
 export function * getTxlist (action) {
     try {
         const {data:params} = action;
-        const {address, page=1, offset=20, tokenSymbol='ETH', contractAddress=''} = params;
+        const {address, page=1, offset=20, symbol='ETH', tokenAddress=''} = params;
+        console.log('============address========================');
+        console.log(address);
+        console.log('============address========================');
         const startblock = 0;
         const endblock='999999999';
         const sort='desc';
         const api = require('etherscan-api').init(apiKey, environment, timeout);
 
         let response = {};
-        if (tokenSymbol === 'ETH') {
+        if (symbol === 'ETH') {
             response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
         } else {
-            response = yield call(api.account.tokentx, address, contractAddress, startblock, endblock, page, offset, sort);
+            response = yield call(api.account.tokentx, address, tokenAddress, startblock, endblock, page, offset, sort);
         }
 
         const {status, message, result} = response;
@@ -61,7 +96,7 @@ export function * getTxlist (action) {
         yield put(AssetActions.getTxlistFailure(message));
     } catch (error) {
         console.log('==============error======================');
-        console.log();
+        console.log(error);
         console.log('==============error======================');
     }
 

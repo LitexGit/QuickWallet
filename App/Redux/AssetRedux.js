@@ -7,6 +7,12 @@ const { Types, Creators } = createActions({
     request: ['data'],
     success: ['data'],
 
+    setSelectedToken:['data'],
+
+    getTokenListRequest: ['data'],
+    getTokenListSuccess: ['data'],
+    getTokenListFailure: null,
+
     getBalanceRequest: ['data'],
     getBalanceSuccess: ['data'],
     getBalanceFailure: null,
@@ -33,9 +39,11 @@ export const INITIAL_STATE = Immutable({
     failure: null,
     error: null,
 
+    tokenList:[],
+    selectedToken:{},
+
     balances:[],
     txlist:[],
-    //
     ethBanance:'',
 });
 
@@ -47,15 +55,21 @@ export const ConfigSelectors = {
 };
 
 /* ------------- Reducers ------------- */
+// successful avatar lookup
+export const setSelectedToken = (state, { data }) =>
+    state.merge({...data });
 
 // request the avatar for a user
 export const request = (state, { data }) =>
-    state.merge({ refreshing: true, data, payload: null })
-;
+    state.merge({ refreshing: true, payload: null });
 
 // successful avatar lookup
-export const success = (state, { data }) =>
-    state.merge({ refreshing: false, loading: false, error: null, ...data });
+export const success = (state, { data }) =>{
+    console.log('=====success=========data======================');
+    console.log(data);
+    console.log('=====success=========data======================');
+    return state.merge({ refreshing: false, loading: false, error: null, ...data });
+};
 
 
 // failed to get the avatar
@@ -65,6 +79,12 @@ export const failure = (state) =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+    [Types.SET_SELECTED_TOKEN]: setSelectedToken,
+
+    [Types.GET_TOKEN_LIST_REQUEST]: request,
+    [Types.GET_TOKEN_LIST_SUCCESS]: success,
+    [Types.GET_TOKEN_LIST_FAILURE]: failure,
+
     [Types.GET_BALANCE_REQUEST]: request,
     [Types.GET_BALANCE_SUCCESS]: success,
     [Types.GET_BALANCE_FAILURE]: failure,
