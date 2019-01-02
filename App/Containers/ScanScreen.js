@@ -53,33 +53,46 @@ class ScanScreen extends Component {
   }
 
   render() {
-      const barcodeType = Platform.OS === 'ios' ? [RNCamera.Constants.BarCodeType.qr] : RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE;
-      return (
-          <RNCamera style={styles.container}
-              type={RNCamera.Constants.Type.back}
-              barCodeTypes={barcodeType}
-              flashMode={RNCamera.Constants.FlashMode.auto}
-              onBarCodeRead={(e) => this._onBarCodeRead(e)}>
+      const contentView = (<View style={styles.container}>
+          <View style={styles.scanBeside}></View>
+          <View style={styles.scanSection}>
               <View style={styles.scanBeside}></View>
-              <View style={styles.scanSection}>
-                  <View style={styles.scanBeside}></View>
-                  <View style={styles.scanerView}>
-                      <Image style={styles.scaner} source={require('../Images/icon_scan_rect.png')}/>
-                      <Animated.View style={[styles.animatedLine, {
-                          transform: [{
-                              translateY: this.state.animation.interpolate({
-                                  inputRange: [0,1],
-                                  outputRange: [0,250]
-                              })
-                          }]
-                      }]}/>
-                  </View>
-                  <View style={styles.scanBeside}></View>
+              <View style={styles.scanerView}>
+                  <Image style={styles.scaner} source={require('../Images/icon_scan_rect.png')}/>
+                  <Animated.View style={[styles.animatedLine, {
+                      transform: [{
+                          translateY: this.state.animation.interpolate({
+                              inputRange: [0,1],
+                              outputRange: [0,250]
+                          })
+                      }]
+                  }]}/>
               </View>
-              <View style={styles.bottomSection}>
-                  <Text style={styles.textStyle}>将二维码放入框内，即可自动扫描</Text>
-              </View>
-          </RNCamera>);
+              <View style={styles.scanBeside}></View>
+          </View>
+          <View style={styles.bottomSection}>
+              <Text style={styles.textStyle}>将二维码放入框内，即可自动扫描</Text>
+          </View>
+      </View>);
+
+      const camera = Platform.OS === 'ios' ? (<RNCamera style={styles.container}
+          type={RNCamera.Constants.Type.back}
+          barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+          flashMode={RNCamera.Constants.FlashMode.auto}
+          onBarCodeRead={(e) => this._onBarCodeRead(e)}>
+          {contentView}
+      </RNCamera>) : (<RNCamera style={styles.container}
+          type={RNCamera.Constants.Type.back}
+          googleVisionBarcodeType = {RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
+          flashMode={RNCamera.Constants.FlashMode.auto}
+          onBarCodeRead={(e) => this._onBarCodeRead(e)}>
+          {contentView}
+      </RNCamera>);
+
+      return (
+          <View style={styles.container}>
+              {camera}
+          </View>);
   }
 }
 
@@ -92,7 +105,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScanScreen);
-
 
 
 
