@@ -50,6 +50,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init(boolean isLogin, String rawurl) {
+        Log.d("init", rawurl);
 
         if (TextUtils.isEmpty(rawurl)){
             sharedPreferencesHelper.put(RAWURL, "");
@@ -90,15 +91,10 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void unlockAccount( String passphrase, Promise promise ) {
         try {
-            String keyTemp = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_TEMP, ""));
-            boolean result = FileUtil.createDir(keyTemp);
-            if (!result){
-                // Create a cache file exception
-                Exception err = new Exception();
-                promise.reject("-1003",err);
-                return;
-            }
-            keyStore = new KeyStore(keyTemp, Geth.StandardScryptN,  Geth.StandardScryptN);
+            String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
+            FileUtil.createDir(tempDir);
+            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
             if (!isExists){
@@ -107,11 +103,13 @@ public class GethModule extends ReactContextBaseJavaModule {
                 promise.reject("-1004",err);
                 return;
             }
+
             File keyFile = FileUtil.getFile(keydir);
             byte[] data = ByteUtil.getFileToByte(keyFile);
 
             account = keyStore.importKey(data, passphrase, passphrase);
             String address = account.getAddress().getHex();
+
             WritableMap map = Arguments.createMap();
             map.putString("address",address);
 
@@ -137,9 +135,11 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
-            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
-            FileUtil.deleteFile(keydir);
-            keyStore = new KeyStore(keydir, Geth.StandardScryptN,  Geth.StandardScryptN);
+
+            String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
+            FileUtil.createDir(filesDir);
+
+            keyStore = new KeyStore(filesDir, Geth.StandardScryptN,  Geth.StandardScryptN);
             byte[] data = privateKey.getBytes();
             account = keyStore.importECDSAKey(data, passphrase);
             String address = account.getAddress().getHex();
@@ -156,11 +156,14 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
-            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
-            FileUtil.deleteFile(keydir);
-            keyStore = new KeyStore(KEY_DIR, Geth.StandardScryptN,  Geth.StandardScryptN);
+
+            String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
+            FileUtil.createDir(filesDir);
+            // 删除文件夹下的内容
+
+            keyStore = new KeyStore(filesDir, Geth.StandardScryptN,  Geth.StandardScryptN);
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
-            Log.d("TAG", "new privateKeyFromMnemonic is " + new String(privateKeyFromMnemonic));
+
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
             String address = account.getAddress().getHex();
             WritableMap map = Arguments.createMap();
@@ -174,7 +177,10 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void exportPrivateKey( String passphrase, Promise promise ) {
         try {
-            keyStore = new KeyStore(KEY_TEMP, Geth.StandardScryptN,  Geth.StandardScryptN);
+            String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
+            FileUtil.createDir(tempDir);
+            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
             if (!isExists){
@@ -188,6 +194,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             account = keyStore.importKey(data, passphrase, passphrase);
             String privateKey = keyStore.exportECSDAKeyHex(account, passphrase);
+
             WritableMap map = Arguments.createMap();
             map.putString("privateKey",privateKey);
 
