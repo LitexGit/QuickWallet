@@ -79,7 +79,7 @@ public class GethModule extends ReactContextBaseJavaModule {
     public void isUnlockAccount(Promise promise) {
         if (account == null || keyStore == null || ethClient == null){
             WritableMap map = Arguments.createMap();
-            map.putBoolean("result",true);
+            map.putBoolean("isUnloc",true);
             promise.resolve(map);
         } else {
             Exception err = new Exception();
@@ -88,33 +88,35 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void unlockAccount(
-            String passphrase,
-            Callback errorCallback,
-            Callback successCallback
-    ) {
+    public void unlockAccount( String passphrase, Promise promise ) {
         try {
             String keyTemp = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_TEMP, ""));
             boolean result = FileUtil.createDir(keyTemp);
             if (!result){
-                errorCallback.invoke("Create a cache file exception");
+                // Create a cache file exception
+                Exception err = new Exception();
+                promise.reject("-1003",err);
                 return;
             }
             keyStore = new KeyStore(keyTemp, Geth.StandardScryptN,  Geth.StandardScryptN);
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
             if (!isExists){
-                errorCallback.invoke("Keystore file does not exist");
+                // Keystore file does not exist
+                Exception err = new Exception();
+                promise.reject("-1004",err);
                 return;
             }
             File keyFile = FileUtil.getFile(keydir);
             byte[] data = ByteUtil.getFileToByte(keyFile);
 
             account = keyStore.importKey(data, passphrase, passphrase);
-            successCallback.invoke(account.getAddress().getHex());
+            String address = account.getAddress().getHex();
+            WritableMap map = Arguments.createMap();
+            map.putString("address",address);
 
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1005",e);
         }
     }
 
@@ -122,7 +124,6 @@ public class GethModule extends ReactContextBaseJavaModule {
     public void randomMnemonic(Promise promise) {
         try {
             String mnemonic = Geth.createRandomMnemonic();
-            Log.d()
             WritableMap map = Arguments.createMap();
             map.putString("mnemonic",mnemonic);
             promise.resolve(map);
@@ -132,12 +133,7 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void importPrivateKey(
-            String privateKey,
-            String passphrase,
-            Callback errorCallback,
-            Callback successCallback
-    ) {
+    public void importPrivateKey( String privateKey, String passphrase, Promise promise ) {
         try {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
@@ -146,19 +142,17 @@ public class GethModule extends ReactContextBaseJavaModule {
             keyStore = new KeyStore(keydir, Geth.StandardScryptN,  Geth.StandardScryptN);
             byte[] data = privateKey.getBytes();
             account = keyStore.importECDSAKey(data, passphrase);
-            successCallback.invoke(account.getAddress().getHex());
+            String address = account.getAddress().getHex();
+            WritableMap map = Arguments.createMap();
+            map.putString("address",address);
+
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1006",e);
         }
     }
 
     @ReactMethod
-    public void importMnemonic(
-            String mnemonic,
-            String passphrase,
-            Callback errorCallback,
-            Callback successCallback
-    ) {
+    public void importMnemonic( String mnemonic, String passphrase, Promise promise ) {
         try {
             String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
             ethClient = new EthereumClient(rawurl);
@@ -168,24 +162,25 @@ public class GethModule extends ReactContextBaseJavaModule {
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
             Log.d("TAG", "new privateKeyFromMnemonic is " + new String(privateKeyFromMnemonic));
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
-            successCallback.invoke(account.getAddress().getHex());
+            String address = account.getAddress().getHex();
+            WritableMap map = Arguments.createMap();
+            map.putString("address",address);
+
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1007",e);
         }
     }
 
     @ReactMethod
-    public void exportPrivateKey(
-            String passphrase,
-            Callback errorCallback,
-            Callback successCallback
-    ) {
+    public void exportPrivateKey( String passphrase, Promise promise ) {
         try {
             keyStore = new KeyStore(KEY_TEMP, Geth.StandardScryptN,  Geth.StandardScryptN);
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
             if (!isExists){
-                errorCallback.invoke("Keystore file does not exist");
+                // Keystore file does not exist
+                Exception err = new Exception();
+                promise.reject("-1008",err);
                 return;
             }
             File keyFile = FileUtil.getFile(keydir);
@@ -193,10 +188,11 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             account = keyStore.importKey(data, passphrase, passphrase);
             String privateKey = keyStore.exportECSDAKeyHex(account, passphrase);
-            Log.d("TAG", "new json" + privateKey  );
-            successCallback.invoke(privateKey);
+            WritableMap map = Arguments.createMap();
+            map.putString("privateKey",privateKey);
+
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1009",e.getMessage());
         }
     }
 
@@ -207,12 +203,13 @@ public class GethModule extends ReactContextBaseJavaModule {
             String toAddress,
             Integer value,
             Integer gas,
-            Callback errorCallback,
-            Callback successCallback
+            Promise promise
     ) {
         try {
             if (account == null || keyStore == null || ethClient == null){
-                errorCallback.invoke("Wallet not unlocked");
+                // Wallet not unlocked
+                Exception err = new Exception();
+                promise.reject("-1010",err);
                 return;
             }
             Address from = new Address(fromAddress);
@@ -233,11 +230,10 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             // 函数无返回值
             ethClient.sendTransaction(Geth.newContext(), signedTx);
-
-            // 定义函数返回值
-            successCallback.invoke();
+            WritableMap map = Arguments.createMap();
+            map.putBoolean("isSend", true);
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1011",e.getMessage());
         }
     }
 
@@ -249,12 +245,13 @@ public class GethModule extends ReactContextBaseJavaModule {
             String tokenAddress,
             Long value,
             Long gas,
-            Callback errorCallback,
-            Callback successCallback
+            Promise promise
     ) {
         try {
             if (account == null || keyStore == null || ethClient == null){
-                errorCallback.invoke("Wallet not unlocked");
+                // Wallet not unlocked
+                Exception err = new Exception();
+                promise.reject("-1012",err);
                 return;
             }
             Address from = new Address(fromAddress);
@@ -289,11 +286,10 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             // 函数无返回值
             ethClient.sendTransaction(Geth.newContext(), signedTx);
-
-            // 定义函数返回值
-            successCallback.invoke();
+            WritableMap map = Arguments.createMap();
+            map.putBoolean("isSend", true);
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1013",e.getMessage());
         }
     }
 
@@ -301,21 +297,23 @@ public class GethModule extends ReactContextBaseJavaModule {
     public void signHash(
             String passphrase,
             Object hash,
-            Callback errorCallback,
-            Callback successCallback
+            Promise promise
     ) {
         try {
             if (account == null || keyStore == null || ethClient == null){
-                errorCallback.invoke("Wallet not unlocked");
+                // Wallet not unlocked
+                Exception err = new Exception();
+                promise.reject("-1014",err);
                 return;
             }
             ByteUtil.objectToByte(hash);
             byte[] data = null;
             byte[] hashData = keyStore.signHashPassphrase(account, passphrase, data);
             String hashStr = new String(hashData);
-            successCallback.invoke(hashStr);
+
+//            successCallback.invoke(hashStr);
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+//            errorCallback.invoke(e.getMessage());
         }
     }
 
