@@ -106,9 +106,6 @@ export function * getTxlist (action) {
     try {
         const {data:params} = action;
         const {address, page=1, offset=20, symbol='ETH', tokenAddress=''} = params;
-        console.log('============address========================');
-        console.log(address);
-        console.log('============address========================');
         const startblock = 0;
         const endblock='999999999';
         const sort='desc';
@@ -152,54 +149,54 @@ export function * getTxlist (action) {
 //   "message": "OK",
 //   "result": [
 //       {
-//         blockHash: "0x5fc3b97c12c741a92581a7b8a7460d9869b37eb8056e4c9f421d3b981bc7d182"
-//         blockNumber: "3502879"
-//         confirmations: "52520"
+//         blockHash: "0xc22228a8be3f4c56e0decd7a8d54f0781782048f3bb141b9142108cbfe9e090a"
+//         blockNumber: "3613656"
+//         confirmations: "4712"
 //         contractAddress: ""
-//         cumulativeGasUsed: "57161"
-//         from: "0xb5538753f2641a83409d2786790b42ac857c5340"
-//         gas: "51000"
-//         gasPrice: "10000000000"
+//         cumulativeGasUsed: "21000"
+//         from: "0xa08105d7650fe007978a291ccfecbb321fc21ffe"
+//         gas: "21000"
+//         gasPrice: "20000000000"
 //         gasUsed: "21000"
-//         hash: "0x686f625c7a71511327ff27f8c42b68cf00c1fbb1dd91a0cb79986e0f9473cc47"
+//         hash: "0x4ced75f1f8897ce09c032b0fe604fead89d65b39cd7927fd3b2522566ad0c53a"
 //         input: "0x"
 //         isError: "0"
-//         nonce: "141"
-//         timeStamp: "1544671886"
-//         to: "0x38bcc5b8b793f544d86a94bd2ae94196567b865c"
-//         transactionIndex: "1"
+//         nonce: "1512"
+//         timeStamp: "1546333700"
+//         to: "0xb5538753f2641a83409d2786790b42ac857c5340"
+//         transactionIndex: "0"
 //         txreceipt_status: "1"
-//         value: "1"
+//         value: "18571428571428571436"
 //       },
 //   ],
 //   "status": "1"
 // }
 
 // {
-//   "message": "OK",
-//   "result": [
-//       {
-//         blockHash: "0xdbb525db245298040f481405f4b64fdb96cbd7f55c191f51c00143cdb2b8660f"
-//         blockNumber: "2883283"
-//         confirmations: "672330"
-//         contractAddress: "0x875664e580eea9d5313f056d0c2a43af431c660f"
-//         cumulativeGasUsed: "4197945"
-//         from: "0x0000000000000000000000000000000000000000"
-//         gas: "5000000"
-//         gasPrice: "1000000000"
-//         gasUsed: "3707145"
-//         hash: "0x5de187ecb8f49ee6a2760fcb9c5eac6d0df7d43ec788593250027a7b1599336a"
-//         input: "0x0e6848cc0000000000000000000000000000000000000000"
-//         nonce: "383"
-//         timeStamp: "1535319442"
-//         to: "0x4e83362442b8d1bec281594cea3050c8eb01311c"
-//         tokenDecimal: "18"
-//         tokenName: "TEST"
-//         tokenSymbol: "TEST"
-//         transactionIndex: "3"
-//         value: "365000000000000000000"
-//       },
-//   ],
-//   "status": "1"
+//   message: "OK"
+//   result: [
+//     {
+//       blockHash: "0x4cc6cbc946f961e4c8e9399e385249c86f76f4b14657fdf85b772a47462becae"
+//       blockNumber: "3613859"
+//       confirmations: "4503"
+//       contractAddress: "0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11"
+//       cumulativeGasUsed: "51932"
+//       from: "0xa08105d7650fe007978a291ccfecbb321fc21ffe"
+//       gas: "51932"
+//       gasPrice: "11000000000"
+//       gasUsed: "51932"
+//       hash: "0xf3ecee11ac2d8483f859085a02b4eb74ad80b677f346916dffc6d23949c3fe0f"
+//       input: "0xa9059cbb000000000000000000000000b5538753f2641a83409d2786790b42ac857c534000000000000000000000000000000000000000000000021e19e0c9bab2400000"
+//       nonce: "1514"
+//       timeStamp: "1546336745"
+//       to: "0xb5538753f2641a83409d2786790b42ac857c5340"
+//       tokenDecimal: "18"
+//       tokenName: "LiteXToken"
+//       tokenSymbol: "LXT"
+//       transactionIndex: "0"
+//       value: "10000000000000000000000"
+//     }
+//   ]
+//   status: "1"
 // }
 

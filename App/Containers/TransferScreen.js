@@ -28,7 +28,7 @@ class TransferScreen extends Component {
             maxGas: 100,
 
             inputBalance:'0',
-            inputAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+            inputAddress:'',
 
             isShowSignTx:false,
             isShowPswdInput:false,
@@ -80,8 +80,10 @@ class TransferScreen extends Component {
   }
 
   _checkInputIsValid=()=>{
-      // TODO 校验余额是否支持转账
-
+      // const {count} = selectedToken;
+      // const {inputBalance} = this.state;
+      // this.inputGas
+      // 校验  count >= inputBalance + inputGas * gasLimit;
   }
 
   componentDidMount=()=>{
@@ -116,10 +118,8 @@ class TransferScreen extends Component {
 
 
   _transfer=()=>{
-      const {passphrase='', address=''} = this.props;
-      const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
-      const symbol = 'ETH';
-      const decimal = 1e18;
+      const {passphrase='', address='', selectedToken} = this.props;
+      const {tokenAddress, symbol, decimal} = selectedToken;
       const {inputBalance, inputAddress} = this.state;
 
       this.props.gethTransfer({
@@ -242,13 +242,14 @@ const mapStateToProps = (state) => {
     console.log(state);
     console.log('===============TransferScreen=====================');
     const {
-        wallet:{selectedToken, passphrase, address, loading}
+        assets:{selectedToken},
+        wallet:{passphrase, address, loading}
     } = state;
     return { selectedToken, passphrase, address, loading};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
     gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),

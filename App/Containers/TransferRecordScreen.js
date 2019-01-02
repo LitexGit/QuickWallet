@@ -54,10 +54,11 @@ class TransferRecordScreen extends Component {
   _renderItem=({item})=>{
       const img_url = 'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg';
 
-      const { from='', to='', time='', value='', txreceipt_status='1'} = item;
+      const { from='', to='', time='', value='', txreceipt_status='1', tokenDecimal=18} = item;
       const isInput =  getTxDirection({from, to});
       const title = isInput ? '收款' : '付款';
       const direction = isInput ? 'From:'+from : 'To:'+ to;
+      const amount = value / 1e18;
 
       const bgColor = txreceipt_status === 0 ? {backgroundColor:'#FED605'} : {backgroundColor:'green'};
       return (<TouchableOpacity style={styles.container}>
@@ -71,7 +72,7 @@ class TransferRecordScreen extends Component {
               </View>
               <View style={styles.itemRight}>
                   <View style={styles.itemRightView}>
-                      <Text style={styles.titleStyle} numberOfLines={1}>{value}</Text>
+                      <Text style={styles.titleStyle} numberOfLines={1}>{amount}</Text>
                       <Text style={styles.timeStyle} numberOfLines={1} ellipsizeMode='middle'>{direction}</Text>
                   </View>
                   <View style={[styles.dotStyle, bgColor]}/>

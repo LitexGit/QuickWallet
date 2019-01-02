@@ -47,7 +47,7 @@ class ScanScreen extends Component {
       this._startAnimation();
       setTimeout(()=>{
           const {state} = this.props.navigation;
-          state.params.callback({data:'0XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'});
+          state.params.callback({data:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
           this.props.navigation.goBack();
       }, 3000);
   }

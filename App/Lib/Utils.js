@@ -27,7 +27,8 @@ export function runGenerator(generatorFUN, initialValue) {
  * return 0 支出
  */
 export function getTxDirection({from, to}) {
-    const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+    // TODO 获取 address
+    const address = '0xb5538753f2641a83409d2786790b42ac857c5340';
     if (address === to && address !== from) {
         return 1;
     }
