@@ -4,7 +4,7 @@ import { ApplicationStyles, Colors, Fonts, Metrics} from '../../Themes';
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     topSection:{
-        height:200 + Metrics.statusBarHeight,
+        height: Metrics.screenHeight * 0.25 + Metrics.statusBarHeight
     },
     avatarSection:{
         flex:1,

@@ -8,7 +8,7 @@ export default StyleSheet.create({
         backgroundColor: Colors.transparent
     },
     topSection:{
-        height: 200 + Metrics.statusBarHeight,
+        height: Metrics.screenHeight * 0.25 + Metrics.statusBarHeight,
         width: '100%',
     },
     banner:{
