@@ -103,8 +103,8 @@ class TransferRecordScreen extends Component {
   _renderListEmpty=()=><ListEmptyComponent containerStyle={styles.emptycontainer}/>
 
   render () {
-      const refreshing = false;
-      const loading = false;
+      const {refreshing, loading} = this.props;
+
       const btnTitle = '发起转账';
       const isBalance = false;
 
@@ -143,11 +143,11 @@ class TransferRecordScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        assets:{selectedToken, txlist},
+        assets:{selectedToken, txlist, refreshing, loading},
         wallet:{address}
     } = state;
 
-    return {selectedToken, txlist:sectionlize(txlist), address};
+    return {selectedToken, txlist:sectionlize(txlist), address, refreshing, loading};
 };
 
 const mapDispatchToProps = (dispatch) => ({

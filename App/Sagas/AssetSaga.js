@@ -7,11 +7,12 @@ import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
 Moment.locale('zh-cn');
 
-const apiKey = Config.API_URL;
+const apiKey = Config.ETHERSCAN_API_KEY;
 const environment = 'rinkeby';
-const timeout = 1000;
+const timeout = 10000;
 
 export function *getTokenList(api){
+    const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
     // const response = yield call(api.getTokenList);
     // const {status, data} = response;
 
@@ -36,6 +37,17 @@ export function *getTokenList(api){
         }
     ]};
 
+    const {tokenList} = data;
+
+    for (const token of tokenList) {
+        const {symbol, tokenAddress} = token;
+        if (symbol === 'ETH') {
+            yield put(AssetActions.getBalanceRequest({address}));
+        } else {
+            yield put(AssetActions.getTokenBalanceRequest({address, tokenname:symbol, contractaddress:tokenAddress}));
+        }
+    }
+
     // if (status) {
     yield put(AssetActions.getTokenListSuccess(data));
     //     return;
@@ -50,15 +62,42 @@ export function * getBalance (action) {
         const api = require('etherscan-api').init(apiKey, environment, timeout);
 
         const response =yield call(api.account.balance,address);
-        const {status, message, result:ethBanance} = response;
+        const {status, message, result} = response;
         if (status) {
-            yield put(AssetActions.getBalanceSuccess({ethBanance}));
+            yield put(AssetActions.getBalanceSuccess({
+                symbol:'ETH',
+                banance:result,
+            }));
             return;
         }
         yield put(AssetActions.getBalanceFailure(message));
     } catch (error) {
         console.log('==============error======================');
         console.log();
+        console.log('==============error======================');
+    }
+}
+
+
+export function * getTokenBalance(action) {
+    try {
+        const {data:params} = action;
+        const {address, tokenname, contractaddress} = params;
+
+        const api = require('etherscan-api').init(apiKey, environment, timeout);
+        const response =yield call(api.account.tokenbalance, address, '', contractaddress );
+        const {status, message, result} = response;
+        if (status) {
+            yield put(AssetActions.getTokenBalanceSuccess({
+                symbol:tokenname,
+                banance:result,
+            }));
+            return;
+        }
+        yield put(AssetActions.getTokenBalanceFailure(message));
+    } catch (error) {
+        console.log('==============error======================');
+        console.log(error);
         console.log('==============error======================');
     }
 }

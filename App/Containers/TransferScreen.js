@@ -13,7 +13,7 @@ import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+// 转账不需要密码
 class TransferScreen extends Component {
 
     static navigationOptions = {
@@ -80,7 +80,8 @@ class TransferScreen extends Component {
   }
 
   _checkInputIsValid=()=>{
-      // console.log('==============_checkInputIsValid======================');
+      // TODO 校验余额是否支持转账
+
   }
 
   componentDidMount=()=>{
@@ -97,7 +98,6 @@ class TransferScreen extends Component {
       this.setState({
           isShowSignTx:false,
       });
-      // console.log('=============gethIsUnlockAccount=======================');
       this.props.gethIsUnlockAccount();
   }
 
@@ -111,13 +111,11 @@ class TransferScreen extends Component {
       this.setState({
           isShowPswdInput:false,
       });
-      // console.log('=============gethUnlockAccount=======================');
       this.props.gethUnlockAccount({passphrase});
   }
 
 
   _transfer=()=>{
-      // console.log('=============transfer=======================');
       const {passphrase='', address=''} = this.props;
       const tokenAddress = '0x875664e580eea9d5313f056d0c2a43af431c660f';
       const symbol = 'ETH';
@@ -139,16 +137,18 @@ class TransferScreen extends Component {
   componentDidMount=()=>{
       this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
           if (isUnlock) {
-              // console.log('=============unlock=======================');
               this._transfer();
               return;
           }
-          // console.log('=============lock=======================');
           this.setState({
               isShowPswdInput:true,
           });
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, this._transfer);
+
+      const { selectedToken } = this.props;
+      const {value} = selectedToken;
+      // 校验是否支持转账
   }
 
   componentWillUnmount=()=>{
@@ -159,11 +159,10 @@ class TransferScreen extends Component {
   render () {
       const btnTitle = '下一步';
       const isCanTransfer = true;
-      const symbol = 'ETH';
-      const assets = 0;
 
       const {displayGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
-      const { loading } = this.props;
+      const { loading, selectedToken } = this.props;
+      const {symbol, count} = selectedToken;
 
       return (
           <View style={styles.container}>
@@ -186,7 +185,7 @@ class TransferScreen extends Component {
                       <View style={styles.bananceSection}>
                           <View style={styles.bananceTopView}>
                               <Text style={styles.titleText}>{symbol}</Text>
-                              <Text style={styles.balanceText}>{ I18n.t('Balance')}:{assets}{symbol}</Text>
+                              <Text style={styles.balanceText}>{ I18n.t('Balance')}:{count}{symbol}</Text>
                           </View>
                           <TextInput autoFocus style={styles.balanceInput}
                               clearButtonMode='while-editing'
@@ -239,13 +238,13 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log('===============TransferScreen=====================');
-    // console.log(state);
-    // console.log('===============TransferScreen=====================');
+    console.log('===============TransferScreen=====================');
+    console.log(state);
+    console.log('===============TransferScreen=====================');
     const {
-        wallet:{ passphrase, address, loading}
+        wallet:{selectedToken, passphrase, address, loading}
     } = state;
-    return { passphrase, address, loading};
+    return { selectedToken, passphrase, address, loading};
 };
 
 const mapDispatchToProps = (dispatch) => ({

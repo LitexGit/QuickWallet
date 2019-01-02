@@ -19,6 +19,7 @@ const create = (baseURL = Config.API_URL) => {
     // {
     //   'data':{
     //     'status':Boolean,
+    //     'msg':'message'
     //     'data':{
     //       'key1':'value1',
     //       'key2':'value2'
