@@ -88,6 +88,7 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
+    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"keyStore does not exist", nil);
     return;
   }
@@ -182,6 +183,7 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
+    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"keyStore does not exist", nil);
     return;
   }
@@ -208,6 +210,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   _rejectBlock = reject;
   
   if (!self.account || !self.keyStore || !self.ethClient) {
+    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
     return;
   }
@@ -232,6 +235,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
+//    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"Signature abnormal", nil);
     return;
   }
@@ -250,6 +254,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   _rejectBlock = reject;
   
   if (!self.account || !self.keyStore || !self.ethClient) {
+    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
     return;
   }
@@ -299,6 +304,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
+    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"Signature abnormal", nil);
   }
   
@@ -330,6 +336,7 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
   _resolveBlock = resolver;
   _rejectBlock = reject;
   if (!self.account || !self.keyStore || !self.ethClient) {
+    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
     return;
   }
@@ -365,6 +372,7 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
     }
     GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
     if (!signedTx) {
+      //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
       _rejectBlock(@"iOS", @"Signature abnormal", nil);
     }
     NSError *sendErr = nil;

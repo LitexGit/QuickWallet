@@ -7,6 +7,7 @@ import { StackActions } from 'react-navigation';
 import Ramda from 'ramda';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+import Toast from 'react-native-root-toast';
 
 
 export function gethInit (action) {
@@ -15,10 +16,11 @@ export function gethInit (action) {
         const {isLogin=false, rawurl=''} = params;
         GethModule.init({isLogin, rawurl});
     } catch (error) {
-        // TODO 初始化 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const errMsg = 'RN:初始化异常';
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -26,10 +28,11 @@ export function *gethUnInit () {
     try {
         yield GethModule.unInit();
     } catch (error) {
-        // TODO 删除文件异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const errMsg = 'RN:反初始化异常';
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -39,10 +42,11 @@ export function *gethIsUnlockAccount () {
         const isUnlock = yield Ramda.head(result);
         EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
     } catch (error) {
-        // TODO 初始化 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const errMsg = 'RN:校验异常';
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -62,10 +66,13 @@ export function *gethUnlockAccount (action) {
 
         EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
     } catch (error) {
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
         // TODO 解锁钱包 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -80,10 +87,12 @@ export function *gethRandomMnemonic () {
         // TODO 添加mnemonic校验
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
     } catch (error) {
-        // TODO 生成助记词 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -110,10 +119,12 @@ export function *gethImportMnemonic (action) {
 
         yield put(StackActions.popToTop());
     } catch (error) {
-        // TODO 导入助记词 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -142,10 +153,12 @@ export function *gethImportPrivateKey (action) {
 
         yield put(StackActions.popToTop());
     } catch (error) {
-        // TODO 导入私钥 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -161,10 +174,12 @@ export function *gethExportPrivateKey (action) {
         const displayKey = GethModule.getDisplayedPrivateKey(privateKey);
         yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
     } catch (error) {
-        // TODO 导出私钥 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -184,10 +199,12 @@ export function *gethTransfer (action) {
         // 交易成功 失败 ==> 详细处理逻辑
         yield put(StackActions.pop());
     } catch (error) {
-        // TODO 生成助记词 异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
@@ -205,10 +222,12 @@ export function *gethSignHash (action) {
         console.log(hashData);
         console.log('=============hashData=======================');
     } catch (error) {
-        // TODO 删除文件异常处理逻辑
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const {userInfo, code} = error;
+        const errMsg = code+':' + JSON.stringify(userInfo);
+        Toast.show(errMsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
     }
 }
 
