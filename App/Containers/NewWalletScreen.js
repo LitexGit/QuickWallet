@@ -140,7 +140,7 @@ class NewWalletScreen extends Component {
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
                   <Text style={styles.titleStytle}>创建账户</Text>
               </View>
-              <KeyboardAvoidingView>
+              <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
                   <View style={styles.inputSection}>
                       {inputs}
                       {remindView}

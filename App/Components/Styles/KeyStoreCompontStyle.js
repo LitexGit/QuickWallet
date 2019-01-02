@@ -5,11 +5,8 @@ export default StyleSheet.create({
     container: {
         flex: 1,
     },
-    topSection:{
-        flex:1,
-    },
     botttomSection:{
-    // backgroundColor:'red',
+        marginTop: 50,
     },
     btnTitle:{
         fontSize:Fonts.size.input,
@@ -45,7 +42,6 @@ export default StyleSheet.create({
         borderBottomWidth: 1 / PixelRatio.get(),
     },
     warning:{
-        marginTop:Metrics.smallMargin,
         marginLeft: Metrics.smallMargin,
     },
     confirmView:{

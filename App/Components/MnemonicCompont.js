@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
-import { View, Text, ScrollView, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import styles from './Styles/MnemonicCompontStyle';
 import { Button } from 'react-native-elements';
 import { Colors, Metrics } from '../Themes';
@@ -90,7 +90,7 @@ class MnemonicCompont extends Component {
       const {loading} = this.props;
 
       const eyeImg = (
-          <TouchableOpacity onPress={()=>this._onPressEyeImg()}>
+          <TouchableOpacity onPress={()=>this._onPressEyeImg()} style={{justifyContent:'center'}}>
               {isShowPassword ? <Ionicons name={'md-eye'} size={Metrics.icons.small} color={Colors.separateLineColor}/> : <Ionicons name={'md-eye-off'} size={Metrics.icons.small} color={Colors.separateLineColor}/>}
           </TouchableOpacity>);
 
@@ -99,13 +99,13 @@ class MnemonicCompont extends Component {
               <Spinner visible={loading} cancelable
                   textContent={'Loading...'}
                   textStyle={styles.spinnerText}/>
-              <ScrollView style={styles.topSection}>
-                  <View style={styles.remindView}>
-                      <Text style={styles.remindText}>{remind}</Text>
-                      <Text style={styles.remind002}>{remind002}</Text>
-                  </View>
-                  <View style={styles.mnemonicView}>
-                      <KeyboardAvoidingView>
+              <ScrollView style={styles.container}>
+                  <View style={styles.container}>
+                      <View style={styles.remindView}>
+                          <Text style={styles.remindText}>{remind}</Text>
+                          <Text style={styles.remind002}>{remind002}</Text>
+                      </View>
+                      <View style={styles.mnemonicView}>
                           <TextInput
                               multiline
                               placeholder={ I18n.t('EnterMnemonicRemind')}
@@ -114,59 +114,58 @@ class MnemonicCompont extends Component {
                               style={ styles.mnemonicInput }
                               value={ this.mnemonic }
                               onChangeText={(text) => this._onChangeMnemonic(text)}/>
-                      </KeyboardAvoidingView>
-                  </View>
-                  <View style={styles.infoView}>
-                      <View style={styles.sectionView}>
-                          <View style={styles.pathTop}>
-                              <Text style={styles.pathText}>选择路径</Text>
-                              <TouchableOpacity onPress={()=>this._onPressNext()}>
-                                  <View style={styles.nextView}>
-                                      <Text style={styles.nextText}>默认</Text>
-                                      <MaterialIcons name={'navigate-next'} size={Metrics.icons.small} color={Colors.textColor}/>
-                                  </View>
-                              </TouchableOpacity>
-                          </View>
-                          <Text style={[styles.sectionText, styles.pathText]}>{path}</Text>
                       </View>
-                      <View style={ styles.sectionView }>
-                          <View style={ styles.section }>
-                              <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
-                              <AntDesign name={'warning'} size={Metrics.icons.tiny} color={Colors.separateLineColor} style={styles.warning}/>
+                      <View style={styles.infoView}>
+                          <View style={styles.sectionView}>
+                              <View style={styles.pathTop}>
+                                  <Text style={styles.pathText}>选择路径</Text>
+                                  <TouchableOpacity onPress={()=>this._onPressNext()}>
+                                      <View style={styles.nextView}>
+                                          <Text style={styles.nextText}>默认</Text>
+                                          <MaterialIcons name={'navigate-next'} size={Metrics.icons.small} color={Colors.textColor}/>
+                                      </View>
+                                  </TouchableOpacity>
+                              </View>
+                              <Text style={[styles.sectionText, styles.pathText]}>{path}</Text>
                           </View>
-                          <KeyboardAvoidingView style={styles.section}>
-                              <TextInput style={styles.passwordInput}
-                                  // multiline
-                                  placeholder='钱包密码'
+                          <View style={ styles.sectionView }>
+                              <View style={ styles.section }>
+                                  <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
+                                  <AntDesign name={'warning'} size={Metrics.icons.tiny} color={Colors.separateLineColor} style={styles.warning}/>
+                              </View>
+                              <View style={styles.section}>
+                                  <TextInput style={styles.passwordInput}
+                                      placeholder='钱包密码'
+                                      placeholderTextColor={ Colors.separateLineColor }
+                                      underlineColorAndroid={ 'transparent' }
+                                      clearButtonMode='while-editing'
+                                      secureTextEntry={!isShowPassword}
+                                      maxLength={ 20 }
+                                      onChangeText={(text) => this._onChangePassword(text)}/>
+                              </View>
+
+                          </View>
+                          <View style={styles.confirmView}>
+                              <TextInput style={styles.section}
+                                  placeholder='重复输入密码'
                                   placeholderTextColor={ Colors.separateLineColor }
                                   underlineColorAndroid={ 'transparent' }
                                   clearButtonMode='while-editing'
                                   secureTextEntry={!isShowPassword}
                                   maxLength={ 20 }
-                                  onChangeText={(text) => this._onChangePassword(text)}/>
-                          </KeyboardAvoidingView>
+                                  onChangeText={(text) => this._onChangeConfirm(text)}/>
+                              {eyeImg}
+                          </View>
                       </View>
-                      <KeyboardAvoidingView style={styles.confirmView}>
-                          <TextInput style={styles.section}
-                              // multiline
-                              placeholder='重复输入密码'
-                              placeholderTextColor={ Colors.separateLineColor }
-                              underlineColorAndroid={ 'transparent' }
-                              clearButtonMode='while-editing'
-                              secureTextEntry={!isShowPassword}
-                              maxLength={ 20 }
-                              onChangeText={(text) => this._onChangeConfirm(text)}/>
-                          {eyeImg}
-                      </KeyboardAvoidingView>
+                  </View>
+                  <View style={styles.botttomSection}>
+                      <Button onPress={()=>this._onPressBtn()}
+                          textStyle={styles.btnTitle}
+                          backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
+                          disabled={!isCanPress}
+                          title={I18n.t('Import')}/>
                   </View>
               </ScrollView>
-              <View style={styles.botttomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      textStyle={styles.btnTitle}
-                      backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
-                      disabled={!isCanPress}
-                      title={I18n.t('Import')}/>
-              </View>
           </View>
       );
   }
