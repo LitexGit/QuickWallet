@@ -8,6 +8,7 @@ import Ramda from 'ramda';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Toast from 'react-native-root-toast';
+import { Platform } from 'react-native';
 
 
 export function gethInit (action) {
@@ -81,12 +82,19 @@ export function *gethRandomMnemonic () {
     try {
         yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.randomMnemonic();
+
+        console.log('=========result===========================');
+        console.log(result);
+        console.log('=========result===========================');
         yield put(WalletActions.setLoading({loading:false}));
         // TODO 添加数组校验
         const mnemonic =  Ramda.head(result);
         // TODO 添加mnemonic校验
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
     } catch (error) {
+        console.log('==========error==========================');
+        console.log(error);
+        console.log('==========error==========================');
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {

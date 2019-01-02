@@ -4,10 +4,13 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
 import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
 import com.quickwallet.utils.SharedPreferencesHelper;
@@ -18,13 +21,12 @@ import geth.Account;
 import geth.Address;
 import geth.BigInt;
 import geth.CallMsg;
-import geth.Context;
 import geth.EthereumClient;
 import geth.Geth;
 import geth.KeyStore;
 import geth.Transaction;
 
-public class GethModel extends ReactContextBaseJavaModule {
+public class GethModule extends ReactContextBaseJavaModule {
     private Account account;
     private KeyStore keyStore;
     private EthereumClient ethClient;
@@ -36,13 +38,14 @@ public class GethModel extends ReactContextBaseJavaModule {
 
     private SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getReactApplicationContext(),GETH_INFO);
 
-    public GethModel(ReactApplicationContext reactContext) {
+
+    public GethModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
-        return "GethModel";
+        return "GethModule";
     }
 
     @ReactMethod
@@ -73,14 +76,14 @@ public class GethModel extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void isUnlockAccount(
-            Callback errorCallback,
-            Callback successCallback
-    ) {
+    public void isUnlockAccount(Promise promise) {
         if (account == null || keyStore == null || ethClient == null){
-            errorCallback.invoke();
+            WritableMap map = Arguments.createMap();
+            map.putBoolean("result",true);
+            promise.resolve(map);
         } else {
-            successCallback.invoke();
+            Exception err = new Exception();
+            promise.reject("-1001",err);
         }
     }
 
@@ -116,18 +119,15 @@ public class GethModel extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void randomMnemonic(
-            Callback errorCallback,
-            Callback successCallback
-    ) {
+    public void randomMnemonic(Promise promise) {
         try {
-            String mnemonic = "";
-            byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
-            Log.d("TAG", "new privateKeyFromMnemonic is " + new String(privateKeyFromMnemonic));
-            String result = new String(privateKeyFromMnemonic);
-            successCallback.invoke(result);
+            String mnemonic = Geth.createRandomMnemonic();
+            Log.d()
+            WritableMap map = Arguments.createMap();
+            map.putString("mnemonic",mnemonic);
+            promise.resolve(map);
         } catch (Exception e) {
-            errorCallback.invoke(e.getMessage());
+            promise.reject("-1002",e);
         }
     }
 
@@ -200,7 +200,6 @@ public class GethModel extends ReactContextBaseJavaModule {
         }
     }
 
-
     @ReactMethod
     public void transferEth(
             String passphrase,
@@ -219,8 +218,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             Address from = new Address(fromAddress);
             long number = -1;
             long nonce = 0;
-            Context context = new Context();
-            nonce = ethClient.getNonceAt(context, from, number);
+            nonce = ethClient.getNonceAt(Geth.newContext(), from, number);
 
             Address to = new Address(toAddress);
             BigInt amount = new BigInt(value);
@@ -234,7 +232,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             Transaction signedTx = keyStore.signTx(account, transaction, chainID);
 
             // 函数无返回值
-            ethClient.sendTransaction(context, signedTx);
+            ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             // 定义函数返回值
             successCallback.invoke();
@@ -262,8 +260,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             Address from = new Address(fromAddress);
             long number = -1;
             long nonce = 0;
-            Context context = new Context();
-            nonce = ethClient.getNonceAt(context, from, number);
+            nonce = ethClient.getNonceAt(Geth.newContext(), from, number);
 
             Address to = new Address(tokenAddress);
             BigInt amount = new BigInt(0);
@@ -291,7 +288,7 @@ public class GethModel extends ReactContextBaseJavaModule {
             Transaction signedTx = keyStore.signTx(account, transaction, chainID);
 
             // 函数无返回值
-            ethClient.sendTransaction(context, signedTx);
+            ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             // 定义函数返回值
             successCallback.invoke();
@@ -299,7 +296,6 @@ public class GethModel extends ReactContextBaseJavaModule {
             errorCallback.invoke(e.getMessage());
         }
     }
-
 
     @ReactMethod
     public void signHash(
@@ -328,37 +324,4 @@ public class GethModel extends ReactContextBaseJavaModule {
         String keydir = FileUtil.getFilePath(getReactApplicationContext(), Uri.parse(url));
         sharedPreferencesHelper.put(KEY_DIR, keydir);
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

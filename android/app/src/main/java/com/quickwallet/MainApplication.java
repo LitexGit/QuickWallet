@@ -9,6 +9,7 @@ import com.horcrux.svg.SvgPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.quickwallet.modules.GethPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactNativeHost;
@@ -38,7 +39,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNI18nPackage(),
             new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
-            new RNDeviceInfo()
+            new RNDeviceInfo(),
+              new GethPackage()
       );
     }
 
