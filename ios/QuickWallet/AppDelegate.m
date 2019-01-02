@@ -10,8 +10,6 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-#import "RCTSignerModule.h"
-
 @interface AppDelegate()
 
 
