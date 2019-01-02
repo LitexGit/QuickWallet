@@ -79,7 +79,7 @@ public class GethModule extends ReactContextBaseJavaModule {
     public void isUnlockAccount(Promise promise) {
         if (account == null || keyStore == null || ethClient == null){
             WritableMap map = Arguments.createMap();
-            map.putBoolean("isUnloc",true);
+            map.putBoolean("isUnlock",true);
             promise.resolve(map);
         } else {
             Exception err = new Exception();

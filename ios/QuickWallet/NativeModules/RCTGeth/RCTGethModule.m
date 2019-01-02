@@ -69,10 +69,10 @@ RCT_EXPORT_METHOD(isUnlockAccount:(RCTPromiseResolveBlock)resolver rejecter:(RCT
   _resolveBlock = resolver;
   _rejectBlock = reject;
   if (!self.account || !self.keyStore || !self.ethClient) {
-    _resolveBlock(@[@NO]);
+    _resolveBlock(@[@{@"isUnlock":@YES}]);
     return;
   }
-  _resolveBlock(@[@YES]);
+  _resolveBlock(@[@{@"isUnlock":@NO}]);
   return;
 }
 
@@ -100,7 +100,7 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
     return;
   }
   NSString *address = [[self.account getAddress] getHex];
-  _resolveBlock(@[address]);
+  _resolveBlock(@[@{@"address":address}]);
 }
 
 
@@ -113,7 +113,7 @@ RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTP
     _rejectBlock(@"iOS", @"Generate mnemonic word exceptions", error);
     return;
   }
-  _resolveBlock(@[mnemonic]);
+  _resolveBlock(@[@{@"mnemonic":mnemonic}]);
 }
 
 
@@ -139,7 +139,7 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   }
   [self saveKeystorePath:self.account];
   NSString *address = [[self.account getAddress] getHex];
-  _resolveBlock(@[address]);
+  _resolveBlock(@[@{@"address":address}]);
 }
 
 RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
@@ -169,7 +169,7 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   }
   [self saveKeystorePath:self.account];
   NSString *address = [[self.account getAddress] getHex];
-  _resolveBlock(@[address]);
+  _resolveBlock(@[@{@"address":address}]);
 }
 
 RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
@@ -202,7 +202,7 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
     _rejectBlock(@"iOS", @"Export private key exception", exportErr);
     return;
   }
-  _resolveBlock(@[privateKey]);
+  _resolveBlock(@[@{@"privateKey":privateKey}]);
 }
 
 RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress value:(nonnull NSNumber *)value gas:(nonnull NSNumber *)gas  resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
     _rejectBlock(@"iOS", @"Transaction eth failure", sendErr);
     return;
   }
-  _resolveBlock(@[@YES]);
+  _resolveBlock(@[@{@"isSend":@YES}]);
 }
 
 RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress tokenAddress:(NSString *)tokenAddress value:(nonnull NSNumber *)value gas:(nonnull NSNumber *)gas resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
@@ -314,7 +314,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
     _rejectBlock(@"iOS", @"Transaction token failure", sendErr);
     return;
   }
-  _resolveBlock(@[@YES]);
+  _resolveBlock(@[@{@"isSend":@YES}]);
 }
 
 
@@ -381,8 +381,8 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
       _rejectBlock(@"iOS", @"Transaction failure", sendErr);
       return;
     }
-    
-    _resolveBlock(@[[[transaction getHash] getHex]]);
+    NSString *infoHash = [[transaction getHash] getHex];
+    _resolveBlock(@[@{@"infoHash":infoHash}]);
     return;
   }
   

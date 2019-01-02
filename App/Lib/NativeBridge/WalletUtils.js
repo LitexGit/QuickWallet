@@ -1,4 +1,5 @@
-import { NativeModules} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
+import Ramda from 'ramda';
 const gethModule = NativeModules.GethModule;
 
 async function init({isLogin, rawurl}){
@@ -76,7 +77,13 @@ async function sign({passphrase, signInfo}){
 
 }
 
-
+function getResolveMap(params){
+    if (Platform.OS === 'ios') {
+        const result = Ramda.head(params);
+        return result;
+    }
+    return params;
+}
 
 function getDisplayedPrivateKey(key){
     const reg = RegExp(/0x/);
@@ -89,6 +96,8 @@ function getGethPrivateKey(key){
     if(!key.match(reg)) return key;
     return key.replace(reg,'');
 }
+
+
 
 export default {
     init,
@@ -104,4 +113,5 @@ export default {
     sign,
     getDisplayedPrivateKey,
     getGethPrivateKey,
+    getResolveMap,
 };
