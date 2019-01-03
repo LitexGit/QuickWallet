@@ -82,11 +82,12 @@ public class GethModule extends ReactContextBaseJavaModule {
     public void isUnlockAccount(Promise promise) {
         if (account == null || keyStore == null || ethClient == null){
             WritableMap map = Arguments.createMap();
-            map.putBoolean("isUnlock",true);
+            map.putBoolean("isUnlock",false);
             promise.resolve(map);
         } else {
-            Exception err = new Exception();
-            promise.reject("-1001",err);
+            WritableMap map = Arguments.createMap();
+            map.putBoolean("isUnlock",true);
+            promise.resolve(map);
         }
     }
 
@@ -95,7 +96,8 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
-            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+//            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+            keyStore = new KeyStore(tempDir, 8,  8);
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
@@ -114,6 +116,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             WritableMap map = Arguments.createMap();
             map.putString("address",address);
+            promise.resolve(map);
 
         } catch (Exception e) {
             promise.reject("-1005",e);
@@ -147,6 +150,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             keyStore = new KeyStore(filesDir, 1024,  1024);
             byte[] data = hexStringToByteArray(privateKey);
             account = keyStore.importECDSAKey(data, passphrase);
+            saveKeystorePath(account);
             String address = account.getAddress().getHex();
             WritableMap map = Arguments.createMap();
             map.putString("address",address);
@@ -206,6 +210,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             WritableMap map = Arguments.createMap();
             map.putString("privateKey",privateKey);
+            promise.resolve(map);
 
         } catch (Exception e) {
             promise.reject("-1009",e.getMessage());
@@ -248,6 +253,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             ethClient.sendTransaction(Geth.newContext(), signedTx);
             WritableMap map = Arguments.createMap();
             map.putBoolean("isSend", true);
+            promise.resolve(map);
         } catch (Exception e) {
             promise.reject("-1011",e.getMessage());
         }
@@ -304,6 +310,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             ethClient.sendTransaction(Geth.newContext(), signedTx);
             WritableMap map = Arguments.createMap();
             map.putBoolean("isSend", true);
+            promise.resolve(map);
         } catch (Exception e) {
             promise.reject("-1013",e.getMessage());
         }
@@ -335,7 +342,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     public void saveKeystorePath(Account account){
         String url = account.getURL();
-        String keydir = FileUtil.getFilePath(getReactApplicationContext(), Uri.parse(url));
+        String keydir = Uri.parse(url).getPath();
         sharedPreferencesHelper.put(KEY_DIR, keydir);
     }
 

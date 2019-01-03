@@ -42,10 +42,6 @@ export function *gethIsUnlockAccount () {
         const result =  yield GethModule.isUnlockAccount();
 
         const map = GethModule.getResolveMap(result);
-        console.log('=============gethIsUnlockAccount=======================');
-        console.log(map);
-        console.log('=============gethIsUnlockAccount=======================');
-
         const {isUnlock} = map;
         EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
     } catch (error) {
@@ -61,8 +57,8 @@ export function *gethUnlockAccount (action) {
     try {
         const {data:params} = action;
         const {passphrase} = params;
-        const result =  yield GethModule.unlockAccount({passphrase});
 
+        const result =  yield GethModule.unlockAccount({passphrase});
         const map = GethModule.getResolveMap(result);
         console.log('=============gethUnlockAccount=======================');
         console.log(map);
@@ -160,6 +156,7 @@ export function *gethImportPrivateKey (action) {
         yield put(WalletActions.saveAddress({address}));
         yield put(WalletActions.savePassphrase({passphrase}));
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+
         yield put(StackActions.popToTop());
 
     } catch (error) {

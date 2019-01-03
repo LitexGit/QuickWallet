@@ -14,6 +14,7 @@ import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Toast from 'react-native-root-toast';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 
 class AccountScreen extends Component {
@@ -27,17 +28,35 @@ class AccountScreen extends Component {
       this.state={
           isInit:false,
       };
+      this.passphrase = '';
   }
+
+  componentDidMount=()=>{
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
+          if (isUnlock) {
+              this.props.navigate('ExportScreen', {passphrase:this.passphrase});
+              return;
+          }
+          this.props.gethUnlockAccount({passphrase:this.passphrase});
+      });
+      this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>{
+          this.props.navigate('ExportScreen', {passphrase:this.passphrase});
+      });
+  }
+
+  componentWillUnmount=()=>{
+      this.lockListener.remove();
+      this.isUnlockListener.remove();
+  }
+
 
   _onPressCancel=()=>{
       this.setState({ isInit:false });
   }
   _onPressConfirm=(passphrase)=>{
+      this.passphrase = passphrase;
       this.setState({ isInit:false });
-      // TODO 验证密码是否有效
-      this.props.gethUnlockAccount({passphrase});
-      // 判断解锁后
-      this.props.navigate('ExportScreen', {passphrase});
+      this.props.gethIsUnlockAccount();
   }
 
   _onPressBackup=()=>{
@@ -129,8 +148,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
-    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
     logout: () => dispatch(UserActions.logout()),
+    gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
+
+
+    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);

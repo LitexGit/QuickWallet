@@ -35,6 +35,9 @@ async function importPrivateKey({privateKey, passphrase}){
 }
 
 async function exportPrivateKey({passphrase}){
+    console.log('==================passphrase==================');
+    console.log(passphrase);
+    console.log('==================passphrase==================');
     return await gethModule.exportPrivateKey(passphrase);
 }
 

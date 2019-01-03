@@ -226,7 +226,7 @@ public class FileUtil {
      * 注意：有的文件管理器返回的是content://协议，还有的返回的是file://协议
      * */
     public static String getFilePath(Context context, Uri uri) {
-        if ("content".equalsIgnoreCase(uri.getScheme())) {
+        if ("".equalsIgnoreCase(uri.getScheme())) {
             //equalsIgnoreCase()方法忽略大小写比较两个字符串
             //判断协议是不是content开头，有的话就用ContentResolver去query查询文件真实位置
             String[] projection = { "_data" };
@@ -238,7 +238,7 @@ public class FileUtil {
                     return cursor.getString(column_index);
                 }
             } catch (Exception e) {
-
+                return null;
             }
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
