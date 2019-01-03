@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ApplicationStyles, Colors, Fonts, Metrics } from '../../Themes';
+import { Colors, Fonts, Metrics } from '../../Themes';
 
 const IMAGE_SIZE = 70;
 export default StyleSheet.create({

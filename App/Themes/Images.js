@@ -22,6 +22,9 @@ const images = {
     closeButton: require('../Images/Icons/close-button.png'),
 
     emptyImg: require('../Images/empty.png'),
+
+    ethIcon: require('../Images/Icons/eth_icon.png'),
+    erc20Icon: require('../Images/Icons/erc20_icon.png'),
 };
 
 export default images;

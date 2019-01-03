@@ -3,7 +3,7 @@ import { View, Text, FlatList, RefreshControl, Image, TouchableOpacity} from 're
 import { connect } from 'react-redux';
 import styles from './Styles/AssetsScreenStyle';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
-import { Colors } from '../Themes';
+import { Colors, Images } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
 import I18n from '../I18n';
@@ -28,11 +28,11 @@ class AssetsScreen extends Component {
   }
 
   _renderItem=({item})=>{
-      const {img_url='', symbol, count, value} = item;
+      const { symbol, count, value} = item;
       return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>
           <View style={styles.itemContainer}>
               <View style={styles.leftSection}>
-                  <Image style={styles.symbolImg} source={{ uri: img_url }}/>
+                  <Image style={styles.symbolImg} source={ symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}/>
                   <Text style={styles.titleStyle}>{symbol}</Text>
               </View>
               <View style={styles.rightSection}>

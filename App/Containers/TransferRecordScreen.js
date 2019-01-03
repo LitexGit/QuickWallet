@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, SectionList, Text, RefreshControl, Image, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
-import { Colors } from '../Themes';
+import { Colors, Images } from '../Themes';
 import styles from './Styles/TransferRecordScreenStyle';
 import ListFooterComponent from '../Components/ListFooterComponent';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
@@ -89,10 +89,10 @@ class TransferRecordScreen extends Component {
 
   _renderListHeader=()=>{
       const {selectedToken} = this.props;
-      const {img_url='', symbol='ETH', count=0, value=''} = selectedToken;
+      const {symbol='', count=0, value=''} = selectedToken;
       return(<View style={styles.headerContainer}>
           <View style={styles.leftSection}>
-              <Image style={styles.symbolImg} source={{ uri: img_url }}/>
+              <Image style={styles.symbolImg} source={symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}/>
               <Text style={styles.titleStyle}>{symbol}</Text>
           </View>
           <View style={styles.rightSection}>

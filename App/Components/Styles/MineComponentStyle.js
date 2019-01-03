@@ -10,8 +10,8 @@ export default StyleSheet.create({
         flex:1,
         width:'100%',
         backgroundColor:Colors.darkColor,
-        // justifyContent:'center',
         alignItems:'center',
+        justifyContent:'center',
     },
     assetsSection:{
         height:50,
@@ -21,7 +21,7 @@ export default StyleSheet.create({
     },
     avatar:{
         marginBottom:Metrics.baseMargin,
-        marginTop:70,
+        marginTop:Metrics.statusBarHeight,
     },
     bottomSection:{
         flex:1,

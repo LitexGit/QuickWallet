@@ -4,7 +4,7 @@ import { ApplicationStyles, Metrics, Colors, Fonts } from '../../Themes/';
 export default StyleSheet.create({
     ...ApplicationStyles.screen,
     emptycontainer:{
-        marginTop:Metrics.screenHeight * 0.3,
+        marginTop:Metrics.screenHeight * 0.25,
     },
     // header
     headerContainer:{
