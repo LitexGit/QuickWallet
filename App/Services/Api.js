@@ -1,6 +1,8 @@
 
 import apisauce from 'apisauce';
 import Config from 'react-native-config';
+import Ramda from 'ramda';
+
 const apiUrl = 'http://wallet.milewan.com:8088';
 const create = (baseURL = Config.API_URL || apiUrl) => {
     const api = apisauce.create({
@@ -8,22 +10,14 @@ const create = (baseURL = Config.API_URL || apiUrl) => {
         headers: {'Cache-Control': 'no-cache', 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'},
         timeout: 10000
     });
-    /**
-     * Api 接口响应格式
-     */
-    // {
-    //   'data':{
-    //     'status':Boolean,
-    //     'msg':'message'
-    //     'data':{
-    //       'key1':'value1',
-    //       'key2':'value2'
-    //       'key3':'value3'
-    //       'key4':'value4'
-    //       'key5':'value5'
-    //     }
-    //   }
-    // }
+
+    api.addResponseTransform(response=>{
+        const {data} = response;
+        const {status, msg, data:array} = data;
+        if (!array) return response;
+        response.data = {status, msg, data:Ramda.head(array)};
+        return response;
+    });
 
     /**
      * 用户信息注册接口
@@ -80,3 +74,20 @@ const create = (baseURL = Config.API_URL || apiUrl) => {
 export default {
     create
 };
+
+/**
+     * Api 接口响应格式
+     */
+// {
+//   'data':{
+//     'status':Boolean,
+//     'msg':'message'
+//     'data':{
+//       'key1':'value1',
+//       'key2':'value2'
+//       'key3':'value3'
+//       'key4':'value4'
+//       'key5':'value5'
+//     }
+//   }
+// }
