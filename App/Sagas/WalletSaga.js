@@ -116,15 +116,10 @@ export function *gethImportMnemonic (action) {
         yield put(WalletActions.setLoading({loading:false}));
 
         const {address} = map;
-        // const nickname = yield select(UserSelectors.getNickname);
-        // yield put(UserActions.registerRequest({address, type:1, nickname}));
+        const nickname = yield select(UserSelectors.getNickname);
+        yield put(UserActions.registerRequest({address, type:1, nickname}));
 
-        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
-        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-        yield put(WalletActions.saveAddress({address}));
         yield put(WalletActions.savePassphrase({passphrase}));
-        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
-        yield put(StackActions.popToTop());
 
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
@@ -148,16 +143,15 @@ export function *gethImportPrivateKey (action) {
         yield put(WalletActions.setLoading({loading:false}));
 
         const {address} = map;
-        // const nickname = yield select(UserSelectors.getNickname);
-        // yield put(UserActions.registerRequest({address, type:1, nickname}));
+        const nickname = yield select(UserSelectors.getNickname);
+        yield put(UserActions.registerRequest({address, type:1, nickname}));
 
-        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
-        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-        yield put(WalletActions.saveAddress({address}));
-        yield put(WalletActions.savePassphrase({passphrase}));
-        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
-
-        yield put(StackActions.popToTop());
+        // DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
+        // DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+        // yield put(WalletActions.saveAddress({address}));
+        // yield put(WalletActions.savePassphrase({passphrase}));
+        // yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+        // yield put(StackActions.popToTop());
 
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));

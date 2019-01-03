@@ -4,63 +4,74 @@ import DeviceInfo from 'react-native-device-info';
 import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 import WalletActions from '../Redux/WalletRedux';
 import { StackActions } from 'react-navigation';
+import Toast from 'react-native-root-toast';
 
 
 export function * register (api, action) {
-    const {data:params} = action;
-    const {address, type, nickname='', sharecode=''} = params;
+    try {
+        const {data:params} = action;
+        const {address, type, nickname='', sharecode=''} = params;
 
+        const os = DeviceInfo.getSystemName();
+        const info = {
+            'deviceCountry':DeviceInfo.getDeviceCountry(),
+            'deviceLocale':DeviceInfo.getDeviceLocale(),
+            'deviceName':DeviceInfo.getDeviceName(),
+            'bundleId':DeviceInfo.getBundleId(),
+            'buildNumber':DeviceInfo.getBuildNumber(),
+            'systemName':DeviceInfo.getSystemName(),
+            'deviceId':DeviceInfo.getDeviceId(),
+        };
+        const phoneinfo = JSON.stringify(info);
+        const response = yield call(api.register, {address, type, os, phoneinfo, nickname});
+        const {data:result} = response;
+        const {data, status, msg} = result;
+        if (status) {
+            yield put(UserActions.registerSuccess(data));
 
-    const os = DeviceInfo.getSystemName();
-    const info = {
-        'deviceCountry':DeviceInfo.getDeviceCountry(),
-        'deviceLocale':DeviceInfo.getDeviceLocale(),
-        'deviceName':DeviceInfo.getDeviceName(),
-        'bundleId':DeviceInfo.getBundleId(),
-        'buildNumber':DeviceInfo.getBuildNumber(),
-        'systemName':DeviceInfo.getSystemName(),
-        'deviceId':DeviceInfo.getDeviceId(),
-    };
-    const phoneinfo = JSON.stringify(info);
+            DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+            DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
 
-    console.log('=============params=======================');
-    console.log(phoneinfo);
-    console.log(os);
-    console.log('=============params=======================');
+            yield put(WalletActions.saveAddress({address}));
+            yield put(UserActions.saveUserInfo({isLoginInfo:true}));
 
-
-    const response = yield call(api.register, {address, type, os, phoneinfo, nickname});
-
-    console.log('======register=======response=======================');
-    console.log(response);
-    console.log('======register=======response=======================');
-
-
-    // response={status:true, data:{address, type, os, phoneinfo}};
-    // const {status, data} = response;
-    // if (status) {
-    //     DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-    //     yield put(UserActions.registerSuccess(data));
-    //     return;
-    // }
-    // yield put(UserActions.registerFailure(data));
+            yield put(StackActions.popToTop());
+            return;
+        }
+        Toast.show(msg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(UserActions.registerFailure());
+    } catch (error) {
+        console.log('================error====================');
+        console.log(error);
+        console.log('================error====================');
+    }
 }
 
 export function * getUserInfo (api, action) {
-    const {data:params} = action;
-    const {address} = params;
-    const response = yield call(api.getUserInfo, {address});
+    try {
+        const {data:params} = action;
+        const {address} = params;
+        const response = yield call(api.getUserInfo, {address});
+        const {data:result} = response;
+        const {data, status, msg} = result;
+        if (status) {
+            yield put(UserActions.getUserInfoSuccess(data));
+            return;
+        }
+        Toast.show(msg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(UserActions.getUserInfoFailure());
+    } catch (error) {
+        console.log('================error====================');
+        console.log(error);
+        console.log('================error====================');
+    }
 
-    // console.log('======response==============================');
-    // console.log(response);
-    // console.log('======response==============================');
-
-    // const {status, data} = response;
-    // if (status) {
-    //     yield put(UserActions.getUserInfoSuccess(data));
-    //     return;
-    // }
-    // yield put(UserActions.getUserInfoFailure(data));
 }
 
 

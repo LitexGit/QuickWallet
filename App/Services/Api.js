@@ -4,6 +4,7 @@ import Config from 'react-native-config';
 import Ramda from 'ramda';
 
 const apiUrl = 'http://wallet.milewan.com:8088';
+
 const create = (baseURL = Config.API_URL || apiUrl) => {
     const api = apisauce.create({
         baseURL,
@@ -27,12 +28,7 @@ const create = (baseURL = Config.API_URL || apiUrl) => {
      * os        用户系统平台 ios或android
      * phoneinfo 用户手机详细信息
      */
-    const register=(params)=>{
-        console.log('===========register=========================');
-        console.log(params);
-        console.log('===========register=========================');
-        return api.post('/api/user/register',params);
-    };
+    const register=(params)=>api.post('/api/user/register',params);
     /**
      * 用户基本信息获取接口
      *

@@ -1,28 +1,22 @@
 import { call, put, select, all } from 'redux-saga/effects';
-import ConfigActions from '../Redux/FoundRedux';
+import ConfigActions from '../Redux/ConfigRedux';
+import Toast from 'react-native-root-toast';
 
-export function * getConfig (api, action) {
+export function * getConfig (api) {
     const response = yield call(api.getConfig);
-    console.log('======getConfig==============================');
-    console.log(response);
-    console.log('======getConfig==============================');
-
-    // const {status, data} = response;
-    // if (status) {
-    //     yield put(ConfigActions.getConfigSuccess(data));
-    //     return;
-    // }
-    // yield put(ConfigActions.getConfigFailure(data));
-}
-
-export function * getConfig001 (api, action) {
-    const {data:params} = action;
-    const {address, type, os, phoneinfo} = params;
-    const response = yield call(api.getBanner, {address, type, os, phoneinfo});
-    const {status, data} = response;
+    const {data:result} = response;
+    const {data, status, msg} = result;
     if (status) {
         yield put(ConfigActions.getConfigSuccess(data));
         return;
     }
+    Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER,
+    });
     yield put(ConfigActions.getConfigFailure(data));
+}
+
+export function * getConfig001 () {
+    yield 1;
 }

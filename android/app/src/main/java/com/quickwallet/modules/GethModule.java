@@ -97,7 +97,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
 //            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
-            keyStore = new KeyStore(tempDir, 8,  8);
+            keyStore = new KeyStore(tempDir, 1024,  1024);
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
@@ -192,7 +192,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
 //            keyStore = new KeyStore(tempDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
-            keyStore = new KeyStore(tempDir, 8,  8);
+            keyStore = new KeyStore(tempDir, 1024,  1024);
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);

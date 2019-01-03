@@ -33,6 +33,9 @@ class MineScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('===========state=========================');
+    console.log(state);
+    console.log('===========state=========================');
     const {
         user:{isLoginInfo}
     } = state;

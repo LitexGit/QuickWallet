@@ -28,29 +28,31 @@ export const INITIAL_STATE = Immutable({
     loading: null,
     failure: null,
     error: null,
+    baseUrl:'http://wallet.milewan.com:8088'
 });
 
 /* ------------- Selectors ------------- */
 
 export const ConfigSelectors = {
+    baseUrl: state => state.user.baseUrl,
 };
 
 /* ------------- Reducers ------------- */
 
 // request the avatar for a user
-export const request = (state, { data }) =>
-    state.merge({ refreshing: true, data, payload: null })
+export const request = (state, action) =>
+    state.merge({ refreshing: true, })
 ;
 
 // successful avatar lookup
 export const success = (state, action) => {
-    const { payload } = action;
-    return state.merge({ refreshing: false, loading: false, error: null, ...payload });
+    const { data } = action;
+    return state.merge({ refreshing: false, loading: false, error: null, ...data });
 };
 
 // failed to get the avatar
 export const failure = (state) =>
-    state.merge({ refreshing: false, loading: false,  error: true, payload: null });
+    state.merge({ refreshing: false, loading: false,  error: true});
 
 /* ------------- Hookup Reducers To Types ------------- */
 

@@ -35,6 +35,8 @@ export const INITIAL_STATE = Immutable({
     loading: null,
     failure: null,
     error: null,
+    userInfo:{},
+
 
     uid:0,
     nickname:'',
@@ -54,9 +56,7 @@ export const UserSelectors = {
 };
 
 /* ------------- Reducers ------------- */
-
 export const saveUserInfo = (state, { data }) =>state.merge(data);
-
 
 // request the avatar for a user
 export const request = (state, { data }) =>
@@ -65,8 +65,19 @@ export const request = (state, { data }) =>
 
 // successful avatar lookup
 export const success = (state, action) => {
-    const { payload } = action;
-    return state.merge({ refreshing: false, loading: false, error: null, ...payload });
+    const {type, data} = action;
+    switch (type) {
+    case 'REGISTER_SUCCESS':
+    case 'GET_USER_INFO_SUCCESS':{
+        const {Address:address, Nickname:nickname, Sharecode:sharecode} = data;
+        const userInfo = {address, nickname, sharecode};
+        return state.merge({ refreshing: false, loading: false, error: null, userInfo });
+    }
+    default:
+        break;
+    }
+
+    return state.merge({ refreshing: false, loading: false, error: null, ...data });
 };
 
 // failed to get the avatar
