@@ -78,6 +78,7 @@ export function *gethUnlockAccount (action) {
 
         EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         // TODO 解锁钱包 异常处理逻辑
@@ -93,18 +94,13 @@ export function *gethRandomMnemonic () {
     try {
         yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.randomMnemonic();
+        const map = GethModule.getResolveMap(result);
         yield put(WalletActions.setLoading({loading:false}));
 
-        const map = GethModule.getResolveMap(result);
-        console.log('=============gethRandomMnemonic=======================');
-        console.log(map);
-        console.log('=============gethRandomMnemonic=======================');
         const {mnemonic} = map;
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
     } catch (error) {
-        console.log('==========error==========================');
-        console.log(error);
-        console.log('==========error==========================');
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -120,28 +116,22 @@ export function *gethImportMnemonic (action) {
         const {mnemonic='', passphrase=''} = params;
         yield put(WalletActions.setLoading({loading:true}));
         const result = yield GethModule.importMnemonic({mnemonic, passphrase});
+        const map = GethModule.getResolveMap(result);
         yield put(WalletActions.setLoading({loading:false}));
 
-        const map = GethModule.getResolveMap(result);
-
-        console.log('=============gethImportMnemonic=======================');
-        console.log(map);
-        console.log('=============gethImportMnemonic=======================');
-
         const {address} = map;
-        const nickname = yield select(UserSelectors.getNickname);
+        // const nickname = yield select(UserSelectors.getNickname);
+        // yield put(UserActions.registerRequest({address, type:1, nickname}));
 
-        yield put(UserActions.registerRequest({address, type:1, nickname}));
-
-
-        // DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
-        // DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-        // yield put(WalletActions.saveAddress({address}));
-        // yield put(WalletActions.savePassphrase({passphrase}));
-        // yield put(UserActions.saveUserInfo({isLoginInfo:true}));
-        // yield put(StackActions.popToTop());
+        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
+        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+        yield put(WalletActions.saveAddress({address}));
+        yield put(WalletActions.savePassphrase({passphrase}));
+        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+        yield put(StackActions.popToTop());
 
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -158,31 +148,22 @@ export function *gethImportPrivateKey (action) {
         yield put(WalletActions.setLoading({loading:true}));
         const gethKey = GethModule.getGethPrivateKey(privateKey);
         const result = yield GethModule.importPrivateKey({privateKey:gethKey, passphrase});
+        const map = GethModule.getResolveMap(result);
         yield put(WalletActions.setLoading({loading:false}));
 
-
-        const map = GethModule.getResolveMap(result);
-        console.log('=============gethImportPrivateKey=======================');
-        console.log(map);
-        console.log('=============gethImportPrivateKey=======================');
-
         const {address} = map;
-        // TODO 添加数组校验
-        yield put(WalletActions.saveAddress({address}));
+        // const nickname = yield select(UserSelectors.getNickname);
+        // yield put(UserActions.registerRequest({address, type:1, nickname}));
 
-        // TODO 添加地址校验
-        // yield put(UserActions.registerRequest({address, type:1}));
-
-        // TODO account ？？ ||  register ？？ ==> 备份助记词
         DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-
         yield put(WalletActions.saveAddress({address}));
         yield put(WalletActions.savePassphrase({passphrase}));
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
-
         yield put(StackActions.popToTop());
+
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -210,6 +191,7 @@ export function *gethExportPrivateKey (action) {
         const displayKey = GethModule.getDisplayedPrivateKey(privateKey);
         yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -240,6 +222,7 @@ export function *gethTransfer (action) {
         // 交易成功 失败 ==> 详细处理逻辑
         yield put(StackActions.pop());
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -265,6 +248,7 @@ export function *gethSignHash (action) {
         const {infoHash} = map;
         yield SignerModule.notifyDappSignResult({hash:infoHash});
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {

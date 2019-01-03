@@ -26,6 +26,8 @@ import geth.Geth;
 import geth.KeyStore;
 import geth.Transaction;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class GethModule extends ReactContextBaseJavaModule {
     private Account account;
     private KeyStore keyStore;
@@ -130,6 +132,8 @@ public class GethModule extends ReactContextBaseJavaModule {
         }
     }
 
+
+
     @ReactMethod
     public void importPrivateKey( String privateKey, String passphrase, Promise promise ) {
         try {
@@ -139,13 +143,14 @@ public class GethModule extends ReactContextBaseJavaModule {
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
             FileUtil.createDir(filesDir);
 
-            keyStore = new KeyStore(filesDir, Geth.StandardScryptN,  Geth.StandardScryptN);
-            byte[] data = privateKey.getBytes();
+//            keyStore = new KeyStore(filesDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
+            keyStore = new KeyStore(filesDir, 1024,  1024);
+            byte[] data = hexStringToByteArray(privateKey);
             account = keyStore.importECDSAKey(data, passphrase);
             String address = account.getAddress().getHex();
             WritableMap map = Arguments.createMap();
             map.putString("address",address);
-
+            promise.resolve(map);
         } catch (Exception e) {
             promise.reject("-1006",e);
         }
@@ -161,13 +166,16 @@ public class GethModule extends ReactContextBaseJavaModule {
             FileUtil.createDir(filesDir);
             // 删除文件夹下的内容
 
-            keyStore = new KeyStore(filesDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+//            keyStore = new KeyStore(filesDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
+            keyStore = new KeyStore(filesDir, 1024,  1024);
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
 
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
+            saveKeystorePath(account);
             String address = account.getAddress().getHex();
             WritableMap map = Arguments.createMap();
             map.putString("address",address);
+            promise.resolve(map);
 
         } catch (Exception e) {
             promise.reject("-1007",e);
@@ -179,7 +187,8 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
-            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
+//            keyStore = new KeyStore(tempDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
+            keyStore = new KeyStore(tempDir, 8,  8);
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
@@ -328,5 +337,15 @@ public class GethModule extends ReactContextBaseJavaModule {
         String url = account.getURL();
         String keydir = FileUtil.getFilePath(getReactApplicationContext(), Uri.parse(url));
         sharedPreferencesHelper.put(KEY_DIR, keydir);
+    }
+
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
     }
 }

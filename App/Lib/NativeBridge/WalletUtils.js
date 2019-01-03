@@ -3,10 +3,6 @@ import Ramda from 'ramda';
 const gethModule = NativeModules.GethModule;
 
 async function init({isLogin, rawurl}){
-    console.log('=========isLogin===========================');
-    console.log(isLogin);
-    console.log(rawurl);
-    console.log('=========isLogin===========================');
     return gethModule.init(isLogin, rawurl);
 }
 
