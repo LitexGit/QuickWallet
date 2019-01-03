@@ -8,7 +8,9 @@ import { StackActions } from 'react-navigation';
 
 export function * register (api, action) {
     const {data:params} = action;
-    const {address, type} = params;
+    const {address, type, nickname='', sharecode=''} = params;
+
+
     const os = DeviceInfo.getSystemName();
     const info = {
         'deviceCountry':DeviceInfo.getDeviceCountry(),
@@ -21,15 +23,27 @@ export function * register (api, action) {
     };
     const phoneinfo = JSON.stringify(info);
 
-    let response = yield call(api.register, {address, type, os, phoneinfo});
-    response={status:true, data:{address, type, os, phoneinfo}};
-    const {status, data} = response;
-    if (status) {
-        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-        yield put(UserActions.registerSuccess(data));
-        return;
-    }
-    yield put(UserActions.registerFailure(data));
+    console.log('=============params=======================');
+    console.log(phoneinfo);
+    console.log(os);
+    console.log('=============params=======================');
+
+
+    const response = yield call(api.register, {address, type, os, phoneinfo, nickname});
+
+    console.log('======register=======response=======================');
+    console.log(response);
+    console.log('======register=======response=======================');
+
+
+    // response={status:true, data:{address, type, os, phoneinfo}};
+    // const {status, data} = response;
+    // if (status) {
+    //     DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+    //     yield put(UserActions.registerSuccess(data));
+    //     return;
+    // }
+    // yield put(UserActions.registerFailure(data));
 }
 
 export function * getUserInfo (api, action) {

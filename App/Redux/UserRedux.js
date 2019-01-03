@@ -49,7 +49,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-    selectNickname: state => state.user.nickname,
+    getNickname: state => state.user.nickname,
     selectSharecode: state => state.user.sharecode,
 };
 

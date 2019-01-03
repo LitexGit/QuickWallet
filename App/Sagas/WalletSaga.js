@@ -7,6 +7,7 @@ import { StackActions } from 'react-navigation';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Toast from 'react-native-root-toast';
+import {UserSelectors} from '../Redux/UserRedux';
 
 
 
@@ -98,7 +99,6 @@ export function *gethRandomMnemonic () {
         console.log('=============gethRandomMnemonic=======================');
         console.log(map);
         console.log('=============gethRandomMnemonic=======================');
-
         const {mnemonic} = map;
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
     } catch (error) {
@@ -123,23 +123,24 @@ export function *gethImportMnemonic (action) {
         yield put(WalletActions.setLoading({loading:false}));
 
         const map = GethModule.getResolveMap(result);
+
         console.log('=============gethImportMnemonic=======================');
         console.log(map);
         console.log('=============gethImportMnemonic=======================');
 
         const {address} = map;
-        // TODO 添加地址校验
-        // yield put(UserActions.registerRequest({address, type:1}));
+        const nickname = yield select(UserSelectors.getNickname);
 
-        // TODO account ？？ ||  register ？？ ==> 备份助记词
-        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
-        DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+        yield put(UserActions.registerRequest({address, type:1, nickname}));
 
-        yield put(WalletActions.saveAddress({address}));
-        yield put(WalletActions.savePassphrase({passphrase}));
-        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
 
-        yield put(StackActions.popToTop());
+        // DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
+        // DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
+        // yield put(WalletActions.saveAddress({address}));
+        // yield put(WalletActions.savePassphrase({passphrase}));
+        // yield put(UserActions.saveUserInfo({isLoginInfo:true}));
+        // yield put(StackActions.popToTop());
+
     } catch (error) {
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);

@@ -16,7 +16,6 @@ import UserActions from '../Redux/UserRedux';
 
 import I18n from '../I18n';
 
-
 class NewWalletScreen extends Component {
   static navigationOptions = {
       title:I18n.t('NewWalletTabTitle'),
@@ -161,9 +160,6 @@ class NewWalletScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log('========NewWalletScreen============================');
-    // console.log(state);
-    // console.log('========NewWalletScreen============================');
     const {
         wallet:{loading},
         user:{

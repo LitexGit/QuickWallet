@@ -129,6 +129,9 @@ class FoundScreen extends Component {
 }
 
 const mapStateToProps = (state) =>{
+    console.log('=============FoundScreen=======================');
+    console.log(state);
+    console.log('=============FoundScreen=======================');
     const {found:{bannerList}} = state;
     return { bannerList };
 };

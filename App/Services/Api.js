@@ -1,21 +1,13 @@
 
 import apisauce from 'apisauce';
 import Config from 'react-native-config';
-
-const create = (baseURL = Config.API_URL||'http://wallet.milewan.com:7001') => {
-    console.log('============baseURL========================');
-    console.log(baseURL);
-    console.log('===========baseURL=========================');
+const apiUrl = 'http://wallet.milewan.com:8088';
+const create = (baseURL = Config.API_URL || apiUrl) => {
     const api = apisauce.create({
         baseURL,
-        headers: {'Cache-Control': 'no-cache'},
+        headers: {'Cache-Control': 'no-cache', 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'},
         timeout: 10000
     });
-
-    const getRoot = () => api.get('');
-    const getRate = () => api.get('rate_limit');
-    const getUser = (username) => api.get('search/users', {q: username});
-
     /**
      * Api 接口响应格式
      */
@@ -41,25 +33,35 @@ const create = (baseURL = Config.API_URL||'http://wallet.milewan.com:7001') => {
      * os        用户系统平台 ios或android
      * phoneinfo 用户手机详细信息
      */
-    const register=({address, type})=>api.put('',{address, type});
+    const register=(params)=>{
+        console.log('===========register=========================');
+        console.log(params);
+        console.log('===========register=========================');
+        return api.post('/api/user/register',params);
+    };
     /**
      * 用户基本信息获取接口
      *
      * address   用户地址
      */
-    const getUserInfo=({address})=>api.get('',{address});
+    const getUserInfo=({address})=>api.get('/api/user',{address});
     /**
      * Banner信息接口
      */
-    const getBanner=()=>api.get('');
+    const getBanner=()=>api.get('/api/banners');
     /**
      * 系统配置信息接口
      */
-    const getConfig = () =>api.get('');
+    const getConfig = () =>api.get('/api/settings');
     /**
      * 获取系统支持的ERC20 token列表
      */
-    const getTokenList = () =>api.get('');
+    const getTokenList = () =>api.get('/api/tokens');
+
+
+    const getRoot = () => api.get('');
+    const getRate = () => api.get('rate_limit');
+    const getUser = (username) => api.get('search/users', {q: username});
 
     return {
         register,
