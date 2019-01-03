@@ -57,12 +57,13 @@ _onPressShare= async ()=>{
 }
 
 render () {
-    const uri = DEFAULT_URI;
+    const {params} =  this.props.navigation.state;
+    const {url=DEFAULT_URI} = params;
     return (
         <WebView useWebKit
             ref ={ref=>this.webview = ref}
             style={styles.container}
-            source={{uri}}/>
+            source={{uri:url}}/>
     );
 }
 }

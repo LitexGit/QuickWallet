@@ -10,6 +10,8 @@ import styles from './Styles/FoundScreenStyle';
 
 import { NavigationActions } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
+import Toast from 'react-native-root-toast';
+
 class FoundScreen extends Component {
   static navigationOptions = {
       tabBarLabel: I18n.t('FoundTabBarLabel'),
@@ -53,8 +55,9 @@ class FoundScreen extends Component {
       this.props.navigate('ZJWebViewScreen');
   }
 
-  _onPressBanner = ()=>{
-      this.props.navigate('WebViewScreen');
+  _onPressBanner = (item)=>{
+      const {Url:url} = item;
+      this.props.navigate('WebViewScreen', {url});
   }
 
   _onPressItem = ()=>{
@@ -62,10 +65,10 @@ class FoundScreen extends Component {
   }
 
   _renderBanner = (item,key)=>{
-      const {image=''} = item;
+      const {Image:image_url=''} = item;
       return (
           <TouchableOpacity key={key} style={styles.banner} onPress={()=>this._onPressBanner(item)}>
-              <Image style={styles.banner} source={{ uri: image }} />
+              <Image style={styles.banner} source={{ uri: image_url }}/>
           </TouchableOpacity>
       );
   }
@@ -129,9 +132,6 @@ class FoundScreen extends Component {
 }
 
 const mapStateToProps = (state) =>{
-    // console.log('=============FoundScreen=======================');
-    // console.log(state);
-    // console.log('=============FoundScreen=======================');
     const {found:{bannerList}} = state;
     return { bannerList };
 };

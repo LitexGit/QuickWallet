@@ -52,8 +52,8 @@ export const request = (state, { data }) =>
 
 // successful avatar lookup
 export const success = (state, action) => {
-    const { payload } = action;
-    return state.merge({ refreshing: false, loading: false, error: null, ...payload });
+    const { data } = action;
+    return state.merge({ refreshing: false, loading: false, error: null, ...data });
 };
 
 // failed to get the avatar
