@@ -95,7 +95,6 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
   
   self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1002 userInfo:@{@"info":@"Import keyStore file exception"}];
     _rejectBlock(@"-1002", @"Import keyStore file exception", error);
     return;
   }
@@ -113,7 +112,6 @@ RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTP
   
   NSString *mnemonic = GethCreateRandomMnemonic(&error);
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1003 userInfo:@{@"info":@"Generate mnemonic word exceptions"}];
     _rejectBlock(@"-1003", @"Generate mnemonic word exceptions", error);
     return;
   }
@@ -140,7 +138,6 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   
   self.account = [self.keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&error];
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1004 userInfo:@{@"info":@"Import private key exception"}];
     _rejectBlock(@"-1004", @"Import private key exception", error);
     return;
   }
@@ -167,7 +164,6 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   
   NSData *privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &error);
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1005 userInfo:@{@"info":@"Mnemonic words derive private key exceptions"}];
     _rejectBlock(@"-1005", @"Mnemonic words derive private key exceptions", error);
     return;
   }
@@ -175,8 +171,7 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
   self.account = [self.keyStore importECDSAKey:privateKey passphrase:passphrase error:&error];
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1006 userInfo:@{@"info":@"Import private key exception"}];
-    _rejectBlock(@"iOS", @"Import private key exception", error);
+    _rejectBlock(@"-1006", @"Import mnemonic key exception", error);
     return;
   }
   
@@ -209,14 +204,12 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   
   self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1007 userInfo:@{@"info":@"Import keyStore file exception"}];
     _rejectBlock(@"-1007", @"Import keyStore file exception", error);
     return;
   }
 
   NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&error];
   if (error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Export private key exception"}];
     _rejectBlock(@"-1008", @"Export private key exception", error);
     return;
   }
@@ -231,7 +224,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   
   if (!self.account || !self.keyStore || !self.ethClient) {
     error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
-    _rejectBlock(@"-1008", @"Wallet not unlocked", error);
+    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
     return;
   }
   
@@ -241,7 +234,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   int64_t nonce = 0x0;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
   if (!isGet || error) {
-    _rejectBlock(@"-1009", @"get Nonce exceptions", error);
+    _rejectBlock(@"-1010", @"get Nonce exceptions", error);
     return;
   }
 
@@ -254,20 +247,21 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-    _rejectBlock(@"-1010", @"Signature abnormal", error);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1011 userInfo:@{@"info":@"Signature abnormal"}];
+    _rejectBlock(@"-1011", @"Signature abnormal", error);
     return;
   }
 
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
   if (!isSend || error) {
     error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1011 userInfo:@{@"info":@"Transaction eth failure"}];
-    _rejectBlock(@"-1011", @"Transaction eth failure", error);
+    _rejectBlock(@"-1012", @"Transaction eth failure", error);
     return;
   }
   NSString *txHash = [[signedTx getHash] getHex];
   NSLog(@"txHash ===> %@", txHash);
   
-  _resolveBlock(@[@{@"isSend":@YES}]);
+  _resolveBlock(@[@{@"txHash":txHash}]);
 }
 
 //- (GethReceipt*)getTransactionReceipt:(GethContext*)ctx hash:(GethHash*)hash error:(NSError**)error;
@@ -278,7 +272,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   
   if (!self.account || !self.keyStore || !self.ethClient) {
     error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
-    _rejectBlock(@"-1008", @"Wallet not unlocked", error);
+    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
     return;
   }
 
@@ -289,7 +283,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSError *nonceErr = nil;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
   if (!isGet || nonceErr) {
-    _rejectBlock(@"-1009", @"get Nonce exceptions", error);
+    _rejectBlock(@"-1010", @"get Nonce exceptions", error);
     return;
   }
   
@@ -309,15 +303,15 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   
   NSData *tokenData = GethGenerateERC20TransferData(dataAddress, dataAmount, &error);
   if (error || !tokenData) {
-    _rejectBlock(@"-1012", @"GethGenerateERC20TransferData", error);
+    _rejectBlock(@"-1013", @"GethGenerateERC20TransferData", error);
     return;
   }
   [callMsg setData:tokenData];
 
-  int64_t gasLimit = 2100000;
+  int64_t gasLimit = 21000;
   BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&error];
   if (!isLimit || error) {
-    _rejectBlock(@"-1013", @"estimateGas", error);
+    _rejectBlock(@"-1014", @"estimateGas", error);
     return;
   }
   gasLimit *= 2;
@@ -328,7 +322,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
     error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1011 userInfo:@{@"info":@"Transaction eth failure"}];
-    _rejectBlock(@"-1011", @"Transaction eth failure", error);
+    _rejectBlock(@"-1011", @"Signature abnormal", error);
     return;
   }
   
@@ -340,17 +334,17 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSString *txHash = [[signedTx getHash] getHex];
   NSLog(@"txHash ===> %@", txHash);
   
-  _resolveBlock(@[@{@"isSend":@YES}]);
+  _resolveBlock(@[@{@"txHash":txHash}]);
 }
 
 
 - (GethTransaction *)signTxWithKeyStore:(GethKeyStore *)keyStore Account:(GethAccount *)account passphrase:(NSString *)passphrase transaction:(GethTransaction *)transaction{
   int64_t chainId = 4;
   GethBigInt *chainID = [[GethBigInt alloc] init:chainId];
-  NSError *err = nil;
-  GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&err];
-  if (err) {
-    self.rejectBlock(@"iOS", @"Signature abnormal", err);
+  NSError *error = nil;
+  GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&error];
+  if (error) {
+    self.rejectBlock(@"-1011", @"Signature abnormal", error);
     return nil;
   }
   return signedTx;

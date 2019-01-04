@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -26,8 +25,6 @@ import geth.Geth;
 import geth.KeyStore;
 import geth.Transaction;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class GethModule extends ReactContextBaseJavaModule {
     private Account account;
     private KeyStore keyStore;
@@ -37,6 +34,9 @@ public class GethModule extends ReactContextBaseJavaModule {
     private final String RAWURL  = "rawurl";
     private final String KEY_TEMP = "key_temp";
     private final String KEY_DIR = "key_dir";
+
+    private final long SCRYPT_N = 1024;
+    private final long SCRYPT_P = 1;
 
     private SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getReactApplicationContext(),GETH_INFO);
 
@@ -52,7 +52,6 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init(boolean isLogin, String rawurl) {
-        Log.d("init", rawurl);
 
         if (TextUtils.isEmpty(rawurl)){
             sharedPreferencesHelper.put(RAWURL, "");
@@ -72,10 +71,10 @@ public class GethModule extends ReactContextBaseJavaModule {
         if (keyStore != null) keyStore = null;
         if (ethClient != null) ethClient = null;
         sharedPreferencesHelper.put(RAWURL, "");
-        String keyTemp = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_TEMP, ""));
-        FileUtil.deleteFile(keyTemp);
-        String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
-        FileUtil.deleteFile(keydir);
+        String keyTemp = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
+        FileUtil.deleteDirectory(keyTemp);
+        String keydir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
+        FileUtil.deleteDirectory(keydir);
     }
 
     @ReactMethod
@@ -96,15 +95,13 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
-//            keyStore = new KeyStore(tempDir, Geth.StandardScryptN,  Geth.StandardScryptN);
-            keyStore = new KeyStore(tempDir, 1024,  1024);
+            keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
             if (!isExists){
-                // Keystore file does not exist
                 Exception err = new Exception();
-                promise.reject("-1004",err);
+                promise.reject("-1001",err);
                 return;
             }
 
@@ -119,7 +116,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1005",e);
+            promise.reject("-1002",e);
         }
     }
 
@@ -131,7 +128,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("mnemonic",mnemonic);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1002",e);
+            promise.reject("-1003",e);
         }
     }
 
@@ -144,10 +141,10 @@ public class GethModule extends ReactContextBaseJavaModule {
             ethClient = new EthereumClient(rawurl);
 
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
+            FileUtil.deleteDirectory(filesDir);
             FileUtil.createDir(filesDir);
 
-//            keyStore = new KeyStore(filesDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
-            keyStore = new KeyStore(filesDir, 1024,  1024);
+            keyStore = new KeyStore(filesDir, SCRYPT_N,  SCRYPT_P);
             byte[] data = hexStringToByteArray(privateKey);
             account = keyStore.importECDSAKey(data, passphrase);
             saveKeystorePath(account);
@@ -156,7 +153,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("address",address);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1006",e);
+            promise.reject("-1004",e);
         }
     }
 
@@ -167,11 +164,10 @@ public class GethModule extends ReactContextBaseJavaModule {
             ethClient = new EthereumClient(rawurl);
 
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
+            FileUtil.deleteDirectory(filesDir);
             FileUtil.createDir(filesDir);
-            // 删除文件夹下的内容
 
-//            keyStore = new KeyStore(filesDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
-            keyStore = new KeyStore(filesDir, 1024,  1024);
+            keyStore = new KeyStore(filesDir, SCRYPT_N,  SCRYPT_P);
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
 
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
@@ -182,7 +178,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1007",e);
+            promise.reject("-1005",e);
         }
     }
 
@@ -191,15 +187,13 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
-//            keyStore = new KeyStore(tempDir, Geth.StandardScryptN/1024/1024,  Geth.StandardScryptN/1024/1024);
-            keyStore = new KeyStore(tempDir, 1024,  1024);
+            keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);
             if (!isExists){
-                // Keystore file does not exist
                 Exception err = new Exception();
-                promise.reject("-1008",err);
+                promise.reject("-1001",err);
                 return;
             }
             File keyFile = FileUtil.getFile(keydir);
@@ -213,7 +207,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1009",e.getMessage());
+            promise.reject("-1006",e.getMessage());
         }
     }
 
@@ -230,7 +224,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             if (account == null || keyStore == null || ethClient == null){
                 // Wallet not unlocked
                 Exception err = new Exception();
-                promise.reject("-1010",err);
+                promise.reject("-1007",err);
                 return;
             }
             Address from = new Address(fromAddress);
@@ -251,11 +245,13 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             // 函数无返回值
             ethClient.sendTransaction(Geth.newContext(), signedTx);
+
+            String txHash = signedTx.getHash().getHex();
             WritableMap map = Arguments.createMap();
-            map.putBoolean("isSend", true);
+            map.putString("txHash",txHash);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1011",e.getMessage());
+            promise.reject("-1008",e.getMessage());
         }
     }
 
@@ -265,15 +261,15 @@ public class GethModule extends ReactContextBaseJavaModule {
             String fromAddress,
             String toAddress,
             String tokenAddress,
-            Long value,
-            Long gas,
+            Integer value,
+            Integer gas,
             Promise promise
     ) {
         try {
             if (account == null || keyStore == null || ethClient == null){
                 // Wallet not unlocked
                 Exception err = new Exception();
-                promise.reject("-1012",err);
+                promise.reject("-1007",err);
                 return;
             }
             Address from = new Address(fromAddress);
@@ -283,15 +279,15 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             Address to = new Address(tokenAddress);
             BigInt amount = new BigInt(0);
-            BigInt gasPrice = new BigInt(gas);
+            BigInt gasPrice = new BigInt(gas.longValue());
 
             // 构建 tokendata
             CallMsg callMsg = new CallMsg();
-            BigInt datAmount = new BigInt(value);
+            BigInt datAmount = new BigInt(value.longValue());
             Address dataAddress = new Address(toAddress);
 
             callMsg.setFrom(from);
-            callMsg.setGas(gas);
+            callMsg.setGas(gas.longValue());
             callMsg.setTo(dataAddress);
             callMsg.setValue(datAmount);
 
@@ -299,20 +295,23 @@ public class GethModule extends ReactContextBaseJavaModule {
             callMsg.setData(tokenData);
 
             long gasLimit = 21000;
+            gasLimit = ethClient.estimateGas(Geth.newContext(), callMsg);
+            gasLimit *= 2;
 
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, tokenData);
 
             long chainId = 4;
             BigInt chainID = new BigInt(chainId);
-            Transaction signedTx = keyStore.signTx(account, transaction, chainID);
+            Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 
-            // 函数无返回值
             ethClient.sendTransaction(Geth.newContext(), signedTx);
+
+            String txHash = signedTx.getHash().getHex();
             WritableMap map = Arguments.createMap();
-            map.putBoolean("isSend", true);
+            map.putString("txHash",txHash);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1013",e.getMessage());
+            promise.reject("-1009",e.getMessage());
         }
     }
 

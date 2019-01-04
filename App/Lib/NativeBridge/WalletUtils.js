@@ -35,9 +35,6 @@ async function importPrivateKey({privateKey, passphrase}){
 }
 
 async function exportPrivateKey({passphrase}){
-    console.log('==================passphrase==================');
-    console.log(passphrase);
-    console.log('==================passphrase==================');
     return await gethModule.exportPrivateKey(passphrase);
 }
 
@@ -47,6 +44,14 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
     if (symbol === 'ETH') {
         return await gethModule.transferEth(passphrase, fromAddress, toAddress, amount, gasPrice);
     }
+    console.log('============transfer========================');
+    console.log(passphrase);
+    console.log(fromAddress);
+    console.log(toAddress);
+    console.log(tokenAddress);
+    console.log(amount);
+    console.log(gasPrice);
+    console.log('============transfer========================');
     return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, gasPrice);
 }
 

@@ -18,6 +18,8 @@ class RootContainer extends Component {
 
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
       this.props.saveUserInfo({isLoginInfo:isLogin});
+      const rawurl = 'ws://rinkeby03.milewan.com:8546';
+      this.props.gethInit({isLogin, rawurl});
       if (!isLogin) return;
 
       const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
@@ -26,9 +28,6 @@ class RootContainer extends Component {
 
       const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
       this.props.saveUserInfo({isAgreeInfo:isAgree});
-
-      const rawurl = 'ws://rinkeby03.milewan.com:8546';
-      this.props.gethInit({isLogin, rawurl});
   }
 
   componentDidMount  () {

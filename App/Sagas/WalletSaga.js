@@ -10,7 +10,6 @@ import Toast from 'react-native-root-toast';
 import {UserSelectors} from '../Redux/UserRedux';
 
 
-
 export function *gethInit (action) {
     try {
         const {data:params} = action;
@@ -18,10 +17,7 @@ export function *gethInit (action) {
         GethModule.init({isLogin, rawurl});
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        console.log('===========gethInit=========================');
-        console.log(error);
-        console.log('===========gethInit=========================');
-        const errMsg = 'RN:初始化异常';
+        const errMsg = '初始化异常';
         Toast.show(errMsg, {
             shadow:true,
             position: Toast.positions.CENTER,
@@ -34,10 +30,7 @@ export function *gethUnInit () {
         yield GethModule.unInit();
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        console.log('===========gethUnInit=========================');
-        console.log(error);
-        console.log('===========gethUnInit=========================');
-        const errMsg = 'RN:反初始化异常';
+        const errMsg = '反初始化异常';
         Toast.show(errMsg, {
             shadow:true,
             position: Toast.positions.CENTER,
@@ -101,7 +94,6 @@ export function *gethRandomMnemonic () {
         const result =  yield GethModule.randomMnemonic();
         const map = GethModule.getResolveMap(result);
         yield put(WalletActions.setLoading({loading:false}));
-
         const {mnemonic} = map;
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
     } catch (error) {
@@ -160,13 +152,7 @@ export function *gethImportPrivateKey (action) {
         const {address} = map;
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
-
-        // DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
-        // DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-        // yield put(WalletActions.saveAddress({address}));
-        // yield put(WalletActions.savePassphrase({passphrase}));
-        // yield put(UserActions.saveUserInfo({isLoginInfo:true}));
-        // yield put(StackActions.popToTop());
+        yield put(WalletActions.savePassphrase({passphrase}));
 
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));

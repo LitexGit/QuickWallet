@@ -124,7 +124,7 @@ class TransferScreen extends Component {
 
       this.props.gethTransfer({
           symbol,
-          passphrase,
+          passphrase:'11111111',
           fromAddress:address,
           toAddress:inputAddress,
           value:inputBalance,
