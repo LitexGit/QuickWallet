@@ -3,6 +3,7 @@ import Config from 'react-native-config';
 import AssetActions from '../Redux/AssetRedux';
 import {UserSelectors} from '../Redux/UserRedux';
 import Toast from 'react-native-root-toast';
+import Ramda from 'ramda';
 
 
 import Moment from 'moment';
@@ -20,17 +21,26 @@ export function *getTokenList(api){
         const {data, status, msg} = result;
         if (status) {
             const {tokenList} = data;
+            yield put(AssetActions.getTokenListSuccess(data));
             for (const token of tokenList) {
-                token.Symbol = 'ETH';
                 const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
                 const address = yield select(UserSelectors.getAddress);
                 if (symbol === 'ETH') {
                     yield put(AssetActions.getBalanceRequest({address}));
                 } else {
-                    yield put(AssetActions.getTokenBalanceRequest({address, tokenname:symbol, contractaddress:tokenAddress}));
+                    const api = require('etherscan-api').init(apiKey, environment, timeout);
+                    const response =yield call(api.account.tokenbalance, address, '', tokenAddress);
+                    const {status, message, result} = response;
+                    if (status) {
+                        yield put(AssetActions.getTokenBalanceSuccess({
+                            symbol,
+                            banance:result,
+                        }));
+                    } else {
+                        yield put(AssetActions.getTokenBalanceFailure(message));
+                    }
                 }
             }
-            yield put(AssetActions.getTokenListSuccess(data));
             return;
         }
         Toast.show(msg, {
@@ -78,9 +88,6 @@ export function * getTokenBalance(action) {
         const api = require('etherscan-api').init(apiKey, environment, timeout);
         const response =yield call(api.account.tokenbalance, address, '', contractaddress );
         const {status, message, result} = response;
-        console.log('===========getTokenBalance=========================');
-        console.log(response);
-        console.log('===========getTokenBalance=========================');
         if (status) {
             yield put(AssetActions.getTokenBalanceSuccess({
                 symbol:tokenname,

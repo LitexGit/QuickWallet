@@ -77,11 +77,6 @@ export const getBalanceSuccess = (state, { data }) =>{
 export const getBalanceFailure = (state, { data }) => state;
 
 export const getTokenBalanceSuccess = (state, { data }) =>{
-
-    console.log('==============data======================');
-    console.log(data);
-    console.log('==============data======================');
-
     const {tokenList} = state;
     const {symbol:tokenname, banance} = data;
     const list = tokenList.map((token)=>{
