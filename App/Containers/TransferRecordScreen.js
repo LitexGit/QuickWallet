@@ -89,7 +89,7 @@ class TransferRecordScreen extends Component {
 
   _renderListHeader=()=>{
       const {selectedToken} = this.props;
-      const {symbol='', count=0, value=''} = selectedToken;
+      const {Symbol:symbol='', count=0, value=''} = selectedToken;
       return(<View style={styles.headerContainer}>
           <View style={styles.leftSection}>
               <Image style={styles.symbolImg} source={symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}/>

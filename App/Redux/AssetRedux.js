@@ -96,9 +96,9 @@ export const getTokenBalanceFailure = (state, { data }) => state;
 // successful avatar lookup
 export const setSelectedToken = (state, { data }) =>{
     const test = {selectedToken:{
-        Symbol: 'LXT',
+        Symbol: 'ETH',
         Tokenaddress: '0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-        count: 1000,
+        count: 30,
         Decimal: 18
     }};
     return state.merge({...test});

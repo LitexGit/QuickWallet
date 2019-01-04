@@ -93,6 +93,9 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void unlockAccount( String passphrase, Promise promise ) {
         try {
+            String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
+            ethClient = new EthereumClient(rawurl);
+
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
             keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
@@ -241,9 +244,8 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             long chainId = 4;
             BigInt chainID = new BigInt(chainId);
-            Transaction signedTx = keyStore.signTx(account, transaction, chainID);
+            Transaction signedTx = keyStore.signTxPassphrase(account, passphrase,  transaction, chainID);
 
-            // 函数无返回值
             ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             String txHash = signedTx.getHash().getHex();
@@ -251,7 +253,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("txHash",txHash);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1008",e.getMessage());
+            promise.reject("-1008",e);
         }
     }
 

@@ -78,8 +78,10 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
-  NSError *error = nil;
+  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
+  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
   
+  NSError *error = nil;
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
   [FileManager createDirectoryIfNotExists:keyTemp];
   self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
