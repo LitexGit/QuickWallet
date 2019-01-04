@@ -18,5 +18,8 @@ export default StyleSheet.create({
         flex: 1,
         fontSize:Fonts.size.small,
         color:Colors.textColor,
+    },
+    imageStyle:{
+        flex:1,
     }
 });

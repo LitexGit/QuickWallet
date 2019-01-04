@@ -176,10 +176,6 @@ export function *gethTransfer (action) {
         yield put(WalletActions.setLoading({loading:false}));
 
         const map = GethModule.getResolveMap(result);
-        console.log('=============gethTransfer=======================');
-        console.log(map);
-        console.log('=============gethTransfer=======================');
-
         const {txHash} = map;
         // 交易成功 失败 ==> 详细处理逻辑
         yield put(StackActions.pop());
