@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Styles/MineComponentStyle';
-import { FlatList, Text, TouchableOpacity, Image } from 'react-native';
+import { FlatList, Text, TouchableOpacity, Image, Share, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { Metrics , Colors } from '../Themes';
 import { View } from 'react-native-animatable';
@@ -31,6 +31,20 @@ class MineComponent extends Component {
       this.props.navigate('AssetsScreen');
   }
 
+  _onPressShare=()=> {
+      const shareUrl = 'http://litex.io/';
+      const {sharecode} = this.props;
+      let shareParams = {};
+      if (Platform.OS === 'ios') {
+          const url =  shareUrl + '?sharecode=' + sharecode;
+          shareParams = {url};
+      } else {
+          const message = shareUrl + '?sharecode=' + sharecode;
+          shareParams = {message};
+      }
+      Share.share(shareParams);
+  };
+
   _onPressItem=(key)=>{
       const {navigate} = this.props;
       switch (key) {
@@ -47,7 +61,7 @@ class MineComponent extends Component {
 
           break;
       case MineConfig.share.key:
-
+          this._onPressShare();
           break;
       default:
           break;
@@ -133,11 +147,14 @@ class MineComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('===========state=========================');
+    console.log(state);
+    console.log('===========state=========================');
     const {
-        user:{nickname, address},
+        user:{nickname, address, sharecode},
         assets:{ethBanance}
     } = state;
-    return { ethBanance, nickname, address};
+    return { ethBanance, nickname, address, sharecode};
 };
 
 const mapDispatchToProps = (dispatch) => ({

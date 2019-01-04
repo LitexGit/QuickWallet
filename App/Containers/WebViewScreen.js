@@ -26,7 +26,7 @@ _onPressRefresh=()=>{
     this.webview.reload();
 }
 
-_onPressShare= async ()=>{
+_onPressShare=()=>{
     const title = '消息的标题';
     const message = '要分享的消息';
     let shareParams = {title, message};
@@ -38,22 +38,7 @@ _onPressShare= async ()=>{
         const dialogTitle = 'Android==>dialogTitle';
         shareParams = {dialogTitle, ...shareParams};
     }
-
-    try {
-        const result = await Share.share(shareParams);
-        const {action, activityType} = result;
-        if (action === Share.sharedAction) {
-            if (activityType) {
-                console.log(activityType);
-            } else {
-                console.log(activityType);
-            }
-        } else if (action === Share.dismissedAction){
-            console.log(Share.dismissedAction);
-        }
-    } catch (error) {
-        console.log(error);
-    }
+    Share.share(shareParams);
 }
 
 render () {
