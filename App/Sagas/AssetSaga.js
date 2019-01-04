@@ -3,8 +3,6 @@ import Config from 'react-native-config';
 import AssetActions from '../Redux/AssetRedux';
 import {UserSelectors} from '../Redux/UserRedux';
 import Toast from 'react-native-root-toast';
-import Ramda from 'ramda';
-
 
 import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
@@ -50,10 +48,12 @@ export function *getTokenList(api){
         yield put(AssetActions.getTokenListFailure());
 
     } catch (error) {
-        console.log('========error============================');
-        console.log(error);
-        console.log('=========error===========================');
-
+        const errmsg = '获取token列表 creash';
+        Toast.show(errmsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(AssetActions.getTokenListFailure());
     }
 }
 
@@ -74,9 +74,12 @@ export function * getBalance (action) {
         }
         yield put(AssetActions.getBalanceFailure(message));
     } catch (error) {
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const errmsg = '获取ETH余额 creash';
+        Toast.show(errmsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(AssetActions.getBalanceFailure());
     }
 }
 
@@ -97,9 +100,12 @@ export function * getTokenBalance(action) {
         }
         yield put(AssetActions.getTokenBalanceFailure(message));
     } catch (error) {
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const errmsg = '获取Token余额 creash';
+        Toast.show(errmsg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(AssetActions.getTokenBalanceFailure());
     }
 }
 
@@ -117,6 +123,7 @@ export function * getTxlist (action) {
             response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
         } else {
             response = yield call(api.account.tokentx, address, tokenAddress, startblock, endblock, page, offset, sort);
+
         }
 
         const {status, message, result} = response;
@@ -130,45 +137,42 @@ export function * getTxlist (action) {
             yield put(AssetActions.getTxlistSuccess({txlist}));
             return;
         }
-        yield put(AssetActions.getTxlistFailure(message));
+        Toast.show(message, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(AssetActions.getTxlistFailure());
     } catch (error) {
-        console.log('==============error======================');
-        console.log(error);
-        console.log('==============error======================');
+        const msg = '查询交易记录 creash';
+        Toast.show(msg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(AssetActions.getTxlistFailure());
     }
 
 }
 
 
-// const async = require('async');
-// async.map(tokenList,(token, callBack) =>{
-//     const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
-//     const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-//     const apiObj = require('etherscan-api').init(apiKey, environment, timeout);
-//     const result = await apiObj.account.balance(address);
-// });
 
 
-// const data = {'tokenList':[
-//     {
-//         'img_url':'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg',
-//         'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-//         'symbol':'ETH',
-//         'decimal':'18',
-//         'supply':'',
-//         'count':0,
-//         'value':0,
 
-//     },{
-//         'img_url':'http://img3.imgtn.bdimg.com/it/u=3142207919,2669735180&fm=200&gp=0.jpg',
-//         'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-//         'symbol':'LXT',
-//         'decimal':'18',
-//         'supply':'',
-//         'count':0,
-//         'value':0,
-//     }
-// ]};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // {

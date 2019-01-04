@@ -20,7 +20,6 @@ class AssetsScreen extends Component {
   _onPressItem=(item)=>{
       this.props.setSelectedToken({selectedToken:item});
       this.props.navigate('TransferRecordScreen');
-
   }
 
   componentDidMount=()=>{

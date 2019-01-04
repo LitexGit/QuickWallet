@@ -23,7 +23,7 @@ class TransferRecordScreen extends Component {
       const {selectedToken, address} = this.props;
       const page = 1;
       const offset = 20;
-      const {symbol='ETH', tokenAddress=''} = selectedToken;
+      const {Symbol:symbol='ETH', Tokenaddress:tokenAddress=''} = selectedToken;
       if (symbol === 'ETH') {
           this.props.getTxlist({address, page, offset, symbol});
       } else {
@@ -35,7 +35,7 @@ class TransferRecordScreen extends Component {
       const {selectedToken, address} = this.props;
       const page = 1;
       const offset = 20;
-      const {symbol='ETH', tokenAddress=''} = selectedToken;
+      const {Symbol:symbol='ETH', Tokenaddress:tokenAddress=''} = selectedToken;
       if (symbol === 'ETH') {
           this.props.getTxlist({address, page, offset, symbol});
       } else {
