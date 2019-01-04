@@ -64,7 +64,7 @@ export const getBalanceSuccess = (state, { data }) =>{
     const {tokenList} = state;
     const {symbol:ETH, banance} = data;
     const list = tokenList.map((token)=>{
-        const {symbol} = token; // token
+        const {Symbol:symbol} = token; // token
         if (symbol !== ETH) {
             return token;
         }
@@ -77,10 +77,15 @@ export const getBalanceSuccess = (state, { data }) =>{
 export const getBalanceFailure = (state, { data }) => state;
 
 export const getTokenBalanceSuccess = (state, { data }) =>{
+
+    console.log('==============data======================');
+    console.log(data);
+    console.log('==============data======================');
+
     const {tokenList} = state;
     const {symbol:tokenname, banance} = data;
     const list = tokenList.map((token)=>{
-        const {symbol} = token; // token
+        const {Symbol:symbol} = token; // token
         if (symbol !== tokenname) {
             return token;
         }

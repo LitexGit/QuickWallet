@@ -35,14 +35,10 @@ export const INITIAL_STATE = Immutable({
     loading: null,
     failure: null,
     error: null,
-    userInfo:{},
 
-
-    uid:0,
+    address:0,
     nickname:'',
     sharecode:'',
-    created_at:'',
-    last_login:'',
 
     isLoginInfo:false,
     isAgreeInfo:false,
@@ -52,7 +48,9 @@ export const INITIAL_STATE = Immutable({
 
 export const UserSelectors = {
     getNickname: state => state.user.nickname,
-    selectSharecode: state => state.user.sharecode,
+    getSharecode: state => state.user.sharecode,
+    getAddress: state => state.user.address,
+
 };
 
 /* ------------- Reducers ------------- */
@@ -71,7 +69,7 @@ export const success = (state, action) => {
     case 'GET_USER_INFO_SUCCESS':{
         const {Address:address, Nickname:nickname, Sharecode:sharecode} = data;
         const userInfo = {address, nickname, sharecode};
-        return state.merge({ refreshing: false, loading: false, error: null, userInfo });
+        return state.merge({ refreshing: false, loading: false, error: null, ...userInfo });
     }
     default:
         break;

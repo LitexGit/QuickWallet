@@ -15,28 +15,20 @@ import ConfigActions from '../Redux/ConfigRedux';
 class RootContainer extends Component {
 
   _initializes= async ()=>{
+
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
+      this.props.saveUserInfo({isLoginInfo:isLogin});
       if (!isLogin) return;
+
       const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
       this.props.getUserInfoRequest({address});
       this.props.getConfigRequest();
 
+      const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
+      this.props.saveUserInfo({isAgreeInfo:isAgree});
 
-
-
-
-
-
-      // const {gethInit, saveUserInfo, saveAddress} = this.props;
-      //
-      // saveAddress({address});
-      // const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
-      // saveUserInfo({isAgreeInfo:isAgree});
-
-      //
-      // saveUserInfo({isLoginInfo:isLogin});
-      // const rawurl = 'ws://rinkeby03.milewan.com:8546';
-      // gethInit({isLogin, rawurl});
+      const rawurl = 'ws://rinkeby03.milewan.com:8546';
+      this.props.gethInit({isLogin, rawurl});
   }
 
   componentDidMount  () {
@@ -57,12 +49,12 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-    console.log('=========state===========================');
-    console.log(state);
-    console.log('=========state===========================');
-    return state;
-};
+const mapStateToProps = (state) =>
+    // console.log('=========state===========================');
+    // console.log(state);
+    // console.log('=========state===========================');
+    state
+;
 
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),

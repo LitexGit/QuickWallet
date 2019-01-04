@@ -28,7 +28,7 @@ class AssetsScreen extends Component {
   }
 
   _renderItem=({item})=>{
-      const { symbol, count, value} = item;
+      const { Symbol:symbol, count, value} = item;
       return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>
           <View style={styles.itemContainer}>
               <View style={styles.leftSection}>

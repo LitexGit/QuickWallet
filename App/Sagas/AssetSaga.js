@@ -1,7 +1,9 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import Config from 'react-native-config';
-
 import AssetActions from '../Redux/AssetRedux';
+import {UserSelectors} from '../Redux/UserRedux';
+import Toast from 'react-native-root-toast';
+
 
 import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
@@ -12,47 +14,37 @@ const environment = 'rinkeby';
 const timeout = 10000;
 
 export function *getTokenList(api){
-    const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-    // const response = yield call(api.getTokenList);
-    // const {status, data} = response;
-
-    const data = {'tokenList':[
-        {
-            'img_url':'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg',
-            'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-            'symbol':'ETH',
-            'decimal':'18',
-            'supply':'',
-            'count':0,
-            'value':0,
-
-        },{
-            'img_url':'http://img3.imgtn.bdimg.com/it/u=3142207919,2669735180&fm=200&gp=0.jpg',
-            'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-            'symbol':'LXT',
-            'decimal':'18',
-            'supply':'',
-            'count':0,
-            'value':0,
+    try {
+        const response = yield call(api.getTokenList);
+        const {data:result} = response;
+        const {data, status, msg} = result;
+        if (status) {
+            const {tokenList} = data;
+            for (const token of tokenList) {
+                token.Symbol = 'ETH';
+                const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
+                const address = yield select(UserSelectors.getAddress);
+                if (symbol === 'ETH') {
+                    yield put(AssetActions.getBalanceRequest({address}));
+                } else {
+                    yield put(AssetActions.getTokenBalanceRequest({address, tokenname:symbol, contractaddress:tokenAddress}));
+                }
+            }
+            yield put(AssetActions.getTokenListSuccess(data));
+            return;
         }
-    ]};
+        Toast.show(msg, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(AssetActions.getTokenListFailure());
 
-    const {tokenList} = data;
+    } catch (error) {
+        console.log('========error============================');
+        console.log(error);
+        console.log('=========error===========================');
 
-    for (const token of tokenList) {
-        const {symbol, tokenAddress} = token;
-        if (symbol === 'ETH') {
-            yield put(AssetActions.getBalanceRequest({address}));
-        } else {
-            yield put(AssetActions.getTokenBalanceRequest({address, tokenname:symbol, contractaddress:tokenAddress}));
-        }
     }
-
-    // if (status) {
-    yield put(AssetActions.getTokenListSuccess(data));
-    //     return;
-    // }
-    // yield put(AssetActions.getTokenListFailure());
 }
 
 export function * getBalance (action) {
@@ -73,7 +65,7 @@ export function * getBalance (action) {
         yield put(AssetActions.getBalanceFailure(message));
     } catch (error) {
         console.log('==============error======================');
-        console.log();
+        console.log(error);
         console.log('==============error======================');
     }
 }
@@ -82,11 +74,13 @@ export function * getBalance (action) {
 export function * getTokenBalance(action) {
     try {
         const {data:params} = action;
-        const {address, tokenname, contractaddress} = params;
-
+        const {tokenname,contractaddress, address} = params;
         const api = require('etherscan-api').init(apiKey, environment, timeout);
         const response =yield call(api.account.tokenbalance, address, '', contractaddress );
         const {status, message, result} = response;
+        console.log('===========getTokenBalance=========================');
+        console.log(response);
+        console.log('===========getTokenBalance=========================');
         if (status) {
             yield put(AssetActions.getTokenBalanceSuccess({
                 symbol:tokenname,
@@ -139,10 +133,35 @@ export function * getTxlist (action) {
 }
 
 
+// const async = require('async');
+// async.map(tokenList,(token, callBack) =>{
+//     const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
+//     const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+//     const apiObj = require('etherscan-api').init(apiKey, environment, timeout);
+//     const result = await apiObj.account.balance(address);
+// });
 
 
+// const data = {'tokenList':[
+//     {
+//         'img_url':'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg',
+//         'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+//         'symbol':'ETH',
+//         'decimal':'18',
+//         'supply':'',
+//         'count':0,
+//         'value':0,
 
-
+//     },{
+//         'img_url':'http://img3.imgtn.bdimg.com/it/u=3142207919,2669735180&fm=200&gp=0.jpg',
+//         'tokenAddress':'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+//         'symbol':'LXT',
+//         'decimal':'18',
+//         'supply':'',
+//         'count':0,
+//         'value':0,
+//     }
+// ]};
 
 
 // {
