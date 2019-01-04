@@ -11,12 +11,16 @@ import {UserSelectors} from '../Redux/UserRedux';
 
 
 
-export function gethInit (action) {
+export function *gethInit (action) {
     try {
         const {data:params} = action;
         const {isLogin=false, rawurl=''} = params;
         GethModule.init({isLogin, rawurl});
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
+        console.log('===========gethInit=========================');
+        console.log(error);
+        console.log('===========gethInit=========================');
         const errMsg = 'RN:初始化异常';
         Toast.show(errMsg, {
             shadow:true,
@@ -29,6 +33,10 @@ export function *gethUnInit () {
     try {
         yield GethModule.unInit();
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
+        console.log('===========gethUnInit=========================');
+        console.log(error);
+        console.log('===========gethUnInit=========================');
         const errMsg = 'RN:反初始化异常';
         Toast.show(errMsg, {
             shadow:true,
@@ -45,6 +53,10 @@ export function *gethIsUnlockAccount () {
         const {isUnlock} = map;
         EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
+        console.log('===========gethIsUnlockAccount=========================');
+        console.log(error);
+        console.log('===========gethIsUnlockAccount=========================');
         const errMsg = 'RN:校验异常';
         Toast.show(errMsg, {
             shadow:true,
@@ -60,9 +72,6 @@ export function *gethUnlockAccount (action) {
 
         const result =  yield GethModule.unlockAccount({passphrase});
         const map = GethModule.getResolveMap(result);
-        console.log('=============gethUnlockAccount=======================');
-        console.log(map);
-        console.log('=============gethUnlockAccount=======================');
 
         const {address} = map;
         // TODO 解锁钱包 可以导出&&转账
@@ -75,7 +84,7 @@ export function *gethUnlockAccount (action) {
         EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        const {userInfo, code} = error;
+        const {userInfo, code} = error || {};
         const errMsg = code+':' + JSON.stringify(userInfo);
         // TODO 解锁钱包 异常处理逻辑
         Toast.show(errMsg, {
@@ -97,6 +106,9 @@ export function *gethRandomMnemonic () {
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
+        console.log('=============gethRandomMnemonic=======================');
+        console.log(error);
+        console.log('=============gethRandomMnemonic=======================');
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -123,6 +135,9 @@ export function *gethImportMnemonic (action) {
 
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
+        console.log('=============gethImportMnemonic=======================');
+        console.log(error);
+        console.log('=============gethImportMnemonic=======================');
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -155,6 +170,9 @@ export function *gethImportPrivateKey (action) {
 
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
+        console.log('=============gethImportPrivateKey=======================');
+        console.log(error);
+        console.log('=============gethImportPrivateKey=======================');
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -183,6 +201,9 @@ export function *gethExportPrivateKey (action) {
         yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
+        console.log('=============gethExportPrivateKey=======================');
+        console.log(error);
+        console.log('=============gethExportPrivateKey=======================');
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {
@@ -196,9 +217,6 @@ export function *gethTransfer (action) {
     try {
         const {data:params} = action;
         const {symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress} = params;
-        console.log('===================gethTransfer=================');
-        console.log(tokenAddress);
-        console.log('===================gethTransfer=================');
         // TODO 参数异常校验
         yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress});
@@ -209,11 +227,14 @@ export function *gethTransfer (action) {
         console.log(map);
         console.log('=============gethTransfer=======================');
 
-        const {isSend} = map;
+        const {txHash} = map;
         // 交易成功 失败 ==> 详细处理逻辑
         yield put(StackActions.pop());
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
+        console.log('=============gethTransfer=======================');
+        console.log(error);
+        console.log('=============gethTransfer=======================');
         const {userInfo, code} = error;
         const errMsg = code+':' + JSON.stringify(userInfo);
         Toast.show(errMsg, {

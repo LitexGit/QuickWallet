@@ -16,13 +16,9 @@
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
 static NSString *rawurlKey  = @"raw_url_key";
 
-
-
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
 @interface RCTGethModule()
-
-@property(nonatomic, strong) NSString *rawurl;
 
 @property(nonatomic, strong) GethAccount *account;
 
@@ -59,6 +55,7 @@ RCT_EXPORT_METHOD(unInit) {
   if (self.ethClient) {
     self.ethClient = nil;
   }
+  
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
   [FileManager removeFileAtPath:keyTemp];
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
@@ -68,19 +65,21 @@ RCT_EXPORT_METHOD(unInit) {
 RCT_EXPORT_METHOD(isUnlockAccount:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  
   if (!self.account || !self.keyStore || !self.ethClient) {
-    _resolveBlock(@[@{@"isUnlock":@YES}]);
+    _resolveBlock(@[@{@"isUnlock":@NO}]);
     return;
   }
-  _resolveBlock(@[@{@"isUnlock":@NO}]);
-  return;
+  _resolveBlock(@[@{@"isUnlock":@YES}]);
 }
 
 
 RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;
-
+  
+  NSError *error = nil;
+  
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
   [FileManager createDirectoryIfNotExists:keyTemp];
   self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
@@ -88,17 +87,19 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
-    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
-    _rejectBlock(@"iOS", @"keyStore does not exist", nil);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1001 userInfo:@{@"info":@"keyStore does not exist"}];
+    _rejectBlock(@"-1001", @"keyStore does not exist", error);
     return;
   }
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
-  NSError *err = nil;
-  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
-  if (err) {
-    _rejectBlock(@"iOS", @"Import keyStore file exception", err);
+  
+  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
+  if (error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1002 userInfo:@{@"info":@"Import keyStore file exception"}];
+    _rejectBlock(@"-1002", @"Import keyStore file exception", error);
     return;
   }
+  
   NSString *address = [[self.account getAddress] getHex];
   _resolveBlock(@[@{@"address":address}]);
 }
@@ -107,10 +108,13 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
 RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  
   NSError *error =nil;
+  
   NSString *mnemonic = GethCreateRandomMnemonic(&error);
   if (error) {
-    _rejectBlock(@"iOS", @"Generate mnemonic word exceptions", error);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1003 userInfo:@{@"info":@"Generate mnemonic word exceptions"}];
+    _rejectBlock(@"-1003", @"Generate mnemonic word exceptions", error);
     return;
   }
   _resolveBlock(@[@{@"mnemonic":mnemonic}]);
@@ -122,6 +126,8 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
+  NSError * error = nil;
+  
   NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
 
@@ -131,13 +137,16 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   
   NSData *ECDSAKey = [self byteStringToData:privateKey];
   self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-  NSError * err = nil;
-  self.account = [self.keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&err];
-  if (err) {
-    _rejectBlock(@"iOS", @"Import private key exception", err);
+  
+  self.account = [self.keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&error];
+  if (error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1004 userInfo:@{@"info":@"Import private key exception"}];
+    _rejectBlock(@"-1004", @"Import private key exception", error);
     return;
   }
+  
   [self saveKeystorePath:self.account];
+  
   NSString *address = [[self.account getAddress] getHex];
   _resolveBlock(@[@{@"address":address}]);
 }
@@ -147,6 +156,8 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
+  NSError *error = nil;
+  
   NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
   self.ethClient = [[GethEthereumClient alloc] init:rawurl];
   
@@ -154,27 +165,33 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   [FileManager removeFileAtPath:keydir];
   [FileManager createDirectoryIfNotExists:keydir];
   
-  NSError *keyErr = nil;
-  NSData *privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &keyErr);
-  if (keyErr) {
-    _rejectBlock(@"iOS", @"Mnemonic words derive private key exceptions", keyErr);
+  NSData *privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &error);
+  if (error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1005 userInfo:@{@"info":@"Mnemonic words derive private key exceptions"}];
+    _rejectBlock(@"-1005", @"Mnemonic words derive private key exceptions", error);
     return;
   }
+  
   self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-  NSError * err = nil;
-  self.account = [self.keyStore importECDSAKey:privateKey passphrase:passphrase error:&err];
-  if (err) {
-    _rejectBlock(@"iOS", @"Import private key exception", err);
+  self.account = [self.keyStore importECDSAKey:privateKey passphrase:passphrase error:&error];
+  if (error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1006 userInfo:@{@"info":@"Import private key exception"}];
+    _rejectBlock(@"iOS", @"Import private key exception", error);
     return;
   }
+  
   [self saveKeystorePath:self.account];
+  
   NSString *address = [[self.account getAddress] getHex];
   _resolveBlock(@[@{@"address":address}]);
 }
 
 RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
+  
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  
+  NSError *error = nil;
   
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
   [FileManager createDirectoryIfNotExists:keyTemp];
@@ -183,35 +200,38 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
   BOOL isExists = [FileManager fileExistsAtPath:keydir];
   if (!isExists) {
-    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
-    _rejectBlock(@"iOS", @"keyStore does not exist", nil);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1001 userInfo:@{@"info":@"keyStore does not exist"}];
+    _rejectBlock(@"-1001", @"keyStore does not exist", error);
     return;
   }
+  
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
-  NSError *err = nil;
-  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&err];
-  if (err) {
-    // TODO  异常流程 keyStore 导入异常
-    _rejectBlock(@"iOS", @"Import keyStore file exception", err);
+  
+  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
+  if (error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1007 userInfo:@{@"info":@"Import keyStore file exception"}];
+    _rejectBlock(@"-1007", @"Import keyStore file exception", error);
     return;
   }
-  NSError *exportErr = nil;
-  NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&exportErr];
-  if (exportErr) {
-    // TODO  异常流程 keyStore 导入异常
-    _rejectBlock(@"iOS", @"Export private key exception", exportErr);
+
+  NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&error];
+  if (error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Export private key exception"}];
+    _rejectBlock(@"-1008", @"Export private key exception", error);
     return;
   }
+  
   _resolveBlock(@[@{@"privateKey":privateKey}]);
 }
 
 RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress value:(nonnull NSNumber *)value gas:(nonnull NSNumber *)gas  resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  NSError *error = nil;
   
   if (!self.account || !self.keyStore || !self.ethClient) {
-    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
-    _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
+    _rejectBlock(@"-1008", @"Wallet not unlocked", error);
     return;
   }
   
@@ -219,10 +239,9 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
   int64_t number = -1;
   int64_t nonce = 0x0;
-  NSError *nonceErr = nil;
-  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
-  if (!isGet || nonceErr) {
-    _rejectBlock(@"iOS", @"get Nonce exceptions", nonceErr);
+  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
+  if (!isGet || error) {
+    _rejectBlock(@"-1009", @"get Nonce exceptions", error);
     return;
   }
 
@@ -235,27 +254,31 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-//    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
-    _rejectBlock(@"iOS", @"Signature abnormal", nil);
+    _rejectBlock(@"-1010", @"Signature abnormal", error);
     return;
   }
+
+  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
+  if (!isSend || error) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1011 userInfo:@{@"info":@"Transaction eth failure"}];
+    _rejectBlock(@"-1011", @"Transaction eth failure", error);
+    return;
+  }
+  NSString *txHash = [[signedTx getHash] getHex];
+  NSLog(@"txHash ===> %@", txHash);
   
-  NSError *sendErr = nil;
-  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
-  if (!isSend || sendErr) {
-    _rejectBlock(@"iOS", @"Transaction eth failure", sendErr);
-    return;
-  }
   _resolveBlock(@[@{@"isSend":@YES}]);
 }
 
+//- (GethReceipt*)getTransactionReceipt:(GethContext*)ctx hash:(GethHash*)hash error:(NSError**)error;
 RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress tokenAddress:(NSString *)tokenAddress value:(nonnull NSNumber *)value gas:(nonnull NSNumber *)gas resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  NSError *error = nil;
   
   if (!self.account || !self.keyStore || !self.ethClient) {
-    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
-    _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
+    _rejectBlock(@"-1008", @"Wallet not unlocked", error);
     return;
   }
 
@@ -266,14 +289,14 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSError *nonceErr = nil;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
   if (!isGet || nonceErr) {
-    _rejectBlock(@"iOS", @"get Nonce exceptions", nonceErr);
+    _rejectBlock(@"-1009", @"get Nonce exceptions", error);
     return;
   }
   
   GethAddress *to = [[GethAddress alloc] initFromHex:tokenAddress];
   GethBigInt *amount = [[GethBigInt alloc] init:0];
   GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas longLongValue]];;
-  
+
   GethCallMsg *callMsg = [[GethCallMsg alloc] init];
   GethAddress *dataAddress = [[GethAddress alloc] initFromHex:toAddress];
   GethBigInt *dataAmount = [[GethBigInt alloc] init:[value longLongValue]];
@@ -284,36 +307,39 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   [callMsg setValue:dataAmount];
   
   
-  NSError *error = nil;
   NSData *tokenData = GethGenerateERC20TransferData(dataAddress, dataAmount, &error);
   if (error || !tokenData) {
-    _rejectBlock(@"iOS", @"GethGenerateERC20TransferData", error);
+    _rejectBlock(@"-1012", @"GethGenerateERC20TransferData", error);
     return;
   }
   [callMsg setData:tokenData];
 
-//  NSError *limitErr = nil;
-  int64_t gasLimit = 21000;
-//  BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&limitErr];
-//  if (!isLimit || limitErr) {
-//    _rejectBlock(@"iOS", @"estimateGas", limitErr);
-//    return;
-//  }
+  int64_t gasLimit = 2100000;
+  BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&error];
+  if (!isLimit || error) {
+    _rejectBlock(@"-1013", @"estimateGas", error);
+    return;
+  }
+  gasLimit *= 2;
+  
   
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];
   
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
-    _rejectBlock(@"iOS", @"Signature abnormal", nil);
-  }
-  
-  NSError *sendErr = nil;
-  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
-  if (!isSend || sendErr) {
-    _rejectBlock(@"iOS", @"Transaction token failure", sendErr);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1011 userInfo:@{@"info":@"Transaction eth failure"}];
+    _rejectBlock(@"-1011", @"Transaction eth failure", error);
     return;
   }
+  
+  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
+  if (!isSend || error) {
+    _rejectBlock(@"-1014", @"Transaction token failure", error);
+    return;
+  }
+  NSString *txHash = [[signedTx getHash] getHex];
+  NSLog(@"txHash ===> %@", txHash);
+  
   _resolveBlock(@[@{@"isSend":@YES}]);
 }
 
@@ -336,7 +362,6 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
   _resolveBlock = resolver;
   _rejectBlock = reject;
   if (!self.account || !self.keyStore || !self.ethClient) {
-    //    NSError *err = [NSError errorWithDomain:<#(nonnull NSErrorDomain)#> code:<#(NSInteger)#> userInfo:<#(nullable NSDictionary<NSErrorUserInfoKey,id> *)#>];
     _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
     return;
   }

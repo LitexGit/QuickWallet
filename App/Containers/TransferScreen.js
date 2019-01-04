@@ -119,7 +119,7 @@ class TransferScreen extends Component {
 
   _transfer=()=>{
       const {passphrase='', address='', selectedToken} = this.props;
-      const {tokenAddress, symbol, decimal} = selectedToken;
+      const {Tokenaddress:tokenAddress, Symbol:symbol, Decimal:decimal} = selectedToken;
       const {inputBalance, inputAddress} = this.state;
 
       this.props.gethTransfer({
@@ -136,6 +136,9 @@ class TransferScreen extends Component {
 
   componentDidMount=()=>{
       this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
+          console.log('===========isUnlock=========================');
+          console.log(isUnlock);
+          console.log('===========isUnlock=========================');
           if (isUnlock) {
               this._transfer();
               return;
@@ -146,8 +149,8 @@ class TransferScreen extends Component {
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, this._transfer);
 
-      const { selectedToken } = this.props;
-      const {value} = selectedToken;
+      // const { selectedToken } = this.props;
+      // const {value} = selectedToken;
       // 校验是否支持转账
   }
 
@@ -162,7 +165,7 @@ class TransferScreen extends Component {
 
       const {displayGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
       const { loading, selectedToken } = this.props;
-      const {symbol, count} = selectedToken;
+      const {Symbol:symbol, count} = selectedToken;
 
       return (
           <View style={styles.container}>
@@ -172,7 +175,7 @@ class TransferScreen extends Component {
               <SignTxResultAlert
                   isInit={isShowSignTx}
                   to={inputAddress}
-                  balance={inputBalance}
+                  balance={parseFloat(inputBalance)}
                   gas={this.inputGas}
                   onPressCancel={()=>this._signCancel()}
                   onPressConfirm={()=>this._signConfirm()}/>
@@ -185,7 +188,7 @@ class TransferScreen extends Component {
                       <View style={styles.bananceSection}>
                           <View style={styles.bananceTopView}>
                               <Text style={styles.titleText}>{symbol}</Text>
-                              <Text style={styles.balanceText}>{ I18n.t('Balance')}:{count}{symbol}</Text>
+                              <Text style={styles.balanceText}>{ I18n.t('Balance')}: {count} {symbol}</Text>
                           </View>
                           <TextInput autoFocus style={styles.balanceInput}
                               clearButtonMode='while-editing'
@@ -238,9 +241,9 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log('===============TransferScreen=====================');
-    // console.log(state);
-    // console.log('===============TransferScreen=====================');
+    console.log('===============TransferScreen=====================');
+    console.log(state);
+    console.log('===============TransferScreen=====================');
     const {
         assets:{selectedToken},
         wallet:{passphrase, address, loading}
