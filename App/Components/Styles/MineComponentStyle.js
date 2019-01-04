@@ -22,10 +22,12 @@ export default StyleSheet.create({
     avatar:{
         marginBottom:Metrics.baseMargin,
         marginTop:Metrics.statusBarHeight,
+        width:54,
+        height:54,
+        borderRadius:27,
     },
     bottomSection:{
         flex:1,
-        // paddingHorizontal:Metrics.baseMargin,
     },
     nameText:{
         fontSize:Fonts.size.input,

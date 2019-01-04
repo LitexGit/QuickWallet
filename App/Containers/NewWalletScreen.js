@@ -147,7 +147,7 @@ class NewWalletScreen extends Component {
               </KeyboardAvoidingView>
               <View style={styles.bottomSection}>
                   <Button onPress={()=>this._onPressBtn()}
-                      // disabled={!isInputValid}
+                      disabled={!isInputValid}
                       containerViewStyle={styles.containerViewStyle}
                       buttonStyle={styles.buttonStyle}
                       textStyle={styles.btnTitle}

@@ -48,12 +48,7 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) =>
-    // console.log('=========state===========================');
-    // console.log(state);
-    // console.log('=========state===========================');
-    state
-;
+const mapStateToProps = (state) =>state;
 
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),

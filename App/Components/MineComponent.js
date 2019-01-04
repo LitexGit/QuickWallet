@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import styles from './Styles/MineComponentStyle';
-
-
-import { FlatList, Text, TouchableOpacity } from 'react-native';
+import { FlatList, Text, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Metrics , Colors } from '../Themes';
 import { View } from 'react-native-animatable';
 import {MineConfig} from '../Config/MineConfig';
 
-import { Avatar } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,26 +13,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
-import AssetActions from '../Redux/AssetRedux';
+import  Identicon from 'identicon.js';
 // import I18n from '../I18n';
 
 class MineComponent extends Component {
-    // Prop type warnings
-    static propTypes = {
-        // someProperty: PropTypes.object,
-        // someSetting: PropTypes.bool.isRequired,
-    }
-
-    // Defaults for props
-    static defaultProps = {
-        // someSetting: false
-    }
 
     componentDidMount=()=>{
-        const address = '0x38bCc5B8b793F544d86a94bd2AE94196567b865c';
-        const {getUserInfo, getBalance} = this.props;
-        // getUserInfo(address);
-        // getBalance({address});
+        const {address} = this.props;
+        this.props.getUserInfo({address});
     }
 
   _onPressAvatar=()=>{
@@ -111,20 +95,19 @@ class MineComponent extends Component {
   _renderItemSeparator= ()=><View style={styles.itemSeparator}/>
 
   render () {
-      const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
-
       const {nickname, address, ethBanance} = this.props;
+
+      const avatar = new Identicon(address).toString();
+      const avatar_64='data:image/png;base64,'+avatar;
+
+
       const data = Object.values(MineConfig);
       return (
           <View style={styles.container}>
               <View style={styles.topSection}>
                   <TouchableOpacity style={styles.avatarSection} onPress={()=>this._onPressAvatar()}>
                       <View style={styles.avatarSection}>
-                          <Avatar medium rounded
-                              containerStyle={styles.avatar}
-                              source={{uri: avatar_url}}
-                              onPress={() => console.log('Works!')}
-                              activeOpacity={0.7}/>
+                          <Image style ={styles.avatar} source={{uri: avatar_64}}/>
                           <Text style={styles.nameText}>{nickname}</Text>
                       </View>
                   </TouchableOpacity>
@@ -151,8 +134,7 @@ class MineComponent extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{nickname},
-        wallet:{address},
+        user:{nickname, address},
         assets:{ethBanance}
     } = state;
     return { ethBanance, nickname, address};
@@ -161,7 +143,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     getUserInfo: (params) => dispatch(UserActions.getUserInfoRequest(params)),
-    getBalance: (params) => dispatch(AssetActions.getBalanceRequest(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineComponent);

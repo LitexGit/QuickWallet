@@ -67,11 +67,8 @@ class PassphraseInputAlert extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-});
-
 const mapDispatchToProps = (dispatch) => ({
     savePassphrase: ({passphrase}) => dispatch(WalletActions.savePassphrase({passphrase})),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PassphraseInputAlert);
+export default connect(mapDispatchToProps)(PassphraseInputAlert);

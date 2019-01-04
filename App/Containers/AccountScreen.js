@@ -15,6 +15,7 @@ import I18n from '../I18n';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Toast from 'react-native-root-toast';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+import  Identicon from 'identicon.js';
 
 
 class AccountScreen extends Component {
@@ -89,18 +90,19 @@ class AccountScreen extends Component {
 
   render () {
 
-      const avatar_url = 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg';
-
       const {isInit} = this.state;
       const {address, nickname, sharecode} = this.props;
-      const settings = {'avatar':'', 'account': nickname, 'inviteCode':sharecode};
+      const settings = {'avatar':address, 'account': nickname, 'inviteCode':sharecode};
+
+      const avatar = new Identicon(address).toString();
+      const avatar_64='data:image/png;base64,'+avatar;
 
       const infoView = Object.values(AccountConfig).map((config, index)=>{
           const { key='' } = config;
           config.details = settings[key];
           const { title='', type=1, details='' } = config;
 
-          const rightView = type === 1 ? <Avatar small rounded source={{uri: avatar_url}}/> : <Text style={styles.detailsStyle}>{details}</Text>;
+          const rightView = type === 1 ? <Avatar small rounded source={{uri: avatar_64}}/> : <Text style={styles.detailsStyle}>{details}</Text>;
 
           return (<View key={index} style={styles.itemView}>
               <Text style={styles.titleStyle}>{title}</Text>
@@ -121,7 +123,7 @@ class AccountScreen extends Component {
                           <FontAwesome name={'copy'} size={Metrics.icons.small} color={Colors.textColor}/>
                       </TouchableOpacity>
                   </View>
-                  <QRCode value={avatar_url} size={120}/>
+                  <QRCode value={address} size={120}/>
               </View>
               <View style={styles.bottomSection}>
                   <Button onPress={()=>this._onPressBackup()}
@@ -140,8 +142,7 @@ class AccountScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        wallet:{address},
-        user:{nickname, sharecode}
+        user:{nickname, sharecode, address}
     } = state;
     return {address, nickname, sharecode};
 };

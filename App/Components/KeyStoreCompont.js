@@ -12,17 +12,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
 
 class KeyStoreCompont extends Component {
-    // // Prop type warnings
-    // static propTypes = {
-    //   someProperty: PropTypes.object,
-    //   someSetting: PropTypes.bool.isRequired,
-    // }
-    //
-    // // Defaults for props
-    // static defaultProps = {
-    //   someSetting: false
-    // }
-
     constructor (props) {
         super(props);
         this.privateKey = '';

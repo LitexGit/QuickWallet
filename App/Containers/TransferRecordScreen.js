@@ -12,6 +12,7 @@ import AssetActions from '../Redux/AssetRedux';
 import {sectionlize} from '../Lib/Format';
 import {getTxDirection} from '../Lib/Utils';
 import I18n from '../I18n';
+import  Identicon from 'identicon.js';
 
 
 class TransferRecordScreen extends Component {
@@ -52,19 +53,20 @@ class TransferRecordScreen extends Component {
 
 
   _renderItem=({item})=>{
-      const img_url = 'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg';
-
-      const { from='', to='', time='', value='', txreceipt_status='1', tokenDecimal=18} = item;
+      const { from='', to='', time='', value='', txreceipt_status='1' } = item;
       const isInput =  getTxDirection({from, to});
       const title = isInput ? '收款' : '付款';
       const direction = isInput ? 'From:'+from : 'To:'+ to;
       const amount = value / 1e18;
 
+      const avatar = new Identicon(direction).toString();
+      const avatar_64='data:image/png;base64,'+avatar;
+
       const bgColor = txreceipt_status === 0 ? {backgroundColor:'#FED605'} : {backgroundColor:'green'};
       return (<TouchableOpacity style={styles.container}>
           <View style={styles.itemContainer}>
               <View style={styles.itemLeft}>
-                  <Image style={styles.symbolImg} source={{ uri: img_url }}/>
+                  <Image style={styles.symbolImg} source={{ uri: avatar_64 }}/>
                   <View style={styles.itemLeftView}>
                       <Text style={styles.titleStyle}>{title}</Text>
                       <Text style={styles.timeStyle}>{time}</Text>

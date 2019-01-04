@@ -18,9 +18,7 @@ class MineScreen extends Component {
       )
   }
 
-  componentDidMount=()=>{
-      console.log('====================================');
-  }
+  componentDidMount=()=>console.log();
 
   render () {
       const {isLoginInfo} = this.props;
@@ -33,9 +31,6 @@ class MineScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log('===========state=========================');
-    // console.log(state);
-    // console.log('===========state=========================');
     const {
         user:{isLoginInfo}
     } = state;

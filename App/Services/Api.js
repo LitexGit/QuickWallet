@@ -12,6 +12,12 @@ const create = (baseURL = Config.API_URL || apiUrl) => {
         timeout: 10000
     });
 
+    api.addRequestTransform((request)=>{
+        // console.log('==========request==========================');
+        // console.log(request);
+        // console.log('===========request=========================');
+    });
+
     api.addResponseTransform(response=>{
         const {data} = response;
         const {status, msg, data:array} = data;

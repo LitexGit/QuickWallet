@@ -136,9 +136,6 @@ class TransferScreen extends Component {
 
   componentDidMount=()=>{
       this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
-          console.log('===========isUnlock=========================');
-          console.log(isUnlock);
-          console.log('===========isUnlock=========================');
           if (isUnlock) {
               this._transfer();
               return;
@@ -196,7 +193,7 @@ class TransferScreen extends Component {
                               placeholder={I18n.t('EnterAmount')}
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
-                              keyboardType='number-pad'
+                              keyboardType='numeric'
                               onChangeText={this._onChangeBalance}/>
                       </View>
                       <View style={styles.addressSection}>
@@ -241,12 +238,10 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('===============TransferScreen=====================');
-    console.log(state);
-    console.log('===============TransferScreen=====================');
     const {
+        user:{address},
         assets:{selectedToken},
-        wallet:{passphrase, address, loading}
+        wallet:{passphrase, loading}
     } = state;
     return { selectedToken, passphrase, address, loading};
 };

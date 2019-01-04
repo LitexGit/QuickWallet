@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import styles from './Styles/MnemonicCompontStyle';
 import { Button } from 'react-native-elements';
@@ -13,17 +12,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
 
 class MnemonicCompont extends Component {
-    // // Prop type warnings
-    // static propTypes = {
-    //   someProperty: PropTypes.object,
-    //   someSetting: PropTypes.bool.isRequired,
-    // }
-    //
-    // // Defaults for props
-    // static defaultProps = {
-    //   someSetting: false
-    // }
-
     constructor (props) {
         super(props);
         this.password = '';

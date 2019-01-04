@@ -8,9 +8,8 @@ import { connect } from 'react-redux';
 import styles from './Styles/CurrencyScreenStyle';
 
 class CurrencyScreen extends Component {
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-  }
+  componentDidMount=()=>console.log();
+
   render () {
       return (
           <ScrollView style={styles.container}>

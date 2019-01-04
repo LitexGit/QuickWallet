@@ -28,9 +28,7 @@ class SettingScreen extends Component {
       }
   }
 
-  componentDidMount=()=>{
-      console.log('===========componentDidMount=========================');
-  }
+
   _renderItem=({item})=>{
       const {key='', title='', details=''} = item;
       const nextImg = (<View>
