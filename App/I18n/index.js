@@ -3,12 +3,13 @@ import I18n from 'react-native-i18n';
 import en from './languages/english.json';
 import zh from './languages/zh.json';
 
-I18n.defaultLocale = 'en';
-I18n.fallbacks = true;
+
 I18n.translations = {
     en,
     zh,
 };
+I18n.fallbacks = true;
+I18n.defaultLocale = 'en';
 
 export default I18n;
 
