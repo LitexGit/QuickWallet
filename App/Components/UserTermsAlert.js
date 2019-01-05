@@ -68,8 +68,8 @@ class UserTermsAlert extends Component {
                         {agreedImg}
                     </TouchableOpacity>
                     <View style={styles.remindView}>
-                        <Text style={styles.remind}>{remin001}</Text>
-                        <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{remin002}</Text>
+                        <Text style={styles.remind}>{I18n.t('ConfirmRemind001')}</Text>
+                        <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{I18n.t('ConfirmRemind002')}</Text>
                     </View>
                 </View>
                 <TouchableOpacity disabled={!isAgree} onPress={()=>this._onPressBtn()}>

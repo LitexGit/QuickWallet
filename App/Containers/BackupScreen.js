@@ -120,14 +120,12 @@ class BackupScreen extends Component {
   }
 
   render () {
-      const remind = '请桉顺序点击助记词,以确认您的正确身份。';
-      const toast = '助记词顺序不正确，请校对';
       const {loading} = this.props;
       const { pressArray, unPressArray, isSorted} = this.state;
       const isCanPress = isSorted && !unPressArray.length;
 
       const toastView = !isSorted ? (<View style={styles.toastView}>
-          <Text style={styles.toastText}>{toast}</Text>
+          <Text style={styles.toastText}>{I18n.t('AbnormalSortRemind')}</Text>
       </View>):null;
 
       const pressWord = pressArray.map((item, key)=>{
@@ -161,7 +159,7 @@ class BackupScreen extends Component {
                       <Text style={styles.titleStytle}>{I18n.t('ConfirmMnemonic')}</Text>
                   </View>
                   <View style={styles.remindSection}>
-                      <Text style={styles.remindText}>{remind}</Text>
+                      <Text style={styles.remindText}>{I18n.t('BackupRemind')}</Text>
                   </View>
                   {toastView}
                   <View style={styles.pressWordView}>

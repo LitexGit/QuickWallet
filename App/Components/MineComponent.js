@@ -14,7 +14,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
 import  Identicon from 'identicon.js';
-// import I18n from '../I18n';
+import I18n from '../I18n';
 
 class MineComponent extends Component {
 
@@ -126,7 +126,7 @@ class MineComponent extends Component {
                       </View>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.assetsSection} onPress={()=>this._onPressAssets()}>
-                      <Text style={styles.assetsStyle}>资产总价值：{ethBanance}</Text>
+                      <Text style={styles.assetsStyle}>{I18n.t('AssetsValue')}{ethBanance}</Text>
                   </TouchableOpacity>
 
               </View>

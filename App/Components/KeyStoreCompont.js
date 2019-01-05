@@ -68,8 +68,6 @@ class KeyStoreCompont extends Component {
     }
 
     render () {
-        const remind001 = '输入 Private Key 文件内容至输入框。或通过扫描 Private Key 内容生成的二维码录入。请留意字符大小写。';
-        const remind002 = '设置新密码后,旧密码将在导入账户后失效。';
         const {isCanPress, isShowPassword} = this.state;
         const {loading} = this.props;
 
@@ -86,13 +84,13 @@ class KeyStoreCompont extends Component {
                 <ScrollView style={styles.container}>
                     <View style={styles.container}>
                         <View style={styles.remindView}>
-                            <Text style={styles.remindText}>{remind001}</Text>
-                            <Text style={[styles.remindText, {color:'red', marginTop:Metrics.smallMargin}]}>{remind002}</Text>
+                            <Text style={styles.remindText}>{I18n.t('ImportPrivateKeyRemind')}</Text>
+                            <Text style={[styles.remindText, {color:'red', marginTop:Metrics.smallMargin}]}>{I18n.t('ImportRemind')}</Text>
                         </View>
                         <View style={styles.mnemonicView}>
                             <TextInput
                                 multiline
-                                placeholder='输入明文私钥'
+                                placeholder={I18n.t('InputPrivateKey')}
                                 placeholderTextColor={ Colors.separateLineColor }
                                 underlineColorAndroid={ 'transparent' }
                                 style={ styles.privateKeyInput }
@@ -102,7 +100,7 @@ class KeyStoreCompont extends Component {
                         <View style={styles.infoView}>
                             <View style={ styles.sectionView }>
                                 <View style={ styles.section }>
-                                    <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>设置密码</Text>
+                                    <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
                                     <AntDesign name={'warning'} size={Metrics.icons.tiny} color={Colors.separateLineColor} style={styles.warning}/>
                                 </View>
                                 <View style={styles.section}>
@@ -118,7 +116,7 @@ class KeyStoreCompont extends Component {
                             </View>
                             <View style={styles.confirmView}>
                                 <TextInput style={styles.section}
-                                    placeholder='重复输入密码'
+                                    placeholder={I18n.t('RepeatPassword')}
                                     placeholderTextColor={ Colors.separateLineColor }
                                     underlineColorAndroid={ 'transparent' }
                                     clearButtonMode='while-editing'

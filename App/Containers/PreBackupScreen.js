@@ -23,7 +23,6 @@ class PreBackupScreen extends Component {
       this.props.gethRandomMnemonic();
   }
   render () {
-      const remind = '请仔细抄写下方助记词，我们将在下一步验证';
       const {mnemonic} = this.props;
 
       return (
@@ -35,7 +34,7 @@ class PreBackupScreen extends Component {
                       <Text style={styles.titleStytle}>备份助记词</Text>
                   </View>
                   <View style={styles.remindSection}>
-                      <Text style={styles.remindText}>{remind}</Text>
+                      <Text style={styles.remindText}>{I18n.t('PreBackupRemind')}</Text>
                   </View>
                   <Text style={styles.mnemonicText}>{mnemonic}</Text>
               </View>

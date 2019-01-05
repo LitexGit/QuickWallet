@@ -8,6 +8,7 @@ import AccountComponent from '../Components/AccountComponent';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Metrics, Colors } from '../Themes';
 import { connect } from 'react-redux';
+import I18n from '../I18n';
 
 
 class SignTxResultAlert extends Component {
@@ -33,7 +34,6 @@ class SignTxResultAlert extends Component {
   }
 
   render () {
-      const title = '确认信息';
       const {isInit, address, to, balance, gas, onPressCancel, onPressConfirm} = this.props;
 
       // TODO 构建数据源
@@ -58,7 +58,7 @@ class SignTxResultAlert extends Component {
               <View style={styles.container}>
                   <View style={styles.topSection}>
                       <View style={styles.addressSection}>
-                          <Text style={styles.titleStyle}>{title}</Text>
+                          <Text style={styles.titleStyle}>{I18n.t('ConfirmInfo')}</Text>
                           <AccountComponent address={address}/>
                           <View style={styles.direction}>
                               <View style={styles.separateLine}/>
@@ -73,10 +73,10 @@ class SignTxResultAlert extends Component {
                   </View>
                   <View style={styles.bottomSection}>
                       <TouchableOpacity style={styles.btnContainer} onPress={onPressCancel}>
-                          <Text style={styles.btnTitle}>取消</Text>
+                          <Text style={styles.btnTitle}>{I18n.t('CancelAction')}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity style={[styles.btnContainer, {backgroundColor: Colors.textColor}]} onPress={onPressConfirm}>
-                          <Text style={styles.btnTitle}>确认</Text>
+                          <Text style={styles.btnTitle}>{I18n.t('ConfirmAction')}</Text>
                       </TouchableOpacity>
                   </View>
               </View>

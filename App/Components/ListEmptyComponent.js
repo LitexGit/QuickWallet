@@ -11,7 +11,7 @@ export default class ListEmptyComponent extends Component {
         containerStyle: PropTypes.object,
     }
     static defaultProps = {
-        title: '暂无记录',
+        title: I18n.t('NoRecord'),
         containerStyle: {},
     }
 

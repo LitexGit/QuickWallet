@@ -5,6 +5,7 @@ import styles from './Styles/PrivateKeyWarningAlertStyle';
 import Overlay from 'react-native-modal-overlay';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { Metrics } from '../Themes';
+import I18n from '../I18n';
 
 export default class PrivateKeyWarningAlert extends Component {
     static propTypes = {
@@ -30,10 +31,6 @@ export default class PrivateKeyWarningAlert extends Component {
     }
 
     render () {
-        const title = '警告';
-        const content001 = '任何持有此私钥的人都可以获取账户中所有的资产,请妥善保管！';
-        const content002 = '请确保周围没有其他人和摄像头';
-        const action = '显示私钥';
 
         const {isShow} = this.state;
         return (
@@ -46,15 +43,15 @@ export default class PrivateKeyWarningAlert extends Component {
                 <View style={styles.container}>
                     <View style={styles.topSection}>
                         <Entypo name={'warning'} size={Metrics.icons.small} color='#FED605'/>
-                        <Text style={styles.remind001}>{title}</Text>
+                        <Text style={styles.remind001}>{I18n.t('ExportRemindTitle')}</Text>
                     </View>
                     <View style={styles.centerSection}>
-                        <Text style={styles.remind001}>{content001}</Text>
-                        <Text style={[styles.remind001, {marginVertical:Metrics.baseMargin}]}>{content002}</Text>
+                        <Text style={styles.remind001}>{I18n.t('ExportRemind001')}</Text>
+                        <Text style={[styles.remind001, {marginVertical:Metrics.baseMargin}]}>{I18n.t('ExportRemind002')}</Text>
                     </View>
                     <View style={styles.bottomSection}>
                         <TouchableOpacity style={styles.actionView} onPress={()=>this._onPressShow()}>
-                            <Text style={styles.actionStyle}>{action}</Text>
+                            <Text style={styles.actionStyle}>{I18n.t('ExportAction')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

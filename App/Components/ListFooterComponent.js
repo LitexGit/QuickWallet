@@ -14,7 +14,7 @@ export default class ListFooterComponent extends Component {
 
   static defaultProps = {
       loading: false,
-      text: '加载更多',
+      text: I18n.t('LoadingAction'),
   }
 
   componentDidMount=()=>{

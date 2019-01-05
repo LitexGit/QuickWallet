@@ -68,13 +68,8 @@ class AccountScreen extends Component {
   _confirmBtnAction=()=>this.props.logout();
 
   _onPressLogOut=()=>{
-      const title = '退出当前身份';
-      const content = '即将移除身份及所有导入的钱包，请确保所有钱包已备份。';
-      const action001 = '取消';
-      const action002 = '确认';
-
-      Alert.alert( title,content,
-          [{text: action001, style: 'cancel'}, {text: action002, onPress: () => this._confirmBtnAction()}],
+      Alert.alert( I18n.t('LogoutTitle'),  I18n.t('LogoutRemind'),
+          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._confirmBtnAction()}],
           { cancelable: false }
       );
   }
@@ -129,11 +124,11 @@ class AccountScreen extends Component {
                   <Button onPress={()=>this._onPressBackup()}
                       buttonStyle={styles.buttonStyle}
                       textStyle={styles.backupTitle}
-                      title='备份此账户'/>
+                      title={I18n.t('BackUpAccount')}/>
                   <Button onPress={()=>this._onPressLogOut()}
                       buttonStyle={styles.buttonStyle}
                       textStyle={styles.logOutTitle}
-                      title='退出登录'/>
+                      title={I18n.t('LogoutAction')}/>
               </View>
           </View>
       );

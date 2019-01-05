@@ -30,8 +30,8 @@ export const sectionlize = (items) => {
         const yesterday = formatDate(d);
         Object.keys(dateGroup).forEach(key=>{
             const data = dateGroup[key];
-            key===today && (key=I18n.t('today'));
-            key===yesterday && (key=I18n.t('yesterday'));
+            key===today && (key=I18n.t('Today'));
+            key===yesterday && (key=I18n.t('Yesterday'));
             sections.push({ key, data });
         });
     }

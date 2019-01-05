@@ -70,9 +70,7 @@ class MnemonicCompont extends Component {
   }
 
   render () {
-      const remind = '使用助记词导入时可以修改钱包密码。';
       const path = 'm/44’/60‘/0’/0';
-      const remind002 = '设置新的密码后,旧密码将在导入账户后失效。';
 
       const {isCanPress, isShowPassword} = this.state;
       const {loading} = this.props;
@@ -90,8 +88,8 @@ class MnemonicCompont extends Component {
               <ScrollView style={styles.container}>
                   <View style={styles.container}>
                       <View style={styles.remindView}>
-                          <Text style={styles.remindText}>{remind}</Text>
-                          <Text style={styles.remind002}>{remind002}</Text>
+                          <Text style={styles.remindText}>{I18n.t('ImportMnemonicRemind')}</Text>
+                          <Text style={styles.remind002}>{I18n.t('ImportRemind')}</Text>
                       </View>
                       <View style={styles.mnemonicView}>
                           <TextInput
@@ -106,10 +104,10 @@ class MnemonicCompont extends Component {
                       <View style={styles.infoView}>
                           <View style={styles.sectionView}>
                               <View style={styles.pathTop}>
-                                  <Text style={styles.pathText}>选择路径</Text>
+                                  <Text style={styles.pathText}>{I18n.t('ChoosePath')}</Text>
                                   <TouchableOpacity onPress={()=>this._onPressNext()}>
                                       <View style={styles.nextView}>
-                                          <Text style={styles.nextText}>默认</Text>
+                                          <Text style={styles.nextText}>{I18n.t('Default')}</Text>
                                           <MaterialIcons name={'navigate-next'} size={Metrics.icons.small} color={Colors.textColor}/>
                                       </View>
                                   </TouchableOpacity>
@@ -123,7 +121,7 @@ class MnemonicCompont extends Component {
                               </View>
                               <View style={styles.section}>
                                   <TextInput style={styles.passwordInput}
-                                      placeholder='钱包密码'
+                                      placeholder={I18n.t('WalletPassword')}
                                       placeholderTextColor={ Colors.separateLineColor }
                                       underlineColorAndroid={ 'transparent' }
                                       clearButtonMode='while-editing'
@@ -135,7 +133,7 @@ class MnemonicCompont extends Component {
                           </View>
                           <View style={styles.confirmView}>
                               <TextInput style={styles.section}
-                                  placeholder='重复输入密码'
+                                  placeholder={I18n.t('RepeatPassword')}
                                   placeholderTextColor={ Colors.separateLineColor }
                                   underlineColorAndroid={ 'transparent' }
                                   clearButtonMode='while-editing'

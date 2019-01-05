@@ -5,6 +5,7 @@ import styles from './Styles/PassphraseInputAlertStyle';
 import Overlay from 'react-native-modal-overlay';
 import { connect } from 'react-redux';
 import WalletActions from '../Redux/WalletRedux';
+import I18n from '../I18n';
 
 class PassphraseInputAlert extends Component {
     static propTypes = {
@@ -31,12 +32,7 @@ class PassphraseInputAlert extends Component {
     }
 
     render () {
-        const title = '请输入密码';
-        const action001 = '取消';
-        const action002 = '确认';
-
         const {isInit, onPressCancel} = this.props;
-
         return (
             <Overlay
                 containerStyle={styles.overlay}
@@ -45,7 +41,7 @@ class PassphraseInputAlert extends Component {
                 animationType='zoomIn'
                 animationDuration={300}>
                 <View style={styles.container}>
-                    <Text style={styles.titleStyle}>{title}</Text>
+                    <Text style={styles.titleStyle}>{ I18n.t('InputPswdTitle') }</Text>
                     <TextInput
                         style={styles.textInput}
                         autoFocus
@@ -55,10 +51,10 @@ class PassphraseInputAlert extends Component {
                         onChangeText={this._onChangeText}/>
                     <View style={styles.bottomSection}>
                         <TouchableOpacity style={styles.actionView} onPress={onPressCancel}>
-                            <Text style={styles.actionStyle}>{action001}</Text>
+                            <Text style={styles.actionStyle}>{ I18n.t('CancelAction')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.actionView}  onPress={()=>this._onPressConfirm()}>
-                            <Text style={styles.actionStyle}>{action002}</Text>
+                            <Text style={styles.actionStyle}>{ I18n.t('ConfirmAction')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -107,8 +107,6 @@ class TransferRecordScreen extends Component {
 
   render () {
       const {refreshing, loading} = this.props;
-
-      const btnTitle = '发起转账';
       const isBalance = false;
 
       const {txlist} = this.props;
@@ -137,7 +135,7 @@ class TransferRecordScreen extends Component {
                   <Button onPress={()=>this._onPressBtn()}
                       backgroundColor={Colors.textColor}
                       disabled={isBalance}
-                      title={btnTitle}/>
+                      title={I18n.t('TransferAction')}/>
               </View>
           </View>
       );

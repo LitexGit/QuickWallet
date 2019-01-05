@@ -33,7 +33,7 @@
   "SetPassword":"设置密码",
   "WalletPassword":"钱包密码",
   "DataLoading":"数据加载中",
-  "AssetsValue":"资产总价值",
+  "AssetsValue":"资产总价值:",
   "UseSetting":"使用设置",
   "HelpFeedback":"帮助与反馈",
   "UserAgreement":"用户协议",
@@ -66,16 +66,15 @@
   "Yesterday":"昨天",
 
   "InputPswdTitle":"请输入密码",
-  "InputPswdCancel":"取消",
-  "InputPswdConfirm":"确认",
 
   "ScreenshotsTitle":"请勿截图",
-  "ScreenshotsAction":"我知道了",
   "ScreenshotsRemind001":"如果有人获取你的助记词将直接获取你的资产！",
   "ScreenshotsRemind002":"账户助记词仅在此处出现一次，请抄写助记词并存放在安全的地方！",
 
   "CancelAction":"取消",
   "ConfirmAction":"确认",
+  "KnownAction":"我知道了",
+  "CreatAction":"创建账户",
 
   "NewWalletRemind001":"密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要！",
   "NewWalletRemind002":"QuickWallet 不存储密码,也无法帮您找回,请务必牢记。",
@@ -103,7 +102,7 @@
   "ScanRemind":"将二维码放入框内，即可自动扫描",
 
   "Combined":"总计",
-  "TotalAssets":"资产总价值",
+  "TotalAssets":"资产总价值:",
   "ChoosePath":"选择路径",
   "Default":"默认",
 
@@ -113,12 +112,16 @@
   "LoadingAction":"加载更多",
   "BackUpAccount":"备份此账户",
   "TransferAction":"发起转账",
+  "LogoutAction":"退出登录",
 
 
   "InputPrivateKey":"输入明文私钥",
   "RepeatPassword":"重复输入密码",
-  "InputMnemonic":"助记词",
+  "Mnemonic":"助记词",
   "PrivateKey":"私钥"
 
 }
+
+// 备份助记词
+// 设置密码
 

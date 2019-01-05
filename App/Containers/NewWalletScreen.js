@@ -89,9 +89,6 @@ class NewWalletScreen extends Component {
 
 
   render () {
-      const remind001 = '密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要';
-      const remind002 = 'QuickWallet 不存储密码,也无法帮您找回,请务必牢记';
-
       const {isAgree} = this.props;
 
       const {isShowRemind, isInputValid, isShowPassword}=this.state;
@@ -99,8 +96,8 @@ class NewWalletScreen extends Component {
       const remindView = isShowRemind ? (<View style={styles.remindView}>
           <Ionicons name={'ios-lock'} size={Metrics.icons.small} color={Colors.separateLineColor}/>
           <View style={styles.rightRemind}>
-              <Text style={styles.remindText}>{remind001}</Text>
-              <Text style={[styles.remindText, {marginTop: Metrics.smallMargin}]}>{remind002}</Text>
+              <Text style={styles.remindText}>{ I18n.t('NewWalletRemind001') }</Text>
+              <Text style={[styles.remindText, {marginTop: Metrics.smallMargin}]}>{ I18n.t('NewWalletRemind002') }</Text>
           </View>
       </View>) : null;
 
@@ -137,7 +134,7 @@ class NewWalletScreen extends Component {
               {userTermsView}
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
-                  <Text style={styles.titleStytle}>创建账户</Text>
+                  <Text style={styles.titleStytle}>{ I18n.t('CreatAction') }</Text>
               </View>
               <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
                   <View style={styles.inputSection}>

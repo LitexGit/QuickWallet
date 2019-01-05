@@ -33,10 +33,10 @@ class ImportScreen extends Component {
                       tabBarUnderlineStyle={styles.tabBarUnderline}
                       renderTabBar={() => <DefaultTabBar/>}
                       onChangeTab={()=>this._onChangeTab()}>
-                      <View tabLabel='助记词' style={styles.container}>
+                      <View tabLabel={I18n.t('Mnemonic')} style={styles.container}>
                           <MnemonicCompont/>
                       </View>
-                      <View tabLabel='私钥' style={styles.container}>
+                      <View tabLabel={I18n.t('PrivateKey')} style={styles.container}>
                           <KeyStoreCompont/>
                       </View>
                   </ScrollableTabView>

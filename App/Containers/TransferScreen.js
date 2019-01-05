@@ -157,7 +157,6 @@ class TransferScreen extends Component {
   }
 
   render () {
-      const btnTitle = '下一步';
       const isCanTransfer = true;
 
       const {displayGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
@@ -206,7 +205,7 @@ class TransferScreen extends Component {
                           <TextInput style={styles.addressInput}
                               value={inputAddress}
                               clearButtonMode='while-editing'
-                              placeholder={ I18n.t('EnterEthAddress')}
+                              placeholder={ I18n.t('EnterEthAddress') }
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
                               onChangeText={this._onChangeAddress}/>
@@ -230,7 +229,7 @@ class TransferScreen extends Component {
                   <Button onPress={()=>this._onPressBtn()}
                       backgroundColor={Colors.textColor}
                       disabled={!isCanTransfer}
-                      title={btnTitle}/>
+                      title={I18n.t('NextStep')}/>
               </View>
           </View>
       );

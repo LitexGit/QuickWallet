@@ -1,3 +1,4 @@
+import I18n from '../I18n';
 
 const SignInfoConfig = {
     symbol:{
@@ -14,7 +15,7 @@ const SignInfoConfig = {
     },
     txTotal:{
         key:'txTotal',
-        title:'总计',
+        title:I18n.t('Combined'),
         count:0,
         fiatValue:'￥0'
     }
