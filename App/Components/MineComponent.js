@@ -126,9 +126,7 @@ class MineComponent extends Component {
                       </View>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.assetsSection} onPress={()=>this._onPressAssets()}>
-                      <View style={styles.assetsSection}>
-                          <Text style={styles.assetsStyle}>资产总价值：{ethBanance}</Text>
-                      </View>
+                      <Text style={styles.assetsStyle}>资产总价值：{ethBanance}</Text>
                   </TouchableOpacity>
 
               </View>

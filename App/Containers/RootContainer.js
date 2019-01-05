@@ -16,8 +16,8 @@ import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 class RootContainer extends Component {
 
   _initializes= async ()=>{
-      const language = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || LanguageConfig.zh;
-      const currency = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || CurrencyConfig.CNY;
+      const language = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
+      const currency = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || CurrencyConfig.CNY;
       this.props.saveUserInfo({language, currency});
 
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
@@ -52,7 +52,12 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) =>state;
+const mapStateToProps = (state) =>
+    // console.log('=======root==========state===================');
+    // console.log(state);
+    // console.log('=======root==========state===================');
+    state
+;
 
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),

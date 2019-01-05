@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import { Text, View, FlatList, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
 import {LanguageConfig} from '../Config/MineConfig';
@@ -7,7 +7,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import styles from './Styles/LanguageScreenStyle';
 import { Metrics , Colors } from '../Themes';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
-import { NavigationActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
+import ButtonComponent from '../Components/ButtonComponent';
+import UserActions from '../Redux/UserRedux';
 
 class LanguageScreen extends Component {
 
@@ -27,6 +29,12 @@ class LanguageScreen extends Component {
       this._setDataSouse(item);
   }
 
+  _onPressComplete=()=>{
+      DeviceStorage.saveItem(Keys.LANGUAGE_ENVIRONMENT, this.languageItem);
+      this.props.saveUserInfo({language:this.languageItem});
+      this.props.pop();
+  }
+
   _renderItem=({item})=>{
       const {title='', isSelected} = item;
       const nextImg = (<View>
@@ -43,6 +51,7 @@ class LanguageScreen extends Component {
 _renderItemSeparator= ()=><View style={styles.itemSeparator}/>
 
 _setDataSouse=(item)=>{
+    this.languageItem = item;
     const {key:selectedKey} = item;
     const data = Object.values(LanguageConfig).map((config)=>{
         const {key=''} = config;
@@ -64,13 +73,16 @@ componentDidMount() {
 render () {
     const {data} = this.state;
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <FlatList style={styles.flatList}
                 data={data}
                 keyExtractor={(item,index)=>''+index}
                 renderItem={ this._renderItem }
                 ItemSeparatorComponent = {this._renderItemSeparator}/>
-        </ScrollView>
+            <ButtonComponent style={styles.btnStyle} onPress={this._onPressComplete}>
+                <Text style={styles.btnTitle}>完成</Text>
+            </ButtonComponent>
+        </View>
     );
 }
 }
@@ -83,7 +95,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    pop:() => dispatch(StackActions.pop())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LanguageScreen);

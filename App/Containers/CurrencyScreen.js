@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, TouchableOpacity, FlatList, View} from 'react-native';
+import { Text, TouchableOpacity, FlatList, View} from 'react-native';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
 import styles from './Styles/CurrencyScreenStyle';
-import { NavigationActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import { CurrencyConfig } from '../Config/MineConfig';
 import Feather from 'react-native-vector-icons/Feather';
 import { Metrics , Colors } from '../Themes';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import ButtonComponent from '../Components/ButtonComponent';
+import UserActions from '../Redux/UserRedux';
 
 class CurrencyScreen extends Component {
   static navigationOptions = {
@@ -31,7 +33,14 @@ class CurrencyScreen extends Component {
       this._setDataSouse(item);
   }
 
+  _onPressComplete=()=>{
+      DeviceStorage.saveItem(Keys.MONETARY_UNIT, this.currencyItem);
+      this.props.saveUserInfo({currency:this.currencyItem});
+      this.props.pop();
+  }
+
   _setDataSouse=(item)=>{
+      this.currencyItem = item;
       const {key:selectedKey} = item;
       const data = Object.values(CurrencyConfig).map((config)=>{
           const {key=''} = config;
@@ -64,21 +73,21 @@ class CurrencyScreen extends Component {
   render () {
       const {data} = this.state;
       return (
-          <ScrollView style={styles.container}>
+          <View style={styles.container}>
               <FlatList style={styles.flatList}
                   data={data}
                   keyExtractor={(item,index)=>''+index}
                   renderItem={ this._renderItem }
                   ItemSeparatorComponent = {this._renderItemSeparator}/>
-          </ScrollView>
+              <ButtonComponent style={styles.btnStyle} onPress={this._onPressComplete}>
+                  <Text style={styles.btnTitle}>完成</Text>
+              </ButtonComponent>
+          </View>
       );
   }
 }
 
 const mapStateToProps = (state) => {
-    console.log('============state========================');
-    console.log(state);
-    console.log('=============state=======================');
     const {
         user:{currency}
     } = state;
@@ -86,7 +95,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    pop:() => dispatch(StackActions.pop())
 
 });
 

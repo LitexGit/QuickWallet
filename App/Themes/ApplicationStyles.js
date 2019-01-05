@@ -55,9 +55,19 @@ const ApplicationStyles = {
         spinnerText:{
             fontSize:Fonts.size.medium,
             color:Colors.textColor,
+        },
+        btnStyle:{
+            height:Metrics.bottonBtnHeight,
+            width:'100%',
+            marginBottom:Metrics.bottomSpace,
+            backgroundColor:Colors.textColor,
+            justifyContent:'center',
+            alignItems: 'center',
+        },
+        btnTitle:{
+            fontSize:Fonts.size.input,
+            color:'#FFFFFF',
         }
-
-
 
     },
     darkLabelContainer: {

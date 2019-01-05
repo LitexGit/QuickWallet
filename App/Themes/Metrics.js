@@ -22,6 +22,7 @@ const metrics = {
     bottomSpace:getBottomSpace(),
     timeZone: DeviceInfo.getTimezone(),
     itemHeight:39,
+    bottonBtnHeight:44,
     icons: {
         tiny: 15,
         small: 20,
