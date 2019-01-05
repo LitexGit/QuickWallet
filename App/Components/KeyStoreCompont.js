@@ -69,13 +69,11 @@ class KeyStoreCompont extends Component {
 
     componentDidMount=()=>{
         this.props.setLoading({loading:false});
-        // 0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce
-        this.privateKey = '';
+        this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
         this._checkInputIsValid();
     }
 
     _checkInputIsValid=()=>{
-        // TODO mnemonic 合法性校验
         if (this.privateKey.length && this.password.length  &&  this.confirm.length) {
             this.setState({isCanPress:true});
             return;

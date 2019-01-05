@@ -31,7 +31,7 @@ export default class MnemonicWarningAlert extends Component {
                 <View style={styles.container}>
                     <View style={styles.topSectiom}>
                         <Feather name={'camera-off'} size={Metrics.images.medium} color={Colors.textColor}/>
-                        <Text style={styles.headerText}>{ I18n.t('ScreenshotsTitle') }</Text>
+                        <Text style={styles.titleStyle}>{ I18n.t('ScreenshotsTitle') }</Text>
                     </View>
                     <View style={styles.centerSectiom}>
                         <Text style={styles.remind001}>{ I18n.t('ScreenshotsRemind001') }</Text>

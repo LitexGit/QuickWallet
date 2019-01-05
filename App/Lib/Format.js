@@ -1,6 +1,7 @@
 
 import I18n from '../I18n';
 import utils from 'ethers-utils';
+import Ramda from 'ramda';
 
 
 
@@ -41,4 +42,12 @@ export const sectionlize = (items) => {
 
     return sections;
 };
+
+export const isValidMnemonic = (mnemonic) => {
+    if (!mnemonic.length) return false;
+    if (Ramda.split(' ')(mnemonic).length !== 12) return false;
+    return true;
+};
+
+
 

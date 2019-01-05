@@ -11,6 +11,7 @@ import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
 import Toast from 'react-native-root-toast';
+import {isValidMnemonic} from '../Lib/Format';
 
 class MnemonicCompont extends Component {
     constructor (props) {
@@ -26,6 +27,14 @@ class MnemonicCompont extends Component {
     }
 
   _onPressBtn=()=>{
+      if (!isValidMnemonic(this.mnemonic)) {
+          const error = '请输入有效的助记词';
+          Toast.show(error, {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          return;
+      }
       if (this.password.length < 8 ||  this.confirm.length < 8) {
           const error = '密码不少于8位字符';
           Toast.show(error, {
@@ -72,8 +81,7 @@ class MnemonicCompont extends Component {
 
   componentDidMount=()=>{
       this.props.setLoading({loading:false});
-      // tag fee recycle palace nominee van dawn mail approve crash opinion scheme
-      this.mnemonic = '';
+      this.mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
       this._checkInputIsValid();
   }
 
