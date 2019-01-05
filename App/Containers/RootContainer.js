@@ -11,10 +11,14 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
 import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
+import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 
 class RootContainer extends Component {
 
   _initializes= async ()=>{
+      const language = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || LanguageConfig.zh;
+      const currency = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || CurrencyConfig.CNY;
+      this.props.saveUserInfo({language, currency});
 
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
       this.props.saveUserInfo({isLoginInfo:isLogin});
@@ -53,16 +57,14 @@ const mapStateToProps = (state) =>state;
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),
     getConfigRequest: () => dispatch(ConfigActions.getConfigRequest()),
-
-
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    gethInit: (params) => dispatch(WalletActions.gethInit(params)),
 
 
 
 
     startup: () => dispatch(StartupActions.startup()),
-    gethInit: (params) => dispatch(WalletActions.gethInit(params)),
     saveAddress: (params) => dispatch(WalletActions.saveAddress(params)),
-    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

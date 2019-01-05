@@ -146,8 +146,8 @@ class TransferRecordScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
+        user:{address},
         assets:{selectedToken, txlist, refreshing, loading},
-        wallet:{address}
     } = state;
 
     return {selectedToken, txlist:sectionlize(txlist), address, refreshing, loading};

@@ -42,6 +42,15 @@ export const INITIAL_STATE = Immutable({
 
     isLoginInfo:false,
     isAgreeInfo:false,
+
+    language:{
+        key:'zh',
+        title:'简体中文'
+    },
+    currency:{
+        key:'CNY',
+        title:'CNY',
+    },
 });
 
 /* ------------- Selectors ------------- */

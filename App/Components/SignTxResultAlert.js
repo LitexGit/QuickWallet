@@ -87,7 +87,7 @@ class SignTxResultAlert extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        wallet:{ address }
+        user:{address}
     } = state;
     return { address};
 };

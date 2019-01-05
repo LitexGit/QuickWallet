@@ -48,11 +48,11 @@ class SettingScreen extends Component {
   _renderItemSeparator= ()=><View style={styles.itemSeparator}/>
 
   render () {
-      const settings = {'language':'简体中文', 'currency':'CNY'};
-
+      const {language, currency} = this.props;
+      const settings = {language, currency};
       const data = Object.values(SettingConfig).map((config)=>{
           const {key=''} = config;
-          config.details = settings[key];
+          config.details = settings[key].title;
           return config;
       });
 
@@ -69,8 +69,12 @@ class SettingScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-});
+const mapStateToProps = (state) => {
+    const {
+        user:{language, currency}
+    } = state;
+    return { language, currency};
+};
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),

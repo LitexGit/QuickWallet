@@ -21,6 +21,7 @@ const metrics = {
     statusBarHeight: getStatusBarHeight(),
     bottomSpace:getBottomSpace(),
     timeZone: DeviceInfo.getTimezone(),
+    itemHeight:39,
     icons: {
         tiny: 15,
         small: 20,

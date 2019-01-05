@@ -33,21 +33,6 @@ export const MineConfig = {
     },
 };
 
-export const SettingConfig = {
-    language:{
-        key:'language',
-        index:0,
-        title:I18n.t('Multilingual'),
-        details:''
-    },
-    currency:{
-        key:'currency',
-        index:1,
-        title:I18n.t('MonetaryUnit'),
-        details:''
-    }
-};
-
 export const AccountConfig = {
     avatar:{
         key:'avatar',
@@ -69,6 +54,43 @@ export const AccountConfig = {
         title:I18n.t('InviteCode'),
         details:'',
         type:2,
+    }
+};
+
+export const SettingConfig = {
+    language:{
+        key:'language',
+        index:0,
+        title:I18n.t('Multilingual'),
+        details:''
+    },
+    currency:{
+        key:'currency',
+        index:1,
+        title:I18n.t('MonetaryUnit'),
+        details:''
+    }
+};
+
+export const LanguageConfig = {
+    zh:{
+        key:'zh',
+        title:'简体中文',
+    },
+    english:{
+        key:'english',
+        title:'English',
+    }
+};
+
+export const CurrencyConfig = {
+    CNY:{
+        key:'CNY',
+        title:'CNY',
+    },
+    USD:{
+        key:'USD',
+        title:'USD',
     }
 };
 
