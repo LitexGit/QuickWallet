@@ -38,10 +38,10 @@ export default Creators;
  * type     用户邀请码
  */
 export const INITIAL_STATE = Immutable({
-    refreshing: null,
-    loading: null,
-    failure: null,
-    error: null,
+    refreshing: false,
+    loading: false,
+    failure: false,
+    error: false,
 
     tokenList:[],
     selectedToken:{},
@@ -53,9 +53,9 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const ConfigSelectors = {
-    selectBalances: state => state.asset.balances,
-    selectTxlist: state => state.asset.txlist,
+export const AssetSelectors = {
+    getBalances: state => state.assets.balances,
+    getTxlist: state => state.assets.txlist,
 };
 
 /* ------------- Reducers ------------- */
@@ -93,7 +93,6 @@ export const getTokenBalanceSuccess = (state, { data }) =>{
 
 export const getTokenBalanceFailure = (state, { data }) => state;
 
-// successful avatar lookup
 export const setSelectedToken = (state, { data }) =>{
     const test = {selectedToken:{
         Symbol: 'ETH',
@@ -105,18 +104,24 @@ export const setSelectedToken = (state, { data }) =>{
 };
 
 
-// request the avatar for a user
-export const request = (state, { data }) =>
-    state.merge({ refreshing: true, payload: null });
+export const request = (state, action) =>{
+    const {type, data} = action;
+    if (type === 'GET_TXLIST_REQUEST') {
+        const {page = 1} = data;
+        if (page === 1) {
+            return state.merge({refreshing: true, loading: false, error: false});
+        }
+        return state.merge({refreshing: false, loading: true, error: false});
+    }
+    return state.merge({ refreshing: true, loading: false, error: false });
+};
 
-// successful avatar lookup
 export const success = (state, { data }) =>
-    state.merge({ refreshing: false, loading: false, error: null, ...data });
+    state.merge({ refreshing: false, loading: false, error: false, ...data });
 
 
-// failed to get the avatar
 export const failure = (state) =>
-    state.merge({ refreshing: false, loading: false,  error: true, payload: null });
+    state.merge({ refreshing: false, loading: false,  error: true });
 
 /* ------------- Hookup Reducers To Types ------------- */
 

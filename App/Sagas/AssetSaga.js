@@ -2,6 +2,7 @@ import { call, put, select, all } from 'redux-saga/effects';
 import Config from 'react-native-config';
 import AssetActions from '../Redux/AssetRedux';
 import {UserSelectors} from '../Redux/UserRedux';
+import {AssetSelectors} from '../Redux/AssetRedux';
 import Toast from 'react-native-root-toast';
 
 import Moment from 'moment';
@@ -48,8 +49,7 @@ export function *getTokenList(api){
         yield put(AssetActions.getTokenListFailure());
 
     } catch (error) {
-        const errmsg = '获取token列表 creash';
-        Toast.show(errmsg, {
+        Toast.show(error.message, {
             shadow:true,
             position: Toast.positions.CENTER,
         });
@@ -74,8 +74,7 @@ export function * getBalance (action) {
         }
         yield put(AssetActions.getBalanceFailure(message));
     } catch (error) {
-        const errmsg = '获取ETH余额 creash';
-        Toast.show(errmsg, {
+        Toast.show(error.message, {
             shadow:true,
             position: Toast.positions.CENTER,
         });
@@ -100,8 +99,7 @@ export function * getTokenBalance(action) {
         }
         yield put(AssetActions.getTokenBalanceFailure(message));
     } catch (error) {
-        const errmsg = '获取Token余额 creash';
-        Toast.show(errmsg, {
+        Toast.show(error.message, {
             shadow:true,
             position: Toast.positions.CENTER,
         });
@@ -123,30 +121,37 @@ export function * getTxlist (action) {
             response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
         } else {
             response = yield call(api.account.tokentx, address, tokenAddress, startblock, endblock, page, offset, sort);
-
         }
 
         const {status, message, result} = response;
-        const txlist = result.map((item) => {
+        let txlist = result.map((item) => {
             const {timeStamp=''} = item;
             const date = Moment.unix(timeStamp).format('YYYY-MM-DD');
             const time = Moment.unix(timeStamp).format('HH:mm:ss');
             return {...item, time, date};
         });
-        if (status) {
+
+        if (status && txlist.length) {
+            if (page > 1) {
+                const oldData = yield select(AssetSelectors.getTxlist);
+                txlist = [...oldData, ...txlist];
+            }
+
             yield put(AssetActions.getTxlistSuccess({txlist}));
             return;
         }
         Toast.show(message, {
             shadow:true,
-            position: Toast.positions.CENTER,
+            position: Toast.positions.CENTER
         });
         yield put(AssetActions.getTxlistFailure());
     } catch (error) {
-        const msg = '查询交易记录 creash';
-        Toast.show(msg, {
-            shadow:true,
-            position: Toast.positions.CENTER,
+        console.log('===========error.message=========================');
+        console.log(error);
+        console.log('===========error.message=========================');
+        Toast.show(error.message, {
+            shadow:true, position:
+           Toast.positions.CENTER
         });
         yield put(AssetActions.getTxlistFailure());
     }

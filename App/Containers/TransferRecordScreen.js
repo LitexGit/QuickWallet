@@ -20,21 +20,38 @@ class TransferRecordScreen extends Component {
       title:I18n.t('TransferRecordTabTitle'),
   }
 
+  constructor(props){
+      super(props);
+      this.state = {
+          page: 1,
+      };
+  }
+
   componentDidMount=()=>{
-      const {selectedToken, address} = this.props;
       const page = 1;
-      const offset = 20;
-      const {Symbol:symbol='ETH', Tokenaddress:tokenAddress=''} = selectedToken;
-      if (symbol === 'ETH') {
-          this.props.getTxlist({address, page, offset, symbol});
-      } else {
-          this.props.getTxlist({address, page, offset, symbol, tokenAddress});
-      }
+      this._getTxlist(page);
+      this.setState({ page });
   }
 
   _onRefresh=()=>{
-      const {selectedToken, address} = this.props;
       const page = 1;
+      this._getTxlist(page);
+      this.setState({ page });
+  }
+
+  _loadMore=()=>{
+      const {refreshing, loading} = this.props;
+      if (refreshing || loading) return;
+      let {page} = this.state;
+      page += 1;
+      this.setState({
+          page
+      });
+      this._getTxlist(page);
+  }
+
+  _getTxlist=(page)=>{
+      const {selectedToken, address} = this.props;
       const offset = 20;
       const {Symbol:symbol='ETH', Tokenaddress:tokenAddress=''} = selectedToken;
       if (symbol === 'ETH') {
@@ -42,9 +59,6 @@ class TransferRecordScreen extends Component {
       } else {
           this.props.getTxlist({address, page, offset, symbol, tokenAddress});
       }
-  }
-  _loadMore=()=>{
-      console.log('===========_loadMore=========================');
   }
 
   _onPressBtn=()=>{
@@ -143,9 +157,10 @@ class TransferRecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+
     const {
         user:{address},
-        assets:{selectedToken, txlist, refreshing, loading},
+        assets:{selectedToken, txlist, refreshing, loading, error},
     } = state;
 
     return {selectedToken, txlist:sectionlize(txlist), address, refreshing, loading};
