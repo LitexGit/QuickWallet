@@ -15,6 +15,7 @@ import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
 import LevelComponent from '../Components/LevelComponent';
 import {getPasspraseStrength} from '../Lib/Utils';
+import Toast from 'react-native-root-toast';
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
@@ -69,26 +70,31 @@ class NewWalletScreen extends Component {
           isShowPassword:!isShowPassword
       });
   }
-  /*
-    1:新建钱包
-    01:success: => register
-    02:failure: => TODO 应该不存在失败
-  */
   _onPressBtn = ()=>{
-      this.props.saveUserInfo({nickname:this.name});
-      this.props.savePassphrase({passphrase:this.password});
-      this.props.navigate('PreBackupScreen');
+      let error = '密码不少于8位字符';
+      if (this.password.length >= 8 && this.confirm.length >= 8) {
+          if (this.password === this.confirm) {
+              this.props.saveUserInfo({nickname:this.name});
+              this.props.savePassphrase({passphrase:this.password});
+              this.props.navigate('PreBackupScreen');
+              return;
+          }
+          error = '密码输入不一致';
+      }
+      Toast.show(error, {
+          shadow:true,
+          position: Toast.positions.CENTER,
+      });
+
+
   }
 
   _checkInputIsValid=()=>{
-      // TODO
-      if (this.password.length > 7 &&  this.confirm.length > 7) {
-          if (this.password === this.confirm) {
-              this.setState({isInputValid:true});
-              return;
-          }
+      if (this.password.length &&  this.confirm.length) {
+          this.setState({isInputValid:true});
+      } else {
+          this.setState({isInputValid:false});
       }
-      this.setState({isInputValid:false});
   }
 
 
