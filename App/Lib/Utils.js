@@ -34,3 +34,21 @@ export function getTxDirection({from, to}) {
     }
     return 0;
 }
+
+export function getPasspraseStrength(passprase) {
+    let modes = 0;
+    if (passprase.length < 1) return modes;
+    if (/\d/.test(passprase)) modes++;
+    if (/[a-z]/.test(passprase)) modes++;
+    if (/[A-Z]/.test(passprase)) modes++;
+    if (/\W/.test(passprase)) modes++;
+    switch (modes) {
+    case 1:
+        return 1;
+    case 2:
+        return 2;
+    case 3:
+    case 4:
+        return passprase.length < 8 ? 3 : 4;
+    }
+}

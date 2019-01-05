@@ -16,12 +16,16 @@ export default StyleSheet.create({
     inputSection:{
     },
     inputView:{
-        height:40,
+        height:Metrics.itemHeight,
         marginHorizontal:Metrics.section,
         borderBottomColor:Colors.separateLineColor,
         borderBottomWidth:1 / PixelRatio.get(),
         flexDirection:'row',
         alignItems:'center',
+    },
+    levelView:{
+        height:'100%',
+        width:50,
     },
     textInput:{
         flex:1,

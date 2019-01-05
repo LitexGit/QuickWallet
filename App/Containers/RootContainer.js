@@ -13,6 +13,7 @@ import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
 import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 
+
 class RootContainer extends Component {
 
   _initializes= async ()=>{
@@ -53,9 +54,6 @@ class RootContainer extends Component {
 }
 
 const mapStateToProps = (state) =>
-    // console.log('=======root==========state===================');
-    // console.log(state);
-    // console.log('=======root==========state===================');
     state
 ;
 

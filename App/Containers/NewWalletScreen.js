@@ -9,12 +9,12 @@ import { Colors, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
 import UserTermsAlert from '../Components/UserTermsAlert';
-
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions from '../Redux/UserRedux';
-
 import I18n from '../I18n';
+import LevelComponent from '../Components/LevelComponent';
+import {getPasspraseStrength} from '../Lib/Utils';
 
 class NewWalletScreen extends Component {
   static navigationOptions = {
@@ -30,6 +30,7 @@ class NewWalletScreen extends Component {
           isShowRemind:false,
           isInputValid:false,
           isShowPassword:false,
+          strength:0
       };
   }
 
@@ -39,8 +40,11 @@ class NewWalletScreen extends Component {
       case InputInfoConfig.name.key:
           this.name = text;
           break;
-      case InputInfoConfig.password.key:
+      case InputInfoConfig.password.key:{
           this.password = text;
+          this.setState({strength:getPasspraseStrength(text)});
+      }
+
           break;
       case InputInfoConfig.confirm.key:
           this.confirm = text;
@@ -91,7 +95,7 @@ class NewWalletScreen extends Component {
   render () {
       const {isAgree} = this.props;
 
-      const {isShowRemind, isInputValid, isShowPassword}=this.state;
+      const {isShowRemind, isInputValid, isShowPassword, strength}=this.state;
 
       const remindView = isShowRemind ? (<View style={styles.remindView}>
           <Ionicons name={'ios-lock'} size={Metrics.icons.small} color={Colors.separateLineColor}/>
@@ -100,6 +104,7 @@ class NewWalletScreen extends Component {
               <Text style={[styles.remindText, {marginTop: Metrics.smallMargin}]}>{ I18n.t('NewWalletRemind002') }</Text>
           </View>
       </View>) : null;
+
 
       const inputs = Object.values(InputInfoConfig).map((config, index)=>{
           const {key, placeholder, placeholderColor, clearButtonMode, maxLength, keyboardType, returnKeyType} = config;
@@ -122,6 +127,9 @@ class NewWalletScreen extends Component {
                       onChangeText={(text)=>this._onChangeText(key, text)}
                       onFocus={()=>this._onFocus(key)}
                   />
+                  {key === 'password' ? <View style={styles.levelView}>
+                      <LevelComponent level={strength}/>
+                  </View> : null}
                   {key === 'confirm' ? eyeImg : null}
               </View>
           );

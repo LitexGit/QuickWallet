@@ -74,6 +74,7 @@ export default StyleSheet.create({
         flex:1,
         flexDirection: 'row',
         alignContent: 'center',
+        marginTop:Metrics.baseMargin,
     },
     sectionText:{
         flex:1,
@@ -88,6 +89,6 @@ export default StyleSheet.create({
     remind002:{
         color:'red',
         fontSize:Fonts.size.small,
-        marginTop:Metrics.smallMargin,
+        marginTop:Metrics.baseMargin,
     }
 });

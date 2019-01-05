@@ -30,6 +30,7 @@ export default StyleSheet.create({
     remindText:{
         color:Colors.darkColor,
         fontSize:Fonts.size.small,
+        lineHeight:15,
     },
     privateKeyInput:{
 
@@ -55,6 +56,7 @@ export default StyleSheet.create({
         flex:1,
         flexDirection: 'row',
         alignContent: 'center',
+        marginTop:Metrics.baseMargin,
     },
     sectionText:{
         flex:1,

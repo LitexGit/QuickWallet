@@ -85,7 +85,7 @@ class KeyStoreCompont extends Component {
                     <View style={styles.container}>
                         <View style={styles.remindView}>
                             <Text style={styles.remindText}>{I18n.t('ImportPrivateKeyRemind')}</Text>
-                            <Text style={[styles.remindText, {color:'red', marginTop:Metrics.smallMargin}]}>{I18n.t('ImportRemind')}</Text>
+                            <Text style={[styles.remindText, {color:'red', marginTop:Metrics.baseMargin}]}>{I18n.t('ImportRemind')}</Text>
                         </View>
                         <View style={styles.mnemonicView}>
                             <TextInput
