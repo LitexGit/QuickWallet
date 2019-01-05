@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
+import Toast from 'react-native-root-toast';
 
 class KeyStoreCompont extends Component {
     constructor (props) {
@@ -25,6 +26,22 @@ class KeyStoreCompont extends Component {
     }
 
     _onPressBtn= async ()=>{
+        if (this.password.length < 8 ||  this.confirm.length < 8) {
+            const error = '密码不少于8位字符';
+            Toast.show(error, {
+                shadow:true,
+                position: Toast.positions.CENTER,
+            });
+            return;
+        }
+        if (this.password !== this.confirm) {
+            const error = '密码输入不一致';
+            Toast.show(error, {
+                shadow:true,
+                position: Toast.positions.CENTER,
+            });
+            return;
+        }
         this.props.gethImportPrivateKey({privateKey:this.privateKey, passphrase:this.password});
     }
 
@@ -52,17 +69,16 @@ class KeyStoreCompont extends Component {
 
     componentDidMount=()=>{
         this.props.setLoading({loading:false});
-        this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
+        // 0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce
+        this.privateKey = '';
         this._checkInputIsValid();
     }
 
     _checkInputIsValid=()=>{
         // TODO mnemonic 合法性校验
-        if (this.privateKey.length && this.password.length > 7 &&  this.confirm.length > 7) {
-            if (this.password === this.confirm) {
-                this.setState({isCanPress:true});
-                return;
-            }
+        if (this.privateKey.length && this.password.length  &&  this.confirm.length) {
+            this.setState({isCanPress:true});
+            return;
         }
         this.setState({isCanPress:false});
     }

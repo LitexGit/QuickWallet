@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
+import Toast from 'react-native-root-toast';
 
 class MnemonicCompont extends Component {
     constructor (props) {
@@ -25,6 +26,23 @@ class MnemonicCompont extends Component {
     }
 
   _onPressBtn=()=>{
+      if (this.password.length < 8 ||  this.confirm.length < 8) {
+          const error = '密码不少于8位字符';
+          Toast.show(error, {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          return;
+      }
+      if (this.password !== this.confirm) {
+          const error = '密码输入不一致';
+          Toast.show(error, {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          return;
+      }
+
       this.props.gethImportMnemonic({mnemonic:this.mnemonic, passphrase:this.password});
   }
 
@@ -54,17 +72,15 @@ class MnemonicCompont extends Component {
 
   componentDidMount=()=>{
       this.props.setLoading({loading:false});
-      this.mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
+      // tag fee recycle palace nominee van dawn mail approve crash opinion scheme
+      this.mnemonic = '';
       this._checkInputIsValid();
   }
 
   _checkInputIsValid=()=>{
-      // TODO mnemonic 合法性校验
-      if (this.mnemonic.length && this.password.length > 7 &&  this.confirm.length > 7) {
-          if (this.password === this.confirm) {
-              this.setState({isCanPress:true});
-              return;
-          }
+      if (this.mnemonic.length && this.password.length &&  this.confirm.length) {
+          this.setState({isCanPress:true});
+          return;
       }
       this.setState({isCanPress:false});
   }
