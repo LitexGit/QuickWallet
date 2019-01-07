@@ -172,7 +172,7 @@ class BackupScreen extends Component {
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
                       <Button onPress={()=>this._onPressCheck()}
-                          disabled={!isCanPress}
+                          // disabled={!isCanPress}
                           backgroundColor={Colors.textColor}
                           title={ I18n.t('Complete')}/>
                   </View>

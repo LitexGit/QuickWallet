@@ -70,7 +70,6 @@ public class GethModule extends ReactContextBaseJavaModule {
         if (account != null) account = null;
         if (keyStore != null) keyStore = null;
         if (ethClient != null) ethClient = null;
-        sharedPreferencesHelper.put(RAWURL, "");
         String keyTemp = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
         FileUtil.deleteDirectory(keyTemp);
         String keydir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
