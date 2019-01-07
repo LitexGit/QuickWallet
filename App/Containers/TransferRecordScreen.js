@@ -67,8 +67,9 @@ class TransferRecordScreen extends Component {
 
 
   _renderItem=({item})=>{
+      const {address} = this.props;
       const { from='', to='', time='', value='', txreceipt_status='1', Decimal:decimal = 18 } = item;
-      const isInput =  getTxDirection({from, to});
+      const isInput =  getTxDirection({address, from, to});
       const title = isInput ? '收款' : '付款';
       const direction = isInput ? 'From:'+from : 'To:'+ to;
       const amount = getToken(value, decimal);

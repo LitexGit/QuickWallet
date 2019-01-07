@@ -118,14 +118,15 @@
   "InputPrivateKey":"输入明文私钥",
   "RepeatPassword":"重复输入密码",
   "Mnemonic":"助记词",
-  "PrivateKey":"私钥"
+  "PrivateKey":"私钥",
 
+  "PswdCheckError":"密码不少于8位字符",
+  "PswdConsistentError":"密码输入不一致",
+  "LackBalanceError":"钱包余额不足以支持此次转账",
+  "InvalidAddressError":"请输入有效的地址",
 }
 
 // 备份助记词
 // 设置密码
 
-
-// error = '密码不少于8位字符';
-// error = '密码输入不一致';
 

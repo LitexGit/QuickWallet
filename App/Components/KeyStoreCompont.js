@@ -27,16 +27,14 @@ class KeyStoreCompont extends Component {
 
     _onPressBtn= async ()=>{
         if (this.password.length < 8 ||  this.confirm.length < 8) {
-            const error = '密码不少于8位字符';
-            Toast.show(error, {
+            Toast.show(I18n.t('PswdCheckError'), {
                 shadow:true,
                 position: Toast.positions.CENTER,
             });
             return;
         }
         if (this.password !== this.confirm) {
-            const error = '密码输入不一致';
-            Toast.show(error, {
+            Toast.show(I18n.t('PswdConsistentError'), {
                 shadow:true,
                 position: Toast.positions.CENTER,
             });

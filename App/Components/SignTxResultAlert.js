@@ -9,7 +9,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Metrics, Colors } from '../Themes';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
-import {getToken, getWei} from '../Lib/Format';
+import {getWei} from '../Lib/Format';
 
 
 class SignTxResultAlert extends Component {

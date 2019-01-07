@@ -1,3 +1,5 @@
+import {UserSelectors} from '../Redux/UserRedux';
+
 export function runGenerator(generatorFUN, initialValue) {
     const generator = generatorFUN(initialValue);
     iterate(generator);
@@ -26,9 +28,7 @@ export function runGenerator(generatorFUN, initialValue) {
  * return 1 转入
  * return 0 支出
  */
-export function getTxDirection({from, to}) {
-    // TODO 获取 address
-    const address = '0xb5538753f2641a83409d2786790b42ac857c5340';
+export function getTxDirection({address, from, to}) {
     if (address === to && address !== from) {
         return 1;
     }
@@ -52,3 +52,6 @@ export function getPasspraseStrength(passprase) {
         return passprase.length < 8 ? 3 : 4;
     }
 }
+
+export const isValidAddress = (address) => /^0x[0-9a-fA-F]{40}$/.test(address);
+

@@ -13,7 +13,9 @@ import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
-// 转账不需要密码
+import Toast from 'react-native-root-toast';
+import {isValidAddress} from '../Lib/Utils';
+
 class TransferScreen extends Component {
 
     static navigationOptions = {
@@ -36,22 +38,38 @@ class TransferScreen extends Component {
     }
 
   _onPressBtn=()=>{
+      const {selectedToken} = this.props;
+      const {count} = selectedToken;
+      const {inputBalance, inputAddress} = this.state;
+      if (parseFloat(inputBalance) >= parseFloat(count)) {
+          Toast.show(I18n.t('LackBalanceError'), {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          return;
+      }
+      if (!isValidAddress(inputAddress)) {
+          Toast.show(I18n.t('InvalidAddressError'), {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          return;
+      }
       this.setState({
           isShowSignTx:true,
       });
   }
 
   _onChangeBalance=(text)=>{
-      // TODO 005 输入金额大于当前余额 toast
       this.setState({
           inputBalance:text,
-      },()=>this._checkInputIsValid());
+      });
   }
 
   _onChangeAddress=(text)=>{
       this.setState({
           inputAddress:text,
-      },()=>this._checkInputIsValid());
+      });
   }
 
   _onPressScan=()=>{
@@ -60,8 +78,6 @@ class TransferScreen extends Component {
               const {data=''} = params;
               this.setState({
                   inputAddress:data
-              },()=>{
-              // TODO 004: 添加对地址合法性校验
               });
           }
       });
@@ -69,21 +85,9 @@ class TransferScreen extends Component {
 
   _onSlidingComplete=(gas)=>{
       this.setState({ inputGas: gas });
-      this._checkInputIsValid();
   }
   _onSliderChange=()=>{
       ReactNativeHapticFeedback.trigger();
-  }
-
-  _checkInputIsValid=()=>{
-      // const {count} = selectedToken;
-      // const {inputBalance} = this.state;
-      // this.inputGas
-      // 校验  count >= inputBalance + inputGas * gasLimit;
-  }
-
-  componentDidMount=()=>{
-      this._checkInputIsValid();
   }
 
   // 交易信息确认
