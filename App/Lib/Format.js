@@ -49,5 +49,16 @@ export const isValidMnemonic = (mnemonic) => {
     return true;
 };
 
+export const getWei = (value, unitType) => utils.parseUnits(value, unitType).toString();
+
+export const getToken = (value, unitType) => {
+    const amount = utils.formatUnits(value, unitType);
+    const num = parseFloat(amount);
+    const result = num.toFixed(2);
+    return result;
+};
+
+
+
 
 

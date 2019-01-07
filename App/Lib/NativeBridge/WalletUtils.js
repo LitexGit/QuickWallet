@@ -1,5 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import Ramda from 'ramda';
+import {getWei} from '../Format';
 const gethModule = NativeModules.GethModule;
 
 async function init({isLogin, rawurl}){
@@ -39,20 +40,12 @@ async function exportPrivateKey({passphrase}){
 }
 
 async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress='', value=0, gasPrice=0, decimal, tokenAddress}){
-    const amount = value * 1e18;
-    gasPrice *= 1e9;
+    const amount = getWei(value, decimal);
+    const price =  getWei(gasPrice, 9);
     if (symbol === 'ETH') {
-        return await gethModule.transferEth(passphrase, fromAddress, toAddress, amount, gasPrice);
+        return await gethModule.transferEth(passphrase, fromAddress, toAddress, amount, price);
     }
-    console.log('============transfer========================');
-    console.log(passphrase);
-    console.log(fromAddress);
-    console.log(toAddress);
-    console.log(tokenAddress);
-    console.log(amount);
-    console.log(gasPrice);
-    console.log('============transfer========================');
-    return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, gasPrice);
+    return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, price);
 }
 
 async function sign({passphrase, signInfo}){

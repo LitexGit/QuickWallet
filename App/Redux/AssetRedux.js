@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce';
 import Immutable from 'seamless-immutable';
+import { getToken } from '../Lib/Format';
 
 /* ------------- Types and Action Creators ------------- */
 
@@ -64,11 +65,14 @@ export const getBalanceSuccess = (state, { data }) =>{
     const {tokenList} = state;
     const {symbol:ETH, banance} = data;
     const list = tokenList.map((token)=>{
-        const {Symbol:symbol} = token; // token
+        const {Symbol:symbol, Decimal:decimal = 18} = token; // token
         if (symbol !== ETH) {
             return token;
         }
-        const count = banance / 1e18;
+        const count = getToken(banance, decimal);
+        console.log('==============getToken(banance, decimal)======================');
+        console.log(getToken(banance, decimal));
+        console.log('==============getToken(banance, decimal)======================');
         return token.merge({count});
     });
     return state.merge({tokenList:list});
@@ -80,11 +84,11 @@ export const getTokenBalanceSuccess = (state, { data }) =>{
     const {tokenList} = state;
     const {symbol:tokenname, banance} = data;
     const list = tokenList.map((token)=>{
-        const {Symbol:symbol} = token; // token
+        const {Symbol:symbol, Decimal:decimal = 18} = token; // token
         if (symbol !== tokenname) {
             return token;
         }
-        const count = banance / 1e18;
+        const count = getToken(banance, decimal);
         return token.merge({count});
     });
     return state.merge({tokenList:list});
@@ -93,15 +97,15 @@ export const getTokenBalanceSuccess = (state, { data }) =>{
 
 export const getTokenBalanceFailure = (state, { data }) => state;
 
-export const setSelectedToken = (state, { data }) =>{
-    const test = {selectedToken:{
-        Symbol: 'ETH',
-        Tokenaddress: '0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-        count: 30,
-        Decimal: 18
-    }};
-    return state.merge({...test});
-};
+export const setSelectedToken = (state, { data }) =>
+    // const test = {selectedToken:{
+    //     Symbol: 'ETH',
+    //     Tokenaddress: '0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+    //     count: 30,
+    //     Decimal: 18
+    // }};
+    state.merge({...data})
+;
 
 
 export const request = (state, action) =>{

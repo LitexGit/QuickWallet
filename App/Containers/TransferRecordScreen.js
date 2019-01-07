@@ -9,10 +9,10 @@ import { Button } from 'react-native-elements';
 
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
-import {sectionlize} from '../Lib/Format';
+import {sectionlize, getToken} from '../Lib/Format';
 import {getTxDirection} from '../Lib/Utils';
 import I18n from '../I18n';
-import  Identicon from 'identicon.js';
+import Identicon from 'identicon.js';
 
 
 class TransferRecordScreen extends Component {
@@ -67,11 +67,11 @@ class TransferRecordScreen extends Component {
 
 
   _renderItem=({item})=>{
-      const { from='', to='', time='', value='', txreceipt_status='1' } = item;
+      const { from='', to='', time='', value='', txreceipt_status='1', Decimal:decimal = 18 } = item;
       const isInput =  getTxDirection({from, to});
       const title = isInput ? '收款' : '付款';
       const direction = isInput ? 'From:'+from : 'To:'+ to;
-      const amount = value / 1e18;
+      const amount = getToken(value, decimal);
 
       const avatar = new Identicon(direction).toString();
       const avatar_64='data:image/png;base64,'+avatar;
@@ -157,7 +157,6 @@ class TransferRecordScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-
     const {
         user:{address},
         assets:{selectedToken, txlist, refreshing, loading, error},

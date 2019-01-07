@@ -23,7 +23,7 @@ class TransferScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
-            displayGas:10,
+            inputGas:10,
             minGas: 1,
             maxGas: 100,
 
@@ -33,7 +33,6 @@ class TransferScreen extends Component {
             isShowSignTx:false,
             isShowPswdInput:false,
         };
-        this.inputGas = 10;
     }
 
   _onPressBtn=()=>{
@@ -69,13 +68,10 @@ class TransferScreen extends Component {
   }
 
   _onSlidingComplete=(gas)=>{
-      this.inputGas = gas;
+      this.setState({ inputGas: gas });
       this._checkInputIsValid();
   }
-  _onSliderChange=(gas)=>{
-      this.setState({
-          displayGas: gas
-      });
+  _onSliderChange=()=>{
       ReactNativeHapticFeedback.trigger();
   }
 
@@ -120,7 +116,7 @@ class TransferScreen extends Component {
   _transfer=()=>{
       const {passphrase='', address='', selectedToken} = this.props;
       const {Tokenaddress:tokenAddress, Symbol:symbol, Decimal:decimal} = selectedToken;
-      const {inputBalance, inputAddress} = this.state;
+      const {inputBalance, inputAddress, inputGas} = this.state;
 
       this.props.gethTransfer({
           symbol,
@@ -128,7 +124,7 @@ class TransferScreen extends Component {
           fromAddress:address,
           toAddress:inputAddress,
           value:inputBalance,
-          gasPrice:this.inputGas,
+          gasPrice:inputGas.toString(),
           decimal,
           tokenAddress}
       );
@@ -159,7 +155,7 @@ class TransferScreen extends Component {
   render () {
       const isCanTransfer = true;
 
-      const {displayGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
+      const {inputGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
       const { loading, selectedToken } = this.props;
       const {Symbol:symbol, count} = selectedToken;
 
@@ -172,7 +168,7 @@ class TransferScreen extends Component {
                   isInit={isShowSignTx}
                   to={inputAddress}
                   balance={parseFloat(inputBalance)}
-                  gas={this.inputGas}
+                  gas={inputGas}
                   onPressCancel={()=>this._signCancel()}
                   onPressConfirm={()=>this._signConfirm()}/>
               <PassphraseInputAlert
@@ -192,7 +188,7 @@ class TransferScreen extends Component {
                               placeholder={I18n.t('EnterAmount')}
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
-                              keyboardType='numeric'
+                              // keyboardType='numeric'
                               onChangeText={this._onChangeBalance}/>
                       </View>
                       <View style={styles.addressSection}>
@@ -216,13 +212,13 @@ class TransferScreen extends Component {
                           <Text style={[styles.titleText, {fontWeight:'500'}]}>Gas</Text>
                           <Slider style={styles.slider}
                               step={1}
-                              value={displayGas}
+                              value={inputGas}
                               minimumValue={minGas}
                               maximumValue={maxGas}
                               onSlidingComplete={(gas) => this._onSlidingComplete(gas)}
                               onValueChange={(gas) => this._onSliderChange(gas)}/>
                       </View>
-                      <Text style={styles.gasText}>{displayGas} gwei</Text>
+                      <Text style={styles.gasText}>{inputGas} gwei</Text>
                   </View>
               </ScrollView>
               <View style={styles.bottomSection}>

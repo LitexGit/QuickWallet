@@ -74,7 +74,8 @@ export function * getBalance (action) {
         }
         yield put(AssetActions.getBalanceFailure(message));
     } catch (error) {
-        Toast.show(error.message, {
+        const errMsg = error.message || error;
+        Toast.show(errMsg, {
             shadow:true,
             position: Toast.positions.CENTER,
         });
@@ -99,7 +100,8 @@ export function * getTokenBalance(action) {
         }
         yield put(AssetActions.getTokenBalanceFailure(message));
     } catch (error) {
-        Toast.show(error.message, {
+        const errMsg = error.message || error;
+        Toast.show(errMsg, {
             shadow:true,
             position: Toast.positions.CENTER,
         });
@@ -146,10 +148,8 @@ export function * getTxlist (action) {
         });
         yield put(AssetActions.getTxlistFailure());
     } catch (error) {
-        console.log('===========error.message=========================');
-        console.log(error);
-        console.log('===========error.message=========================');
-        Toast.show(error.message, {
+        const errMsg = error.message || error;
+        Toast.show(errMsg, {
             shadow:true, position:
            Toast.positions.CENTER
         });
