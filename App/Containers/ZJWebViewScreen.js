@@ -48,28 +48,28 @@ class ZJWebViewScreen extends Component {
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>this._signInfo());
 
-      NativeModules.SignerModule.onSignerCallback((err, data)=>{
-          if (err) return;
+      // NativeModules.SignerModule.onSignerCallback((err, data)=>{
+      //     if (err) return;
 
-          const signInfo = {
-              'type':1,
-              'symbol':'ETH',
-              'decimal':18,
-              'tokenAddress':'0x875664e580eea9d5313f056d0c2a43af431c660f',
-              'msgInfo':'我怎么这么好看，这么好看怎么办',
-              'fromAddress':'0xb5538753F2641A83409D2786790b42aC857C5340',
-              'toAddress':'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
-              'value':'1',
-              'gasPrice':'100',
-          };
-          this.signInfo = signInfo;
-          const {type} = signInfo;
-          if (type === 1) {
-              this.setState({ isShowSignTx:true });
-              return;
-          }
-          this.setState({ isShowSignMsg:true });
-      });
+      //     const signInfo = {
+      //         'type':1,
+      //         'symbol':'ETH',
+      //         'decimal':18,
+      //         'tokenAddress':'0x875664e580eea9d5313f056d0c2a43af431c660f',
+      //         'msgInfo':'我怎么这么好看，这么好看怎么办',
+      //         'fromAddress':'0xb5538753F2641A83409D2786790b42aC857C5340',
+      //         'toAddress':'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+      //         'value':'1',
+      //         'gasPrice':'100',
+      //     };
+      //     this.signInfo = signInfo;
+      //     const {type} = signInfo;
+      //     if (type === 1) {
+      //         this.setState({ isShowSignTx:true });
+      //         return;
+      //     }
+      //     this.setState({ isShowSignMsg:true });
+      // });
   }
 
   componentWillUnmount=()=>{
@@ -126,16 +126,15 @@ class ZJWebViewScreen extends Component {
   }
 
 _onPressShare=()=> {
-    const title = '消息的标题';
-    const message = '要分享的消息';
-    let shareParams = {title, message};
+    const shareUrl = 'http://litex.io/';
+    const {sharecode} = this.props;
+    let shareParams = {};
     if (Platform.OS === 'ios') {
-        const url = 'https://github.com/facebook/react-native';
-        const subject = '通过邮件分享的标题';
-        shareParams = {url, subject, ...shareParams};
+        const url =  shareUrl + '?sharecode=' + sharecode;
+        shareParams = {url};
     } else {
-        const dialogTitle = 'Android==>dialogTitle';
-        shareParams = {dialogTitle, ...shareParams};
+        const message = shareUrl + '?sharecode=' + sharecode;
+        shareParams = {message};
     }
     Share.share(shareParams);
 };

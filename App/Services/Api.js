@@ -13,12 +13,15 @@ const create = (baseURL = Config.API_URL || apiUrl) => {
     });
 
     api.addRequestTransform((request)=>{
-        // console.log('==========request==========================');
-        // console.log(request);
-        // console.log('===========request=========================');
+        console.log('==========request==========================');
+        console.log(request);
+        console.log('===========request=========================');
     });
 
     api.addResponseTransform(response=>{
+        console.log('===========response=========================');
+        console.log(response);
+        console.log('============response========================');
         const {data} = response;
         const {status, msg, data:array} = data;
         if (!array) return response;

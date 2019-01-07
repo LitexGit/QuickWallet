@@ -27,16 +27,15 @@ _onPressRefresh=()=>{
 }
 
 _onPressShare=()=>{
-    const title = '消息的标题';
-    const message = '要分享的消息';
-    let shareParams = {title, message};
+    const shareUrl = 'http://litex.io/';
+    const {sharecode} = this.props;
+    let shareParams = {};
     if (Platform.OS === 'ios') {
-        const url = 'https://github.com/facebook/react-native';
-        const subject = '通过邮件分享的标题';
-        shareParams = {url, subject, ...shareParams};
+        const url =  shareUrl + '?sharecode=' + sharecode;
+        shareParams = {url};
     } else {
-        const dialogTitle = 'Android==>dialogTitle';
-        shareParams = {dialogTitle, ...shareParams};
+        const message = shareUrl + '?sharecode=' + sharecode;
+        shareParams = {message};
     }
     Share.share(shareParams);
 }
