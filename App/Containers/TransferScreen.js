@@ -124,7 +124,7 @@ class TransferScreen extends Component {
 
       this.props.gethTransfer({
           symbol,
-          passphrase:'11111111',
+          passphrase,
           fromAddress:address,
           toAddress:inputAddress,
           value:inputBalance,
@@ -145,10 +145,6 @@ class TransferScreen extends Component {
           });
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, this._transfer);
-
-      // const { selectedToken } = this.props;
-      // const {value} = selectedToken;
-      // 校验是否支持转账
   }
 
   componentWillUnmount=()=>{
@@ -192,8 +188,8 @@ class TransferScreen extends Component {
                               placeholder={I18n.t('EnterAmount')}
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
-                              // keyboardType='numeric'
-                              onChangeText={this._onChangeBalance}/>
+                              onChangeText={this._onChangeBalance}
+                              returnKeyType='next'/>
                       </View>
                       <View style={styles.addressSection}>
                           <View style={styles.bananceTopView}>
@@ -208,7 +204,8 @@ class TransferScreen extends Component {
                               placeholder={ I18n.t('EnterEthAddress') }
                               placeholderTextColor={Colors.separateLineColor}
                               underlineColorAndroid={'transparent'}
-                              onChangeText={this._onChangeAddress}/>
+                              onChangeText={this._onChangeAddress}
+                              returnKeyType='done'/>
                       </View>
                   </KeyboardAvoidingView>
                   <View style={styles.gaseSection}>

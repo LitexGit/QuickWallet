@@ -5,7 +5,7 @@ import styles from './Styles/ScanScreenStyle';
 import { RNCamera } from 'react-native-camera';
 import I18n from '../I18n';
 
-class ScanScreen extends Component {
+export default class ScanScreen extends Component {
 
   static navigationOptions = {
       title:I18n.t('ScanTabTitle'),
@@ -45,11 +45,11 @@ class ScanScreen extends Component {
   componentDidMount=()=>{
       this.data='';
       this._startAnimation();
-      setTimeout(()=>{
-          const {state} = this.props.navigation;
-          state.params.callback({data:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
-          this.props.navigation.goBack();
-      }, 3000);
+      // setTimeout(()=>{
+      //     const {state} = this.props.navigation;
+      //     state.params.callback({data:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
+      //     this.props.navigation.goBack();
+      // }, 3000);
   }
 
   render() {
@@ -95,16 +95,6 @@ class ScanScreen extends Component {
           </View>);
   }
 }
-
-
-
-const mapStateToProps = (state) => ({
-});
-
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScanScreen);
 
 
 

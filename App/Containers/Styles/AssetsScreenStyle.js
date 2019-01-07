@@ -19,6 +19,7 @@ export default StyleSheet.create({
         paddingHorizontal:Metrics.doubleBaseMargin,
         borderBottomColor:Colors.separateLineColor,
         borderBottomWidth: 1 / PixelRatio.get(),
+        minHeight:Metrics.itemHeight,
     },
     leftSection:{
         flexDirection:'row',

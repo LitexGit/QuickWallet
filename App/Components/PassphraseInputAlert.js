@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { View, Text, TextInput, TouchableOpacity} from 'react-native';
 import styles from './Styles/PassphraseInputAlertStyle';
 import Overlay from 'react-native-modal-overlay';
-import { connect } from 'react-redux';
-import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 
-class PassphraseInputAlert extends Component {
+export default class PassphraseInputAlert extends Component {
     static propTypes = {
         isInit: PropTypes.bool,
         onPressConfirm: PropTypes.func,
@@ -62,9 +60,3 @@ class PassphraseInputAlert extends Component {
         );
     }
 }
-
-const mapDispatchToProps = (dispatch) => ({
-    savePassphrase: ({passphrase}) => dispatch(WalletActions.savePassphrase({passphrase})),
-});
-
-export default connect(mapDispatchToProps)(PassphraseInputAlert);

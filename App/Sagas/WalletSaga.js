@@ -56,9 +56,12 @@ export function *gethUnlockAccount (action) {
     try {
         const {data:params} = action;
         const {passphrase} = params;
+        yield put(WalletActions.setLoading({loading:true}));
 
         const result =  yield GethModule.unlockAccount({passphrase});
         const map = GethModule.getResolveMap(result);
+
+        yield put(WalletActions.setLoading({loading:false}));
 
         const {address} = map;
         // TODO 解锁钱包 可以导出&&转账

@@ -36,8 +36,7 @@ export default StyleSheet.create({
         flex:1,
     },
     actionStyle:{
-        paddingBottom: Metrics.baseMargin,
-        paddingTop:Metrics.doubleBaseMargin - 5,
+        padding: 15,
         textAlign:'center',
     }
 });

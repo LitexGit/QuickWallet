@@ -62,6 +62,8 @@ export const savePrivateKey = (state, {data}) =>
 export const savePassphrase = (state, {data}) =>
     state.merge({...data});
 
+
+
 export const gethRandomMnemonicSuccess = (state, {data}) =>
     state.merge({...data});
 
