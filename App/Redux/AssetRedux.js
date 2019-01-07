@@ -53,14 +53,12 @@ export const INITIAL_STATE = Immutable({
 });
 
 /* ------------- Selectors ------------- */
-
 export const AssetSelectors = {
     getBalances: state => state.assets.balances,
     getTxlist: state => state.assets.txlist,
 };
 
 /* ------------- Reducers ------------- */
-
 export const getBalanceSuccess = (state, { data }) =>{
     const {tokenList} = state;
     const {symbol:ETH, banance} = data;
@@ -70,9 +68,6 @@ export const getBalanceSuccess = (state, { data }) =>{
             return token;
         }
         const count = getToken(banance, decimal);
-        console.log('==============getToken(banance, decimal)======================');
-        console.log(getToken(banance, decimal));
-        console.log('==============getToken(banance, decimal)======================');
         return token.merge({count});
     });
     return state.merge({tokenList:list});
@@ -97,16 +92,13 @@ export const getTokenBalanceSuccess = (state, { data }) =>{
 
 export const getTokenBalanceFailure = (state, { data }) => state;
 
-export const setSelectedToken = (state, { data }) =>
-    // const test = {selectedToken:{
-    //     Symbol: 'ETH',
-    //     Tokenaddress: '0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-    //     count: 30,
-    //     Decimal: 18
-    // }};
-    state.merge({...data})
-;
-
+// const test = {selectedToken:{
+//     Symbol: 'ETH',
+//     Tokenaddress: '0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+//     count: 30,
+//     Decimal: 18
+// }};
+export const setSelectedToken = (state, { data }) =>state.merge({...data});
 
 export const request = (state, action) =>{
     const {type, data} = action;

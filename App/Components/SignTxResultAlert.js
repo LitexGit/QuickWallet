@@ -9,14 +9,15 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Metrics, Colors } from '../Themes';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
+import {getToken, getWei} from '../Lib/Format';
 
 
 class SignTxResultAlert extends Component {
   static propTypes = {
       isInit: PropTypes.bool,
       to:PropTypes.string,
-      balance:PropTypes.number,
-      gas:PropTypes.number,
+      balance:PropTypes.string,
+      gas:PropTypes.string,
 
       onPressCancel:PropTypes.func,
       onPressConfirm:PropTypes.func,
@@ -24,9 +25,9 @@ class SignTxResultAlert extends Component {
 
   static defaultProps = {
       isInit: false,
-      to:'',
-      balance:0,
-      gas:0,
+      to:'0x',
+      balance:'0',
+      gas:'0',
   }
 
   componentDidMount=()=>{
@@ -36,14 +37,30 @@ class SignTxResultAlert extends Component {
   render () {
       const {isInit, address, to, balance, gas, onPressCancel, onPressConfirm} = this.props;
 
-      // TODO 构建数据源
+      const gasLimit = 21000;
+      const price = getWei(gas, 9) * gasLimit / 1e18;
+
+      const symbol = {key:'symbol', units:balance, value:'￥654'};
+      const gasPrice = {key:'gasPrice', units:price, value:'￥6.1'};
+      const txTotal = {key:'txTotal', units:parseFloat(balance) + price, value:'￥660.5'};
+
+      const items = [symbol, gasPrice, txTotal];
+
       const signInfos = Object.values(SignInfoConfig).map((config, key)=>{
-          const {title, count, fiatValue} = config;
+          for (const item of items) {
+              const {key: itemKey} = item;
+              if (itemKey === config.key) {
+                  config.units = item.units;
+                  config.value = item.value;
+              }
+          }
+
+          const {title, units, value} = config;
           return (<View key={key} style={styles.infoItem}>
               <Text style={styles.itemTitle}>{title}</Text>
               <View>
-                  <Text style={styles.itemCount}>{count}</Text>
-                  <Text style={styles.itemValue}>{fiatValue}</Text>
+                  <Text style={styles.itemCount}>{units}</Text>
+                  <Text style={styles.itemValue}>{value}</Text>
               </View>
           </View>);
       });

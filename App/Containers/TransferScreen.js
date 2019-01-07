@@ -167,8 +167,8 @@ class TransferScreen extends Component {
               <SignTxResultAlert
                   isInit={isShowSignTx}
                   to={inputAddress}
-                  balance={parseFloat(inputBalance)}
-                  gas={inputGas}
+                  balance={inputBalance}
+                  gas={inputGas.toString()}
                   onPressCancel={()=>this._signCancel()}
                   onPressConfirm={()=>this._signConfirm()}/>
               <PassphraseInputAlert
