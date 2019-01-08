@@ -54,9 +54,25 @@ export const getWei = (value, unitType) => utils.parseUnits(value, unitType).toS
 export const getToken = (value, unitType) => {
     const amount = utils.formatUnits(value, unitType);
     const num = parseFloat(amount);
-    const result = num.toFixed(2);
+    const result = num.toFixed(4);
     return result;
 };
+
+export const getValue = (count, rate, fixed=2) => {
+    if (!count || !rate) return '0.00';
+    const value = count * rate;
+    const result = value.toFixed(fixed);
+    return result;
+};
+
+export function toFixed(value, fixed=2) {
+    if (!value) return '0.00';
+    const result = value.toFixed(fixed);
+    return result;
+}
+
+
+
 
 
 

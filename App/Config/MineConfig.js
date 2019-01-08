@@ -87,10 +87,12 @@ export const CurrencyConfig = {
     CNY:{
         key:'CNY',
         title:'CNY',
+        symbol:'￥'
     },
     USD:{
         key:'USD',
         title:'USD',
+        symbol:'$'
     }
 };
 

@@ -7,6 +7,7 @@ import { Colors, Images } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
 import I18n from '../I18n';
+import {getValue} from '../Lib/Format';
 
 class AssetsScreen extends Component {
   static navigationOptions = {
@@ -27,7 +28,10 @@ class AssetsScreen extends Component {
   }
 
   _renderItem=({item})=>{
-      const { Symbol:symbol, count, value} = item;
+      const {currency} = this.props;
+      const {symbol:mark} = currency;
+      const { Symbol:symbol, count, Rate:rate} = item;
+      const value = getValue(count, rate);
       return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>
           <View style={styles.itemContainer}>
               <View style={styles.leftSection}>
@@ -36,7 +40,7 @@ class AssetsScreen extends Component {
               </View>
               <View style={styles.rightSection}>
                   <Text style={styles.countStyle}>{count}</Text>
-                  <Text style={styles.assetsStyle}>{value}</Text>
+                  <Text style={styles.assetsStyle}>{mark}{value}</Text>
               </View>
           </View>
       </TouchableOpacity>);
@@ -48,6 +52,7 @@ class AssetsScreen extends Component {
 
   render () {
       const {tokenList, refreshing} = this.props;
+
       return (
           <View style={styles.container}>
               <FlatList style={styles.flatList}
@@ -71,9 +76,10 @@ class AssetsScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
+        user:{currency},
         assets:{tokenList, refreshing}
     } = state;
-    return {tokenList, refreshing};
+    return {tokenList, refreshing, currency};
 };
 
 const mapDispatchToProps = (dispatch) => ({

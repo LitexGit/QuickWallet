@@ -9,7 +9,7 @@ import { Button } from 'react-native-elements';
 
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
-import {sectionlize, getToken} from '../Lib/Format';
+import {sectionlize, getToken, getValue} from '../Lib/Format';
 import {getTxDirection} from '../Lib/Utils';
 import I18n from '../I18n';
 import Identicon from 'identicon.js';
@@ -105,8 +105,9 @@ class TransferRecordScreen extends Component {
   }
 
   _renderListHeader=()=>{
-      const {selectedToken} = this.props;
-      const {Symbol:symbol='', count=0, value=''} = selectedToken;
+      const {selectedToken, currency} = this.props;
+      const {Symbol:symbol='', count=0, Rate:rate } = selectedToken;
+      const {symbol:mark} = currency;
       return(<View style={styles.headerContainer}>
           <View style={styles.leftSection}>
               <Image style={styles.symbolImg} source={symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}/>
@@ -114,7 +115,7 @@ class TransferRecordScreen extends Component {
           </View>
           <View style={styles.rightSection}>
               <Text style={styles.countStyle}>{count}</Text>
-              <Text style={styles.assetsStyle}>{value}</Text>
+              <Text style={styles.assetsStyle}>{mark}{getValue(count, rate)}</Text>
           </View>
       </View>);
   }
@@ -159,11 +160,11 @@ class TransferRecordScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{address},
-        assets:{selectedToken, txlist, refreshing, loading, error},
+        user:{address, currency},
+        assets:{selectedToken, txlist, refreshing, loading},
     } = state;
 
-    return {selectedToken, txlist:sectionlize(txlist), address, refreshing, loading};
+    return {selectedToken, txlist:sectionlize(txlist), address, refreshing, loading, currency};
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -15,6 +15,7 @@ import { NavigationActions } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
 import  Identicon from 'identicon.js';
 import I18n from '../I18n';
+import {toFixed} from '../Lib/Format';
 
 class MineComponent extends Component {
 
@@ -109,11 +110,16 @@ class MineComponent extends Component {
   _renderItemSeparator= ()=><View style={styles.itemSeparator}/>
 
   render () {
-      const {nickname, address, ethBanance} = this.props;
+      const {nickname, address, tokenList=[], currency} = this.props;
+      const {symbol} = currency;
+      let banance = 0;
+      for (const token of tokenList) {
+          const {count, Rate:rate} = token;
+          banance += count * rate;
+      }
 
       const avatar = new Identicon(address).toString();
       const avatar_64='data:image/png;base64,'+avatar;
-
 
       const data = Object.values(MineConfig);
       return (
@@ -126,7 +132,7 @@ class MineComponent extends Component {
                       </View>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.assetsSection} onPress={()=>this._onPressAssets()}>
-                      <Text style={styles.assetsStyle}>{I18n.t('AssetsValue')}{ethBanance}</Text>
+                      <Text style={styles.assetsStyle}>{I18n.t('AssetsValue')} {symbol} {toFixed(banance)}</Text>
                   </TouchableOpacity>
 
               </View>
@@ -146,10 +152,10 @@ class MineComponent extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{nickname, address, sharecode},
-        assets:{ethBanance}
+        user:{nickname, address, sharecode, currency},
+        assets:{tokenList}
     } = state;
-    return { ethBanance, nickname, address, sharecode};
+    return { nickname, address, sharecode, currency, tokenList};
 };
 
 const mapDispatchToProps = (dispatch) => ({

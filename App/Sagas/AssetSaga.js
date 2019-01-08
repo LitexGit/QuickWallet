@@ -4,6 +4,8 @@ import AssetActions from '../Redux/AssetRedux';
 import {UserSelectors} from '../Redux/UserRedux';
 import {AssetSelectors} from '../Redux/AssetRedux';
 import Toast from 'react-native-root-toast';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 
 import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
@@ -20,8 +22,18 @@ export function *getTokenList(api){
         const {data, status, msg} = result;
         if (status) {
             const {tokenList} = data;
+
+            const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
+            const {key='CNY'} = currency;
+            const tokenArray = tokenList.map((token)=>{
+                let {Rate:rate} = token;
+                rate = JSON.parse(rate);
+                token.Rate = rate[key];
+                return token;
+            });
+
             yield put(AssetActions.getTokenListSuccess(data));
-            for (const token of tokenList) {
+            for (const token of tokenArray) {
                 const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
                 const address = yield select(UserSelectors.getAddress);
                 if (symbol === 'ETH') {

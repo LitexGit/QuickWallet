@@ -9,7 +9,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Metrics, Colors } from '../Themes';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
-import {getWei} from '../Lib/Format';
+import {getWei, toFixed, getValue} from '../Lib/Format';
 
 
 class SignTxResultAlert extends Component {
@@ -35,14 +35,19 @@ class SignTxResultAlert extends Component {
   }
 
   render () {
-      const {isInit, address, to, balance, gas, onPressCancel, onPressConfirm} = this.props;
+      const {isInit, address, to, balance, gas, onPressCancel, onPressConfirm, selectedToken, currency} = this.props;
+      const {symbol:mark} = currency;
+      const {Rate:rate} = selectedToken;
 
       const gasLimit = 21000;
       const price = getWei(gas, 9) * gasLimit / 1e18;
 
-      const symbol = {key:'symbol', units:balance, value:'￥654'};
-      const gasPrice = {key:'gasPrice', units:price, value:'￥6.1'};
-      const txTotal = {key:'txTotal', units:parseFloat(balance) + price, value:'￥660.5'};
+      const totalBanance = parseFloat(balance) + price;
+      const totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(price, rate));
+
+      const symbol = {key:'symbol', units:balance, value:getValue(balance, rate)};
+      const gasPrice = {key:'gasPrice', units:price.toFixed(6), value:getValue(price, rate)};
+      const txTotal = {key:'txTotal', units:totalBanance.toFixed(6), value:totalValue};
 
       const items = [symbol, gasPrice, txTotal];
 
@@ -60,7 +65,7 @@ class SignTxResultAlert extends Component {
               <Text style={styles.itemTitle}>{title}</Text>
               <View>
                   <Text style={styles.itemCount}>{units}</Text>
-                  <Text style={styles.itemValue}>{value}</Text>
+                  <Text style={styles.itemValue}>{mark}{value}</Text>
               </View>
           </View>);
       });
@@ -104,9 +109,10 @@ class SignTxResultAlert extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{address}
+        user:{address, currency },
+        assets:{selectedToken}
     } = state;
-    return { address};
+    return { address, currency, selectedToken };
 };
 
 const mapDispatchToProps = (dispatch) => ({
