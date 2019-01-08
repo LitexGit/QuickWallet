@@ -9,7 +9,7 @@
   "CurrencyTabTitle":"货币单位设置",
   "LanguageTabTitle":"语言设置",
   "SettingTabTitle":"使用设置",
-  "AssetsTabTitle":"我的资产",
+  "AssetsTabTitle":"我的“资产”",
   "BackupTabTitle":"备份账户",
   "PreBackupTabTitle":"备份账户",
   "ExportTabTitle":"备份账户",
@@ -20,12 +20,12 @@
   "ScanTabTitle":"扫码",
 
   "SearchApplication":"搜索应用",
-  "CreateYourFirst":"创建你的第一个",
+  "CreateYourFirst":"创建你的第一个 ",
   "Layer2Account":"Layer2加速账户",
-  "Identity":"身份名",
+  "Identity":"身份名-账户名",
   "Password":"密码",
   "ConfirmPassword":"重复输入密码",
-  "Create":"创建",
+  "Create":"创建Create ",
   "CreatAccount":"创建账户",
   "ImportAccount":"导入账户",
   "Import":"导入",
@@ -46,7 +46,7 @@
   "InviteCode":"邀请码",
 
   "NextStep":"下一步",
-  "ConfirmMnemonic":"确认助记词",
+  "ConfirmMnemonic":"确认助记词Confirm Mnemonic Phrase",
   "Complete":"完成",
   "Refreshing":"Refreshing...",
   "Assets":"资产",
@@ -55,7 +55,7 @@
   "EnterAmount":"输入金额",
   "ToAddress":"收款地址",
   "EnterEthAddress":"输入以太坊地址",
-  "Continue":"继续",
+  "Continue":"继续Continue ",
   "TermsOfUse":"使用条款",
   "BackupAccount":"备份账户",
 
@@ -67,9 +67,9 @@
 
   "InputPswdTitle":"请输入密码",
 
-  "ScreenshotsTitle":"请勿截图",
+  "ScreenshotsTitle":"请勿截图Do Not Screenshot",
   "ScreenshotsRemind001":"如果有人获取你的助记词将直接获取你的资产！",
-  "ScreenshotsRemind002":"账户助记词仅在此处出现一次，请抄写助记词并存放在安全的地方！",
+  "ScreenshotsRemind002":"账户助记词仅在此处出现一次，请抄写助记词并存放在安全的地方！ ",
 
   "CancelAction":"取消",
   "ConfirmAction":"确认",
@@ -85,29 +85,29 @@
 
   "ImportMnemonicRemind":"使用助记词导入时可以修改钱包密码。",
   "ImportPrivateKeyRemind":"输入 Private Key 文件内容至输入框。或通过扫描 Private Key 内容生成的二维码录入。请留意字符大小写。",
-  "ImportRemind":"设置新的密码后,旧密码将在导入账户后失效。",
+  "ImportRemind":"设置新的密码后,旧密码将在导入账户后失效",
 
   "ExportRemindTitle":"警告",
   "ExportRemind001":"任何持有此私钥的人都可以获取账户中所有的资产,请妥善保管！",
   "ExportRemind002":"请确保周围没有其他人和摄像头",
   "ExportAction":"显示私钥",
 
-  "LogoutTitle":"退出当前身份",
-  "LogoutRemind":"即将移除身份及所有导入的钱包，请确保所有钱包已备份。",
+  "LogoutTitle":"退出当前身份-退出当前账户Logout Current Account",
+  "LogoutRemind":"即将移除身份及所有导入的钱包，请确保所有钱包已备份。——退出账户前请确保账户信息已经备份，如未备份您将失去所有信息且无法找回     即将退出账户，请确保各游戏中未花费的充值金额已经全部提现成功并到账。",
 
   "ConfirmInfo":"确认信息",
   "ConfirmRemind001":"我已仔细阅读并同意以上条款以及",
-  "ConfirmRemind002":"Cookiss的使用说明",
+  "ConfirmRemind002":"Cookies的使用说明",
 
   "ScanRemind":"将二维码放入框内，即可自动扫描",
 
   "Combined":"总计",
   "TotalAssets":"资产总价值:",
-  "ChoosePath":"选择路径",
+  "ChoosePath":"选择路径-已经没有了",
   "Default":"默认",
 
 
-  "NoRecord":"暂无记录",
+  "NoRecord":"暂无记录 ",
 
   "LoadingAction":"加载更多",
   "BackUpAccount":"备份此账户",
@@ -118,15 +118,5 @@
   "InputPrivateKey":"输入明文私钥",
   "RepeatPassword":"重复输入密码",
   "Mnemonic":"助记词",
-  "PrivateKey":"私钥",
-
-  "PswdCheckError":"密码不少于8位字符",
-  "PswdConsistentError":"密码输入不一致",
-  "LackBalanceError":"钱包余额不足以支持此次转账",
-  "InvalidAddressError":"请输入有效的地址",
+  "PrivateKey":"私钥"
 }
-
-// 备份助记词
-// 设置密码
-
-
