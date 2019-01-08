@@ -46,7 +46,7 @@
   "InviteCode":"邀请码",
 
   "NextStep":"下一步",
-  "ConfirmMnemonic":"确认助记词Confirm Mnemonic Phrase",
+  "ConfirmMnemonic":"确认助记词",
   "Complete":"完成",
   "Refreshing":"Refreshing...",
   "Assets":"资产",
@@ -67,7 +67,7 @@
 
   "InputPswdTitle":"请输入密码",
 
-  "ScreenshotsTitle":"请勿截图Do Not Screenshot",
+  "ScreenshotsTitle":"请勿截图",
   "ScreenshotsRemind001":"如果有人获取你的助记词将直接获取你的资产！",
   "ScreenshotsRemind002":"账户助记词仅在此处出现一次，请抄写助记词并存放在安全的地方！ ",
 
@@ -92,7 +92,7 @@
   "ExportRemind002":"请确保周围没有其他人和摄像头",
   "ExportAction":"显示私钥",
 
-  "LogoutTitle":"退出当前身份-退出当前账户Logout Current Account",
+  "LogoutTitle":"退出当前身份-退出当前账户",
   "LogoutRemind":"即将移除身份及所有导入的钱包，请确保所有钱包已备份。——退出账户前请确保账户信息已经备份，如未备份您将失去所有信息且无法找回     即将退出账户，请确保各游戏中未花费的充值金额已经全部提现成功并到账。",
 
   "ConfirmInfo":"确认信息",
