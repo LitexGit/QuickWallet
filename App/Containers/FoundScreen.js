@@ -61,7 +61,7 @@ class FoundScreen extends Component {
   }
 
   _onPressItem = ()=>{
-      this.props.navigate('ZJWebViewScreen');
+      this.props.navigate('WebViewScreen', {uri:'http://litex.io/'});
   }
 
   _renderBanner = (item,key)=>{
