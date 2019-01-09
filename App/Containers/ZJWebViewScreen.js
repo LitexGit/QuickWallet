@@ -10,6 +10,7 @@ import SignMsgResultAlert from '../Components/SignMsgResultAlert';
 import WalletActions from '../Redux/WalletRedux';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
+import Layer2WebView from '../NativeComponent/Layer2WebView';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -166,13 +167,11 @@ render () {
             <Spinner visible={loading} cancelable
                 textContent={'Loading...'}
                 textStyle={styles.spinnerText}/>
-            <WebView useWebKit
-                ref ={ref=>this.webview = ref}
-                style={styles.container}
-                source={{uri}}/>
+            <Layer2WebView style={styles.container}/>
         </View>);
 }
 }
+
 
 const mapStateToProps = (state) => {
     const {
@@ -189,5 +188,10 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(ZJWebViewScreen);
 
+
+{/* <WebView useWebKit
+ref ={ref=>this.webview = ref}
+style={styles.container}
+source={{uri}}/> */}
 
 
