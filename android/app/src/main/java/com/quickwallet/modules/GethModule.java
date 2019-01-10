@@ -9,6 +9,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
@@ -22,6 +23,7 @@ import geth.BigInt;
 import geth.CallMsg;
 import geth.EthereumClient;
 import geth.Geth;
+import geth.Hash;
 import geth.KeyStore;
 import geth.Transaction;
 
@@ -317,28 +319,142 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void signHash(
+    public void sign(
             String passphrase,
-            Object hash,
+            ReadableMap signInfo,
             Promise promise
     ) {
         try {
             if (account == null || keyStore == null || ethClient == null){
-                // Wallet not unlocked
                 Exception err = new Exception();
-                promise.reject("-1014",err);
+                promise.reject("-1007",err);
                 return;
             }
-            ByteUtil.objectToByte(hash);
-            byte[] data = null;
-            byte[] hashData = keyStore.signHashPassphrase(account, passphrase, data);
-            String hashStr = new String(hashData);
 
-//            successCallback.invoke(hashStr);
+            String fromAddress = signInfo.getString("fromAddress");
+            Address from = new Address(fromAddress);
+
+            String toAddress = signInfo.getString("toAddress");
+            Address to = new Address(toAddress);
+
+            long value  = Long.parseLong(signInfo.getString("amount"));
+            BigInt amount = new BigInt(value);
+
+            long gas  = Long.parseLong(signInfo.getString("gas"));
+            BigInt gasPrice = new BigInt(gas);
+
+            long number = -1;
+            long nonce = ethClient.getNonceAt(Geth.newContext(), from, number);
+
+            int type = signInfo.getInt("type");
+
+            switch (type){
+                case 1:{
+                    Transaction transaction = null;
+                    String symbol = signInfo.getString("symbol");
+
+                    if (symbol.equals("ETH")){
+                        transaction = getETHTx(from, to, nonce, amount, gasPrice);
+                    } else {
+                        String contractAddress = signInfo.getString("tokenAddress");
+                        Address tokenAddress = new Address(contractAddress);
+                        transaction = getTokenTx(tokenAddress, from, to, nonce, amount, gasPrice);
+                    }
+
+                    long chainId = 4;
+                    BigInt chainID = new BigInt(chainId);
+                    Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
+
+                    ethClient.sendTransaction(Geth.newContext(), signedTx);
+
+                    String txHash = signedTx.getHash().getHex();
+                    WritableMap map = Arguments.createMap();
+                    map.putString("txHash",txHash);
+                    promise.resolve(map);
+                    return;
+                }
+                case 2:{
+                    String msgInfo = signInfo.getString("msgInfo");
+                    CallMsg callMsg = getCallMsg(from, to, gasPrice, msgInfo);
+
+                    // callMsg ==> unSignSata
+
+                    byte[] unSignSata = null;
+                    byte[] signData = keyStore.signHashPassphrase(account, passphrase, unSignSata);
+                    String msgHash = Geth.newHashFromBytes(signData).getHex();
+
+                    WritableMap map = Arguments.createMap();
+                    map.putString("msgHash",msgHash);
+                    promise.resolve(map);
+                    return;
+                }
+                default:
+
+                    break;
+            }
         } catch (Exception e) {
-//            errorCallback.invoke(e.getMessage());
+            promise.reject("-1009",e.getMessage());
         }
     }
+
+    public static CallMsg getCallMsg(
+            Address from,
+            Address to,
+            BigInt gasPrice,
+            String msgInfo
+    ) {
+        CallMsg callMsg = new CallMsg();
+        callMsg.setFrom(from);
+        callMsg.setTo(to);
+        callMsg.setGasPrice(gasPrice);
+
+        byte[] data = hexStringToByteArray(msgInfo);
+        callMsg.setData(data);
+
+        return callMsg;
+    }
+
+    public static Transaction getETHTx(
+            Address from,
+            Address to,
+            long nonce,
+            BigInt amount,
+            BigInt gasPrice
+    ) {
+
+        try {
+            long gasLimit = 21000;
+            byte[] data = null;
+            Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, data);
+            return transaction;
+        } catch (Exception e){
+            Log.d("TAG", "getETHTx: "+ e);
+            return null;
+        }
+    }
+
+    public static Transaction getTokenTx(
+            Address tokenAddress,
+            Address from,
+            Address to,
+            long nonce,
+            BigInt amount,
+            BigInt gasPrice
+    ) {
+        try {
+            BigInt tokenAmount = new BigInt(0);
+            byte[] data = Geth.generateERC20TransferData(to, amount);
+
+            long gasLimit = 21000;
+            Transaction transaction = new Transaction(nonce, tokenAddress, tokenAmount, gasLimit, gasPrice, data);
+            return  transaction;
+        } catch (Exception e){
+            Log.d("getTokenTx", "getTokenTx: "+e);
+            return null;
+        }
+
+    }
+
 
     public void saveKeystorePath(Account account){
         String url = account.getURL();
@@ -355,4 +471,6 @@ public class GethModule extends ReactContextBaseJavaModule {
         }
         return data;
     }
+
+
 }

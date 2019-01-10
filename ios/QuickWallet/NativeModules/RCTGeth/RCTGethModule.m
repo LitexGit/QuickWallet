@@ -357,8 +357,11 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
   
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  NSError *error = nil;
+  
   if (!self.account || !self.keyStore || !self.ethClient) {
-    _rejectBlock(@"iOS", @"Wallet not unlocked", nil);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
+    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
     return;
   }
 
@@ -370,15 +373,15 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
   
   int64_t nonce = 0x0;
   GethContext *context = [[GethContext alloc] init];
-  NSError *nonceErr = nil;
+  
   int64_t number = -1;
-  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
-  if (!isGet || nonceErr) {
-    _rejectBlock(@"iOS", @"get Nonce exceptions", nonceErr);
+  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
+  if (!isGet || error) {
+    _rejectBlock(@"-1010", @"get Nonce exceptions", error);
     return;
   }
   
-  if ([model.type isEqual:@(1)]) { // // signTx
+  if ([model.type isEqual:@(1)]) { // signTx
     GethTransaction *transaction = nil;
     if ([model.symbol isEqualToString:@"ETH"]) {
        transaction = [self getETHTx:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
@@ -388,17 +391,19 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
     }
     
     if (!transaction) {
-      _rejectBlock(@"iOS", @"Build Transaction exceptions", nonceErr);
+      error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1016 userInfo:@{@"info":@"Build Transaction exceptions"}];
+      _rejectBlock(@"-1016", @"Build Transaction exceptions", error);
       return;
     }
     GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
     if (!signedTx) {
-      _rejectBlock(@"iOS", @"Signature abnormal", nil);
+      error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1017 userInfo:@{@"info":@"Signature abnormal"}];
+      _rejectBlock(@"-1017", @"Signature abnormal", error);
     }
-    NSError *sendErr = nil;
-    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&sendErr];
-    if (!isSend || sendErr) {
-      _rejectBlock(@"iOS", @"Transaction failure", sendErr);
+
+    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
+    if (!isSend || error) {
+      _rejectBlock(@"-1018", @"Signa transaction failure", error);
       return;
     }
     NSString *infoHash = [[transaction getHash] getHex];
@@ -408,7 +413,8 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
   
   GethCallMsg *callMsg = [self getCallMsg:from to:to gasPrice:gasPrice msgInfo:model.msgInfo];
   if (!callMsg) {
-    _rejectBlock(@"iOS", @"Build GethCallMsg exceptions", nonceErr);
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1019 userInfo:@{@"info":@"Signature abnormal"}];
+    _rejectBlock(@"1019", @"Build GethCallMsg exceptions", error);
     return;
   }
   
@@ -433,8 +439,7 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
   [callMsg setFrom:from];
   [callMsg setTo:to];
   [callMsg setGasPrice:gasPrice];
-  
-  NSData *data = [msgInfo dataUsingEncoding: NSUTF8StringEncoding];
+  NSData *data = [self byteStringToData:msgInfo];
   [callMsg setData:data];
   
   return callMsg;

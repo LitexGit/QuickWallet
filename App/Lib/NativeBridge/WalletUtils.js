@@ -39,7 +39,7 @@ async function exportPrivateKey({passphrase}){
     return await gethModule.exportPrivateKey(passphrase);
 }
 
-async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress='', value=0, gasPrice=0, decimal, tokenAddress}){
+async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress='', value='0', gasPrice='0', decimal, tokenAddress}){
     const amount = getWei(value, decimal);
     const price =  getWei(gasPrice, 9);
     if (symbol === 'ETH') {
@@ -49,24 +49,31 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
 }
 
 async function sign({passphrase, signInfo}){
+
     console.log('=======sign======signInfo=======================');
     console.log(signInfo);
     console.log('=======sign======signInfo=======================');
 
-    const {type=1, symbol='ETH', decimal=1e18, tokenAddress='', fromAddress='', toAddress='', value=0, gasPrice=1, msgInfo=''} = signInfo;
+    const {type=1, symbol='ETH', decimal=18, tokenAddress='', fromAddress='', toAddress='', value='0', gasPrice='0', msgInfo=''} = signInfo;
     switch (type) {
-    case 1:{// signTx
-        const amount = value * decimal;
-        const gas = gasPrice * 1e9;
-        if (symbol === 'ETH') { // ETH
+    case 1:{
+
+        const amount = getWei(value, decimal);
+        const gas = getWei(gasPrice, 9);
+        console.log('=======sign======signInfo=======================');
+        console.log(amount);
+        console.log(gas);
+        console.log('=======sign======signInfo=======================');
+
+        if (symbol === 'ETH') {
             const ethParams = {type, symbol, fromAddress, toAddress, amount, gas};
             return await gethModule.sign(passphrase, ethParams);
-        } // ERC20 token
+        }
         const tokenParams = {type, symbol, tokenAddress, fromAddress, toAddress, amount, gas};
         return await gethModule.sign(passphrase, tokenParams);
     }
-    case 2: { // signMsg
-        const gas = gasPrice * 1e9;
+    case 2: {
+        const gas = getWei(gasPrice, 9);
         const msgParams = {type, symbol, fromAddress, toAddress, gas, msgInfo};
         return await gethModule.sign(passphrase, msgParams);
     }

@@ -54,7 +54,18 @@ componentWillUnmount=()=>{
 }
 
 _signInfo=()=>{
-    this.props.gethSignHash({passphrase:'11111111', signInfo:this.signInfo});
+    const signInfo = {
+        type:1,
+        symbol:'ETH',
+        decimal:18,
+        tokenAddress:'',
+        fromAddress:'0xb5538753F2641A83409D2786790b42aC857C5340',
+        toAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+        value:'1',
+        gasPrice:'12',
+        msgInfo:'我怎么这么好看'
+    };
+    this.props.gethSignHash({passphrase:'11111111', signInfo});
 }
 
 _signTxCancel=()=>{
@@ -117,45 +128,63 @@ _onPressShare=()=> {
 
 
 _onMessage=(evt)=>{
-    console.log('======ZJ====RN_onMessage==========================');
-    console.log(JSON.parse(evt.nativeEvent.data));
-    console.log('======ZJ====RN_onMessage==========================');
+    this._signInfo();
+    // this.setState({
+    //     isShowSignTx:true,
+    // });
 
-    const params = JSON.parse(evt.nativeEvent.data);
-    const {name} = params;
-    switch (name) {
-    case 'signTransaction':{
-        const message = {
-            id: 8888,
-            error: null ,
-            value: {
-                from: '0xb5538753F2641A83409D2786790b42aC857C5340',
-                gasPrice: '20000000000',
-                gas: '21000',
-                to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
-                value: '1000000000000000000',
-                data: ''
-            }
-        };
-        this.webview.postMessage(JSON.stringify(message));
+    // console.log('======ZJ====RN_onMessage==========================');
+    // console.log(JSON.parse(evt.nativeEvent.data));
+    // console.log('======ZJ====RN_onMessage==========================');
 
-    }
-        break;
-    case 'signMessage':{
-        const message = {
-            id: 8888,
-            error: null ,
-            value: {
-                data:'signMessage'
-            }
-        };
-        this.webview.postMessage(JSON.stringify(message));
-    }
-        break;
+    //     const params = JSON.parse(evt.nativeEvent.data);
+    //     const {name} = params;
+    //     switch (name) {
+    //     case 'signTransaction':{
+    //         const message = {
+    //             id: 8888,
+    //             error: null ,
+    //             value: {
+    //                 from: '0xb5538753F2641A83409D2786790b42aC857C5340',
+    //                 gasPrice: '20000000000',
+    //                 gas: '21000',
+    //                 to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+    //                 value: '1000000000000000000',
+    //                 data: ''
+    //             }
+    //         };
+    //         this.webview.postMessage(JSON.stringify(message));
 
-    default:
-        break;
-    }
+    //     }
+    //         break;
+    //     case 'signMessage':{
+    //         const message = {
+    //             id: 8888,
+    //             error: null ,
+    //             value: {
+    //                 data:'signMessage'
+    //             }
+    //         };
+    //         this.webview.postMessage(JSON.stringify(message));
+    //     }
+    //         break;
+    //     case 'signPersonalMessage':{
+    //         const message = {
+    //             id: 8888,
+    //             error: null ,
+    //             value: {
+    //                 dataToSign:'data to sign',
+    //                 address:'0xb5538753F2641A83409D2786790b42aC857C5340',
+    //                 password:'11111111'
+    //             }
+    //         };
+    //         this.webview.postMessage(JSON.stringify(message));
+    //     }
+    //         break;
+
+//     default:
+//         break;
+//     }
 }
 
 render () {
