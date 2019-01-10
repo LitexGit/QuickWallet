@@ -5,10 +5,11 @@ import styles from './Styles/WebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
 
 import createInvoke from 'react-native-webview-invoke/native';
+import {signer} from '../Resources/inject';
 
 const DEFAULT_URI = 'http://litex.io/';
 
-class WebViewScreen extends Component {
+export default class WebViewScreen extends Component {
 
     constructor(props){
         super(props);
@@ -24,78 +25,60 @@ class WebViewScreen extends Component {
       ),
   });
 
-
-  _webInitialize = () => {
-      this.timer = setTimeout(() => {
-          console.log('=========1=====JS Call RN init======================');
-          return 'JS Call RN init';
-
-      }, 1000);
-      console.log('===========2===JS Call RN init======================');
-  };
-
-  _webWannaGet = () => {
-      this.timer = setTimeout(() => 'JS Call RN, RN callBack Hi LXT', 10);
-  };
-
-  _webWannaSet = (data) => {
-      Alert.alert( 'JS Set RN', data,
-          [{text: '取消', style: 'cancel'}, {text: '确定'}],
-          { cancelable: false }
-      );
-  };
-
   componentDidMount() {
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
-
-      this.invoke
-          .define('init', this._webInitialize)
-          .define('get', this._webWannaGet)
-          .define('set', this._webWannaSet);
   }
 
 
+  _onPressRefresh=()=>{
+      // this.webview.reload();
 
+      const message = {
+          id: 8888,
+          error: null ,
+          value: {
+              data:'0xb5538753F2641A83409D2786790b42aC857C5340'
+          }
+      };
+      this.webview.postMessage(JSON.stringify(message));
+  }
 
-_onPressRefresh=()=>{
-    this.webview.reload();
+  _onMessage=(evt)=>{
+      console.log('==========RN_onMessage==========================');
+      console.log(JSON.parse(evt.nativeEvent.data));
+      console.log('==========RN_onMessage==========================');
+  }
+
+  _onPressShare=()=>{
+      const shareUrl = 'http://litex.io/';
+      const {sharecode} = this.props;
+      let shareParams = {};
+      if (Platform.OS === 'ios') {
+          const url =  shareUrl + '?sharecode=' + sharecode;
+          shareParams = {url};
+      } else {
+          const message = shareUrl + '?sharecode=' + sharecode;
+          shareParams = {message};
+      }
+      Share.share(shareParams);
+  }
+
+  render () {
+      const {params} =  this.props.navigation.state;
+      const {url=DEFAULT_URI} = params;
+      // const alpha = require('../Resources/AlphaWallet-min.js');
+      // const injectScript = alpha + signer;
+
+      return (
+          <WebView useWebKit
+              ref ={ref=>this.webview = ref}
+              onMessage={this._onMessage}
+              style={styles.container}
+              // injectedJavaScript={injectScript}
+              source={require('./index.html')}/>
+      );
+  }
 }
-
-_onPressShare=()=>{
-    const shareUrl = 'http://litex.io/';
-    const {sharecode} = this.props;
-    let shareParams = {};
-    if (Platform.OS === 'ios') {
-        const url =  shareUrl + '?sharecode=' + sharecode;
-        shareParams = {url};
-    } else {
-        const message = shareUrl + '?sharecode=' + sharecode;
-        shareParams = {message};
-    }
-    Share.share(shareParams);
-}
-
-render () {
-    const {params} =  this.props.navigation.state;
-    const {url=DEFAULT_URI} = params;
-
-    return (
-        <WebView useWebKit
-            ref ={webview=>this.webview = webview}
-            onMessage={this.invoke.listener}
-            style={styles.container}
-            source={require('./index.html')}/>
-    );
-}
-}
-
-const mapStateToProps = (state) => ({
-});
-
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(WebViewScreen);
 
 

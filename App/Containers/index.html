@@ -15,7 +15,7 @@
             box-sizing: border-box;
             line-height: 25px;
             margin: 5px 0;
-            height: 35px;
+            height: 100px;
         }
 
         button {
@@ -32,58 +32,213 @@
     <h1>Web Side:</h1>
     <p class="status">[Loading] Waiting for bridge ready</p>
     <input class="input" type="text" placeholder="Some..." />
-    <button class="set" label="Send To RN">Send To RN</button>
-    <button class="get" label="Get From RN">Get From RN</button>
 
-    <script src="https://cdn.bootcss.com/es6-promise/4.0.5/es6-promise.auto.min.js"></script>
-    <script src="https://tb1.bdstatic.com/tb/libs/rnwi-browser.js"></script>
-    <!-- DEV
-    <script src="http://localhost:8080/browser.js"></script>
-    -->
+    <button class="postMessage" label="postMessage">postMessage</button>
+
+    <button class="signTransaction" label="signTransaction">signTransaction</button>
+    <button class="signMessage" label="signMessage">signMessage</button>
+    <button class="signPersonalMessage" label="signPersonalMessage">signPersonalMessage</button>
+    <button class="signTypedMessage" label="signTypedMessage">signTypedMessage</button>
+
+    <script src="http://13.113.50.143/AlphaWallet-min.js"></script>
+
+
     <script>
-        (function () {
-            var $input = document.querySelector('.input')
-            var $status = document.querySelector('.status')
+        var $input = document.querySelector('.input')
+
+        const addressHex = '0xb5538753F2641A83409D2786790b42aC857C5340';
+        const rpcURL = 'http://api-rinkeby.etherscan.io/api';
+        const chainID = '4';
+
+        window.document.addEventListener('message', function (e) {
+            $input.value = e.data;
+        })
+
+        function executeCallback (id, error, value) {
+            AlphaWallet.executeCallback(id, error, value);
+        }
+
+        AlphaWallet.init(rpcURL, {
+            getAccounts (cb) { cb(null, [addressHex]); },
+
+            processTransaction (tx, cb){
+                const { id = 8888 } = tx;
+                console.log('signing a transaction', tx);
+                AlphaWallet.addCallback(id, cb);
+
+                $input.value = 'signTransaction' + JSON.stringify(tx);
+                const params = {'name': 'signTransaction', 'object': tx, id};
+                window.postMessage(JSON.stringify(params));
+            },
+
+            signMessage (msgParams, cb) {
+                const { data } = msgParams;
+                const { id = 8888 } = msgParams;
+                console.log('signing a message', msgParams);
+                AlphaWallet.addCallback(id, cb);
+
+                $input.value = 'signMessage' + JSON.stringify(msgParams);
+                const params = {'name': 'signMessage', 'object': { data }, id};
+                window.postMessage(JSON.stringify(params));
+            },
 
 
+            signPersonalMessage (msgParams, cb) {
+                const { data } = msgParams;
+                const { id = 8888 } = msgParams;
+                console.log('signing a personal message', msgParams);
+                AlphaWallet.addCallback(id, cb);
 
-            var webReady = window.WebViewInvoke.bind('init')
-            var getFromNative = window.WebViewInvoke.bind('get')
-            var setToNative = window.WebViewInvoke.bind('set')
+                $input.value = 'signPersonalMessage' + JSON.stringify(msgParams);
+                const params = {'name': 'signPersonalMessage', 'object': { data }, id};
+                window.postMessage(JSON.stringify(params));
+            },
 
-            webReady()
-              .then(function(data) {
-                $status.innerText = data;
-            })
-            document.querySelector('.get').addEventListener('click', function(){
-                getFromNative()
-                    .then(function (data) {
-                        $status.innerText = data;
-                    })
-            })
-            document.querySelector('.set').addEventListener('click', function(){
-                $status.innerText = '[Set To RN] Sending'
-                setToNative($input.value)
-                    .then(function () {
-                        $status.innerText = '[Set To RN] Success'
-                    })
-            })
+            signTypedMessage (msgParams, cb) {
+                const { data } = msgParams;
+                const { id = 8888 } = msgParams;
+                console.log('signing a typed message', msgParams);
+                AlphaWallet.addCallback(id, cb);
 
-
-
-
-
-            function nativeWannaGet() {
-                return $input.value
+                $input.value = 'signTypedMessage' + JSON.stringify(msgParams);
+                const params = {'name': 'signTypedMessage', 'object': { data }, id};
+                window.postMessage(JSON.stringify(params));
             }
-            function nativeWannaSet(data) {
-                $status.innerText = '[Receive From RN] "' + data + '"'
-            }
-            window.WebViewInvoke.define('get', nativeWannaGet)
-            window.WebViewInvoke.define('set', nativeWannaSet)
+        }, {
+            address: addressHex,
+            networkVersion: chainID
+        });
 
-        })()
+        web3.setProvider = function () {
+            console.debug('AlphaWallet Wallet - overrode web3.setProvider');
+        };
+
+        web3.eth.defaultAccount = addressHex;
+
+        web3.version.getNetwork = function(cb) {
+            cb(null, chainID);
+        };
+
+        web3.eth.getCoinbase = function(cb) {
+            return cb(null, addressHex);
+        };
+
+
+
+
+
+
+
+
+
+
+        const message = {
+          command: 'jsCallRN',
+          payload: {
+              arg1: '001',
+              arg2: '002',
+          }
+        }
+
+      document.querySelector('.postMessage').addEventListener('click', ()=>window.postMessage(JSON.stringify(message)))
+
+
+
+      document.querySelector('.signMessage').addEventListener('click', ()=>{
+        try{
+         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "0xb5538753F2641A83409D2786790b42aC857C5340", function(err, msg){
+            $input.value = err +"]]]]" +  msg
+          });
+        }catch(err){
+          $input.value = err
+        }
+      });
+
     </script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <button class="set" label="Send To RN">Send To RN</button>
+<button class="get" label="Get From RN">Get From RN</button> -->
+
+
+<!-- <script>
+    (function () {
+        var $input = document.querySelector('.input')
+        var $status = document.querySelector('.status')
+
+
+
+        var webReady = window.WebViewInvoke.bind('init')
+        var getFromNative = window.WebViewInvoke.bind('get')
+        var setToNative = window.WebViewInvoke.bind('set')
+
+        webReady()
+          .then(function(data) {
+            $status.innerText = data;
+        })
+
+
+        document.querySelector('.get').addEventListener('click', function(){
+
+
+            getFromNative()
+                .then(function (data) {
+                    $status.innerText = data;
+                })
+        })
+        document.querySelector('.set').addEventListener('click', function(){
+            $status.innerText = '[Set To RN] Sending'
+            setToNative($input.value)
+                .then(function () {
+                    $status.innerText = '[Set To RN] Success'
+                })
+        })
+
+
+        function nativeWannaGet() {
+            return $input.value
+        }
+        function nativeWannaSet(data) {
+            $status.innerText = '[Receive From RN] "' + data + '"'
+        }
+        window.WebViewInvoke.define('get', nativeWannaGet)
+        window.WebViewInvoke.define('set', nativeWannaSet)
+
+    })()
+</script> -->
