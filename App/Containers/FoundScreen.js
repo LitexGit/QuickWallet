@@ -45,14 +45,13 @@ class FoundScreen extends Component {
                   webLink:data,
               },()=>{
                   // TODO 003: Url 合法校验 ==> 自动打开链接
-                  // this.props.navigate('ZJWebViewScreen');
               });
           }
       });
   }
 
   _onSubmitEditing=()=>{
-      this.props.navigate('ZJWebViewScreen');
+      this.props.navigate('Layer2WebScreen');
   }
 
   _onPressBanner = (item)=>{
@@ -61,7 +60,7 @@ class FoundScreen extends Component {
   }
 
   _onPressItem = ()=>{
-      this.props.navigate('WebViewScreen', {uri:'http://litex.io/'});
+      this.props.navigate('Layer2WebScreen');
   }
 
   _renderBanner = (item,key)=>{

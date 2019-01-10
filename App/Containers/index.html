@@ -16,6 +16,7 @@
             line-height: 25px;
             margin: 5px 0;
             height: 100px;
+
         }
 
         button {
@@ -32,8 +33,6 @@
     <h1>Web Side:</h1>
     <p class="status">[Loading] Waiting for bridge ready</p>
     <input class="input" type="text" placeholder="Some..." />
-
-    <button class="postMessage" label="postMessage">postMessage</button>
 
     <button class="signTransaction" label="signTransaction">signTransaction</button>
     <button class="signMessage" label="signMessage">signMessage</button>
@@ -128,14 +127,8 @@
 
 
 
-        const message = {
-          command: 'jsCallRN',
-          payload: {
-              arg1: '001',
-              arg2: '002',
-          }
-        }
-      document.querySelector('.postMessage').addEventListener('click', ()=>window.postMessage(JSON.stringify(message)));
+
+
 
       document.querySelector('.signTransaction').addEventListener('click', ()=>{
         try{
