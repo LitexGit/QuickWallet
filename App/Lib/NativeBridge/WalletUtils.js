@@ -48,6 +48,28 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
     return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, price);
 }
 
+
+
+
+
+
+async function signMessage({passphrase, message}){
+    return await gethModule.signMessage(passphrase, message);
+}
+
+async function signTransaction({passphrase, signInfo}){
+    const {chainType='ETH', data='', from='', gas='', gasPrice='', to='', value=''} = signInfo;
+    const unSignInfo = {};
+    return await gethModule.signTransaction(passphrase, signInfo);
+}
+
+
+
+
+
+
+
+
 async function sign({passphrase, signInfo}){
     const {type=1, symbol='ETH', decimal=18, tokenAddress='', fromAddress='', toAddress='', value='0', gasPrice='0', msgInfo=''} = signInfo;
     switch (type) {
@@ -72,8 +94,6 @@ async function sign({passphrase, signInfo}){
     default:
         break;
     }
-
-
 }
 
 function getResolveMap(params){
@@ -109,8 +129,10 @@ export default {
     importPrivateKey,
     exportPrivateKey,
     transfer,
-    sign,
     getDisplayedPrivateKey,
     getGethPrivateKey,
     getResolveMap,
+    sign,
+    signMessage,
+    signTransaction,
 };

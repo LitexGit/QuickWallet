@@ -10,6 +10,9 @@ import SignMsgResultAlert from '../Components/SignMsgResultAlert';
 import WalletActions from '../Redux/WalletRedux';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
+import GethModule from '../Lib/NativeBridge/WalletUtils';
+import Toast from 'react-native-root-toast';
+import {getDisplayTxInfo} from '../Lib/Format';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -58,8 +61,8 @@ _signInfo=()=>{
         type:1,
         symbol:'ETH',
         decimal:18,
-        tokenAddress:'',
-        fromAddress:'0xb5538753F2641A83409D2786790b42aC857C5340',
+        tokenAddress:'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
+        fromAddress:'0xb5538753f2641a83409d2786790b42ac857c5340',
         toAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
         value:'1',
         gasPrice:'12',
@@ -128,64 +131,63 @@ _onPressShare=()=> {
 
 
 _onMessage=(evt)=>{
-    this._signInfo();
+    // this._signInfo();
     // this.setState({
     //     isShowSignTx:true,
     // });
 
-    // console.log('======ZJ====RN_onMessage==========================');
-    // console.log(JSON.parse(evt.nativeEvent.data));
-    // console.log('======ZJ====RN_onMessage==========================');
+    console.log('======ZJ====RN_onMessage==========================');
+    console.log(JSON.parse(evt.nativeEvent.data));
+    console.log('======ZJ====RN_onMessage==========================');
 
-    //     const params = JSON.parse(evt.nativeEvent.data);
-    //     const {name} = params;
-    //     switch (name) {
-    //     case 'signTransaction':{
-    //         const message = {
-    //             id: 8888,
-    //             error: null ,
-    //             value: {
-    //                 from: '0xb5538753F2641A83409D2786790b42aC857C5340',
-    //                 gasPrice: '20000000000',
-    //                 gas: '21000',
-    //                 to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
-    //                 value: '1000000000000000000',
-    //                 data: ''
-    //             }
-    //         };
-    //         this.webview.postMessage(JSON.stringify(message));
+    const params = JSON.parse(evt.nativeEvent.data);
+    const {name, id=8888, object={}} = params;
+    switch (name) {
+    case 'signTransaction':{
+        const signInfo = getDisplayTxInfo(object);
+        this._signTransaction({signInfo, id});
+    }
+        break;
+    case 'signMessage': {
+        const {data=''} = object;
+        this._signMessage({data, id});
+    }
+        break;
 
-    //     }
-    //         break;
-    //     case 'signMessage':{
-    //         const message = {
-    //             id: 8888,
-    //             error: null ,
-    //             value: {
-    //                 data:'signMessage'
-    //             }
-    //         };
-    //         this.webview.postMessage(JSON.stringify(message));
-    //     }
-    //         break;
-    //     case 'signPersonalMessage':{
-    //         const message = {
-    //             id: 8888,
-    //             error: null ,
-    //             value: {
-    //                 dataToSign:'data to sign',
-    //                 address:'0xb5538753F2641A83409D2786790b42aC857C5340',
-    //                 password:'11111111'
-    //             }
-    //         };
-    //         this.webview.postMessage(JSON.stringify(message));
-    //     }
-    //         break;
-
-//     default:
-//         break;
-//     }
+    default:
+        break;
+    }
 }
+
+_signTransaction=async({signInfo, id=8888})=>{
+    try {
+        const passphrase = '11111111';
+        const signHash = await GethModule.signTransaction({passphrase, signInfo});
+        const signMsg = { id, error: null, value: { signHash }};
+        this.webview.postMessage(JSON.stringify(signMsg));
+    } catch (error) {
+        Toast.show(error.message, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+    }
+}
+
+
+_signMessage = async ({data:message='', id=8888})=>{
+    try {
+        const passphrase = '11111111';
+        const signHash = await GethModule.signMessage({passphrase, message});
+        const signMsg = { id, error: null, value: { signHash }};
+        this.webview.postMessage(JSON.stringify(signMsg));
+    } catch (error) {
+        Toast.show(error.message, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+    }
+}
+
 
 render () {
     const uri = DEFAULT_URI;
@@ -241,4 +243,21 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layer2WebScreen);
+
+
+
+
+// case 'signPersonalMessage':{
+//   const message = {
+//       id: 8888,
+//       error: null ,
+//       value: {
+//           dataToSign:'data to sign',
+//           address:'0xb5538753F2641A83409D2786790b42aC857C5340',
+//           password:'11111111'
+//       }
+//   };
+//   this.webview.postMessage(JSON.stringify(message));
+// }
+//   break;
 

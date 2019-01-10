@@ -71,6 +71,17 @@ export function toFixed(value, fixed=2) {
     return result;
 }
 
+export function getDisplayTxInfo(signInfo) {
+    let {data='', gas='', gasPrice='', value=''} = signInfo;
+    gas = parseInt(gas, 16).toString();
+    gasPrice = parseInt(gasPrice, 16).toString();
+    value = parseInt(value, 16).toString();
+    const info = {...signInfo, gas, gasPrice, value};
+    return info;
+}
+
+
+
 
 
 
