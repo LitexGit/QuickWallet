@@ -10,6 +10,7 @@ import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.quickwallet.modules.GethPackage;
+import com.quickwallet.modules.bundle.BundlePackage;
 import com.quickwallet.modules.webview.RNCWebViewPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -42,7 +43,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGestureHandlerPackage(),
             new RNDeviceInfo(),
               new GethPackage(),
-              new RNCWebViewPackage()
+              new RNCWebViewPackage(),
+              new BundlePackage()
       );
     }
 

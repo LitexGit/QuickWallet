@@ -13,6 +13,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import Toast from 'react-native-root-toast';
 import {getDisplayTxInfo} from '../Lib/Format';
+import BundleModule from '../Lib/NativeBridge/BundleModule';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -36,6 +37,7 @@ class Layer2WebScreen extends Component {
   }
 
   componentDidMount() {
+      this._getInjectScript();
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
 
@@ -188,16 +190,22 @@ _signMessage = async ({data:message='', id=8888})=>{
     }
 }
 
+_getInjectScript = async ()=>{
+    const web3Provider =  await BundleModule.readWeb3Provider();
+    console.log('=========Web3Provider===========================');
+    console.log(web3Provider);
+    console.log('=========Web3Provider===========================');
+}
 
-render () {
+
+render  () {
+
     const uri = DEFAULT_URI;
     const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
     const {loading} = this.props;
     const signInfo = {to:'0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db', balance:'100', gas:'10'};
     const {to, balance, gas} = signInfo;
 
-    // const alpha = require('../Resources/AlphaWallet-min.js');
-    // const injectScript = alpha + signer;
 
     return (
         <View style={styles.container}>
