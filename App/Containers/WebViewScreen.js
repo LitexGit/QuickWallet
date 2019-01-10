@@ -48,6 +48,15 @@ export default class WebViewScreen extends Component {
       console.log('==========RN_onMessage==========================');
       console.log(JSON.parse(evt.nativeEvent.data));
       console.log('==========RN_onMessage==========================');
+
+      const message = {
+          id: 8888,
+          error: null ,
+          value: {
+              data:'0xb5538753F2641A83409D2786790b42aC857C5340'
+          }
+      };
+      this.webview.postMessage(JSON.stringify(message));
   }
 
   _onPressShare=()=>{

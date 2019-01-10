@@ -50,11 +50,14 @@
         const rpcURL = 'http://api-rinkeby.etherscan.io/api';
         const chainID = '4';
 
-        window.document.addEventListener('message', function (e) {
-            $input.value = e.data;
-        })
+        window.document.addEventListener('message', ({data})=>{
+          const params = JSON.parse(data);
+          const {id, error, value} = params;
+          executeCallback(id, error, value);
+        });
 
         function executeCallback (id, error, value) {
+            $input.value = 'executeCallback' + JSON.stringify({id, error, value});
             AlphaWallet.executeCallback(id, error, value);
         }
 
@@ -125,13 +128,6 @@
 
 
 
-
-
-
-
-
-
-
         const message = {
           command: 'jsCallRN',
           payload: {
@@ -139,18 +135,32 @@
               arg2: '002',
           }
         }
+      document.querySelector('.postMessage').addEventListener('click', ()=>window.postMessage(JSON.stringify(message)));
 
-      document.querySelector('.postMessage').addEventListener('click', ()=>window.postMessage(JSON.stringify(message)))
-
-
+      document.querySelector('.signTransaction').addEventListener('click', ()=>{
+        try{
+          web3.eth.sendTransaction({
+            from: "0xb5538753F2641A83409D2786790b42aC857C5340",
+            gasPrice: "20000000000",
+            gas: "21000",
+            to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+            value: "1000000000000000000",
+            data: ""
+          }, (err, data)=>{
+            $input.value = err +"signTransaction result" +  JSON.stringify(data);
+          });
+        }catch(err){
+          $input.value =  "signTransaction catch"+err;
+        }
+      });
 
       document.querySelector('.signMessage').addEventListener('click', ()=>{
         try{
-         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "0xb5538753F2641A83409D2786790b42aC857C5340", function(err, msg){
-            $input.value = err +"]]]]" +  msg
-          });
+         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "signMessage",(err, data)=>{
+           $input.value = err +"signMessage result" +  JSON.stringify(data);
+         });
         }catch(err){
-          $input.value = err
+          $input.value =  "signMessage catch"+err;
         }
       });
 
