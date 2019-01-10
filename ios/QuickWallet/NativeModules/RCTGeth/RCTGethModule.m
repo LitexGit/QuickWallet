@@ -398,12 +398,12 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
     GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
     if (!signedTx) {
       error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1017 userInfo:@{@"info":@"Signature abnormal"}];
-      _rejectBlock(@"-1017", @"Signature abnormal", error);
+      _rejectBlock(@"-1017", @"signTransaction abnormal", error);
     }
 
     BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
     if (!isSend || error) {
-      _rejectBlock(@"-1018", @"Signa transaction failure", error);
+      _rejectBlock(@"-1018", @"signTransaction failure", error);
       return;
     }
     NSString *infoHash = [[transaction getHash] getHex];
@@ -411,26 +411,29 @@ RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo 
     return;
   }
   
+  
+  
   GethCallMsg *callMsg = [self getCallMsg:from to:to gasPrice:gasPrice msgInfo:model.msgInfo];
   if (!callMsg) {
     error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1019 userInfo:@{@"info":@"Signature abnormal"}];
-    _rejectBlock(@"1019", @"Build GethCallMsg exceptions", error);
+    _rejectBlock(@"-1019", @"Build GethCallMsg exceptions", error);
     return;
   }
+  // callMsg ==> unSignData
+  NSData *unSignData = nil;
   
-  // callMsg ==> data
-  
-//  NSError *error = nil;
-//  NSData *data = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:signData error:&error];
-//  if (error) {
-//    _rejectBlock(@"iOS", @"Signature info abnormal", error);
-//    return;
-//  }
-//
-//  NSError *hashError =nil;
-//  GethHash *hash = GethNewHashFromBytes(data, &hashError);
-  
-  
+  NSData *signData = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:unSignData error:&error];
+  if (error) {
+    _rejectBlock(@"-1020", @"signMessage abnormal", error);
+    return;
+  }
+  GethHash *hash = GethNewHashFromBytes(signData, &error);
+  if (error) {
+    _rejectBlock(@"-1021", @"get infoHash exceptions", error);
+    return;
+  }
+  NSString *infoHash = [hash getHex];
+  _resolveBlock(@[@{@"infoHash":infoHash}]);
 }
 
 

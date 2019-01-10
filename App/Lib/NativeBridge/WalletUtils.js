@@ -49,21 +49,12 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
 }
 
 async function sign({passphrase, signInfo}){
-
-    console.log('=======sign======signInfo=======================');
-    console.log(signInfo);
-    console.log('=======sign======signInfo=======================');
-
     const {type=1, symbol='ETH', decimal=18, tokenAddress='', fromAddress='', toAddress='', value='0', gasPrice='0', msgInfo=''} = signInfo;
     switch (type) {
     case 1:{
 
         const amount = getWei(value, decimal);
         const gas = getWei(gasPrice, 9);
-        console.log('=======sign======signInfo=======================');
-        console.log(amount);
-        console.log(gas);
-        console.log('=======sign======signInfo=======================');
 
         if (symbol === 'ETH') {
             const ethParams = {type, symbol, fromAddress, toAddress, amount, gas};

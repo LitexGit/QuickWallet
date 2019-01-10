@@ -365,11 +365,9 @@ public class GethModule extends ReactContextBaseJavaModule {
                     BigInt chainID = new BigInt(chainId);
                     Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 
-                    ethClient.sendTransaction(Geth.newContext(), signedTx);
-
                     String txHash = signedTx.getHash().getHex();
                     WritableMap map = Arguments.createMap();
-                    map.putString("txHash",txHash);
+                    map.putString("infoHash",txHash);
                     promise.resolve(map);
                     return;
                 }
@@ -384,7 +382,7 @@ public class GethModule extends ReactContextBaseJavaModule {
                     String msgHash = Geth.newHashFromBytes(signData).getHex();
 
                     WritableMap map = Arguments.createMap();
-                    map.putString("msgHash",msgHash);
+                    map.putString("infoHash",msgHash);
                     promise.resolve(map);
                     return;
                 }

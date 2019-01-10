@@ -1,6 +1,5 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
-import SignerModule from '../Lib/NativeBridge/SignerUtils';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
 import { StackActions } from 'react-navigation';
@@ -200,12 +199,10 @@ export function *gethSignHash (action) {
         yield put(WalletActions.setLoading({loading:false}));
 
         const map = GethModule.getResolveMap(result);
-        console.log('=============gethSignHash=======================');
-        console.log(map);
-        console.log('=============gethSignHash=======================');
-
         const {infoHash} = map;
-        yield SignerModule.notifyDappSignResult({hash:infoHash});
+        console.log('=============gethSignHash=======================');
+        console.log(infoHash);
+        console.log('=============gethSignHash=======================');
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {

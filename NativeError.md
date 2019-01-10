@@ -13,6 +13,12 @@
 -1013:  GethGenerateERC20TransferData
 -1014:  estimateGas
 -1015:  Transaction token failure
+-1016:  Build Transaction exceptions
+-1017:  signTransaction abnormal
+-1018:  signTransaction failure
+-1019:  Build GethCallMsg exceptions
+-1020:  signMessage abnormal
+-1021:  get infoHash exceptions
 
 
 
