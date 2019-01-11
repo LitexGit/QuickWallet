@@ -137,9 +137,9 @@ _onMessage=(evt)=>{
     //     isShowSignTx:true,
     // });
 
-    console.log('======ZJ====RN_onMessage==========================');
-    console.log(JSON.parse(evt.nativeEvent.data));
-    console.log('======ZJ====RN_onMessage==========================');
+    // console.log('======ZJ====RN_onMessage==========================');
+    // console.log(JSON.parse(evt.nativeEvent.data));
+    // console.log('======ZJ====RN_onMessage==========================');
 
     const params = JSON.parse(evt.nativeEvent.data);
     const {name, id=8888, object={}} = params;

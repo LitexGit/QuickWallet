@@ -1,8 +1,8 @@
 package com.quickwallet.modules.bundle;
 
 import android.content.Context;
-import android.location.Address;
 import android.support.annotation.RawRes;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
@@ -11,11 +11,15 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
+import com.quickwallet.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+
 public class BundleModule extends ReactContextBaseJavaModule {
+
+  private String jsLibrary="";
 
   public BundleModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -29,10 +33,16 @@ public class BundleModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void readWeb3Provider(Promise promise) {
-
-    WritableMap map = Arguments.createMap();
-    map.putString("web3Provider", "123456");
-    promise.resolve(map);
+    try{
+      if (TextUtils.isEmpty(jsLibrary)) {
+        jsLibrary = loadFile(getReactApplicationContext(), R.raw.alphawallet_min);
+      }
+      WritableMap map = Arguments.createMap();
+      map.putString("web3Provider", jsLibrary);
+      promise.resolve(map);
+    } catch (Exception e){
+      promise.reject("-2001",e);
+    }
 
   }
 
