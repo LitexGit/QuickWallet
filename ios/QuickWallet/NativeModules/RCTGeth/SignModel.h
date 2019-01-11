@@ -12,23 +12,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SignModel : NSObject
 
-@property (nonatomic, strong) NSNumber *type;
+@property (nonatomic, strong) NSString *chainType;
 
-@property (nonatomic, strong) NSString *symbol;
+@property (nonatomic, strong) NSString *data;
 
-@property (nonatomic, strong) NSNumber *decimal;
+@property (nonatomic, strong) NSString *from;
 
-@property (nonatomic, strong) NSString *tokenAddress;
+@property (nonatomic, strong) NSString *gas;
 
-@property (nonatomic, strong) NSString *fromAddress;
+@property (nonatomic, strong) NSString *gasPrice;
 
-@property (nonatomic, strong) NSString *toAddress;
+@property (nonatomic, strong) NSString *to;
 
-@property (nonatomic, assign) long long amount;
-
-@property (nonatomic, assign) long long gas;
-
-@property (nonatomic, strong) NSString *msgInfo;
+@property (nonatomic, strong) NSString *value;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 

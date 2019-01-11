@@ -54,46 +54,13 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
 
 
 async function signMessage({passphrase, message}){
-    return await gethModule.signMessage(passphrase, message);
+    const result = await gethModule.signMessage(passphrase, message);
+    return getResolveMap(result);
 }
 
 async function signTransaction({passphrase, signInfo}){
-    const {chainType='ETH', data='', from='', gas='', gasPrice='', to='', value=''} = signInfo;
-    const unSignInfo = {};
+    const {chainType='ETH'} = signInfo;
     return await gethModule.signTransaction(passphrase, signInfo);
-}
-
-
-
-
-
-
-
-
-async function sign({passphrase, signInfo}){
-    const {type=1, symbol='ETH', decimal=18, tokenAddress='', fromAddress='', toAddress='', value='0', gasPrice='0', msgInfo=''} = signInfo;
-    switch (type) {
-    case 1:{
-
-        const amount = getWei(value, decimal);
-        const gas = getWei(gasPrice, 9);
-
-        if (symbol === 'ETH') {
-            const ethParams = {type, symbol, fromAddress, toAddress, amount, gas};
-            return await gethModule.sign(passphrase, ethParams);
-        }
-        const tokenParams = {type, symbol, tokenAddress, fromAddress, toAddress, amount, gas};
-        return await gethModule.sign(passphrase, tokenParams);
-    }
-    case 2: {
-        const gas = getWei(gasPrice, 9);
-        const msgParams = {type, symbol, fromAddress, toAddress, gas, msgInfo};
-        return await gethModule.sign(passphrase, msgParams);
-    }
-
-    default:
-        break;
-    }
 }
 
 function getResolveMap(params){
@@ -132,7 +99,6 @@ export default {
     getDisplayedPrivateKey,
     getGethPrivateKey,
     getResolveMap,
-    sign,
     signMessage,
     signTransaction,
 };

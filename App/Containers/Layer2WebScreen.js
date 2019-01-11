@@ -70,7 +70,6 @@ _signInfo=()=>{
         gasPrice:'12',
         msgInfo:'我怎么这么好看'
     };
-    this.props.gethSignHash({passphrase:'11111111', signInfo});
 }
 
 _signTxCancel=()=>{
@@ -180,7 +179,12 @@ _signMessage = async ({data:message='', id=8888})=>{
     try {
         const passphrase = '11111111';
         const signHash = await GethModule.signMessage({passphrase, message});
-        const signMsg = { id, error: null, value: { signHash }};
+
+        console.log('===========signHash=========================');
+        console.log(signHash);
+        console.log('===========signHash=========================');
+
+        const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
@@ -209,13 +213,13 @@ render  () {
 
     return (
         <View style={styles.container}>
-            <SignTxResultAlert
+            {/* <SignTxResultAlert
                 isInit={isShowSignTx}
                 to={to}
                 balance={balance}
                 gas={gas}
                 onPressCancel={()=>this._signTxCancel()}
-                onPressConfirm={()=>this._signTxConfirm()}/>
+                onPressConfirm={()=>this._signTxConfirm()}/> */}
             <PassphraseInputAlert
                 isInit={isShowPassphrase}
                 onPressCancel={()=>this._pswdCancel()}
@@ -247,25 +251,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
-    gethSignHash: (params) => dispatch(WalletActions.gethSignHash(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layer2WebScreen);
-
-
-
-
-// case 'signPersonalMessage':{
-//   const message = {
-//       id: 8888,
-//       error: null ,
-//       value: {
-//           dataToSign:'data to sign',
-//           address:'0xb5538753F2641A83409D2786790b42aC857C5340',
-//           password:'11111111'
-//       }
-//   };
-//   this.webview.postMessage(JSON.stringify(message));
-// }
-//   break;
 

@@ -16,7 +16,6 @@ const { Types, Creators } = createActions({
     gethImportPrivateKey: ['data'],
     gethExportPrivateKey: ['data'],
     gethTransfer: ['data'],
-    gethSignHash:['data'],
 
     setLoading: ['data'],
     gethRandomMnemonicSuccess:['data'],

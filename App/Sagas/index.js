@@ -28,8 +28,7 @@ import {
     gethImportPrivateKey,
     gethExportPrivateKey,
     gethRandomMnemonic,
-    gethTransfer,
-    gethSignHash} from './WalletSaga';
+    gethTransfer} from './WalletSaga';
 
 import { startup } from './StartupSagas';
 import { getUserAvatar } from './GithubSagas';
@@ -64,7 +63,6 @@ export default function * root () {
         takeLatest(WalletTypes.GETH_UNLOCK_ACCOUNT, gethUnlockAccount),
         takeLatest(WalletTypes.GETH_UN_INIT, gethUnInit),
         takeLatest(WalletTypes.GETH_IS_UNLOCK_ACCOUNT, gethIsUnlockAccount),
-        takeLatest(WalletTypes.GETH_SIGN_HASH, gethSignHash),
 
         // some sagas only receive an action
         takeLatest(StartupTypes.STARTUP, startup),

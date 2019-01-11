@@ -190,25 +190,3 @@ export function *gethTransfer (action) {
     }
 }
 
-export function *gethSignHash (action) {
-    try {
-        const {data:params} = action;
-        const {passphrase, signInfo} = params;
-        yield put(WalletActions.setLoading({loading:false}));
-        const result = yield GethModule.sign({passphrase, signInfo});
-        yield put(WalletActions.setLoading({loading:false}));
-
-        const map = GethModule.getResolveMap(result);
-        const {infoHash} = map;
-        console.log('=============gethSignHash=======================');
-        console.log(infoHash);
-        console.log('=============gethSignHash=======================');
-    } catch (error) {
-        yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-    }
-}
-

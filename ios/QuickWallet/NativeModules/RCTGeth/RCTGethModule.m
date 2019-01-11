@@ -11,6 +11,7 @@
 #import "FileManager.h"
 #import <React/RCTConvert.h>
 #import "SignModel.h"
+#import <CommonCrypto/CommonDigest.h>
 
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
@@ -362,22 +363,18 @@ RCT_EXPORT_METHOD(signMessage:(NSString *)passphrase message:(NSString *)message
     _rejectBlock(@"-1009", @"Wallet not unlocked", error);
     return;
   }
-//  NSData *data = [self byteStringToData:message];
-  NSData *data = [self byteStringToData:message];
+  NSString *output = [self sha256WithStrig:message];
+  NSData *hash = [[[GethHash alloc] initFromHex:output] getBytes];
   
-  NSData *signData = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:data error:&error];
+  NSData *signData = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hash error:&error];
   if (error) {
     _rejectBlock(@"-1020", @"signMessage abnormal", error);
     return;
   }
   
-  GethHash *hash = GethNewHashFromBytes(signData, &error);
-  if (error) {
-    _rejectBlock(@"-1021", @"get infoHash exceptions", error);
-    return;
-  }
-  NSString *infoHash = [hash getHex];
-  _resolveBlock(@[@{@"infoHash":infoHash}]);
+  NSString *signHash = [self sha256WithData:signData];
+  _resolveBlock(@[@{@"data":signHash}]);
+  
 }
 
 
@@ -394,10 +391,12 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   }
   
   SignModel *model = [SignModel provinceWithDictionary:signInfo];
-  GethAddress *from = [[GethAddress alloc] initFromHex:model.fromAddress];
-  GethAddress *to = [[GethAddress alloc] initFromHex:model.toAddress];
-  GethBigInt *amount = [[GethBigInt alloc] init:model.amount];
-  GethBigInt *gasPrice = [[GethBigInt alloc] init:model.gas];
+  
+  GethAddress *from = [[GethAddress alloc] initFromHex:model.from];
+  GethAddress *to = [[GethAddress alloc] initFromHex:model.to];
+  GethBigInt *amount = [[GethBigInt alloc] init:[model.value longLongValue]];
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:[model.gasPrice longLongValue]];
+  NSData *data = [model.data dataUsingEncoding:NSUTF8StringEncoding];
   
   int64_t nonce = 0x0;
   GethContext *context = [[GethContext alloc] init];
@@ -409,24 +408,9 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return;
   }
   
+  ino64_t gasLimit = [model.gas longLongValue];
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   
-  GethTransaction *transaction = nil;
-  if ([model.symbol isEqualToString:@"ETH"]) {
-    transaction = [self getETHTx:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
-  } else {
-    GethAddress *tokenAddress = [[GethAddress alloc] initFromHex:model.tokenAddress];
-    transaction = [self getTokenTx:tokenAddress from:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
-  }
-  
-  
-  
-  
-  
-  if (!transaction) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1016 userInfo:@{@"info":@"Build Transaction exceptions"}];
-    _rejectBlock(@"-1016", @"Build Transaction exceptions", error);
-    return;
-  }
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
     error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1017 userInfo:@{@"info":@"Signature abnormal"}];
@@ -434,34 +418,8 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   }
   
   NSString *infoHash = [[signedTx getHash] getHex];
-  _resolveBlock(@[@{@"infoHash":infoHash}]);
+  _resolveBlock(@[@{@"data":infoHash}]);
 }
-
-
-- (GethTransaction *)getETHTx:(GethAddress*)from to:(GethAddress*)to nonce:(int64_t)nonce amount:(GethBigInt *)amount gasPrice:(GethBigInt*)gasPrice{
-  
-  ino64_t gasLimit = 21000;
-  NSData *data = [NSData data];
-  
-  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
-  return transaction;
-}
-
-- (GethTransaction *)getTokenTx:(GethAddress*)tokenAddress from:(GethAddress*)from to:(GethAddress*)to nonce:(int64_t)nonce amount:(GethBigInt *)amount gasPrice:(GethBigInt*)gasPrice{
-  
-  GethBigInt *tokenAmount = [[GethBigInt alloc] init:0];
-  ino64_t gasLimit = 21000;
-  NSError *err = nil;
-  NSData *tokenData = GethGenerateERC20TransferData(to, amount, &err);
-  if (err || !tokenData) {
-    _rejectBlock(@"iOS", @"GethGenerateERC20TransferData", err);
-    return nil;
-  }
-  
-  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:tokenAddress amount:tokenAmount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];
-  return transaction;
-}
-
 
 
 - (NSData*)byteStringToData:(NSString *)byteStr{
@@ -473,12 +431,10 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     NSScanner* scanner = [NSScanner scannerWithString:hexStr];
     unsigned int intValue;
     [scanner scanHexInt:&intValue];
-
     [data appendBytes:&intValue length:1];
   }
   return data;
 }
-
 
 - (NSString *)dataToJson:(id)data{
   NSString *jsonStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -497,107 +453,21 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   [[NSUserDefaults standardUserDefaults] setObject:filedir forKey:keyStoreFileDir];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-RCT_EXPORT_METHOD(sign:(NSString *)passphrase signInfo:(NSDictionary *)signInfo resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
-  
-  _resolveBlock = resolver;
-  _rejectBlock = reject;
-  NSError *error = nil;
-  
-  if (!self.account || !self.keyStore || !self.ethClient) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
-    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
-    return;
-  }
-  
-  SignModel *model = [SignModel provinceWithDictionary:signInfo];
-  GethAddress *from = [[GethAddress alloc] initFromHex:model.fromAddress];
-  GethAddress *to = [[GethAddress alloc] initFromHex:model.toAddress];
-  GethBigInt *amount = [[GethBigInt alloc] init:model.amount];
-  GethBigInt *gasPrice = [[GethBigInt alloc] init:model.gas];
-  
-  int64_t nonce = 0x0;
-  GethContext *context = [[GethContext alloc] init];
-  
-  int64_t number = -1;
-  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
-  if (!isGet || error) {
-    _rejectBlock(@"-1010", @"get Nonce exceptions", error);
-    return;
-  }
-  
-  if ([model.type isEqual:@(1)]) { // signTx
-    GethTransaction *transaction = nil;
-    if ([model.symbol isEqualToString:@"ETH"]) {
-      transaction = [self getETHTx:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
-    } else {
-      GethAddress *tokenAddress = [[GethAddress alloc] initFromHex:model.tokenAddress];
-      transaction = [self getTokenTx:tokenAddress from:from to:to nonce:nonce amount:amount gasPrice:gasPrice];
-    }
-    
-    if (!transaction) {
-      error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1016 userInfo:@{@"info":@"Build Transaction exceptions"}];
-      _rejectBlock(@"-1016", @"Build Transaction exceptions", error);
-      return;
-    }
-    GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
-    if (!signedTx) {
-      error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1017 userInfo:@{@"info":@"Signature abnormal"}];
-      _rejectBlock(@"-1017", @"signTransaction abnormal", error);
-    }
-    
-    NSString *infoHash = [[signedTx getHash] getHex];
-    _resolveBlock(@[@{@"infoHash":infoHash}]);
-    return;
-  }
-  
-  
-  GethCallMsg *callMsg = [self getCallMsg:from to:to gasPrice:gasPrice msgInfo:model.msgInfo];
-  if (!callMsg) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1019 userInfo:@{@"info":@"Signature abnormal"}];
-    _rejectBlock(@"-1019", @"Build GethCallMsg exceptions", error);
-    return;
-  }
-  // callMsg ==> unSignData
-  NSData *unSignData = nil;
-  
-  NSData *signData = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:unSignData error:&error];
-  if (error) {
-    _rejectBlock(@"-1020", @"signMessage abnormal", error);
-    return;
-  }
-  GethHash *hash = GethNewHashFromBytes(signData, &error);
-  if (error) {
-    _rejectBlock(@"-1021", @"get infoHash exceptions", error);
-    return;
-  }
-  NSString *infoHash = [hash getHex];
-  _resolveBlock(@[@{@"infoHash":infoHash}]);
+- (NSString *)sha256WithStrig:(NSString *)input {
+  NSData *data = [input dataUsingEncoding:NSUTF8StringEncoding];
+  return [self sha256WithData:data];
 }
 
-
-- (GethCallMsg *)getCallMsg:(GethAddress*)from to:(GethAddress*)to gasPrice:(GethBigInt*)gasPrice msgInfo:(NSString *)msgInfo{
-  GethCallMsg *callMsg = [[GethCallMsg alloc] init];
-  [callMsg setFrom:from];
-  [callMsg setTo:to];
-  [callMsg setGasPrice:gasPrice];
-  NSData *data = [self byteStringToData:msgInfo];
-  [callMsg setData:data];
-  
-  return callMsg;
+- (NSString *)sha256WithData:(NSData *)data {
+  unsigned char digest[CC_SHA256_DIGEST_LENGTH];
+  CC_SHA256( data.bytes, (CC_LONG)data.length, digest );
+  NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+  for( int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++ ){
+    [output appendFormat:@"%02x", digest[i]];
+  }
+  return output;
 }
+
 @end
 
 

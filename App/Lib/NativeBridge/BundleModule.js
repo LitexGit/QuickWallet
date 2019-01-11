@@ -12,11 +12,7 @@ async function readWeb3Provider(){
     return data;
 }
 
-async function readWeb3Provider002(){
-    return await bundleModule.readWeb3Provider();
-}
 
 export default {
     readWeb3Provider,
-    readWeb3Provider002
 };
