@@ -25,7 +25,7 @@
   "Identity":"身份名-账户名",
   "Password":"密码",
   "ConfirmPassword":"重复输入密码",
-  "Create":"创建Create ",
+  "Create":"创建",
   "CreatAccount":"创建账户",
   "ImportAccount":"导入账户",
   "Import":"导入",
@@ -55,7 +55,7 @@
   "EnterAmount":"输入金额",
   "ToAddress":"收款地址",
   "EnterEthAddress":"输入以太坊地址",
-  "Continue":"继续Continue ",
+  "Continue":"继续",
   "TermsOfUse":"使用条款",
   "BackupAccount":"备份账户",
 
