@@ -42,23 +42,6 @@ export default StyleSheet.create({
         borderBottomWidth: 1 / PixelRatio.get(),
     },
 
-    pathTop:{
-        flex:1,
-        flexDirection:'row',
-        justifyContent: 'space-between',
-    },
-    nextView:{
-        flexDirection:'row',
-        alignContent: 'center',
-    },
-    nextText:{
-        color:Colors.textColor,
-        lineHeight:Metrics.icons.small,
-    },
-    pathText:{
-        color:Colors.darkColor,
-        marginTop: Metrics.smallMargin,
-    },
     warning:{
         marginTop:Metrics.smallMargin,
         marginLeft: Metrics.smallMargin,

@@ -4,7 +4,6 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native
 import styles from './Styles/MnemonicCompontStyle';
 import { Button } from 'react-native-elements';
 import { Colors, Metrics } from '../Themes';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
@@ -126,18 +125,6 @@ class MnemonicCompont extends Component {
                               onChangeText={(text) => this._onChangeMnemonic(text)}/>
                       </View>
                       <View style={styles.infoView}>
-                          <View style={styles.sectionView}>
-                              <View style={styles.pathTop}>
-                                  <Text style={styles.pathText}>{I18n.t('ChoosePath')}</Text>
-                                  <TouchableOpacity onPress={()=>this._onPressNext()}>
-                                      <View style={styles.nextView}>
-                                          <Text style={styles.nextText}>{I18n.t('Default')}</Text>
-                                          <MaterialIcons name={'navigate-next'} size={Metrics.icons.small} color={Colors.textColor}/>
-                                      </View>
-                                  </TouchableOpacity>
-                              </View>
-                              <Text style={[styles.sectionText, styles.pathText]}>{path}</Text>
-                          </View>
                           <View style={ styles.sectionView }>
                               <View style={ styles.section }>
                                   <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>

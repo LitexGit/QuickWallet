@@ -131,7 +131,6 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_TOKEN_BALANCE_SUCCESS]: getTokenBalanceSuccess,
     [Types.GET_TOKEN_BALANCE_FAILURE]: getTokenBalanceFailure,
 
-    [Types.GET_BALANCE_REQUEST]: request,
     [Types.GET_BALANCE_SUCCESS]: getBalanceSuccess,
     [Types.GET_BALANCE_FAILURE]: getBalanceFailure,
 

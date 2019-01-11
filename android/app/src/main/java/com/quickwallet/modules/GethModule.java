@@ -221,8 +221,8 @@ public class GethModule extends ReactContextBaseJavaModule {
             String passphrase,
             String fromAddress,
             String toAddress,
-            Integer value,
-            Integer gas,
+            String value,
+            String gas,
             Promise promise
     ) {
         try {
@@ -238,9 +238,9 @@ public class GethModule extends ReactContextBaseJavaModule {
             nonce = ethClient.getNonceAt(Geth.newContext(), from, number);
 
             Address to = new Address(toAddress);
-            BigInt amount = new BigInt(value);
+            BigInt amount = new BigInt(Long.parseLong(value));
             long gasLimit = 21000;
-            BigInt gasPrice = new BigInt(gas);
+            BigInt gasPrice = new BigInt(Long.parseLong(gas));
             byte[] data = null;
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, data);
 
@@ -265,8 +265,8 @@ public class GethModule extends ReactContextBaseJavaModule {
             String fromAddress,
             String toAddress,
             String tokenAddress,
-            Integer value,
-            Integer gas,
+            String value,
+            String gas,
             Promise promise
     ) {
         try {
@@ -283,15 +283,15 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             Address to = new Address(tokenAddress);
             BigInt amount = new BigInt(0);
-            BigInt gasPrice = new BigInt(gas.longValue());
+            BigInt gasPrice = new BigInt( Long.parseLong(gas));
 
             // 构建 tokendata
             CallMsg callMsg = new CallMsg();
-            BigInt datAmount = new BigInt(value.longValue());
+            BigInt datAmount = new BigInt(Long.parseLong(value));
             Address dataAddress = new Address(toAddress);
 
             callMsg.setFrom(from);
-            callMsg.setGas(gas.longValue());
+            callMsg.setGas(Long.parseLong(gas));
             callMsg.setTo(dataAddress);
             callMsg.setValue(datAmount);
 

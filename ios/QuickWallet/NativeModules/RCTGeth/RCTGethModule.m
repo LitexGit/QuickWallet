@@ -257,7 +257,6 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
 
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
   if (!isSend || error) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1011 userInfo:@{@"info":@"Transaction eth failure"}];
     _rejectBlock(@"-1012", @"Transaction eth failure", error);
     return;
   }

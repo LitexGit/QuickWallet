@@ -55,7 +55,7 @@ class SignTxResultAlert extends Component {
 
       const symbol = {key:'symbol', units:balance, value:getValue(balance, rate)};
       const gasPrice = {key:'gasPrice', units:gas.toFixed(6), value:getValue(gas, rate)};
-      const txTotal = {key:'txTotal', units:totalBanance.toFixed(6), value:totalValue};
+      const txTotal = {key:'txTotal', units:totalBanance.toFixed(6), value:totalValue.toFixed(2)};
 
       const items = [symbol, gasPrice, txTotal];
 

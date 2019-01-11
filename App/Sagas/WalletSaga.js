@@ -172,7 +172,7 @@ export function *gethTransfer (action) {
         const {data:params} = action;
         const {symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress} = params;
         // TODO 参数异常校验
-        yield put(WalletActions.setLoading({loading:true}));
+        // yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress});
 
 
@@ -180,7 +180,7 @@ export function *gethTransfer (action) {
         const {txHash} = map;
 
         yield put(UserActions.saveUserInfo({passphrase}));
-        yield put(WalletActions.setLoading({loading:false}));
+        // yield put(WalletActions.setLoading({loading:false}));
 
         yield put(StackActions.pop());
     } catch (error) {

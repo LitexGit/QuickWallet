@@ -26,17 +26,13 @@ export function *getTokenList(api){
             const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
             const {key='CNY'} = currency;
             const tokenArray = tokenList.map((token)=>{
-
-                console.log('===============token=====================');
-                console.log(token);
-                console.log('===============token=====================');
                 let {Rate:rate} = token;
                 rate = JSON.parse(rate);
                 token.Rate = rate[key];
                 return token;
             });
-
             yield put(AssetActions.getTokenListSuccess(data));
+
             for (const token of tokenArray) {
                 const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
                 const address = yield select(UserSelectors.getAddress);
@@ -45,6 +41,9 @@ export function *getTokenList(api){
                 } else {
                     const api = require('etherscan-api').init(apiKey, environment, timeout);
                     const response =yield call(api.account.tokenbalance, address, '', tokenAddress);
+                    console.log('=============api.account.tokenbalance,address=======================');
+                    console.log(response);
+                    console.log('=============api.account.tokenbalance,address=======================');
                     const {status, message, result} = response;
                     if (status) {
                         yield put(AssetActions.getTokenBalanceSuccess({
@@ -52,18 +51,17 @@ export function *getTokenList(api){
                             banance:result,
                         }));
                     } else {
-                        yield put(AssetActions.getTokenBalanceFailure(message));
+                        yield put(AssetActions.getTokenBalanceFailure());
                     }
                 }
             }
-            return;
+        } else {
+            yield put(AssetActions.getTokenListFailure());
+            Toast.show(msg, {
+                shadow:true,
+                position: Toast.positions.CENTER,
+            });
         }
-        Toast.show(msg, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-        yield put(AssetActions.getTokenListFailure());
-
     } catch (error) {
         Toast.show(error.message, {
             shadow:true,
@@ -80,6 +78,9 @@ export function * getBalance (action) {
         const api = require('etherscan-api').init(apiKey, environment, timeout);
 
         const response =yield call(api.account.balance,address);
+        console.log('=============api.account.balance,address=======================');
+        console.log(response);
+        console.log('=============api.account.balance,address=======================');
         const {status, message, result} = response;
         if (status) {
             yield put(AssetActions.getBalanceSuccess({
@@ -90,12 +91,12 @@ export function * getBalance (action) {
         }
         yield put(AssetActions.getBalanceFailure(message));
     } catch (error) {
+        yield put(AssetActions.getBalanceFailure());
         const errMsg = error.message || error;
         Toast.show(errMsg, {
             shadow:true,
             position: Toast.positions.CENTER,
         });
-        yield put(AssetActions.getBalanceFailure());
     }
 }
 
