@@ -13,7 +13,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import Toast from 'react-native-root-toast';
 import {getDisplayTxInfo} from '../Lib/Format';
-import BundleModule from '../Lib/NativeBridge/BundleModule';
 
 const DEFAULT_URI = 'https://www.baidu.com';
 
@@ -34,10 +33,10 @@ class Layer2WebScreen extends Component {
           isShowSignMsg:false,
       };
       this.passphrase = '';
+      this.signInfo = {};
   }
 
   componentDidMount() {
-      this._getInjectScript();
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
 
@@ -56,20 +55,6 @@ class Layer2WebScreen extends Component {
 componentWillUnmount=()=>{
     this.lockListener.remove();
     this.isUnlockListener.remove();
-}
-
-_signInfo=()=>{
-    const signInfo = {
-        type:1,
-        symbol:'ETH',
-        decimal:18,
-        tokenAddress:'0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-        fromAddress:'0xb5538753f2641a83409d2786790b42ac857c5340',
-        toAddress:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
-        value:'1',
-        gasPrice:'12',
-        msgInfo:'我怎么这么好看'
-    };
 }
 
 _signTxCancel=()=>{
@@ -132,17 +117,27 @@ _onPressShare=()=> {
 
 
 _onMessage=(evt)=>{
-    // this._signInfo();
-    // this.setState({
-    //     isShowSignTx:true,
-    // });
-
-    // console.log('======ZJ====RN_onMessage==========================');
-    // console.log(JSON.parse(evt.nativeEvent.data));
-    // console.log('======ZJ====RN_onMessage==========================');
-
+    console.log('======ZJ====RN_onMessage==========================');
+    console.log(JSON.parse(evt.nativeEvent.data));
+    console.log('======ZJ====RN_onMessage==========================');
     const params = JSON.parse(evt.nativeEvent.data);
-    const {name, id=8888, object={}} = params;
+    this.signInfo = params;
+    const {name} = params;
+    switch (name) {
+    case 'signTransaction':
+        this.setState({isShowSignTx:true});
+        break;
+    case 'signMessage':
+        this.setState({isShowSignMsg:true});
+        break;
+
+    default:
+        break;
+    }
+}
+
+_signInfo=()=>{
+    const {name, id=8888, object={}} = this.signInfo;
     switch (name) {
     case 'signTransaction':{
         const signInfo = getDisplayTxInfo(object);
@@ -189,13 +184,6 @@ _signMessage = async ({data:message='', id=8888})=>{
     }
 }
 
-_getInjectScript = async ()=>{
-    const web3Provider =  await BundleModule.readWeb3Provider();
-    console.log('=========Web3Provider===========================');
-    console.log(web3Provider);
-    console.log('=========Web3Provider===========================');
-}
-
 
 render  () {
 
@@ -208,13 +196,13 @@ render  () {
 
     return (
         <View style={styles.container}>
-            {/* <SignTxResultAlert
+            <SignTxResultAlert
                 isInit={isShowSignTx}
                 to={to}
                 balance={balance}
                 gas={gas}
                 onPressCancel={()=>this._signTxCancel()}
-                onPressConfirm={()=>this._signTxConfirm()}/> */}
+                onPressConfirm={()=>this._signTxConfirm()}/>
             <PassphraseInputAlert
                 isInit={isShowPassphrase}
                 onPressCancel={()=>this._pswdCancel()}

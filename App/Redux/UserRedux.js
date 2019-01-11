@@ -17,6 +17,8 @@ const { Types, Creators } = createActions({
     getUserInfoSuccess: ['data'],
     getUserInfoFailure: null,
     logout:['data'],
+
+    getInjectScript: null,
 });
 
 export const UserTypes = Types;
@@ -51,6 +53,8 @@ export const INITIAL_STATE = Immutable({
         key:'CNY',
         title:'CNY',
     },
+
+    web3Provider:'',
 });
 
 /* ------------- Selectors ------------- */

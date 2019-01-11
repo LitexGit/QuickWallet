@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { View, StatusBar } from 'react-native';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
-import StartupActions from '../Redux/StartupRedux';
-import ReduxPersist from '../Config/ReduxPersist';
 import styles from './Styles/RootContainerStyles';
 
 import WalletActions from '../Redux/WalletRedux';
@@ -17,6 +15,8 @@ import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 class RootContainer extends Component {
 
   _initializes= async ()=>{
+      this.props.getInjectScript();
+
       const language = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
       const currency = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || CurrencyConfig.CNY;
       this.props.saveUserInfo({language, currency});
@@ -37,10 +37,6 @@ class RootContainer extends Component {
 
   componentDidMount  () {
       this._initializes();
-      if (!ReduxPersist.active) {
-          this.props.startup();
-      }
-
   }
 
   render () {
@@ -53,21 +49,14 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) =>
-    state
-;
+const mapStateToProps = (state) =>state;
 
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),
+    getInjectScript: () => dispatch(UserActions.getInjectScript()),
     getConfigRequest: () => dispatch(ConfigActions.getConfigRequest()),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
     gethInit: (params) => dispatch(WalletActions.gethInit(params)),
-
-
-
-
-    startup: () => dispatch(StartupActions.startup()),
-    saveAddress: (params) => dispatch(WalletActions.saveAddress(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

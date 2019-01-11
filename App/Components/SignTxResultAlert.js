@@ -35,7 +35,7 @@ class SignTxResultAlert extends Component {
   }
 
   render () {
-      const {isInit, address, to, balance, gas, onPressCancel, onPressConfirm, selectedToken, currency} = this.props;
+      const {isInit, address='', to='', balance='', gas='', onPressCancel, onPressConfirm, selectedToken, currency} = this.props;
       const {symbol:mark} = currency;
       const {Rate:rate} = selectedToken;
 

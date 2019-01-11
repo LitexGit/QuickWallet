@@ -5,6 +5,7 @@ import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 import WalletActions from '../Redux/WalletRedux';
 import { StackActions } from 'react-navigation';
 import Toast from 'react-native-root-toast';
+import BundleModule from '../Lib/NativeBridge/BundleModule';
 
 
 export function * register (api, action) {
@@ -44,9 +45,11 @@ export function * register (api, action) {
         });
         yield put(UserActions.registerFailure());
     } catch (error) {
-        console.log('================error====================');
-        console.log(error);
-        console.log('================error====================');
+        Toast.show(error.message, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(UserActions.registerFailure());
     }
 }
 
@@ -67,9 +70,11 @@ export function * getUserInfo (api, action) {
         });
         yield put(UserActions.getUserInfoFailure());
     } catch (error) {
-        console.log('================error====================');
-        console.log(error);
-        console.log('================error====================');
+        Toast.show(error.message, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        yield put(UserActions.getUserInfoFailure());
     }
 
 }
@@ -92,3 +97,13 @@ export function * logout () {
 
     yield put(StackActions.popToTop());
 }
+
+export function * getInjectScript () {
+    const web3 = yield call(BundleModule.readWeb3Provider);
+    const {web3Provider} = web3;
+    yield put(UserActions.saveUserInfo({web3Provider}));
+}
+
+
+
+
