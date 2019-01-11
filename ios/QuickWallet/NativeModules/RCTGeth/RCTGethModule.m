@@ -373,7 +373,9 @@ RCT_EXPORT_METHOD(signMessage:(NSString *)passphrase message:(NSString *)message
   }
   
   NSString *signHash = [self sha256WithData:signData];
-  _resolveBlock(@[@{@"data":signHash}]);
+  NSString *data = [[[GethHash alloc] initFromHex:signHash] getHex];
+  
+  _resolveBlock(@[@{@"data":data}]);
   
 }
 

@@ -13,9 +13,11 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
+import com.quickwallet.utils.Hash;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
 import java.io.File;
+import java.util.Base64;
 
 import geth.Account;
 import geth.Address;
@@ -23,7 +25,6 @@ import geth.BigInt;
 import geth.CallMsg;
 import geth.EthereumClient;
 import geth.Geth;
-import geth.Hash;
 import geth.KeyStore;
 import geth.Transaction;
 
@@ -319,7 +320,32 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sign(
+    public void signMessage(
+            String passphrase,
+            String message,
+            Promise promise
+    ) {
+        try {
+            if (account == null || keyStore == null || ethClient == null){
+                Exception err = new Exception();
+                promise.reject("-1007",err);
+                return;
+            }
+            byte[] hash = Hash.sha256(message.getBytes());
+            byte[] sign = keyStore.signHashPassphrase(account, passphrase, hash);
+            byte[] hash32 = Hash.sha256(sign);
+            String data = new geth.Hash(hash32).getHex();
+
+            WritableMap map = Arguments.createMap();
+            map.putString("data",data);
+            promise.resolve(map);
+        } catch (Exception e) {
+            promise.reject("-1003",e);
+        }
+    }
+
+    @ReactMethod
+    public void signTransaction(
             String passphrase,
             ReadableMap signInfo,
             Promise promise
@@ -331,126 +357,39 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            String fromAddress = signInfo.getString("fromAddress");
+            String fromAddress = signInfo.getString("from");
             Address from = new Address(fromAddress);
 
-            String toAddress = signInfo.getString("toAddress");
+            String toAddress = signInfo.getString("to");
             Address to = new Address(toAddress);
 
-            long value  = Long.parseLong(signInfo.getString("amount"));
+            long value  = Long.parseLong(signInfo.getString("value"));
             BigInt amount = new BigInt(value);
 
-            long gas  = Long.parseLong(signInfo.getString("gas"));
+            long gas  = Long.parseLong(signInfo.getString("gasPrice"));
             BigInt gasPrice = new BigInt(gas);
+
+            long gasLimit  = Long.parseLong(signInfo.getString("gas"));
 
             long number = -1;
             long nonce = ethClient.getNonceAt(Geth.newContext(), from, number);
 
-            int type = signInfo.getInt("type");
+            byte [] data = signInfo.getString("data").getBytes();
 
-            switch (type){
-                case 1:{
-                    Transaction transaction = null;
-                    String symbol = signInfo.getString("symbol");
-
-                    if (symbol.equals("ETH")){
-                        transaction = getETHTx(from, to, nonce, amount, gasPrice);
-                    } else {
-                        String contractAddress = signInfo.getString("tokenAddress");
-                        Address tokenAddress = new Address(contractAddress);
-                        transaction = getTokenTx(tokenAddress, from, to, nonce, amount, gasPrice);
-                    }
-
-                    long chainId = 4;
-                    BigInt chainID = new BigInt(chainId);
-                    Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
-
-                    String txHash = signedTx.getHash().getHex();
-                    WritableMap map = Arguments.createMap();
-                    map.putString("infoHash",txHash);
-                    promise.resolve(map);
-                    return;
-                }
-                case 2:{
-                    String msgInfo = signInfo.getString("msgInfo");
-                    CallMsg callMsg = getCallMsg(from, to, gasPrice, msgInfo);
-
-                    // callMsg ==> unSignSata
-
-                    byte[] unSignSata = null;
-                    byte[] signData = keyStore.signHashPassphrase(account, passphrase, unSignSata);
-                    String msgHash = Geth.newHashFromBytes(signData).getHex();
-
-                    WritableMap map = Arguments.createMap();
-                    map.putString("infoHash",msgHash);
-                    promise.resolve(map);
-                    return;
-                }
-                default:
-
-                    break;
-            }
-        } catch (Exception e) {
-            promise.reject("-1009",e.getMessage());
-        }
-    }
-
-    public static CallMsg getCallMsg(
-            Address from,
-            Address to,
-            BigInt gasPrice,
-            String msgInfo
-    ) {
-        CallMsg callMsg = new CallMsg();
-        callMsg.setFrom(from);
-        callMsg.setTo(to);
-        callMsg.setGasPrice(gasPrice);
-
-        byte[] data = hexStringToByteArray(msgInfo);
-        callMsg.setData(data);
-
-        return callMsg;
-    }
-
-    public static Transaction getETHTx(
-            Address from,
-            Address to,
-            long nonce,
-            BigInt amount,
-            BigInt gasPrice
-    ) {
-
-        try {
-            long gasLimit = 21000;
-            byte[] data = null;
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, data);
-            return transaction;
-        } catch (Exception e){
-            Log.d("TAG", "getETHTx: "+ e);
-            return null;
+
+            long chainId = 4;
+            BigInt chainID = new BigInt(chainId);
+            Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
+
+            String txHash = signedTx.getHash().getHex();
+            WritableMap map = Arguments.createMap();
+            map.putString("data",txHash);
+            promise.resolve(map);
+
+        } catch (Exception e) {
+            promise.reject("-1003",e);
         }
-    }
-
-    public static Transaction getTokenTx(
-            Address tokenAddress,
-            Address from,
-            Address to,
-            long nonce,
-            BigInt amount,
-            BigInt gasPrice
-    ) {
-        try {
-            BigInt tokenAmount = new BigInt(0);
-            byte[] data = Geth.generateERC20TransferData(to, amount);
-
-            long gasLimit = 21000;
-            Transaction transaction = new Transaction(nonce, tokenAddress, tokenAmount, gasLimit, gasPrice, data);
-            return  transaction;
-        } catch (Exception e){
-            Log.d("getTokenTx", "getTokenTx: "+e);
-            return null;
-        }
-
     }
 
 
