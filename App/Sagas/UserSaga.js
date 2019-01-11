@@ -86,15 +86,11 @@ export function * logout () {
     DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, false);
     DeviceStorage.saveItem(Keys.WALLET_ADDRESS, '');
 
-    yield put(UserActions.saveUserInfo({isLoginInfo:false}));
-    yield put(UserActions.saveUserInfo({isAgreeInfo:false}));
-    // 合并成一个 saveWalletInfo
-    yield put(WalletActions.saveAddress({address:''}));
+    yield put(UserActions.saveUserInfo({isLoginInfo:false, isAgreeInfo:false, passphrase:''}));
+
     yield put(WalletActions.savePrivateKey({privateKey:''}));
-    yield put(WalletActions.savePassphrase({passphrase:''}));
 
     yield put(WalletActions.gethUnInit());
-
     yield put(StackActions.popToTop());
 }
 

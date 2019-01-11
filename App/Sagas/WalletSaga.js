@@ -59,18 +59,14 @@ export function *gethUnlockAccount (action) {
 
         const result =  yield GethModule.unlockAccount({passphrase});
         const map = GethModule.getResolveMap(result);
+        const {address} = map;
+
+        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
+        yield put(WalletActions.saveAddress({address}));
+        yield put(UserActions.saveUserInfo({passphrase, isLoginInfo:true}));
+        EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
 
         yield put(WalletActions.setLoading({loading:false}));
-
-        const {address} = map;
-        // TODO 解锁钱包 可以导出&&转账
-        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address); // getUserInfo
-
-        yield put(WalletActions.saveAddress({address}));
-        yield put(WalletActions.savePassphrase({passphrase}));
-        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
-
-        EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
@@ -84,11 +80,14 @@ export function *gethUnlockAccount (action) {
 export function *gethRandomMnemonic () {
     try {
         yield put(WalletActions.setLoading({loading:true}));
+
         const result =  yield GethModule.randomMnemonic();
         const map = GethModule.getResolveMap(result);
-        yield put(WalletActions.setLoading({loading:false}));
         const {mnemonic} = map;
+
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
+
+        yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
@@ -105,14 +104,13 @@ export function *gethImportMnemonic (action) {
         yield put(WalletActions.setLoading({loading:true}));
         const result = yield GethModule.importMnemonic({mnemonic, passphrase});
         const map = GethModule.getResolveMap(result);
-        yield put(WalletActions.setLoading({loading:false}));
-
         const {address} = map;
+
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
+        yield put(UserActions.saveUserInfo({passphrase}));
 
-        yield put(WalletActions.savePassphrase({passphrase}));
-
+        yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
@@ -130,13 +128,13 @@ export function *gethImportPrivateKey (action) {
         const gethKey = GethModule.getGethPrivateKey(privateKey);
         const result = yield GethModule.importPrivateKey({privateKey:gethKey, passphrase});
         const map = GethModule.getResolveMap(result);
-        yield put(WalletActions.setLoading({loading:false}));
-
         const {address} = map;
+
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
-        yield put(WalletActions.savePassphrase({passphrase}));
+        yield put(UserActions.saveUserInfo({passphrase}));
 
+        yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
@@ -150,17 +148,18 @@ export function *gethExportPrivateKey (action) {
     try {
         const {data:params} = action;
         const {passphrase=''} = params;
-
         yield put(WalletActions.setLoading({loading:true}));
         const result = yield GethModule.exportPrivateKey({passphrase});
-        yield put(WalletActions.setLoading({loading:false}));
-
         const map = GethModule.getResolveMap(result);
-
         const {privateKey} = map;
+
         const displayKey = GethModule.getDisplayedPrivateKey(privateKey);
         yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
+        yield put(UserActions.saveUserInfo({passphrase}));
+
+        yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+        yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
             position: Toast.positions.CENTER,
@@ -175,11 +174,14 @@ export function *gethTransfer (action) {
         // TODO 参数异常校验
         yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress});
-        yield put(WalletActions.setLoading({loading:false}));
+
 
         const map = GethModule.getResolveMap(result);
         const {txHash} = map;
-        // 交易成功 失败 ==> 详细处理逻辑
+
+        yield put(UserActions.saveUserInfo({passphrase}));
+        yield put(WalletActions.setLoading({loading:false}));
+
         yield put(StackActions.pop());
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));

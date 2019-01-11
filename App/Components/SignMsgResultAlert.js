@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity } from 'react-native';
 import styles from './Styles/SignMsgResultAlertStyle';
 import Overlay from 'react-native-modal-overlay';
-import { connect } from 'react-redux';
 import AccountComponent from '../Components/AccountComponent';
 import { Colors } from '../Themes';
 import I18n from '../I18n';
@@ -22,9 +21,8 @@ export default class SignMsgResultAlert extends Component {
   componentDidMount=()=>console.log();
 
   render () {
-      const from = '0xb5538753F2641A83409D2786790b42aC857C5340';
-
-      const {isInit, onPressCancel, onPressConfirm} = this.props;
+      const to = 'web3Provider  不支持 toAddress';
+      const {isInit, message='' ,onPressCancel, onPressConfirm} = this.props;
       return (
           <Overlay
               containerStyle={styles.overlay}
@@ -36,10 +34,13 @@ export default class SignMsgResultAlert extends Component {
                   <View style={styles.topSection}>
                       <View style={styles.addressSection}>
                           <Text style={styles.titleStyle}>{I18n.t('ConfirmInfo')}</Text>
-                          <AccountComponent address={from}/>
+                          <AccountComponent address={to}/>
                       </View>
+                      <Text style={styles.signMsg}>{I18n.t('SignMessage')}</Text>
                   </View>
-                  <View style={styles.msgSection}></View>
+                  <View style={styles.msgSection}>
+                      <Text style={styles.message}>{message}</Text>
+                  </View>
                   <View style={styles.bottomSection}>
                       <TouchableOpacity style={styles.btnContainer} onPress={onPressCancel}>
                           <Text style={styles.btnTitle}>{I18n.t('CancelAction')}</Text>

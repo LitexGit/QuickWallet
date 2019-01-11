@@ -35,13 +35,15 @@ class AccountScreen extends Component {
   componentDidMount=()=>{
       this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
           if (isUnlock) {
-              this.props.navigate('ExportScreen', {passphrase:this.passphrase});
+              const {passphrase=''} = this.props;
+              this.props.navigate('ExportScreen', {passphrase});
               return;
           }
           this.props.gethUnlockAccount({passphrase:this.passphrase});
       });
       this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>{
-          this.props.navigate('ExportScreen', {passphrase:this.passphrase});
+          const {passphrase=''} = this.props;
+          this.props.navigate('ExportScreen', {passphrase});
       });
   }
 
@@ -137,19 +139,16 @@ class AccountScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{nickname, sharecode, address}
+        user:{nickname, sharecode, address, passphrase}
     } = state;
-    return {address, nickname, sharecode};
+    return {address, nickname, sharecode, passphrase};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     logout: () => dispatch(UserActions.logout()),
     gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
-
-
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);

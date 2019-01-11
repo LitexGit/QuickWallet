@@ -39,6 +39,7 @@ export const INITIAL_STATE = Immutable({
     error: null,
 
     address:0,
+    passphrase:'',
     nickname:'',
     sharecode:'',
 
@@ -55,6 +56,7 @@ export const INITIAL_STATE = Immutable({
     },
 
     web3Provider:'',
+    defaultRate:'',
 });
 
 /* ------------- Selectors ------------- */

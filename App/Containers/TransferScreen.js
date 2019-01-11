@@ -235,9 +235,9 @@ class TransferScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{address},
+        user:{address, passphrase},
         assets:{selectedToken},
-        wallet:{passphrase, loading}
+        wallet:{loading}
     } = state;
     return { selectedToken, passphrase, address, loading};
 };

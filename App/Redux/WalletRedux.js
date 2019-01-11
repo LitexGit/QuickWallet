@@ -19,7 +19,6 @@ const { Types, Creators } = createActions({
 
     setLoading: ['data'],
     gethRandomMnemonicSuccess:['data'],
-    savePassphrase:['data'],
     savePrivateKey:['data'],
     saveAddress:['data'],
 
@@ -43,9 +42,7 @@ export const INITIAL_STATE = Immutable({
     failure: null,
     error: null,
     mnemonic:'',
-    passphrase:'',
     privateKey:'',
-    address:'',
 });
 
 /* ------------- Selectors ------------- */
@@ -57,11 +54,6 @@ export const saveAddress = (state, {data}) =>state.merge({...data});
 
 export const savePrivateKey = (state, {data}) =>
     state.merge({...data});
-
-export const savePassphrase = (state, {data}) =>
-    state.merge({...data});
-
-
 
 export const gethRandomMnemonicSuccess = (state, {data}) =>
     state.merge({...data});
@@ -88,7 +80,6 @@ export const failure = (state) =>
 export const reducer = createReducer(INITIAL_STATE, {
     [Types.SET_LOADING]: setLoading,
     [Types.GETH_RANDOM_MNEMONIC_SUCCESS]:gethRandomMnemonicSuccess,
-    [Types.SAVE_PASSPHRASE]:savePassphrase,
     [Types.SAVE_PRIVATE_KEY]:savePrivateKey,
     [Types.SAVE_ADDRESS]:saveAddress,
 });

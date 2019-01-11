@@ -1,48 +1,71 @@
 
-
-export const layer2 = '';
-
 // const addressHex = "\(address.description.lowercased())"
 // const rpcURL = "\(config.rpcURL.absoluteString)"
 // const chainID = "\(config.chainID)"
 
-export const signer = `
+export const layer1 = `
 const addressHex = '0xb5538753F2641A83409D2786790b42aC857C5340';
-const rpcURL = 'ws://rinkeby03.milewan.com:8546';
+const rpcURL = 'http://api-rinkeby.etherscan.io/api';
 const chainID = '4';
 
+window.document.addEventListener('message', ({data})=>{
+  const params = JSON.parse(data);
+  const {id, error, value} = params;
+  executeCallback(id, error, value);
+});
+
 function executeCallback (id, error, value) {
+    $input.value = 'executeCallback' + JSON.stringify({id, error, value});
     AlphaWallet.executeCallback(id, error, value);
 }
 
 AlphaWallet.init(rpcURL, {
     getAccounts (cb) { cb(null, [addressHex]); },
+
     processTransaction (tx, cb){
-        console.log('signing a transaction', tx);
         const { id = 8888 } = tx;
+        console.log('signing a transaction', tx);
         AlphaWallet.addCallback(id, cb);
-        webkit.messageHandlers.signTransaction.postMessage({'name': 'signTransaction', 'object': tx, id});
+
+        $input.value = 'signTransaction' + JSON.stringify(tx);
+        const params = {'name': 'signTransaction', 'object': tx, id};
+        window.postMessage(JSON.stringify(params));
     },
+
     signMessage (msgParams, cb) {
         const { data } = msgParams;
         const { id = 8888 } = msgParams;
         console.log('signing a message', msgParams);
         AlphaWallet.addCallback(id, cb);
-        webkit.messageHandlers.signMessage.postMessage({'name': 'signMessage', 'object': { data }, id});
+
+        $input.value = 'signMessage' + JSON.stringify(msgParams);
+        const params = {'name': 'signMessage', 'object': { data }, id};
+        window.postMessage(JSON.stringify(params));
     },
+
+
     signPersonalMessage (msgParams, cb) {
+        $input.value = 'signPersonalMessage';
+
         const { data } = msgParams;
         const { id = 8888 } = msgParams;
         console.log('signing a personal message', msgParams);
         AlphaWallet.addCallback(id, cb);
-        webkit.messageHandlers.signPersonalMessage.postMessage({'name': 'signPersonalMessage', 'object': { data }, id});
+
+        $input.value = 'signPersonalMessage' + JSON.stringify(msgParams);
+        const params = {'name': 'signPersonalMessage', 'object': { data }, id};
+        window.postMessage(JSON.stringify(params));
     },
+
     signTypedMessage (msgParams, cb) {
         const { data } = msgParams;
         const { id = 8888 } = msgParams;
         console.log('signing a typed message', msgParams);
         AlphaWallet.addCallback(id, cb);
-        webkit.messageHandlers.signTypedMessage.postMessage({'name': 'signTypedMessage', 'object': { data }, id});
+
+        $input.value = 'signTypedMessage' + JSON.stringify(msgParams);
+        const params = {'name': 'signTypedMessage', 'object': { data }, id};
+        window.postMessage(JSON.stringify(params));
     }
 }, {
     address: addressHex,
@@ -63,6 +86,8 @@ web3.eth.getCoinbase = function(cb) {
     return cb(null, addressHex);
 };
 `;
+
+export const layer2 = '';
 
 
 

@@ -74,8 +74,7 @@ class NewWalletScreen extends Component {
       let error = '密码不少于8位字符';
       if (this.password.length >= 8 && this.confirm.length >= 8) {
           if (this.password === this.confirm) {
-              this.props.saveUserInfo({nickname:this.name});
-              this.props.savePassphrase({passphrase:this.password});
+              this.props.saveUserInfo({nickname:this.name, passphrase:this.password});
               this.props.navigate('PreBackupScreen');
               return;
           }
@@ -173,9 +172,7 @@ class NewWalletScreen extends Component {
 const mapStateToProps = (state) => {
     const {
         wallet:{loading},
-        user:{
-            isAgreeInfo:isAgree
-        }
+        user:{ isAgreeInfo:isAgree }
     } = state;
     return {
         loading, isAgree
@@ -184,7 +181,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    savePassphrase: ({passphrase}) => dispatch(WalletActions.savePassphrase({passphrase})),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
 });
 

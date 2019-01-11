@@ -49,9 +49,13 @@ export const isValidMnemonic = (mnemonic) => {
     return true;
 };
 
-export const getWei = (value, unitType) => utils.parseUnits(value, unitType).toString();
+export const getWei = (value, unitType) => {
+    if (!value || isNaN(value)) return '0';
+    return utils.parseUnits(value, unitType).toString();
+};
 
 export const getToken = (value, unitType) => {
+    if (!value || isNaN(value)) return '0';
     const amount = utils.formatUnits(value, unitType);
     const num = parseFloat(amount);
     const result = num.toFixed(4);
@@ -74,8 +78,17 @@ export function toFixed(value, fixed=2) {
 export function getDisplayTxInfo(signInfo) {
     let {data='', gas='', gasPrice='', value=''} = signInfo;
     gas = parseInt(gas, 16).toString();
+    if (!gas || isNaN(gas)) {
+        gas = '0';
+    }
     gasPrice = parseInt(gasPrice, 16).toString();
+    if (!gasPrice || isNaN(gasPrice)) {
+        gasPrice = '0';
+    }
     value = parseInt(value, 16).toString();
+    if (!value || isNaN(value)) {
+        value = '0';
+    }
     const info = {...signInfo, gas, gasPrice, value};
     return info;
 }

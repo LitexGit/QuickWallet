@@ -147,7 +147,9 @@
   "InputPrivateKey":"Enter Private Key",
   "RepeatPassword":"Repeat password",
   "Mnemonic":"Mnemonic Phrase",
-  "PrivateKey":"Private Key"
+  "PrivateKey":"Private Key",
+
+  "SignMessage":"The following message requires this account signature"
 }
 
 

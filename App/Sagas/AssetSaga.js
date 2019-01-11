@@ -26,6 +26,10 @@ export function *getTokenList(api){
             const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
             const {key='CNY'} = currency;
             const tokenArray = tokenList.map((token)=>{
+
+                console.log('===============token=====================');
+                console.log(token);
+                console.log('===============token=====================');
                 let {Rate:rate} = token;
                 rate = JSON.parse(rate);
                 token.Rate = rate[key];

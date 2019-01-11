@@ -118,5 +118,7 @@
   "InputPrivateKey":"输入明文私钥",
   "RepeatPassword":"重复输入密码",
   "Mnemonic":"助记词",
-  "PrivateKey":"私钥"
+  "PrivateKey":"私钥",
+
+  "SignMessage":"以下消息需要此账户签名"
 }

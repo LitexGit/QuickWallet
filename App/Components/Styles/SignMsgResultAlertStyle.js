@@ -21,8 +21,6 @@ export default StyleSheet.create({
     msgSection:{
         borderTopColor: Colors.dividingLineColor,
         borderTopWidth: Metrics.doubleBaseMargin / PixelRatio.get(),
-        backgroundColor:'cyan',
-        height:100,
         marginTop: Metrics.baseMargin,
     },
     addressSection:{
@@ -47,8 +45,18 @@ export default StyleSheet.create({
     btnTitle:{
         textAlign:'center',
         color:Colors.backgroundColor,
-
         paddingHorizontal:Metrics.baseMargin + 5,
         paddingVertical:Metrics.smallMargin,
     },
+    signMsg:{
+        textAlign:'center',
+        fontSize:Fonts.size.medium,
+        color:Colors.darkColor,
+    },
+    message:{
+        fontSize:Fonts.size.small,
+        color:Colors.textColor,
+        textAlign:'center',
+        padding:Metrics.doubleBaseMargin,
+    }
 });

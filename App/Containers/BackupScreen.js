@@ -184,7 +184,8 @@ class BackupScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        wallet:{mnemonic, loading, passphrase}
+        user:{ passphrase },
+        wallet:{ mnemonic, loading }
     } = state;
     return { mnemonic, loading, passphrase};
 };

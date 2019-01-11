@@ -13,9 +13,10 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import Toast from 'react-native-root-toast';
 import {getDisplayTxInfo} from '../Lib/Format';
+import Config from 'react-native-config';
+import {layer1} from '../Resources/inject';
 
-const DEFAULT_URI = 'https://www.baidu.com';
-
+// const DEFAULT_URI = 'https://www.baidu.com';
 class Layer2WebScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
       title:'Layer2',
@@ -32,7 +33,6 @@ class Layer2WebScreen extends Component {
           isShowSignTx:false,
           isShowSignMsg:false,
       };
-      this.passphrase = '';
       this.signInfo = {};
   }
 
@@ -93,7 +93,6 @@ _pswdConfirm=(passphrase)=>{
     this.setState({
         isShowPassphrase:false,
     });
-    this.passphrase = passphrase;
     this.props.gethUnlockAccount({passphrase});
 }
 
@@ -117,9 +116,10 @@ _onPressShare=()=> {
 
 
 _onMessage=(evt)=>{
-    console.log('======ZJ====RN_onMessage==========================');
-    console.log(JSON.parse(evt.nativeEvent.data));
-    console.log('======ZJ====RN_onMessage==========================');
+    // console.log('======ZJ====RN_onMessage==========================');
+    // console.log(JSON.parse(evt.nativeEvent.data));
+    // console.log('======ZJ====RN_onMessage==========================');
+
     const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
     const {name} = params;
@@ -157,7 +157,7 @@ _signInfo=()=>{
 
 _signTransaction=async({signInfo, id=8888})=>{
     try {
-        const passphrase = '11111111';
+        const {passphrase=''} = this.props;
         const signHash = await GethModule.signTransaction({passphrase, signInfo});
         const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
@@ -172,7 +172,7 @@ _signTransaction=async({signInfo, id=8888})=>{
 
 _signMessage = async ({data:message='', id=8888})=>{
     try {
-        const passphrase = '11111111';
+        const {passphrase=''} = this.props;
         const signHash = await GethModule.signMessage({passphrase, message});
         const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
@@ -186,31 +186,42 @@ _signMessage = async ({data:message='', id=8888})=>{
 
 
 render  () {
-
-    const uri = DEFAULT_URI;
+    // const uri = DEFAULT_URI;
     const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
     const {loading} = this.props;
-    const signInfo = {to:'0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db', balance:'100', gas:'10'};
-    const {to, balance, gas} = signInfo;
 
+    // console.log('===========Config=========================');
+    // console.log(this.props.web3Provider);
+    // console.log(layer1);
+    // console.log(Config.RPC_URL);
+    // console.log(Config.CHAIN_ID);
+    // console.log(Config.API_URL);
+    // console.log('===========Config=========================');
+
+    const {object={}} = this.signInfo;
+    const {data=''} = object;
+    const signInfo = getDisplayTxInfo(object);
+    const {to='', value='', gasPrice=''} = signInfo;
 
     return (
         <View style={styles.container}>
             <SignTxResultAlert
                 isInit={isShowSignTx}
+                isWallet={false}
                 to={to}
-                balance={balance}
-                gas={gas}
+                balance={value}
+                gas={gasPrice}
                 onPressCancel={()=>this._signTxCancel()}
                 onPressConfirm={()=>this._signTxConfirm()}/>
+            <SignMsgResultAlert
+                isInit={isShowSignMsg}
+                message={data}
+                onPressCancel={()=>this._signMsgCancel()}
+                onPressConfirm={()=>this._signMsgConfirm()}/>
             <PassphraseInputAlert
                 isInit={isShowPassphrase}
                 onPressCancel={()=>this._pswdCancel()}
                 onPressConfirm={(passphrase)=>this._pswdConfirm(passphrase)}/>
-            <SignMsgResultAlert
-                isInit={isShowSignMsg}
-                onPressCancel={()=>this._signMsgCancel()}
-                onPressConfirm={()=>this._signMsgConfirm()}/>
             <Spinner visible={loading} cancelable
                 textContent={'Loading...'}
                 textStyle={styles.spinnerText}/>
@@ -226,9 +237,10 @@ render  () {
 
 const mapStateToProps = (state) => {
     const {
+        user:{web3Provider, passphrase},
         wallet:{ loading }
     } = state;
-    return { loading };
+    return { loading, web3Provider, passphrase};
 };
 
 const mapDispatchToProps = (dispatch) => ({

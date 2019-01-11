@@ -9,12 +9,12 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Metrics, Colors } from '../Themes';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
-import {getWei, toFixed, getValue} from '../Lib/Format';
-
+import {getWei, getValue} from '../Lib/Format';
 
 class SignTxResultAlert extends Component {
   static propTypes = {
       isInit: PropTypes.bool,
+      isWallet: PropTypes.bool,
       to:PropTypes.string,
       balance:PropTypes.string,
       gas:PropTypes.string,
@@ -25,6 +25,7 @@ class SignTxResultAlert extends Component {
 
   static defaultProps = {
       isInit: false,
+      isWallet: true,
       to:'0x',
       balance:'0',
       gas:'0',
@@ -35,18 +36,25 @@ class SignTxResultAlert extends Component {
   }
 
   render () {
-      const {isInit, address='', to='', balance='', gas='', onPressCancel, onPressConfirm, selectedToken, currency} = this.props;
-      const {symbol:mark} = currency;
-      const {Rate:rate} = selectedToken;
+      const {isInit, isWallet=true, address='', to='', onPressCancel, onPressConfirm, currency, selectedToken} = this.props;
+      let {balance='', gas=''} = this.props;
+      const {symbol:mark='ETH'} = currency;
+      const {Rate:rate='563.2'} = selectedToken;
 
-      const gasLimit = 21000;
-      const price = getWei(gas, 9) * gasLimit / 1e18;
+      if (isWallet) {
+          const gasLimit = 21000;
+          gas = getWei(gas, 9) * gasLimit / 1e18;
+      } else {
+          balance /= 1e18;
+          gas /= 1e18;
+      }
 
-      const totalBanance = parseFloat(balance) + price;
-      const totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(price, rate));
+      const totalBanance = parseFloat(balance) + gas;
+      const totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(gas, rate));
+
 
       const symbol = {key:'symbol', units:balance, value:getValue(balance, rate)};
-      const gasPrice = {key:'gasPrice', units:price.toFixed(6), value:getValue(price, rate)};
+      const gasPrice = {key:'gasPrice', units:gas.toFixed(6), value:getValue(gas, rate)};
       const txTotal = {key:'txTotal', units:totalBanance.toFixed(6), value:totalValue};
 
       const items = [symbol, gasPrice, txTotal];
@@ -115,10 +123,7 @@ const mapStateToProps = (state) => {
     return { address, currency, selectedToken };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignTxResultAlert);
+export default connect(mapStateToProps)(SignTxResultAlert);
 
 
 

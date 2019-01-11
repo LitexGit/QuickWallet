@@ -136,7 +136,7 @@
         try{
           web3.eth.sendTransaction({
             from: "0xb5538753F2641A83409D2786790b42aC857C5340",
-            gasPrice: "20000000000",
+            gasPrice: "41000000000000000",
             gas: "21000",
             to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
             value: "1000000000000000000",
@@ -151,7 +151,7 @@
 
       document.querySelector('.signMessage').addEventListener('click', ()=>{
         try{
-         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "我怎么这么好看这么好看怎么办",(err, data)=>{
+         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "我怎么这么好看这么好看怎么办 怎么办  怎么办  怎么办  怎么办  怎么办  怎么办",(err, data)=>{
            $input.value = "signMessage result" +  JSON.stringify(data);
          });
         }catch(err){
