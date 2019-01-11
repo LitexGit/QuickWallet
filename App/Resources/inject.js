@@ -4,9 +4,9 @@
 // const chainID = "\(config.chainID)"
 
 export const layer1 = `
-const addressHex = '0xb5538753F2641A83409D2786790b42aC857C5340';
-const rpcURL = 'http://api-rinkeby.etherscan.io/api';
-const chainID = '4';
+const addressHex = '%1$s';
+const rpcURL = '%2$s';
+const chainID = %3$s;
 
 window.document.addEventListener('message', ({data})=>{
   const params = JSON.parse(data);

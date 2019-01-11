@@ -149,7 +149,8 @@
   "Mnemonic":"Mnemonic Phrase",
   "PrivateKey":"Private Key",
 
-  "SignMessage":"The following message requires this account signature"
+  "SignMessage":"The following message requires this account signature",
+  "UnLoginRemind":"You are not logged into the wallet"
 }
 
 

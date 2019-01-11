@@ -120,5 +120,6 @@
   "Mnemonic":"助记词",
   "PrivateKey":"私钥",
 
-  "SignMessage":"以下消息需要此账户签名"
+  "SignMessage":"以下消息需要此账户签名",
+  "UnLoginRemind":"您尚未登录钱包"
 }

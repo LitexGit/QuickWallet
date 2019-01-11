@@ -41,9 +41,6 @@ export function *getTokenList(api){
                 } else {
                     const api = require('etherscan-api').init(apiKey, environment, timeout);
                     const response =yield call(api.account.tokenbalance, address, '', tokenAddress);
-                    console.log('=============api.account.tokenbalance,address=======================');
-                    console.log(response);
-                    console.log('=============api.account.tokenbalance,address=======================');
                     const {status, message, result} = response;
                     if (status) {
                         yield put(AssetActions.getTokenBalanceSuccess({

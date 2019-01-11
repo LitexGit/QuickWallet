@@ -10,7 +10,6 @@ import styles from './Styles/FoundScreenStyle';
 
 import { NavigationActions } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
-import Toast from 'react-native-root-toast';
 
 class FoundScreen extends Component {
   static navigationOptions = {

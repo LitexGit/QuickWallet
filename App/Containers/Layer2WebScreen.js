@@ -13,6 +13,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import Toast from 'react-native-root-toast';
 import {getDisplayTxInfo} from '../Lib/Format';
+import I18n from '../I18n';
 import Config from 'react-native-config';
 import {layer1} from '../Resources/inject';
 
@@ -116,6 +117,15 @@ _onPressShare=()=> {
 
 
 _onMessage=(evt)=>{
+    const {isLoginInfo} = this.props;
+    if (!isLoginInfo) {
+        Toast.show(I18n.t('UnLoginRemind'), {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        return;
+    }
+
     // console.log('======ZJ====RN_onMessage==========================');
     // console.log(JSON.parse(evt.nativeEvent.data));
     // console.log('======ZJ====RN_onMessage==========================');
@@ -188,15 +198,17 @@ _signMessage = async ({data:message='', id=8888})=>{
 render  () {
     // const uri = DEFAULT_URI;
     const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
-    const {loading} = this.props;
+    const {loading, web3Provider, address} = this.props;
 
     // console.log('===========Config=========================');
-    // console.log(this.props.web3Provider);
-    // console.log(layer1);
-    // console.log(Config.RPC_URL);
+    // console.log(address);
     // console.log(Config.CHAIN_ID);
-    // console.log(Config.API_URL);
+    // console.log(Config.RPC_URL);
     // console.log('===========Config=========================');
+
+    const sprintf = require('sprintf-js').sprintf;
+    const signer = sprintf(layer1, address, Config.RPC_URL, Config.CHAIN_ID);
+    const injectScript = web3Provider + '' + signer;
 
     const {object={}} = this.signInfo;
     const {data=''} = object;
@@ -229,7 +241,7 @@ render  () {
                 ref ={ref=>this.webview = ref}
                 onMessage={this._onMessage}
                 style={styles.container}
-                // injectedJavaScript={injectScript}
+                injectedJavaScript={injectScript}
                 source={require('./index.html')}/>
         </View>);
 }
@@ -237,10 +249,10 @@ render  () {
 
 const mapStateToProps = (state) => {
     const {
-        user:{web3Provider, passphrase},
+        user:{web3Provider, passphrase, isLoginInfo, address},
         wallet:{ loading }
     } = state;
-    return { loading, web3Provider, passphrase};
+    return { loading, web3Provider, passphrase, isLoginInfo, address};
 };
 
 const mapDispatchToProps = (dispatch) => ({
