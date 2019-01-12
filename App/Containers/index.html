@@ -62,7 +62,7 @@
 
       document.querySelector('.signMessage').addEventListener('click', ()=>{
         try{
-         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "我怎么这么好看这么好看怎么办 怎么办  怎么办  怎么办  怎么办  怎么办  怎么办",(err, data)=>{
+         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "我怎么这么好看这么好看怎么办",(err, data)=>{
            $input.value = "signMessage result" +  JSON.stringify(data);
          });
         }catch(err){
