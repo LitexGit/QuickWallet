@@ -9,11 +9,9 @@ import Toast from 'react-native-root-toast';
 import {UserSelectors} from '../Redux/UserRedux';
 
 
-export function *gethInit (action) {
+export function *gethInit () {
     try {
-        const {data:params} = action;
-        const {isLogin=false, rawurl=''} = params;
-        GethModule.init({isLogin, rawurl});
+        yield GethModule.init();
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {

@@ -15,7 +15,8 @@
 #import "Web3swift-Swift.h"
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
-static NSString *rawurlKey  = @"raw_url_key";
+static NSString *contactIpKey  = @"contact_ip_key";
+static NSString *chainIdKey  = @"chain_id_key";
 
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
@@ -36,14 +37,14 @@ static NSString *rawurlKey  = @"raw_url_key";
 @implementation RCTGethModule
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(init:(BOOL)isLogin rawurl:(NSString *)rawurl) {
-  
-  [[NSUserDefaults standardUserDefaults] setObject:rawurl forKey:rawurlKey];
+RCT_EXPORT_METHOD(init:(BOOL)isLogin contactIp:(NSString *)contactIp chainId:(NSString *)chainId) {
+  [[NSUserDefaults standardUserDefaults] setInteger:[chainId integerValue] forKey:chainIdKey];
+  [[NSUserDefaults standardUserDefaults] setObject:contactIp forKey:contactIpKey];
 
   if (!isLogin) return;
-  if (!rawurl || !rawurl.length) return;
+  if (!contactIp || !contactIp.length) return;
   if (self.account && self.ethClient) return;
-  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+  self.ethClient = [[GethEthereumClient alloc] init:contactIp];
 }
 
 RCT_EXPORT_METHOD(unInit) {
@@ -79,8 +80,8 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
   _resolveBlock = resolver;
   _rejectBlock = reject;
   
-  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
-  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+  NSString *contactIp = [[NSUserDefaults standardUserDefaults] objectForKey:contactIpKey];
+  self.ethClient = [[GethEthereumClient alloc] init:contactIp];
   
   NSError *error = nil;
   NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
@@ -129,8 +130,8 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   
   NSError * error = nil;
   
-  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
-  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+  NSString *contactIp = [[NSUserDefaults standardUserDefaults] objectForKey:contactIpKey];
+  self.ethClient = [[GethEthereumClient alloc] init:contactIp];
 
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
@@ -158,8 +159,8 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   
   NSError *error = nil;
   
-  NSString *rawurl = [[NSUserDefaults standardUserDefaults] objectForKey:rawurlKey];
-  self.ethClient = [[GethEthereumClient alloc] init:rawurl];
+  NSString *contactIp = [[NSUserDefaults standardUserDefaults] objectForKey:contactIpKey];
+  self.ethClient = [[GethEthereumClient alloc] init:contactIp];
   
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
@@ -340,7 +341,8 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 
 
 - (GethTransaction *)signTxWithKeyStore:(GethKeyStore *)keyStore Account:(GethAccount *)account passphrase:(NSString *)passphrase transaction:(GethTransaction *)transaction{
-  int64_t chainId = 4;
+  int64_t chainId = [[[NSUserDefaults standardUserDefaults] objectForKey:chainIdKey] intValue];
+  
   GethBigInt *chainID = [[GethBigInt alloc] init:chainId];
   NSError *error = nil;
   GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&error];
@@ -415,11 +417,11 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     _rejectBlock(@"-1017", @"signTransaction abnormal", error);
   }
   
-  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
-  if (!isSend || error) {
-    _rejectBlock(@"-1014", @"Transaction token failure", error);
-    return;
-  }
+//  BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
+//  if (!isSend || error) {
+//    _rejectBlock(@"-1014", @"Transaction signTransaction failure", error);
+//    return;
+//  }
 
   NSString *infoHash = [[signedTx getHash] getHex];
   _resolveBlock(@[@{@"data":infoHash}]);

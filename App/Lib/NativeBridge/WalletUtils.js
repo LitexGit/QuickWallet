@@ -1,10 +1,20 @@
 import { NativeModules, Platform } from 'react-native';
 import Ramda from 'ramda';
 import {getWei} from '../Format';
+import Config from 'react-native-config';
+import {DeviceStorage, Keys} from '../DeviceStorage';
+
 const gethModule = NativeModules.GethModule;
 
-async function init({isLogin, rawurl}){
-    return gethModule.init(isLogin, rawurl);
+async function init(){
+    try {
+        const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
+        return gethModule.init(isLogin, Config.CONTACT_IP, Config.CHAIN_ID);
+    } catch (error) {
+        console.log('==========error==========================');
+        console.log(error);
+        console.log('==========error==========================');
+    }
 }
 
 async function unInit(){

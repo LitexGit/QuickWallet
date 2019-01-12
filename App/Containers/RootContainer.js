@@ -11,8 +11,6 @@ import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
 import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 
-import Config from 'react-native-config';
-
 class RootContainer extends Component {
 
   _initializes= async ()=>{
@@ -25,7 +23,7 @@ class RootContainer extends Component {
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
       this.props.saveUserInfo({isLoginInfo:isLogin});
 
-      this.props.gethInit({isLogin, rawurl:Config.RINKEBY_NODE_IP});
+      this.props.gethInit();
       if (!isLogin) return;
 
       const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
@@ -57,7 +55,7 @@ const mapDispatchToProps = (dispatch) => ({
     getInjectScript: () => dispatch(UserActions.getInjectScript()),
     getConfigRequest: () => dispatch(ConfigActions.getConfigRequest()),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
-    gethInit: (params) => dispatch(WalletActions.gethInit(params)),
+    gethInit: () => dispatch(WalletActions.gethInit()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

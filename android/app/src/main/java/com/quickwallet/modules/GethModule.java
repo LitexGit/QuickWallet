@@ -32,8 +32,8 @@ public class GethModule extends ReactContextBaseJavaModule {
     private EthereumClient ethClient;
 
     private final String GETH_INFO  = "geth_info";
-    private final String RAWURL  = "rawurl";
-    private final String KEY_TEMP = "key_temp";
+    private final String CONTACT_IP_KEY = "contact_ip_key";
+    private final String CHAIN_ID_KEY = "chain_id_key";
     private final String KEY_DIR = "key_dir";
 
     private final long SCRYPT_N = 1024;
@@ -52,18 +52,15 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void init(boolean isLogin, String rawurl) {
+    public void init( boolean isLogin, String contactIp, String chainId ) {
 
-        if (TextUtils.isEmpty(rawurl)){
-            sharedPreferencesHelper.put(RAWURL, "");
-        } else {
-            sharedPreferencesHelper.put(RAWURL, rawurl);
-        }
+        sharedPreferencesHelper.put(CONTACT_IP_KEY, contactIp);
+        sharedPreferencesHelper.put(CHAIN_ID_KEY, chainId);
 
         if (!isLogin) return;
-        if (TextUtils.isEmpty(rawurl) || rawurl.length() == 0) return;
+        if (TextUtils.isEmpty(contactIp) || contactIp.length() == 0) return;
         if (account == null || keyStore == null) return;
-        ethClient = new EthereumClient(rawurl);
+        ethClient = new EthereumClient(contactIp);
     }
 
     @ReactMethod
@@ -93,8 +90,8 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void unlockAccount( String passphrase, Promise promise ) {
         try {
-            String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
-            ethClient = new EthereumClient(rawurl);
+            String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
+            ethClient = new EthereumClient(contactIp);
 
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
@@ -140,8 +137,8 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void importPrivateKey( String privateKey, String passphrase, Promise promise ) {
         try {
-            String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
-            ethClient = new EthereumClient(rawurl);
+            String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
+            ethClient = new EthereumClient(contactIp);
 
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
             FileUtil.deleteDirectory(filesDir);
@@ -163,8 +160,8 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void importMnemonic( String mnemonic, String passphrase, Promise promise ) {
         try {
-            String rawurl = String.valueOf(sharedPreferencesHelper.getSharedPreference(RAWURL, ""));
-            ethClient = new EthereumClient(rawurl);
+            String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
+            ethClient = new EthereumClient(contactIp);
 
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
             FileUtil.deleteDirectory(filesDir);
@@ -242,7 +239,8 @@ public class GethModule extends ReactContextBaseJavaModule {
             byte[] data = null;
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, data);
 
-            long chainId = 4;
+
+            long chainId = Long.parseLong(String.valueOf(sharedPreferencesHelper.getSharedPreference(CHAIN_ID_KEY, "4")));
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase,  transaction, chainID);
 
@@ -302,7 +300,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, tokenData);
 
-            long chainId = 4;
+            long chainId = Long.parseLong(String.valueOf(sharedPreferencesHelper.getSharedPreference(CHAIN_ID_KEY, "4")));
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 
@@ -376,7 +374,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, data);
 
-            long chainId = 4;
+            long chainId = Long.parseLong(String.valueOf(sharedPreferencesHelper.getSharedPreference(CHAIN_ID_KEY, "4")));
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 

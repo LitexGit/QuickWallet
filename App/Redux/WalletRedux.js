@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
     request: ['data'],
     success: ['data'],
 
-    gethInit: ['data'],
+    gethInit: null,
     gethUnInit: null,
     gethIsUnlockAccount:null,
     gethUnlockAccount:['data'],
