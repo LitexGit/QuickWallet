@@ -12,7 +12,7 @@
 #import <React/RCTConvert.h>
 #import "SignModel.h"
 #import <CommonCrypto/CommonDigest.h>
-
+#import "Web3swift-Swift.h"
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
 static NSString *rawurlKey  = @"raw_url_key";
@@ -362,22 +362,19 @@ RCT_EXPORT_METHOD(signMessage:(NSString *)passphrase message:(NSString *)message
     _rejectBlock(@"-1009", @"Wallet not unlocked", error);
     return;
   }
-  NSString *output = [self sha256WithStrig:message];
-  NSData *hash = [[[GethHash alloc] initFromHex:output] getBytes];
+  NSData *msgData = [message dataUsingEncoding:NSUTF8StringEncoding];
   
-  NSData *signData = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hash error:&error];
+  NSData *hash256 = [OCWeb3Utils keccak256:msgData];
+  NSData *signData = [self.keyStore signHashPassphrase:self.account passphrase:passphrase hash:hash256 error:&error];
   if (error) {
     _rejectBlock(@"-1020", @"signMessage abnormal", error);
     return;
   }
   
-  NSString *signHash = [self sha256WithData:signData];
-  NSString *data = [[[GethHash alloc] initFromHex:signHash] getHex];
-  
-  _resolveBlock(@[@{@"data":data}]);
+  NSString *hash = [OCWeb3Utils hex:signData];
+  _resolveBlock(@[@{@"data":hash}]);
   
 }
-
 
 RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary *)signInfo resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   
@@ -469,6 +466,18 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   return output;
 }
 
++ (NSString*) serializeDeviceToken:(NSData*) deviceToken{
+  NSMutableString *str = [NSMutableString stringWithCapacity:64];
+  int length = [deviceToken length];
+  char *bytes = malloc(sizeof(char) * length);
+  [deviceToken getBytes:bytes length:length];
+  for (int i = 0; i < length; i++){
+    [str appendFormat:@"%02.2hhX", bytes[i]];
+  }
+  free(bytes);
+  return str;
+}
+
 @end
 
 
@@ -480,76 +489,76 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
 //  _resolveBlock = resolver;
 //  _rejectBlock = reject;
 //  NSError *error = nil;
-//  
+//
 //  if (!self.account || !self.keyStore ) {
 //    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1009 userInfo:@{@"info":@"Wallet not unlocked"}];
 //    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
 //    return;
 //  }
-//  
+//
 //  BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
 //  if (!isUnlock) {
 //    _rejectBlock(@"-1021", @"Wallet unlock exceptions", error);
 //    return;
 //  }
-//  
+//
 //  NSString *output = [self sha256WithStrig:message];
 //  NSData *hash = [[[GethHash alloc] initFromHex:output] getBytes];
-//  
+//
 //  GethAddress *signAddress = [[GethAddress alloc] initFromHex:address];
 //  NSData *signData = [self.keyStore signHash:signAddress hash:hash error:&error];
 //  if (error) {
 //    _rejectBlock(@"-1020", @"signMessage abnormal", error);
 //    return;
 //  }
-//  
+//
 //  NSString *signHash = [self sha256WithData:signData];
 //  NSString *data = [[[GethHash alloc] initFromHex:signHash] getHex];
-//  
+//
 //  _resolveBlock(@[@{@"data":data}]);
-//  
+//
 //}
 //
 //
 //RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary *)signInfo resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
-//  
+//
 //  _resolveBlock = resolver;
 //  _rejectBlock = reject;
 //  NSError *error = nil;
-//  
+//
 //  if (!self.account || !self.keyStore || !self.ethClient) {
 //    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1009 userInfo:@{@"info":@"Wallet not unlocked"}];
 //    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
 //    return;
 //  }
-//  
+//
 //  BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
 //  if (!isUnlock) {
 //    _rejectBlock(@"-1021", @"Wallet unlock exceptions", error);
 //    return;
 //  }
-//  
+//
 //  SignModel *model = [SignModel provinceWithDictionary:signInfo];
-//  
+//
 //  GethAddress *from = [[GethAddress alloc] initFromHex:model.from];
 //  GethAddress *to = [[GethAddress alloc] initFromHex:model.to];
 //  GethBigInt *amount = [[GethBigInt alloc] init:[model.value longLongValue]];
 //  GethBigInt *gasPrice = [[GethBigInt alloc] init:[model.gasPrice longLongValue]];
 //  NSData *data = [model.data dataUsingEncoding:NSUTF8StringEncoding];
-//  
+//
 //  int64_t nonce = 0x0;
 //  GethContext *context = [[GethContext alloc] init];
-//  
+//
 //  int64_t number = -1;
 //  BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
 //  if (!isGet || error) {
 //    _rejectBlock(@"-1010", @"get Nonce exceptions", error);
 //    return;
 //  }
-//  
+//
 //  ino64_t gasLimit = [model.gas longLongValue];
 //  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
-//  
+//
 //  int64_t chainId = 4;
 //  GethBigInt *chainID = [[GethBigInt alloc] init:chainId];
 //  GethTransaction *signedTx = [self.keyStore signTx:self.account tx:transaction chainID:chainID error:&error];
@@ -557,7 +566,7 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
 //    _rejectBlock(@"-1017", @"signTransaction abnormal", error);
 //    return;
 //  }
-//  
+//
 //  NSString *infoHash = [[signedTx getHash] getHex];
 //  _resolveBlock(@[@{@"data":infoHash}]);
 //}

@@ -38,6 +38,7 @@
 		23AE74A521E5A72B00AADC57 /* RNTLayer2WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE74A421E5A72B00AADC57 /* RNTLayer2WebView.m */; };
 		23AE74E621E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */; };
 		23AE74EA21E76E0300AADC57 /* RCTBundleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE74E921E76E0300AADC57 /* RCTBundleModule.m */; };
+		23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */; };
 		23D0A38121DB38E5000E3005 /* SignModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D0A38021DB38E5000E3005 /* SignModel.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -67,6 +68,7 @@
 		9A6C6836FACC4B0CB8D86FAA /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA0A6C4BC6D141F69967EAB9 /* Entypo.ttf */; };
 		AB78C9BE96D5484A85D94457 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2074D8872D0F428FA52DC517 /* SimpleLineIcons.ttf */; };
 		ABC4CF5D9D1F4B7FB16F1808 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E33A181F69C94422992D7F49 /* libRNVectorIcons.a */; };
+		AD908613A2FD7C61EB8022CB /* Pods_QuickWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C93F2468B356211A8CCD948 /* Pods_QuickWallet.framework */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B154B398E7964E58B4616B93 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A8E4B651E764C47B3F39AAA /* Feather.ttf */; };
 		BF7E63B82A5540D4B97F96CB /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C46EA6BE2ECD4F569CAFAB19 /* EvilIcons.ttf */; };
@@ -450,8 +452,10 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* QuickWalletTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickWalletTests.m; sourceTree = "<group>"; };
 		013884A82ADA4FEAA514C867 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		027D23338760298797E1D93A /* Pods-QuickWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuickWallet/Pods-QuickWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		04DE260CF5DA4167BFD329D7 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		06F21580FE1A46A39C4546A5 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativePermissions.a; sourceTree = "<group>"; };
+		0C93F2468B356211A8CCD948 /* Pods_QuickWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E77E766E1AD4DF786C3F7AD /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -489,6 +493,9 @@
 		23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlphaWalletWeb3Provider.bundle; sourceTree = "<group>"; };
 		23AE74E821E76E0300AADC57 /* RCTBundleModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTBundleModule.h; sourceTree = "<group>"; };
 		23AE74E921E76E0300AADC57 /* RCTBundleModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTBundleModule.m; sourceTree = "<group>"; };
+		23B939C321E9D14100EA6962 /* QuickWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QuickWallet-Bridging-Header.h"; sourceTree = "<group>"; };
+		23B939C921E9D62B00EA6962 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCWeb3Utils.swift; sourceTree = "<group>"; };
 		23D0A37F21DB38E5000E3005 /* SignModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignModel.h; sourceTree = "<group>"; };
 		23D0A38021DB38E5000E3005 /* SignModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignModel.m; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -522,6 +529,7 @@
 		C46EA6BE2ECD4F569CAFAB19 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		CF8953ED65F14CD784DED7F3 /* libRNI18n-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNI18n-tvOS.a"; sourceTree = "<group>"; };
 		DA0A6C4BC6D141F69967EAB9 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		DAC4629045609FA70E25B4A9 /* Pods-QuickWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickWallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuickWallet/Pods-QuickWallet.release.xcconfig"; sourceTree = "<group>"; };
 		DE809EE56E194EDCAE02E50D /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		E33A181F69C94422992D7F49 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		EBA59006032B4AC197E3D9B8 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -564,6 +572,7 @@
 				6081B1B5DF9A4833893F81B2 /* libRNReactNativeHapticFeedback.a in Frameworks */,
 				FCB99AB884BB46859F4BBE83 /* libRNCamera.a in Frameworks */,
 				0F629AF1AE04470EB203CF65 /* libReactNativePermissions.a in Frameworks */,
+				AD908613A2FD7C61EB8022CB /* Pods_QuickWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,6 +687,7 @@
 		13B07FAE1A68108700A75B9A /* QuickWallet */ = {
 			isa = PBXGroup;
 			children = (
+				23B9399121E9D12000EA6962 /* Swift */,
 				2397294121D3972A00047AE0 /* NativeModules */,
 				2322F53521D0A2F200F9F04C /* Frameworks */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -877,12 +887,24 @@
 			path = RCTBundle;
 			sourceTree = "<group>";
 		};
+		23B9399121E9D12000EA6962 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				23B939C321E9D14100EA6962 /* QuickWallet-Bridging-Header.h */,
+				23B939C921E9D62B00EA6962 /* PrefixHeader.pch */,
+				23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */,
+			);
+			name = Swift;
+			path = QuickWallet/Swift;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				231D7E0A21D090FD0070E53A /* Geth.framework */,
 				2322F51721D0A21F00F9F04C /* Geth.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
+				0C93F2468B356211A8CCD948 /* Pods_QuickWallet.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -952,6 +974,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				AA4FC88B661E4F599BE31671 /* Resources */,
 				232F1B5421C7BD4800F2C490 /* Recovered References */,
+				B42A31F212FA3EE051021FC4 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1000,6 +1023,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B42A31F212FA3EE051021FC4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				027D23338760298797E1D93A /* Pods-QuickWallet.debug.xcconfig */,
+				DAC4629045609FA70E25B4A9 /* Pods-QuickWallet.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1025,10 +1057,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "QuickWallet" */;
 			buildPhases = (
+				D3EDDAEDE36D22D72318985A /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				2C698A0C75C672DBB25F375D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1091,6 +1125,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = QG8NK8GEE7;
+						LastSwiftMigration = 1010;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1621,6 +1656,46 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=/Users/zhoujian/n/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
+		2C698A0C75C672DBB25F375D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-QuickWallet/Pods-QuickWallet-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
+				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/EthereumABI/EthereumABI.framework",
+				"${BUILT_PRODUCTS_DIR}/EthereumAddress/EthereumAddress.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftRLP/SwiftRLP.framework",
+				"${BUILT_PRODUCTS_DIR}/scrypt/scrypt.framework",
+				"${BUILT_PRODUCTS_DIR}/secp256k1_swift/secp256k1_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/web3swift/Web3swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EthereumABI.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EthereumAddress.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftRLP.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/scrypt.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickWallet/Pods-QuickWallet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1634,6 +1709,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		D3EDDAEDE36D22D72318985A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-QuickWallet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1652,6 +1749,7 @@
 			files = (
 				23AE74A221E5A6B400AADC57 /* RNTLayer2WebViewManager.m in Sources */,
 				23AE74A521E5A72B00AADC57 /* RNTLayer2WebView.m in Sources */,
+				23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */,
 				2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */,
 				2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
@@ -1714,6 +1812,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = QG8NK8GEE7;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1763,6 +1862,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = QG8NK8GEE7;
@@ -1808,11 +1908,16 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 027D23338760298797E1D93A /* Pods-QuickWallet.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1820,6 +1925,7 @@
 					"$(PROJECT_DIR)/QuickWallet/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_PREFIX_HEADER = /Users/zhoujian/Desktop/WorkSpace/QuickWallet/ios/QuickWallet/Swift/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
@@ -1844,16 +1950,24 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-1";
 				PRODUCT_NAME = QuickWallet;
+				SWIFT_OBJC_BRIDGING_HEADER = "QuickWallet/Swift/QuickWallet-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DAC4629045609FA70E25B4A9 /* Pods-QuickWallet.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1861,6 +1975,7 @@
 					"$(PROJECT_DIR)/QuickWallet/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_PREFIX_HEADER = /Users/zhoujian/Desktop/WorkSpace/QuickWallet/ios/QuickWallet/Swift/PrefixHeader.pch;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
@@ -1885,6 +2000,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-1";
 				PRODUCT_NAME = QuickWallet;
+				SWIFT_OBJC_BRIDGING_HEADER = "QuickWallet/Swift/QuickWallet-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
