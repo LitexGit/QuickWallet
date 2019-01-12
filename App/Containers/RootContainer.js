@@ -11,9 +11,7 @@ import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
 import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 
-// ws://54.250.21.165:8546
-// ws://39.96.9.247:8546
-// ws://rinkeby03.milewan.com:8546
+import Config from 'react-native-config';
 
 class RootContainer extends Component {
 
@@ -26,8 +24,8 @@ class RootContainer extends Component {
 
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
       this.props.saveUserInfo({isLoginInfo:isLogin});
-      const rawurl = 'ws://54.250.21.165:8546';
-      this.props.gethInit({isLogin, rawurl});
+
+      this.props.gethInit({isLogin, rawurl:Config.RINKEBY_NODE_IP});
       if (!isLogin) return;
 
       const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';

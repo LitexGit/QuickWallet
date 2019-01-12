@@ -3,9 +3,7 @@ import apisauce from 'apisauce';
 import Config from 'react-native-config';
 import Ramda from 'ramda';
 
-const apiUrl = 'http://wallet.milewan.com:8088';
-
-const create = (baseURL = Config.API_URL || apiUrl) => {
+const create = (baseURL = Config.API_URL) => {
     const api = apisauce.create({
         baseURL,
         headers: {'Cache-Control': 'no-cache', 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'},
@@ -79,20 +77,3 @@ const create = (baseURL = Config.API_URL || apiUrl) => {
 export default {
     create
 };
-
-/**
-     * Api 接口响应格式
-     */
-// {
-//   'data':{
-//     'status':Boolean,
-//     'msg':'message'
-//     'data':{
-//       'key1':'value1',
-//       'key2':'value2'
-//       'key3':'value3'
-//       'key4':'value4'
-//       'key5':'value5'
-//     }
-//   }
-// }

@@ -126,10 +126,6 @@ _onMessage=(evt)=>{
         return;
     }
 
-    // console.log('======ZJ====RN_onMessage==========================');
-    // console.log(JSON.parse(evt.nativeEvent.data));
-    // console.log('======ZJ====RN_onMessage==========================');
-
     const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
     const {name} = params;
@@ -179,7 +175,6 @@ _signTransaction=async({signInfo, id=8888})=>{
     }
 }
 
-
 _signMessage = async ({data:message='', id=8888})=>{
     try {
         const {passphrase=''} = this.props;
@@ -194,17 +189,10 @@ _signMessage = async ({data:message='', id=8888})=>{
     }
 }
 
-
 render  () {
     // const uri = DEFAULT_URI;
     const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
     const {loading, web3Provider, address} = this.props;
-
-    // console.log('===========Config=========================');
-    // console.log(address);
-    // console.log(Config.CHAIN_ID);
-    // console.log(Config.RPC_URL);
-    // console.log('===========Config=========================');
 
     const sprintf = require('sprintf-js').sprintf;
     const signer = sprintf(layer1, address, Config.RPC_URL, Config.CHAIN_ID);
