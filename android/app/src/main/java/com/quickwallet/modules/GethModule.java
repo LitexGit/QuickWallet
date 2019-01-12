@@ -2,8 +2,6 @@ package com.quickwallet.modules;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -13,11 +11,11 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
-import com.quickwallet.utils.Hash;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
+import org.web3j.utils.Numeric;
+
 import java.io.File;
-import java.util.Base64;
 
 import geth.Account;
 import geth.Address;
@@ -331,10 +329,10 @@ public class GethModule extends ReactContextBaseJavaModule {
                 promise.reject("-1007",err);
                 return;
             }
-            byte[] hash = Hash.sha256(message.getBytes());
-            byte[] sign = keyStore.signHashPassphrase(account, passphrase, hash);
-            byte[] hash32 = Hash.sha256(sign);
-            String data = new geth.Hash(hash32).getHex();
+
+            byte[] unSignHash = org.web3j.crypto.Hash.sha3(message.getBytes());
+            byte[] signByte = keyStore.signHashPassphrase(account, passphrase, unSignHash);
+            String data = Numeric.toHexString(signByte);
 
             WritableMap map = Arguments.createMap();
             map.putString("data",data);
@@ -381,6 +379,8 @@ public class GethModule extends ReactContextBaseJavaModule {
             long chainId = 4;
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
+
+            ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             String txHash = signedTx.getHash().getHex();
             WritableMap map = Arguments.createMap();
