@@ -9,11 +9,117 @@
   "CurrencyTabTitle":"货币单位设置",
   "LanguageTabTitle":"语言设置",
   "SettingTabTitle":"使用设置",
-  "AssetsTabTitle":"我的资产",
+  "AssetsTabTitle":"我的“资产”",
   "BackupTabTitle":"备份账户",
   "PreBackupTabTitle":"备份账户",
+  "ExportTabTitle":"备份账户",
   "ImportTabTitle":"导入账户",
   "NewWalletTabTitle":"创建账户",
   "PreAccountTabTitle":"我的",
-  "SearchTabTitle":"搜索"
+  "SearchTabTitle":"搜索",
+  "ScanTabTitle":"扫码",
+
+  "SearchApplication":"搜索应用",
+  "CreateYourFirst":"创建你的第一个 ",
+  "Layer2Account":"Layer2加速账户",
+  "Identity":"身份名-账户名",
+  "Password":"密码",
+  "ConfirmPassword":"重复输入密码",
+  "Create":"创建",
+  "CreatAccount":"创建账户",
+  "ImportAccount":"导入账户",
+  "Import":"导入",
+  "EnterMnemonicRemind":"输入助记词，用空格分隔离",
+  "SetPassword":"设置密码",
+  "WalletPassword":"钱包密码",
+  "DataLoading":"数据加载中",
+  "AssetsValue":"资产总价值:",
+  "UseSetting":"使用设置",
+  "HelpFeedback":"帮助与反馈",
+  "UserAgreement":"用户协议",
+  "AboutUs":"关于我们",
+  "Share":"分享",
+  "Multilingual":"多语言",
+  "MonetaryUnit":"货币单位",
+  "Avatar":"头像",
+  "AccountName":"账户名",
+  "InviteCode":"邀请码",
+
+  "NextStep":"下一步",
+  "ConfirmMnemonic":"确认助记词",
+  "Complete":"完成",
+  "Refreshing":"Refreshing...",
+  "Assets":"资产",
+  "Loading":"加载中...",
+  "Balance":"余额",
+  "EnterAmount":"输入金额",
+  "ToAddress":"收款地址",
+  "EnterEthAddress":"输入以太坊地址",
+  "Continue":"继续",
+  "TermsOfUse":"使用条款",
+  "BackupAccount":"备份账户",
+
+  "AddressCopied": "地址已复制",
+  "PrivateKeyCopied": "私钥已复制",
+
+  "Today":"今天",
+  "Yesterday":"昨天",
+
+  "InputPswdTitle":"请输入密码",
+
+  "ScreenshotsTitle":"请勿截图",
+  "ScreenshotsRemind001":"如果有人获取你的助记词将直接获取你的资产！",
+  "ScreenshotsRemind002":"账户助记词仅在此处出现一次，请抄写助记词并存放在安全的地方！ ",
+
+  "CancelAction":"取消",
+  "ConfirmAction":"确认",
+  "KnownAction":"我知道了",
+  "CreatAction":"创建账户",
+
+  "NewWalletRemind001":"密码用于加密保护私钥，以及转账，调用合约等, 所以强度非常重要！",
+  "NewWalletRemind002":"QuickWallet 不存储密码,也无法帮您找回,请务必牢记。",
+
+  "PreBackupRemind":"请仔细抄写下方助记词，我们将在下一步验证",
+  "BackupRemind":"请桉顺序点击助记词,以确认您的正确身份",
+  "AbnormalSortRemind":"助记词顺序不正确，请校对",
+
+  "ImportMnemonicRemind":"使用助记词导入时可以修改钱包密码。",
+  "ImportPrivateKeyRemind":"输入 Private Key 文件内容至输入框。或通过扫描 Private Key 内容生成的二维码录入。请留意字符大小写。",
+  "ImportRemind":"设置新的密码后,旧密码将在导入账户后失效",
+
+  "ExportRemindTitle":"警告",
+  "ExportRemind001":"任何持有此私钥的人都可以获取账户中所有的资产,请妥善保管！",
+  "ExportRemind002":"请确保周围没有其他人和摄像头",
+  "ExportAction":"显示私钥",
+
+  "LogoutTitle":"退出当前身份-退出当前账户",
+  "LogoutRemind":"即将移除身份及所有导入的钱包，请确保所有钱包已备份。——退出账户前请确保账户信息已经备份，如未备份您将失去所有信息且无法找回     即将退出账户，请确保各游戏中未花费的充值金额已经全部提现成功并到账。",
+
+  "ConfirmInfo":"确认信息",
+  "ConfirmRemind001":"我已仔细阅读并同意以上条款以及",
+  "ConfirmRemind002":"Cookies的使用说明",
+
+  "ScanRemind":"将二维码放入框内，即可自动扫描",
+
+  "Combined":"总计",
+  "TotalAssets":"资产总价值:",
+  "ChoosePath":"选择路径-已经没有了",
+  "Default":"默认",
+
+
+  "NoRecord":"暂无记录 ",
+
+  "LoadingAction":"加载更多",
+  "BackUpAccount":"备份此账户",
+  "TransferAction":"发起转账",
+  "LogoutAction":"退出登录",
+
+
+  "InputPrivateKey":"输入明文私钥",
+  "RepeatPassword":"重复输入密码",
+  "Mnemonic":"助记词",
+  "PrivateKey":"私钥",
+
+  "SignMessage":"以下消息需要此账户签名",
+  "UnLoginRemind":"您尚未登录钱包"
 }

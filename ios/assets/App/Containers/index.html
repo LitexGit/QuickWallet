@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>test</title>
+    <style>
+        .status {
+            font-size: 20px;
+            text-align: center;
+        }
+        .input {
+            width: 100%;
+            box-sizing: border-box;
+            line-height: 25px;
+            margin: 5px 0;
+            height: 100px;
+
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 5px 0;
+            height: 35px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Web Side:</h1>
+    <p class="status">[Loading] Waiting for bridge ready</p>
+    <input class="input" type="text" placeholder="Some..." />
+
+    <button class="signTransaction" label="signTransaction">signTransaction</button>
+    <button class="signMessage" label="signMessage">signMessage</button>
+    <button class="signPersonalMessage" label="signPersonalMessage">signPersonalMessage</button>
+    <button class="signTypedMessage" label="signTypedMessage">signTypedMessage</button>
+
+    <script src="http://13.113.50.143/AlphaWallet-min.js"></script>
+
+
+    <script>
+        var $input = document.querySelector('.input')
+
+        const addressHex = '0xb5538753F2641A83409D2786790b42aC857C5340';
+        const rpcURL = 'http://api-rinkeby.etherscan.io/api';
+        const chainID = '4';
+
+        window.document.addEventListener('message', ({data})=>{
+          const params = JSON.parse(data);
+          const {id, error, value} = params;
+          executeCallback(id, error, value);
+        });
+
+        function executeCallback (id, error, value) {
+            $input.value = 'executeCallback' + JSON.stringify({id, error, value});
+            AlphaWallet.executeCallback(id, error, value);
+        }
+
+        AlphaWallet.init(rpcURL, {
+            getAccounts (cb) { cb(null, [addressHex]); },
+
+            processTransaction (tx, cb){
+                const { id = 8888 } = tx;
+                console.log('signing a transaction', tx);
+                AlphaWallet.addCallback(id, cb);
+
+                $input.value = 'signTransaction' + JSON.stringify(tx);
+                const params = {'name': 'signTransaction', 'object': tx, id};
+                window.postMessage(JSON.stringify(params));
+            },
+
+            signMessage (msgParams, cb) {
+                const { data } = msgParams;
+                const { id = 8888 } = msgParams;
+                console.log('signing a message', msgParams);
+                AlphaWallet.addCallback(id, cb);
+
+                $input.value = 'signMessage' + JSON.stringify(msgParams);
+                const params = {'name': 'signMessage', 'object': { data }, id};
+                window.postMessage(JSON.stringify(params));
+            },
+
+
+            signPersonalMessage (msgParams, cb) {
+                $input.value = 'signPersonalMessage';
+
+                const { data } = msgParams;
+                const { id = 8888 } = msgParams;
+                console.log('signing a personal message', msgParams);
+                AlphaWallet.addCallback(id, cb);
+
+                $input.value = 'signPersonalMessage' + JSON.stringify(msgParams);
+                const params = {'name': 'signPersonalMessage', 'object': { data }, id};
+                window.postMessage(JSON.stringify(params));
+            },
+
+            signTypedMessage (msgParams, cb) {
+                const { data } = msgParams;
+                const { id = 8888 } = msgParams;
+                console.log('signing a typed message', msgParams);
+                AlphaWallet.addCallback(id, cb);
+
+                $input.value = 'signTypedMessage' + JSON.stringify(msgParams);
+                const params = {'name': 'signTypedMessage', 'object': { data }, id};
+                window.postMessage(JSON.stringify(params));
+            }
+        }, {
+            address: addressHex,
+            networkVersion: chainID
+        });
+
+        web3.setProvider = function () {
+            console.debug('AlphaWallet Wallet - overrode web3.setProvider');
+        };
+
+        web3.eth.defaultAccount = addressHex;
+
+        web3.version.getNetwork = function(cb) {
+            cb(null, chainID);
+        };
+
+        web3.eth.getCoinbase = function(cb) {
+            return cb(null, addressHex);
+        };
+
+
+
+
+
+
+      document.querySelector('.signTransaction').addEventListener('click', ()=>{
+        try{
+          web3.eth.sendTransaction({
+            from: "0xb5538753F2641A83409D2786790b42aC857C5340",
+            gasPrice: "20000000000",
+            gas: "21000",
+            to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
+            value: "1000000000000000000",
+            data: ""
+          }, (err, data)=>{
+            $input.value = "signTransaction result" +  JSON.stringify(data);
+          });
+        }catch(err){
+          $input.value =  "signTransaction catch"+err;
+        }
+      });
+
+      document.querySelector('.signMessage').addEventListener('click', ()=>{
+        try{
+         web3.eth.sign("0xb5538753F2641A83409D2786790b42aC857C5340", "signMessage",(err, data)=>{
+           $input.value = "signMessage result" +  JSON.stringify(data);
+         });
+        }catch(err){
+          $input.value =  "signMessage catch"+err;
+        }
+      });
+
+      document.querySelector('.signPersonalMessage').addEventListener('click', ()=>{
+        try{
+          web3.personal.sign("data to sign", "0xb5538753F2641A83409D2786790b42aC857C5340", "11111111", (err, data)=>{
+            $input.value = "signPersonalMessage result" +  JSON.stringify(data);
+          });
+
+        }catch(err){
+          $input.value =  "signPersonalMessage catch"+err;
+        }
+      });
+
+
+      document.querySelector('.signTypedMessage').addEventListener('click', ()=>{
+        try{
+         web3.eth.eth_signTypedData("0xb5538753F2641A83409D2786790b42aC857C5340", "signTypedMessage",(err, data)=>{
+           $input.value = err +"signTypedMessage result" +  JSON.stringify(data);
+         });
+        }catch(err){
+          $input.value =  "signTypedMessage catch"+err;
+        }
+      });
+
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <button class="set" label="Send To RN">Send To RN</button>
+<button class="get" label="Get From RN">Get From RN</button> -->
+
+
+<!-- <script>
+    (function () {
+        var $input = document.querySelector('.input')
+        var $status = document.querySelector('.status')
+
+
+
+        var webReady = window.WebViewInvoke.bind('init')
+        var getFromNative = window.WebViewInvoke.bind('get')
+        var setToNative = window.WebViewInvoke.bind('set')
+
+        webReady()
+          .then(function(data) {
+            $status.innerText = data;
+        })
+
+
+        document.querySelector('.get').addEventListener('click', function(){
+
+
+            getFromNative()
+                .then(function (data) {
+                    $status.innerText = data;
+                })
+        })
+        document.querySelector('.set').addEventListener('click', function(){
+            $status.innerText = '[Set To RN] Sending'
+            setToNative($input.value)
+                .then(function () {
+                    $status.innerText = '[Set To RN] Success'
+                })
+        })
+
+
+        function nativeWannaGet() {
+            return $input.value
+        }
+        function nativeWannaSet(data) {
+            $status.innerText = '[Receive From RN] "' + data + '"'
+        }
+        window.WebViewInvoke.define('get', nativeWannaGet)
+        window.WebViewInvoke.define('set', nativeWannaSet)
+
+    })()
+</script> -->

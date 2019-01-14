@@ -3,9 +3,15 @@ package com.quickwallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
+import com.mkuczera.RNReactNativeHapticFeedbackPackage;
+import com.horcrux.svg.SvgPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.quickwallet.modules.GethPackage;
+import com.quickwallet.modules.bundle.BundlePackage;
+import com.quickwallet.modules.webview.RNCWebViewPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.facebook.react.ReactNativeHost;
@@ -28,11 +34,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCameraPackage(),
+            new RNReactNativeHapticFeedbackPackage(),
+            new SvgPackage(),
             new ReactNativeConfigPackage(),
             new RNI18nPackage(),
             new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
-            new RNDeviceInfo()
+            new RNDeviceInfo(),
+              new GethPackage(),
+              new RNCWebViewPackage(),
+              new BundlePackage()
       );
     }
 

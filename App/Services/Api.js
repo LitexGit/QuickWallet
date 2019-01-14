@@ -1,64 +1,79 @@
-// a library to wrap and simplify api calls
-import apisauce from 'apisauce';
 
-// our "constructor"
-const create = (baseURL = 'https://api.github.com/') => {
-    // ------
-    // STEP 1
-    // ------
-    //
-    // Create and configure an apisauce-based api object.
-    //
+import apisauce from 'apisauce';
+import Config from 'react-native-config';
+import Ramda from 'ramda';
+
+const create = (baseURL = Config.API_URL) => {
     const api = apisauce.create({
-    // base URL is read from the "constructor"
         baseURL,
-        // here are some default headers
-        headers: {
-            'Cache-Control': 'no-cache'
-        },
-        // 10 second timeout...
+        headers: {'Cache-Control': 'no-cache', 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'},
         timeout: 10000
     });
 
-    // ------
-    // STEP 2
-    // ------
-    //
-    // Define some functions that call the api.  The goal is to provide
-    // a thin wrapper of the api layer providing nicer feeling functions
-    // rather than "get", "post" and friends.
-    //
-    // I generally don't like wrapping the output at this level because
-    // sometimes specific actions need to be take on `403` or `401`, etc.
-    //
-    // Since we can't hide from that, we embrace it by getting out of the
-    // way at this level.
-    //
+    api.addRequestTransform((request)=>{
+        // console.log('==========request==========================');
+        // console.log(request);
+        // console.log('===========request=========================');
+    });
+
+    api.addResponseTransform(response=>{
+        // console.log('===========response=========================');
+        // console.log(response);
+        // console.log('============response========================');
+        const {data} = response;
+        const {status, msg, data:array} = data;
+        if (!array) return response;
+        response.data = {status, msg, data:Ramda.head(array)};
+        return response;
+    });
+
+    /**
+     * 用户信息注册接口
+     *
+     * address   用户地址
+     * type      1新建 2助记词导入 3私钥导入
+     * os        用户系统平台 ios或android
+     * phoneinfo 用户手机详细信息
+     */
+    const register=(params)=>api.post('/api/user/register',params);
+    /**
+     * 用户基本信息获取接口
+     *
+     * address   用户地址
+     */
+    const getUserInfo=({address})=>api.get('/api/user',{address});
+    /**
+     * Banner信息接口
+     */
+    const getBanner=()=>api.get('/api/banners');
+    /**
+     * 系统配置信息接口
+     */
+    const getConfig = () =>api.get('/api/settings');
+    /**
+     * 获取系统支持的ERC20 token列表
+     */
+    const getTokenList = () =>api.get('/api/tokens');
+
+
     const getRoot = () => api.get('');
     const getRate = () => api.get('rate_limit');
     const getUser = (username) => api.get('search/users', {q: username});
 
-    // ------
-    // STEP 3
-    // ------
-    //
-    // Return back a collection of functions that we would consider our
-    // interface.  Most of the time it'll be just the list of all the
-    // methods in step 2.
-    //
-    // Notice we're not returning back the `api` created in step 1?  That's
-    // because it is scoped privately.  This is one way to create truly
-    // private scoped goodies in JavaScript.
-    //
     return {
-    // a list of the API functions from step 2
+        register,
+        getUserInfo,
+        getBanner,
+        getConfig,
+        getTokenList,
+
+
         getRoot,
         getRate,
-        getUser
+        getUser,
     };
 };
 
-// let's return back our create method as the default.
 export default {
     create
 };

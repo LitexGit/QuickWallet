@@ -72,6 +72,13 @@ import com.android.build.OutputFile
  * ]
  */
 
+project.ext.envConfigFiles = [
+        debug: ".env.development",
+        release: ".env.production",
+        anothercustombuild: ".env",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 project.ext.react = [
     entryFile: "index.js"
 ]
@@ -92,6 +99,12 @@ def enableSeparateBuildPerCPUArchitecture = false
  * Run Proguard to shrink the Java bytecode in release builds.
  */
 def enableProguardInReleaseBuilds = false
+
+repositories {
+    flatDir {
+        dirs '.'
+    }
+}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -136,15 +149,27 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
+    compile project(':react-native-camera')
+    compile project(':react-native-haptic-feedback')
+    compile project(':react-native-svg')
     compile project(':react-native-config')
     compile project(':react-native-i18n')
     compile project(':react-native-vector-icons')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-device-info')
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.facebook.react:react-native:+'
+    // From node_modules
+    implementation(name: 'geth', ext: 'aar')
+    compile ('org.web3j:core:3.3.1-android')
 }
 
 // Run this once to be able to run the application with BUCK
