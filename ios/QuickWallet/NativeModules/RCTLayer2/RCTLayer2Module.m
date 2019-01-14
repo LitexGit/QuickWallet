@@ -51,8 +51,18 @@ RCT_EXPORT_METHOD(initL2SDK:(NSString *)address socketUrl:(NSString *)socketUrl 
   }
 }
 
-RCT_EXPORT_METHOD(watchEvents:(RCTResponseSenderBlock)senderBlock) {
-  _instance.senderBlock = senderBlock;
+RCT_EXPORT_METHOD(onWatchEvents:(RCTResponseSenderBlock)senderBlock) {
+  _senderBlock = senderBlock;
+//  _instance.senderBlock = senderBlock;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSArray *events = @[@"001", @"002", @"003"];
+    self.senderBlock(@[[NSNull null], events]);
+  });
+//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    // 在这里执行长时间的操作
+//    // 你可以在任何线程/队列中执行回调函数
+//    senderBlock(@[@"watchEvents"]);
+//  });
 }
 
 

@@ -11,10 +11,6 @@ async function initL2SDK({address='', socketUrl='', sendTxFunc, signMsgFunc}){
     return getFormatMap(data);
 }
 
-function watchEvents(){
-    layer2Module.watchEvents();
-}
-
 async function addPN({pnAddress=''}){
     const data = await layer2Module.addPN(pnAddress);
     return getFormatMap(data);
@@ -57,7 +53,6 @@ async function queryPN(){
 
 export default {
     initL2SDK,
-    watchEvents,
     addPN,
     deposit,
     withdraw,

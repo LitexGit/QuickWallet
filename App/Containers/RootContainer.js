@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, NativeModules, Platform} from 'react-native';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import styles from './Styles/RootContainerStyles';
@@ -23,11 +23,22 @@ class RootContainer extends Component {
       const msg = 'msg';
 
       const data001 = await Layer2Module.initL2SDK({address, socketUrl:Config.SOCKET_URL});
-      Layer2Module.watchEvents=(event)=>{
-          console.log('===========event=========================');
-          console.log(event);
-          console.log('===========event=========================');
-      };
+
+      if (Platform.OS === 'ios') {
+          NativeModules.Layer2Module.onWatchEvents((err, data)=>{
+              console.log('===========event=========================');
+              console.log(data);
+          });
+      } else {
+          NativeModules.Layer2Module.onWatchEvents((data)=>{
+              console.log('===========event=========================');
+              console.log(data);
+          }, (err)=>{
+              console.log('===========err=========================');
+              console.log(err);
+          });
+      }
+
       const data002 = await Layer2Module.addPN({pnAddress});
       const data003 = await Layer2Module.deposit({pnAddress, amount});
       const data004 = await Layer2Module.withdraw({pnAddress, amount});

@@ -1,6 +1,7 @@
 package com.quickwallet.modules.layer2;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -26,9 +27,25 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putBoolean("isInit", true);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
     }
+
+    @ReactMethod
+    public void onWatchEvents(Callback successCallback, Callback errorCallback) {
+        try {
+            WritableArray array = Arguments.createArray();
+            array.pushString("001");
+            array.pushString("002");
+            array.pushString("003");
+            successCallback.invoke(array);
+        } catch (Exception e) {
+            WritableArray array = Arguments.createArray();
+            array.pushString(e.getMessage());
+            errorCallback.invoke(array);
+        }
+    }
+
 
     @ReactMethod
     public void addPN(String pnAddresss, Promise promise) {
@@ -37,7 +54,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putBoolean("isAddPN", true);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
     }
 
@@ -49,7 +66,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putBoolean("isDeposit", true);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
     }
 
@@ -60,7 +77,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putBoolean("isWithdraw", true);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
     }
 
@@ -71,7 +88,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putBoolean("isForceLeavePN", true);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
     }
 
@@ -82,7 +99,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putBoolean("isSendMsg", true);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
 
 
@@ -98,10 +115,8 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             map.putMap("userInfo",userInfo);
             promise.resolve(map);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
-
-
     }
 
     @ReactMethod
@@ -121,7 +136,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             promise.resolve(array);
 
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
 
 
@@ -144,7 +159,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
 
             promise.resolve(array);
         } catch (Exception e){
-            promise.reject("-3001",e);
+            promise.reject("-3001",e.getMessage());
         }
     }
 }
