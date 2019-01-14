@@ -100,56 +100,52 @@ RCT_EXPORT_METHOD(queryUserInfo:(NSString *)pnAddress resolver:(RCTPromiseResolv
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
 
-  
-  _resolveBlock(@[@{@"userAddress":@"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
-                    @"balance": @"1000"}
-                  ]);
+  NSDictionary *userInfo = @{@"userAddress":@"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+                            @"balance": @"1000"};
+  _resolveBlock(@[@{@"userInfo":userInfo}]);
 }
 
 RCT_EXPORT_METHOD(queryTransaction:(NSString *)pnAddress resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
 
-  
-  _resolveBlock(@[@{
-                    @"id": @1,
-                    @"from": @"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
-                    @"to": @"0xf68b24279c7fdee7cb48f07f8cd088373d49a195",
-                    @"additionalHash":@"0xf8417f84702fcf8ed0a0a33ece2e78c2f6598799d056f16571bf03ad48d52321",
-                    @"nonce": @1,
-                    @"amount": @"20000"
-                    },
-                  @{
-                    @"id": @2,
-                    @"from": @"0xf68b24279c7fdee7cb48f07f8cd088373d49a195",
-                    @"to": @"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
-                    @"additionalHash":@"0xfacff981bbfe7a884bafcbfb03207bc1f34015a0a7a65234fcafc35d9e3bc91f",
-                    @"nonce": @2,
-                    @"amount": @"30000"
-                    }
-                  ]);
+  NSDictionary *tx001 = @{@"id": @1,
+                       @"from": @"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+                       @"to": @"0xf68b24279c7fdee7cb48f07f8cd088373d49a195",
+                       @"additionalHash":@"0xf8417f84702fcf8ed0a0a33ece2e78c2f6598799d056f16571bf03ad48d52321",
+                       @"nonce": @1,
+                          @"amount": @"20000"};
+  NSDictionary *tx002 = @{@"id": @2,
+                          @"from": @"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+                          @"to": @"0xf68b24279c7fdee7cb48f07f8cd088373d49a195",
+                          @"additionalHash":@"0xf8417f84702fcf8ed0a0a33ece2e78c2f6598799d056f16571bf03ad48d52321",
+                          @"nonce": @2,
+                          @"amount": @"20000"};
+  NSArray *txArray = @[tx001, tx002];
+                       
+  _resolveBlock(@[txArray]);
 }
 
 RCT_EXPORT_METHOD(queryPN:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
+  
+  NSDictionary *pn001 = @{@"pnAddress":@"0x833f4fc95ebdb9a9628afb8475d797f2b2df6a486a6cfb3b7a0ac525db972678",
+                          @"tokenAddress": @"",
+                          @"decimal": @18,
+                          @"cpAddress": @"0x6cc5f688a315f3dc28a7781717a9a798a59fda7b",
+                          @"cpDeposit": @"10000",
+                          @"cpPoolBalance": @"10003",
+                          @"userBalance": @"97"};
+  NSDictionary *pn002 = @{@"tokenAddress":@"0x1557e20b6d97beff0529dd2e6981f61ba0c6b9b3",
+                          @"decimal": @18,
+                          @"cpAddress": @"0x16354752c661f2eda90cc3461d5883f031f25b3d",
+                          @"cpDeposit": @"20000",
+                          @"cpPoolBalance": @"20005",
+                          @"userBalance": @"195"};
+  NSArray *pnArray = @[pn001, pn002];
 
-  _resolveBlock(@[@{
-                    @"pnAddress":@"0x833f4fc95ebdb9a9628afb8475d797f2b2df6a486a6cfb3b7a0ac525db972678",
-                    @"tokenAddress": @"",
-                    @"decimal": @18,
-                    @"cpAddress": @"0x6cc5f688a315f3dc28a7781717a9a798a59fda7b",
-                    @"cpDeposit": @"10000",
-                    @"cpPoolBalance": @"10003",
-                    @"userBalance": @"97"},
-                  @{
-                    @"tokenAddress":@"0x1557e20b6d97beff0529dd2e6981f61ba0c6b9b3",
-                    @"decimal": @18,
-                    @"cpAddress": @"0x16354752c661f2eda90cc3461d5883f031f25b3d",
-                    @"cpDeposit": @"20000",
-                    @"cpPoolBalance": @"20005",
-                    @"userBalance": @"195"}
-                  ]);
+  _resolveBlock(@[pnArray]);
 }
 
 /**

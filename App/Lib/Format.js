@@ -96,6 +96,9 @@ export function getDisplayTxInfo(signInfo) {
 }
 
 export function getFormatMap(data) {
+    console.log('=========getFormatMap===========================');
+    console.log(data);
+    console.log('=========getFormatMap===========================');
     if (Platform.OS === 'ios') {
         if (isArray(data)) {
             const map = Ramda.head(data);
