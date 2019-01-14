@@ -11,7 +11,15 @@
 
 static RCTLayer2Module *_instance = nil;
 
+NSString *const EventMessageReceivedEmitter  = @"MessageReceived";
+NSString *const EventDepositEmitter  = @"Deposit";
+NSString *const EventWithdrawEmitter  = @"Withdraw";
+NSString *const EventForceLeavePNEmitter  = @"ForceLeavePN";
+
+
 @interface RCTLayer2Module()
+
+@property (nonatomic, assign) BOOL isListening;
 
 @property (nonatomic, strong) ClientL2 *layer2;
 
@@ -38,6 +46,21 @@ RCT_EXPORT_MODULE();
   return _instance;
 }
 
+- (NSArray<NSString *> *)supportedEvents {
+  return @[EventMessageReceivedEmitter,
+           EventDepositEmitter,
+           EventWithdrawEmitter,
+           EventForceLeavePNEmitter];
+}
+
+-(void)startObserving {
+  _isListening = YES;
+}
+
+-(void)stopObserving {
+ _isListening = NO;
+}
+
 //sendTxFunc, signMsgFunc
 RCT_EXPORT_METHOD(initL2SDK:(NSString *)address socketUrl:(NSString *)socketUrl resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
@@ -58,11 +81,18 @@ RCT_EXPORT_METHOD(onWatchEvents:(RCTResponseSenderBlock)senderBlock) {
     NSArray *events = @[@"001", @"002", @"003"];
     self.senderBlock(@[[NSNull null], events]);
   });
-//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//    // 在这里执行长时间的操作
-//    // 你可以在任何线程/队列中执行回调函数
-//    senderBlock(@[@"watchEvents"]);
-//  });
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+    if (self.isListening) {
+      NSDictionary *body = @{@"name":@"EventEmitter",
+                             @"key001":@"value001"};
+      [self sendEventWithName:EventMessageReceivedEmitter body:body];
+      [self sendEventWithName:EventDepositEmitter body:body];
+      [self sendEventWithName:EventWithdrawEmitter body:body];
+      [self sendEventWithName:EventForceLeavePNEmitter body:body];
+    }
+  });
 }
 
 
@@ -166,6 +196,13 @@ RCT_EXPORT_METHOD(queryPN:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseR
  // Withdraw
  // ForceLeavePN
  */
+
+//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    // 在这里执行长时间的操作
+//    // 你可以在任何线程/队列中执行回调函数
+//    senderBlock(@[@"watchEvents"]);
+//  });
+
 
 
 

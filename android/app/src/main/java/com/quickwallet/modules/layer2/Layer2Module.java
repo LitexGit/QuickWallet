@@ -11,6 +11,12 @@ import com.facebook.react.bridge.WritableMap;
 
 
 public class Layer2Module extends ReactContextBaseJavaModule {
+    private final String SOCKET_URL  = "socketUrl";
+
+    private Callback resolveCallback;
+    private Callback rejectCallback;
+
+
     public Layer2Module(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -34,15 +40,20 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void onWatchEvents(Callback successCallback, Callback errorCallback) {
         try {
+            resolveCallback = successCallback;
+            rejectCallback = errorCallback;
+
+
+
             WritableArray array = Arguments.createArray();
             array.pushString("001");
             array.pushString("002");
             array.pushString("003");
-            successCallback.invoke(array);
+            resolveCallback.invoke(array);
         } catch (Exception e) {
             WritableArray array = Arguments.createArray();
             array.pushString(e.getMessage());
-            errorCallback.invoke(array);
+            rejectCallback.invoke(array);
         }
     }
 

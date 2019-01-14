@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, NativeModules, Platform} from 'react-native';
+import { View, StatusBar, NativeModules, Platform, NativeEventEmitter} from 'react-native';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import styles from './Styles/RootContainerStyles';
@@ -22,7 +22,15 @@ class RootContainer extends Component {
       const amount = '1000';
       const msg = 'msg';
 
-      const data001 = await Layer2Module.initL2SDK({address, socketUrl:Config.SOCKET_URL});
+      await Layer2Module.initL2SDK({address, socketUrl:Config.SOCKET_URL});
+      await Layer2Module.addPN({pnAddress});
+      await Layer2Module.deposit({pnAddress, amount});
+      await Layer2Module.withdraw({pnAddress, amount});
+      await Layer2Module.forceLeavePN({pnAddress});
+      await Layer2Module.sendMsg({msg, pnAddress, amount});
+      await Layer2Module.queryUserInfo({pnAddress});
+      await Layer2Module.queryTransaction({pnAddress});
+      await Layer2Module.queryPN();
 
       if (Platform.OS === 'ios') {
           NativeModules.Layer2Module.onWatchEvents((err, data)=>{
@@ -39,33 +47,28 @@ class RootContainer extends Component {
           });
       }
 
-      const data002 = await Layer2Module.addPN({pnAddress});
-      const data003 = await Layer2Module.deposit({pnAddress, amount});
-      const data004 = await Layer2Module.withdraw({pnAddress, amount});
-      const data005 = await Layer2Module.forceLeavePN({pnAddress});
-      const data006 = await Layer2Module.sendMsg({msg, pnAddress, amount});
-      const data007 = await Layer2Module.queryUserInfo({pnAddress});
-      const data008 = await Layer2Module.queryTransaction({pnAddress});
-      const data009 = await Layer2Module.queryPN();
 
-      console.log('=============data001=======================');
-      console.log(data001);
-      console.log('=============data002=======================');
-      console.log(data002);
-      console.log('=============data003=======================');
-      console.log(data003);
-      console.log('=============data004=======================');
-      console.log(data004);
-      console.log('=============data005=======================');
-      console.log(data005);
-      console.log('=============data006=======================');
-      console.log(data006);
-      console.log('=============data007=======================');
-      console.log(data007);
-      console.log('=============data008=======================');
-      console.log(data008);
-      console.log('=============data009=======================');
-      console.log(data009);
+      const layer2EventEmitter = new NativeEventEmitter(NativeModules.Layer2Module);
+      this.layer2Listener001 = layer2EventEmitter.addListener('MessageReceived',(reminder) => {
+          console.log('==============reminder.name======================');
+          console.log(reminder);
+          console.log('==============reminder.name======================');
+      });
+      this.layer2Listener002 = layer2EventEmitter.addListener('Deposit',(reminder) => {
+          console.log('==============reminder.name======================');
+          console.log(reminder);
+          console.log('==============reminder.name======================');
+      });
+      this.layer2Listener003 = layer2EventEmitter.addListener('Withdraw',(reminder) => {
+          console.log('==============reminder.name======================');
+          console.log(reminder);
+          console.log('==============reminder.name======================');
+      });
+      this.layer2Listener004 = layer2EventEmitter.addListener('ForceLeavePN',(reminder) => {
+          console.log('==============reminder.name======================');
+          console.log(reminder);
+          console.log('==============reminder.name======================');
+      });
   }
 
   _initializes= async ()=>{
