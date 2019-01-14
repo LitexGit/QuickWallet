@@ -2,7 +2,9 @@
 import I18n from '../I18n';
 import utils from 'ethers-utils';
 import Ramda from 'ramda';
-
+import { Platform } from 'react-native';
+import { isArray } from './Utils';
+import Toast from 'react-native-root-toast';
 
 
 function groupBy(objectArray, property) {
@@ -92,6 +94,24 @@ export function getDisplayTxInfo(signInfo) {
     const info = {...signInfo, gas, gasPrice, value};
     return info;
 }
+
+export function getFormatMap(data) {
+    if (Platform.OS === 'ios') {
+        if (isArray(data)) {
+            const map = Ramda.head(data);
+            return map;
+        }
+        const error = 'iOS promise 解析异常';
+        Toast.show(error, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        return {};
+    }
+    return data;
+}
+
+
 
 
 

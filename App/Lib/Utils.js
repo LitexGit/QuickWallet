@@ -1,4 +1,3 @@
-import {UserSelectors} from '../Redux/UserRedux';
 
 export function runGenerator(generatorFUN, initialValue) {
     const generator = generatorFUN(initialValue);
@@ -54,4 +53,6 @@ export function getPasspraseStrength(passprase) {
 }
 
 export const isValidAddress = (address) => /^0x[0-9a-fA-F]{40}$/.test(address);
+
+export const isArray = (data) => Object.prototype.toString.call(data) === '[object Array]';
 

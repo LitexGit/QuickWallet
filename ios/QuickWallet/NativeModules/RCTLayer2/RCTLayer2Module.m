@@ -146,7 +146,8 @@ RCT_EXPORT_METHOD(queryPN:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseR
 }
 
 /**
- Socket.iO
+    socket.IO-objc
+ 
  // MessageReceived
  // Deposit
  // Withdraw
