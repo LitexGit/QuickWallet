@@ -1,13 +1,13 @@
 import { NativeModules } from 'react-native';
+import { getFormatMap } from '../Format';
 // import {DeviceStorage, Keys} from '../DeviceStorage';
 // import Config from 'react-native-config';
-import { getFormatMap } from '../Format';
 
 
 const layer2Module = NativeModules.Layer2Module;
 
 async function initL2SDK({address='', socketUrl='', sendTxFunc, signMsgFunc}){
-    const data = await layer2Module.initL2SDK(address);
+    const data = await layer2Module.initL2SDK(address, socketUrl);
     return getFormatMap(data);
 }
 
@@ -15,23 +15,23 @@ function watchEvents(){
     layer2Module.watchEvents();
 }
 
-async function addPN({pnAddresss=''}){
-    const data = await layer2Module.addPN(pnAddresss);
+async function addPN({pnAddress=''}){
+    const data = await layer2Module.addPN(pnAddress);
     return getFormatMap(data);
 }
 
-async function deposit({pnAddresss='', amount='0'}){
-    const data = await layer2Module.deposit(pnAddresss, amount);
+async function deposit({pnAddress='', amount='0'}){
+    const data = await layer2Module.deposit(pnAddress, amount);
     return getFormatMap(data);
 }
 
-async function withdraw({pnAddresss='', amount='0'}){
-    const data = await layer2Module.withdraw(pnAddresss, amount);
+async function withdraw({pnAddress='', amount='0'}){
+    const data = await layer2Module.withdraw(pnAddress, amount);
     return getFormatMap(data);
 }
 
-async function forceLeavePN({pnAddresss=''}){
-    const data = await layer2Module.pnAddresss(pnAddresss);
+async function forceLeavePN({pnAddress=''}){
+    const data = await layer2Module.forceLeavePN(pnAddress);
     return getFormatMap(data);
 }
 

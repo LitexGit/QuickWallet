@@ -38,12 +38,17 @@ RCT_EXPORT_MODULE();
   return _instance;
 }
 
-
-RCT_EXPORT_METHOD(initL2SDK:(NSString *)address  socketUrl:(NSString *)socketUrl) {
-  NSLog(@"Client Call sendTxFunc signMsgFunc");
+//sendTxFunc, signMsgFunc
+RCT_EXPORT_METHOD(initL2SDK:(NSString *)address socketUrl:(NSString *)socketUrl resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
+  _resolveBlock = resolver;
+  _rejectBlock = rejecter;
   
-  NSLog(@"Client Call Native(Android || iOS) sign ===> ???");
   _instance.layer2 = nil;
+  if (_instance.layer2) {
+    _resolveBlock(@[@{@"isInit":@YES}]);
+  } else {
+    _resolveBlock(@[@{@"isInit":@NO}]);
+  }
 }
 
 RCT_EXPORT_METHOD(watchEvents:(RCTResponseSenderBlock)senderBlock) {
@@ -54,46 +59,48 @@ RCT_EXPORT_METHOD(watchEvents:(RCTResponseSenderBlock)senderBlock) {
 RCT_EXPORT_METHOD(addPN:(NSString *)pnAddresss resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  NSLog(@"在⽤用户端添加对payment contract的地址");
+
   _resolveBlock(@[@{@"isAddPN":@YES}]);
 }
 
 RCT_EXPORT_METHOD(deposit:(NSString *)pnAddresss amount:(NSString *)amount resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  int amountValue = [amount intValue];
+//  int amountValue = [amount intValue];
   
-  NSLog(@"用户往payment contract充值 amount:%d", amountValue);
   _resolveBlock(@[@{@"isDeposit":@YES}]);
 }
 
 RCT_EXPORT_METHOD(withdraw:(NSString *)pnAddresss amount:(NSString *)amount resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  int amountValue = [amount intValue];
+//  int amountValue = [amount intValue];
   
-  NSLog(@"用户从payment contract中​提现 amount:%d", amountValue);
+
   _resolveBlock(@[@{@"isWithdraw":@YES}]);
 }
 
 RCT_EXPORT_METHOD(forceLeavePN:(NSString *)pnAddresss resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  NSLog(@"forceLeavePN pnAddresss:%@", pnAddresss);
+
+  
   _resolveBlock(@[@{@"isForceLeavePN":@YES}]);
 }
 
 RCT_EXPORT_METHOD(sendMsg:(NSString *)msg pnAddress:(NSString *)pnAddress amount:(NSString *)amount resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  NSLog(@"sendMsg \n msg:%@ \n pnAddress:%@ \n amount:%@", msg, pnAddress, amount);
+
+  
   _resolveBlock(@[@{@"isSendMsg":@YES}]);
 }
 
 RCT_EXPORT_METHOD(queryUserInfo:(NSString *)pnAddress resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  NSLog(@"queryUserInfo \n pnAddress:%@", pnAddress);
+
+  
   _resolveBlock(@[@{@"userAddress":@"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
                     @"balance": @"1000"}
                   ]);
@@ -102,7 +109,8 @@ RCT_EXPORT_METHOD(queryUserInfo:(NSString *)pnAddress resolver:(RCTPromiseResolv
 RCT_EXPORT_METHOD(queryTransaction:(NSString *)pnAddress resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  NSLog(@"queryTransaction \n pnAddress:%@", pnAddress);
+
+  
   _resolveBlock(@[@{
                     @"id": @1,
                     @"from": @"0x0d0707963952f2fba59dd06f2b425ace40b492fe",
@@ -125,7 +133,7 @@ RCT_EXPORT_METHOD(queryTransaction:(NSString *)pnAddress resolver:(RCTPromiseRes
 RCT_EXPORT_METHOD(queryPN:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
-  NSLog(@"queryPN");
+
   _resolveBlock(@[@{
                     @"pnAddress":@"0x833f4fc95ebdb9a9628afb8475d797f2b2df6a486a6cfb3b7a0ac525db972678",
                     @"tokenAddress": @"",
@@ -142,11 +150,10 @@ RCT_EXPORT_METHOD(queryPN:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseR
                     @"cpPoolBalance": @"20005",
                     @"userBalance": @"195"}
                   ]);
-  
 }
 
 /**
-    socket.IO-objc
+    delegate
  
  // MessageReceived
  // Deposit
