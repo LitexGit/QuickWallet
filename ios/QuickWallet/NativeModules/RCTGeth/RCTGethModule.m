@@ -20,7 +20,7 @@ static NSString *chainIdKey  = @"chain_id_key";
 
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
-@interface RCTGethModule()
+@interface RCTGethModule() // <GethNewHeadHandler>
 
 @property(nonatomic, strong) GethAccount *account;
 
@@ -31,6 +31,8 @@ static NSString *chainIdKey  = @"chain_id_key";
 @property(nonatomic, copy) RCTPromiseResolveBlock resolveBlock;
 
 @property(nonatomic, copy) RCTPromiseRejectBlock rejectBlock;
+
+@property (nonatomic, weak) id<GethNewHeadHandler> delagate;
 
 @end
 
@@ -45,7 +47,22 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin contactIp:(NSString *)contactIp chainId:(NS
   if (!contactIp || !contactIp.length) return;
   if (self.account && self.ethClient) return;
   self.ethClient = [[GethEthereumClient alloc] init:contactIp];
+  
+  
+//  GethEthereumClient *client = [[GethEthereumClient alloc] init];
+//  GethContext *context = [[GethContext alloc] init];
+//  NSError *error = nil;
+//  [client subscribeNewHead:context handler:self.delagate buffer:100 error:&error];
 }
+
+//- (void)onError:(NSString *)failure {
+//  NSLog(@"failure==>%@",failure);
+//}
+//
+//- (void)onNewHead:(GethHeader *)header {
+//  NSLog(@"header==>%@",header);
+//}
+
 
 RCT_EXPORT_METHOD(unInit) {
   if (self.account) {

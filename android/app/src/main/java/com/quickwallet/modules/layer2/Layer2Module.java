@@ -27,7 +27,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initL2SDK(String address, String socketUrl, Promise promise) {
+    public void initL2SDK(String cpKey, String address, String socketUrl, Promise promise) {
         try{
             WritableMap map = Arguments.createMap();
             map.putBoolean("isInit", true);

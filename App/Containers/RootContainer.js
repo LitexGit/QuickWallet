@@ -21,8 +21,9 @@ class RootContainer extends Component {
       const pnAddress = '0x833f4fc95ebdb9a9628afb8475d797f2b2df6a486a6cfb3b7a0ac525db972678';
       const amount = '1000';
       const msg = 'msg';
+      const cpKey = 'HDNQOXNWALXMIWNCBHD';
 
-      await Layer2Module.initL2SDK({address, socketUrl:Config.SOCKET_URL});
+      await Layer2Module.initL2SDK({cpKey, address, socketUrl:Config.SOCKET_URL});
       await Layer2Module.addPN({pnAddress});
       await Layer2Module.deposit({pnAddress, amount});
       await Layer2Module.withdraw({pnAddress, amount});

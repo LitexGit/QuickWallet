@@ -29,6 +29,14 @@ NSString *const EventForceLeavePNEmitter  = @"ForceLeavePN";
 
 @property(nonatomic, copy) RCTResponseSenderBlock senderBlock;
 
+////////////////////////////////////////////////////////////////////////
+
+@property(nonatomic, copy) RCTResponseSenderBlock startSessionCallBack;
+
+@property(nonatomic, copy) RCTResponseSenderBlock onNewMsgCallBack;
+
+@property(nonatomic, copy) RCTResponseSenderBlock sendMsgCallBack;
+
 @end
 
 @implementation RCTLayer2Module
@@ -62,7 +70,7 @@ RCT_EXPORT_MODULE();
 }
 
 //sendTxFunc, signMsgFunc
-RCT_EXPORT_METHOD(initL2SDK:(NSString *)address socketUrl:(NSString *)socketUrl resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
+RCT_EXPORT_METHOD(initL2SDK:(NSString *)cpKey address:(NSString *)address socketUrl:(NSString *)socketUrl resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   _resolveBlock = resolver;
   _rejectBlock = rejecter;
   
@@ -128,12 +136,37 @@ RCT_EXPORT_METHOD(forceLeavePN:(NSString *)pnAddresss resolver:(RCTPromiseResolv
   _resolveBlock(@[@{@"isForceLeavePN":@YES}]);
 }
 
-RCT_EXPORT_METHOD(sendMsg:(NSString *)msg pnAddress:(NSString *)pnAddress amount:(NSString *)amount resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
-  _resolveBlock = resolver;
-  _rejectBlock = rejecter;
-
+RCT_EXPORT_METHOD(startSession:(RCTResponseSenderBlock)callBack) {
+  // getCurrentSession
   
-  _resolveBlock(@[@{@"isSendMsg":@YES}]);
+  _startSessionCallBack = callBack;
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSArray *events = @[@{@"start":@"startSession"}];
+    self.startSessionCallBack(@[[NSNull null], events]);
+  });
+}
+
+RCT_EXPORT_METHOD(onSessionNewMsg:(RCTResponseSenderBlock)callBack) {
+  _onNewMsgCallBack = callBack;
+  // getCurrentSession
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSArray *events = @[@{@"onNewMsg":@"onSessionNewMsg"}];
+    self.onNewMsgCallBack (@[[NSNull null], events]);
+  });
+}
+
+RCT_EXPORT_METHOD(sessionSendMsg:(NSString *)msg pnAddress:(NSString *)pnAddress amount:(NSString *)amount callBack:(RCTResponseSenderBlock)callBack) {
+  _sendMsgCallBack = callBack;
+  // getCurrentSession
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSArray *events = @[@{@"sendMsg":@"onSessionNewMsg"}];
+    self.sendMsgCallBack (@[[NSNull null], events]);
+  });
+}
+
+RCT_EXPORT_METHOD(endSession) {
+  // getCurrentSession
+  
 }
 
 RCT_EXPORT_METHOD(queryUserInfo:(NSString *)pnAddress resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {

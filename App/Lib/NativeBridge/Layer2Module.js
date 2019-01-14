@@ -1,13 +1,10 @@
 import { NativeModules } from 'react-native';
 import { getFormatMap } from '../Format';
-// import {DeviceStorage, Keys} from '../DeviceStorage';
-// import Config from 'react-native-config';
-
 
 const layer2Module = NativeModules.Layer2Module;
 
-async function initL2SDK({address='', socketUrl='', sendTxFunc, signMsgFunc}){
-    const data = await layer2Module.initL2SDK(address, socketUrl);
+async function initL2SDK({cpKey='', address='', socketUrl=''}){
+    const data = await layer2Module.initL2SDK(cpKey, address, socketUrl);
     return getFormatMap(data);
 }
 
