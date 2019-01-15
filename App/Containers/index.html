@@ -17,16 +17,22 @@
             margin: 5px 0;
             height: 100px;
             font-size: 15px;
-
         }
-
+        div{
+          background:cyan;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          margin-top: 10px;
+        }
         button {
             display: block;
-            width: 100%;
+            width: 50%;
             box-sizing: border-box;
             margin: 5px 0;
             height: 35px;
         }
+
     </style>
 </head>
 
@@ -34,15 +40,271 @@
     <h1>Web Side:</h1>
     <p class="status">[Loading] Waiting for bridge ready</p>
     <input class="input" type="text" placeholder="Some..." />
-
-    <button class="signTransaction" label="signTransaction">signTransaction</button>
-    <button class="signMessage" label="signMessage">signMessage</button>
-    <button class="signPersonalMessage" label="signPersonalMessage">signPersonalMessage</button>
-    <button class="signTypedMessage" label="signTypedMessage">signTypedMessage</button>
+    <div class="div">
+        <button class="signTransaction" label="signTransaction">signTransaction</button>
+        <button class="signMessage" label="signMessage">signMessage</button>
+        <button class="signPersonalMessage" label="signPersonalMessage">signPersonalMessage</button>
+        <button class="signTypedMessage" label="signTypedMessage">signTypedMessage</button>
+    </div>
+    <div class="div" style="background:greenyellow">
+        <button class="initL2SDK" label="initL2SDK">initL2SDK</button>
+        <button class="addPN" label="addPN">addPN</button>
+        <button class="deposit" label="deposit">deposit</button>
+        <button class="withdraw" label="withdraw">withdraw</button>
+        <button class="forceLeavePN" label="forceLeavePN">forceLeavePN</button>
+        <button class="startSession" label="startSession">startSession</button>
+        <button class="sendMsg" label="sendMsg">sendMsg</button>
+        <button class="endSession" label="endSession">endSession</button>
+        <button class="queryUserInfo" label="queryUserInfo">queryUserInfo</button>
+        <button class="queryTransaction" label="queryTransaction">queryTransaction</button>
+        <button class="queryPN" label="queryPN">queryPN</button>
+    </div>
 
     <script>
         var $input = document.querySelector('.input')
 
+        function signTypedMessage (msgParams, cb) {
+            const { data } = msgParams;
+            const { id = 8888 } = msgParams;
+            console.log('signing a typed message', msgParams);
+            AlphaWallet.addCallback(id, cb);
+
+            $input.value = 'signTypedMessage' + JSON.stringify(msgParams);
+            const params = {'name': 'signTypedMessage', 'object': { data }, id};
+            window.postMessage(JSON.stringify(params));
+        };
+
+        //layer2
+        function initL2SDK(cpKey, address, socketUrl){
+          $input.value = 'initL2SDK';
+          const id = 100001;
+          const data = {cpKey, address, socketUrl};
+          const params = {'name': 'initL2SDK', 'object': data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        function addPN(pnAddress){
+          $input.value = 'addPN';
+          const id = 100002;
+          const data = {pnAddress};
+          const params = {'name': 'addPN', 'object': data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+
+        };
+
+        function deposit(pnAddress, amount){
+          $input.value = 'deposit';
+          const id = 100003;
+          const data = {pnAddress, amount};
+          const params = {'name': 'deposit', 'object': data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        function withdraw(pnAddress, amount){
+          $input.value = 'withdraw';
+          const id = 100004;
+          const data = {pnAddress, amount};
+          const params = {'name': 'withdraw', 'object': data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        function forceLeavePN(pnAddress){
+          $input.value = 'forceLeavePN';
+          const id = 100005;
+          const data = {pnAddress};
+          const params = {'name': 'forceLeavePN', 'object': data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        // session
+        function startSession(cb){
+          $input.value = 'startSession';
+          const id = 100006;
+          AlphaWallet.addCallback(id, cb);
+          const params = {'name': 'startSession', 'object':{}, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        // HashRCp  ShowCard Settle
+        function onNewMsg(cb){
+          $input.value = 'onNewMsg';
+          const id = 100007;
+          AlphaWallet.addCallback(id, cb);
+          const params = {'name': 'onNewMsg', 'object':{}, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        function sendMsg(msg, pnAddress, amount, cb){
+          $input.value = 'sendMsg';
+          const id = 100008;
+          AlphaWallet.addCallback(id, cb);
+          const data = {msg, pnAddress, amount};
+          const params = {'name': 'sendMsg', 'object':data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        function endSession(){
+          $input.value = 'endSession';
+          const id = 100009;
+          const params = {'name': 'endSession', 'object':{}, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        // getCurrentSession
+        // session
+        function queryUserInfo(pnAddress){
+          $input.value = 'queryUserInfo';
+          const id = 100010;
+          const data = {pnAddress};
+          const params = {'name': 'queryUserInfo', 'object':data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+
+        };
+        function queryTransaction(pnAddress){
+          $input.value = 'queryTransaction';
+          const id = 100011;
+          const data = {pnAddress};
+          const params = {'name': 'queryTransaction', 'object':data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+
+        };
+        function queryPN(pnAddress){
+          $input.value = 'queryPN';
+          const id = 100012;
+          const data = {pnAddress};
+          const params = {'name': 'queryPN', 'object':data, id};
+          $input.value = JSON.stringify(params);
+          window.postMessage(JSON.stringify(params));
+        };
+
+        // Watch Events
+        // MessageReceived
+        // Withdraw
+        // ForceLeavePN
+
+        //layer2
+      const cpKey = 'HDNQOXNWALXMIWNCBHD';
+      const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+      const socketUrl = 'http://cp.io:8081';
+      const amount = '1000';
+      const msg = '我怎么这么好看 这么好看怎么办 怎么办';
+      const pnAddress = '0x833f4fc95ebdb9a9628afb8475d797f2b2df6a486a6cfb3b7a0ac525db972678';
+
+      document.querySelector('.initL2SDK').addEventListener('click', ()=>{
+        try{
+          initL2SDK(cpKey, address, socketUrl);
+        }catch(err){
+          $input.value =  "initL2SDK catch"+err;
+        }
+      });
+
+      document.querySelector('.addPN').addEventListener('click', ()=>{
+        try{
+          addPN(pnAddress);
+        }catch(err){
+          $input.value =  "addPN catch"+err;
+        }
+      });
+
+      document.querySelector('.deposit').addEventListener('click', ()=>{
+        try{
+          deposit(pnAddress, amount);
+        }catch(err){
+          $input.value =  "deposit catch"+err;
+        }
+      });
+
+      document.querySelector('.withdraw').addEventListener('click', ()=>{
+        try{
+          withdraw(pnAddress, amount);
+        }catch(err){
+          $input.value =  "withdraw catch"+err;
+        }
+      });
+
+      document.querySelector('.forceLeavePN').addEventListener('click', ()=>{
+        try{
+          forceLeavePN(pnAddress);
+        }catch(err){
+          $input.value =  "forceLeavePN catch"+err;
+        }
+      });
+
+      document.querySelector('.startSession').addEventListener('click', ()=>{
+        try{
+          startSession((err, data)=>{
+            $input.value = "startSession result" +  JSON.stringify(data);
+          });
+        }catch(err){
+          $input.value =  "startSession catch"+err;
+        }
+      });
+
+      document.querySelector('.sendMsg').addEventListener('click', ()=>{
+        try{
+          sendMsg(msg, pnAddress, amount, (err, data)=>{
+            $input.value = "sendMsg result" +  JSON.stringify(data);
+          });
+        }catch(err){
+          $input.value =  "sendMsg catch"+err;
+        }
+      });
+
+      document.querySelector('.endSession').addEventListener('click', ()=>{
+        try{
+          endSession();
+        }catch(err){
+          $input.value =  "endSession catch"+err;
+        }
+      });
+
+      document.querySelector('.queryUserInfo').addEventListener('click', ()=>{
+        try{
+          queryUserInfo(pnAddress);
+        }catch(err){
+          $input.value =  "queryUserInfo catch"+err;
+        }
+      });
+
+      document.querySelector('.queryTransaction').addEventListener('click', ()=>{
+        try{
+          queryTransaction(pnAddress);
+        }catch(err){
+          $input.value =  "queryTransaction catch"+err;
+        }
+      });
+
+      document.querySelector('.queryPN').addEventListener('click', ()=>{
+        try{
+          queryPN();
+        }catch(err){
+          $input.value =  "queryPN catch"+err;
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+      //layer2
       document.querySelector('.signTransaction').addEventListener('click', ()=>{
         try{
           web3.eth.sendTransaction({

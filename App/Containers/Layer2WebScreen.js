@@ -117,29 +117,32 @@ _onPressShare=()=> {
 
 
 _onMessage=(evt)=>{
-    const {isLoginInfo} = this.props;
-    if (!isLoginInfo) {
-        Toast.show(I18n.t('UnLoginRemind'), {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-        return;
-    }
+    console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
+    console.log(JSON.parse(evt.nativeEvent.data));
+    console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
+    // const {isLoginInfo} = this.props;
+    // if (!isLoginInfo) {
+    //     Toast.show(I18n.t('UnLoginRemind'), {
+    //         shadow:true,
+    //         position: Toast.positions.CENTER,
+    //     });
+    //     return;
+    // }
 
-    const params = JSON.parse(evt.nativeEvent.data);
-    this.signInfo = params;
-    const {name} = params;
-    switch (name) {
-    case 'signTransaction':
-        this.setState({isShowSignTx:true});
-        break;
-    case 'signMessage':
-        this.setState({isShowSignMsg:true});
-        break;
+    // const params = JSON.parse(evt.nativeEvent.data);
+    // this.signInfo = params;
+    // const {name} = params;
+    // switch (name) {
+    // case 'signTransaction':
+    //     this.setState({isShowSignTx:true});
+    //     break;
+    // case 'signMessage':
+    //     this.setState({isShowSignMsg:true});
+    //     break;
 
-    default:
-        break;
-    }
+    // default:
+    //     break;
+    // }
 }
 
 _signInfo=()=>{
