@@ -13,8 +13,12 @@ import com.facebook.react.bridge.WritableMap;
 public class Layer2Module extends ReactContextBaseJavaModule {
     private final String SOCKET_URL  = "socketUrl";
 
-    private Callback resolveCallback;
-    private Callback rejectCallback;
+
+
+    private Callback startSessionCallback;
+    private Callback onNewMsgCallback;
+    private Callback sendMsgCallback;
+    private Callback eventsCallback;
 
 
     public Layer2Module(ReactApplicationContext reactContext) {
@@ -29,31 +33,29 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void initL2SDK(String cpKey, String address, String socketUrl, Promise promise) {
         try{
+
             WritableMap map = Arguments.createMap();
             map.putBoolean("isInit", true);
             promise.resolve(map);
+
         } catch (Exception e){
             promise.reject("-3001",e.getMessage());
         }
     }
 
     @ReactMethod
-    public void onWatchEvents(Callback successCallback, Callback errorCallback) {
+    public void onWatchEvents(Callback callback) {
         try {
-            resolveCallback = successCallback;
-            rejectCallback = errorCallback;
-
-
+            eventsCallback = callback;
 
             WritableArray array = Arguments.createArray();
             array.pushString("001");
             array.pushString("002");
             array.pushString("003");
-            resolveCallback.invoke(array);
+            eventsCallback.invoke(array);
         } catch (Exception e) {
             WritableArray array = Arguments.createArray();
             array.pushString(e.getMessage());
-            rejectCallback.invoke(array);
         }
     }
 
@@ -61,9 +63,11 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void addPN(String pnAddresss, Promise promise) {
         try{
+
             WritableMap map = Arguments.createMap();
             map.putBoolean("isAddPN", true);
             promise.resolve(map);
+
         } catch (Exception e){
             promise.reject("-3001",e.getMessage());
         }
@@ -73,9 +77,11 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void deposit(String pnAddresss, String amount, Promise promise) {
         try{
+
             WritableMap map = Arguments.createMap();
             map.putBoolean("isDeposit", true);
             promise.resolve(map);
+
         } catch (Exception e){
             promise.reject("-3001",e.getMessage());
         }
@@ -84,9 +90,11 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void withdraw(String pnAddresss, String amount, Promise promise) {
         try{
+
             WritableMap map = Arguments.createMap();
             map.putBoolean("isWithdraw", true);
             promise.resolve(map);
+
         } catch (Exception e){
             promise.reject("-3001",e.getMessage());
         }
@@ -95,30 +103,59 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void forceLeavePN(String pnAddresss, Promise promise) {
         try{
+
             WritableMap map = Arguments.createMap();
             map.putBoolean("isForceLeavePN", true);
             promise.resolve(map);
+
         } catch (Exception e){
             promise.reject("-3001",e.getMessage());
         }
     }
 
     @ReactMethod
-    public void sendMsg(String msg, String pnAddresss, String amount, Promise promise) {
+    public void startSession(Callback callback) {
         try{
-            WritableMap map = Arguments.createMap();
-            map.putBoolean("isSendMsg", true);
-            promise.resolve(map);
-        } catch (Exception e){
-            promise.reject("-3001",e.getMessage());
-        }
+            startSessionCallback = callback;
 
+            WritableArray array = Arguments.createArray();
+            array.pushString("001");
+            array.pushString("002");
+            array.pushString("003");
+            startSessionCallback.invoke(array);
+        } catch (Exception e){
+
+        }
+    }
+
+    @ReactMethod
+    public void onNewMsg(Callback callback) {
+        try{
+            onNewMsgCallback = callback;
+        } catch (Exception e){
+
+        }
+    }
+
+
+    @ReactMethod
+    public void sendMsg(String msg, String pnAddresss, String amount, Callback callback) {
+        try{
+            sendMsgCallback = callback;
+        } catch (Exception e){
+
+        }
+    }
+
+    @ReactMethod
+    public void endSession(Promise promise) {
 
     }
 
     @ReactMethod
     public void queryUserInfo( String pnAddresss, Promise promise ) {
         try{
+
             WritableMap userInfo = Arguments.createMap();
             userInfo.putString("userAddress","0x0d0707963952f2fba59dd06f2b425ace40b492fe");
             userInfo.putString("balance","1000");

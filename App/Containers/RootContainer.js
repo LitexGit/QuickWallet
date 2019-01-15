@@ -23,53 +23,15 @@ class RootContainer extends Component {
       const msg = 'msg';
       const cpKey = 'HDNQOXNWALXMIWNCBHD';
 
-      await Layer2Module.initL2SDK({cpKey, address, socketUrl:Config.SOCKET_URL});
-      await Layer2Module.addPN({pnAddress});
-      await Layer2Module.deposit({pnAddress, amount});
-      await Layer2Module.withdraw({pnAddress, amount});
-      await Layer2Module.forceLeavePN({pnAddress});
-      await Layer2Module.sendMsg({msg, pnAddress, amount});
-      await Layer2Module.queryUserInfo({pnAddress});
-      await Layer2Module.queryTransaction({pnAddress});
-      await Layer2Module.queryPN();
-
-      if (Platform.OS === 'ios') {
-          NativeModules.Layer2Module.onWatchEvents((err, data)=>{
-              console.log('===========event=========================');
-              console.log(data);
-          });
-      } else {
-          NativeModules.Layer2Module.onWatchEvents((data)=>{
-              console.log('===========event=========================');
-              console.log(data);
-          }, (err)=>{
-              console.log('===========err=========================');
-              console.log(err);
-          });
-      }
+      Layer2Module.startSession((err, data)=>{
+          console.log('====================================');
+          console.log(err);
+          console.log(data);
+          console.log('====================================');
+      });
 
 
-      const layer2EventEmitter = new NativeEventEmitter(NativeModules.Layer2Module);
-      this.layer2Listener001 = layer2EventEmitter.addListener('MessageReceived',(reminder) => {
-          console.log('==============reminder.name======================');
-          console.log(reminder);
-          console.log('==============reminder.name======================');
-      });
-      this.layer2Listener002 = layer2EventEmitter.addListener('Deposit',(reminder) => {
-          console.log('==============reminder.name======================');
-          console.log(reminder);
-          console.log('==============reminder.name======================');
-      });
-      this.layer2Listener003 = layer2EventEmitter.addListener('Withdraw',(reminder) => {
-          console.log('==============reminder.name======================');
-          console.log(reminder);
-          console.log('==============reminder.name======================');
-      });
-      this.layer2Listener004 = layer2EventEmitter.addListener('ForceLeavePN',(reminder) => {
-          console.log('==============reminder.name======================');
-          console.log(reminder);
-          console.log('==============reminder.name======================');
-      });
+
   }
 
   _initializes= async ()=>{
@@ -119,3 +81,55 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);
+
+
+
+
+
+// await Layer2Module.initL2SDK({cpKey, address, socketUrl:Config.SOCKET_URL});
+// await Layer2Module.addPN({pnAddress});
+// await Layer2Module.deposit({pnAddress, amount});
+// await Layer2Module.withdraw({pnAddress, amount});
+// await Layer2Module.forceLeavePN({pnAddress});
+// await Layer2Module.sendMsg({msg, pnAddress, amount});
+// await Layer2Module.queryUserInfo({pnAddress});
+// await Layer2Module.queryTransaction({pnAddress});
+// await Layer2Module.queryPN();
+
+// if (Platform.OS === 'ios') {
+//     NativeModules.Layer2Module.onWatchEvents((err, data)=>{
+//         console.log('===========event=========================');
+//         console.log(data);
+//     });
+// } else {
+//     NativeModules.Layer2Module.onWatchEvents((data)=>{
+//         console.log('===========event=========================');
+//         console.log(data);
+//     }, (err)=>{
+//         console.log('===========err=========================');
+//         console.log(err);
+//     });
+// }
+
+
+// const layer2EventEmitter = new NativeEventEmitter(NativeModules.Layer2Module);
+// this.layer2Listener001 = layer2EventEmitter.addListener('MessageReceived',(reminder) => {
+//     console.log('==============reminder.name======================');
+//     console.log(reminder);
+//     console.log('==============reminder.name======================');
+// });
+// this.layer2Listener002 = layer2EventEmitter.addListener('Deposit',(reminder) => {
+//     console.log('==============reminder.name======================');
+//     console.log(reminder);
+//     console.log('==============reminder.name======================');
+// });
+// this.layer2Listener003 = layer2EventEmitter.addListener('Withdraw',(reminder) => {
+//     console.log('==============reminder.name======================');
+//     console.log(reminder);
+//     console.log('==============reminder.name======================');
+// });
+// this.layer2Listener004 = layer2EventEmitter.addListener('ForceLeavePN',(reminder) => {
+//     console.log('==============reminder.name======================');
+//     console.log(reminder);
+//     console.log('==============reminder.name======================');
+// });

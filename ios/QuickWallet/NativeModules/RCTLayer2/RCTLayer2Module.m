@@ -27,15 +27,13 @@ NSString *const EventForceLeavePNEmitter  = @"ForceLeavePN";
 
 @property(nonatomic, copy) RCTPromiseRejectBlock rejectBlock;
 
-@property(nonatomic, copy) RCTResponseSenderBlock senderBlock;
-
-////////////////////////////////////////////////////////////////////////
-
 @property(nonatomic, copy) RCTResponseSenderBlock startSessionCallBack;
 
 @property(nonatomic, copy) RCTResponseSenderBlock onNewMsgCallBack;
 
 @property(nonatomic, copy) RCTResponseSenderBlock sendMsgCallBack;
+
+@property(nonatomic, copy) RCTResponseSenderBlock eventCallBack;
 
 @end
 
@@ -82,16 +80,15 @@ RCT_EXPORT_METHOD(initL2SDK:(NSString *)cpKey address:(NSString *)address socket
   }
 }
 
-RCT_EXPORT_METHOD(onWatchEvents:(RCTResponseSenderBlock)senderBlock) {
-  _senderBlock = senderBlock;
-//  _instance.senderBlock = senderBlock;
+RCT_EXPORT_METHOD(onWatchEvents:(RCTResponseSenderBlock)callback) {
+  _eventCallBack = callback;
+  
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSArray *events = @[@"001", @"002", @"003"];
-    self.senderBlock(@[[NSNull null], events]);
+    self.eventCallBack(@[[NSNull null], events]);
   });
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-
     if (self.isListening) {
       NSDictionary *body = @{@"name":@"EventEmitter",
                              @"key001":@"value001"};
@@ -138,7 +135,6 @@ RCT_EXPORT_METHOD(forceLeavePN:(NSString *)pnAddresss resolver:(RCTPromiseResolv
 
 RCT_EXPORT_METHOD(startSession:(RCTResponseSenderBlock)callBack) {
   // getCurrentSession
-  
   _startSessionCallBack = callBack;
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSArray *events = @[@{@"start":@"startSession"}];
@@ -146,16 +142,18 @@ RCT_EXPORT_METHOD(startSession:(RCTResponseSenderBlock)callBack) {
   });
 }
 
-RCT_EXPORT_METHOD(onSessionNewMsg:(RCTResponseSenderBlock)callBack) {
-  _onNewMsgCallBack = callBack;
+RCT_EXPORT_METHOD(onNewMsg:(RCTResponseSenderBlock)callBack) {
   // getCurrentSession
+  _onNewMsgCallBack = callBack;
+  
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     NSArray *events = @[@{@"onNewMsg":@"onSessionNewMsg"}];
-    self.onNewMsgCallBack (@[[NSNull null], events]);
+    self.onNewMsgCallBack(@[[NSNull null], events]);
   });
 }
 
-RCT_EXPORT_METHOD(sessionSendMsg:(NSString *)msg pnAddress:(NSString *)pnAddress amount:(NSString *)amount callBack:(RCTResponseSenderBlock)callBack) {
+
+RCT_EXPORT_METHOD(sendMsg:(NSString *)msg pnAddress:(NSString *)pnAddress amount:(NSString *)amount callBack:(RCTResponseSenderBlock)callBack) {
   _sendMsgCallBack = callBack;
   // getCurrentSession
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -164,9 +162,12 @@ RCT_EXPORT_METHOD(sessionSendMsg:(NSString *)msg pnAddress:(NSString *)pnAddress
   });
 }
 
-RCT_EXPORT_METHOD(endSession) {
+RCT_EXPORT_METHOD(endSession:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
   // getCurrentSession
+  _resolveBlock = resolver;
+  _rejectBlock = rejecter;
   
+  _resolveBlock(@[@{@"endSession":@YES}]);
 }
 
 RCT_EXPORT_METHOD(queryUserInfo:(NSString *)pnAddress resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)rejecter) {
