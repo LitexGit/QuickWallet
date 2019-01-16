@@ -19,15 +19,9 @@ export const MineConfig = {
         title:I18n.t('UserAgreement'),
         isNext:true,
     },
-    about:{
-        key:'about',
-        index:3,
-        title:I18n.t('AboutUs'),
-        isNext:true,
-    },
     share:{
         key:'share',
-        index:4,
+        index:3,
         title:I18n.t('Share'),
         isNext:false,
     },

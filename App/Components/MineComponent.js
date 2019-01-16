@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styles from './Styles/MineComponentStyle';
-import { FlatList, Text, TouchableOpacity, Image, Share, Platform } from 'react-native';
+import { FlatList, Text, TouchableOpacity, Image, Share, Platform, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { Metrics , Colors } from '../Themes';
 import { View } from 'react-native-animatable';
 import {MineConfig} from '../Config/MineConfig';
+import Config from 'react-native-config';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -32,6 +33,21 @@ class MineComponent extends Component {
       this.props.navigate('AssetsScreen');
   }
 
+  _onPressHelper=()=>{
+      const telegroup = Config.TELEGRAM_GROUP;
+      Linking.canOpenURL(telegroup)
+          .then((supported)=>{
+              console.log('==========supported==========================');
+              console.log(supported);
+              console.log('==========supported==========================');
+              return Linking.openURL(telegroup);
+          }).catch((err)=>{
+              console.log('========openURL============================');
+              console.log(err);
+              console.log('========openURL============================');
+          });
+  }
+
   _onPressShare=()=> {
       const shareUrl = 'http://litex.io/';
       const {sharecode} = this.props;
@@ -53,13 +69,9 @@ class MineComponent extends Component {
           navigate('SettingScreen');
           break;
       case MineConfig.help.key:
-
+          this._onPressHelper();
           break;
       case MineConfig.agreement.key:
-
-          break;
-      case MineConfig.about.key:
-
           break;
       case MineConfig.share.key:
           this._onPressShare();
@@ -86,9 +98,9 @@ class MineComponent extends Component {
       case MineConfig.agreement.key:
           typeImg = <Entypo name={'feather'} size={Metrics.icons.small} color={Colors.textColor}/>;
           break;
-      case MineConfig.about.key:
-          typeImg = <MaterialCommunityIcons name={'clover'} size={Metrics.icons.small} color={Colors.textColor}/>;
-          break;
+      // case MineConfig.about.key:
+      //     typeImg = <MaterialCommunityIcons name={'clover'} size={Metrics.icons.small} color={Colors.textColor}/>;
+      //     break;
       case MineConfig.share.key:
           typeImg = <AntDesign name={'sharealt'} size={Metrics.icons.small} color={Colors.textColor}/>;
           break;
