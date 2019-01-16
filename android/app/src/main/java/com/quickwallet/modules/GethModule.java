@@ -2,6 +2,8 @@ package com.quickwallet.modules;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,8 +38,8 @@ public class GethModule extends ReactContextBaseJavaModule {
     private final String CHAIN_ID_KEY = "chain_id_key";
     private final String KEY_DIR = "key_dir";
 
-    private final long SCRYPT_N = 1024;
-    private final long SCRYPT_P = 1;
+    private final long SCRYPT_N = Geth.StandardScryptN; // 1024
+    private final long SCRYPT_P = Geth.StandardScryptP; // 1
 
     private SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getReactApplicationContext(),GETH_INFO);
 
@@ -53,14 +55,17 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init( boolean isLogin, String contactIp, String chainId ) {
+        try {
+            sharedPreferencesHelper.put(CONTACT_IP_KEY, contactIp);
+            sharedPreferencesHelper.put(CHAIN_ID_KEY, chainId);
 
-        sharedPreferencesHelper.put(CONTACT_IP_KEY, contactIp);
-        sharedPreferencesHelper.put(CHAIN_ID_KEY, chainId);
-
-        if (!isLogin) return;
-        if (TextUtils.isEmpty(contactIp) || contactIp.length() == 0) return;
-        if (account == null || keyStore == null) return;
-        ethClient = new EthereumClient(contactIp);
+            if (!isLogin) return;
+            if (TextUtils.isEmpty(contactIp) || contactIp.length() == 0) return;
+            if (account == null || keyStore == null) return;
+            ethClient = new EthereumClient(contactIp);
+        } catch (Exception e) {
+            Log.d("err", e.getMessage());
+        }
     }
 
     @ReactMethod
@@ -96,6 +101,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
             FileUtil.createDir(tempDir);
             keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
+
 
             String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
             boolean isExists =  FileUtil.isFileExists(keydir);

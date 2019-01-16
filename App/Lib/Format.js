@@ -95,25 +95,6 @@ export function getDisplayTxInfo(signInfo) {
     return info;
 }
 
-export function getFormatMap(data) {
-    console.log('========data============================');
-    console.log(data);
-    console.log('========data============================');
-    if (Platform.OS === 'ios') {
-        if (isArray(data)) {
-            const map = Ramda.head(data);
-            return map;
-        }
-        const error = 'iOS promise 解析异常';
-        Toast.show(error, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-        return {};
-    }
-    return data;
-}
-
 
 
 

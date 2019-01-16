@@ -1,8 +1,4 @@
 
-// const addressHex = "\(address.description.lowercased())"
-// const rpcURL = "\(config.rpcURL.absoluteString)"
-// const chainID = "\(config.chainID)"
-
 export const layer1 = `
 const addressHex = '%1$s';
 const rpcURL = '%2$s';

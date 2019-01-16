@@ -22,7 +22,6 @@ const store = createStore();
 class App extends Component {
 
   componentDidMount=()=>{
-      // console.log('===========App=======componentDidMount==================');
       ScheduleTasks.executeOnceInLifetime();
       ScheduleTasks.executeOncePerVersion();
       ScheduleTasks.executeOnceDaily();
@@ -31,9 +30,9 @@ class App extends Component {
   }
 
   render () {
-      console.log('=========APP======this.props=====================');
-      console.log(this.props);
-      console.log('=========APP======this.props=====================');
+      // console.log('=========APP======this.props=====================');
+      // console.log(this.props);
+      // console.log('=========APP======this.props=====================');
       return (
           <Provider store={store}>
               <RootContainer />
