@@ -95,6 +95,13 @@ export function getDisplayTxInfo(signInfo) {
     return info;
 }
 
+export function getDisplayFiat(inputFiat) {
+    if (!inputFiat || isNaN(inputFiat)) {
+        inputFiat = '0.00';
+    }
+    return parseFloat(inputFiat).toFixed(2);
+}
+
 
 
 

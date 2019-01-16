@@ -75,9 +75,6 @@ export function * getBalance (action) {
         const api = require('etherscan-api').init(apiKey, environment, timeout);
 
         const response =yield call(api.account.balance,address);
-        console.log('=============api.account.balance,address=======================');
-        console.log(response);
-        console.log('=============api.account.balance,address=======================');
         const {status, message, result} = response;
         if (status) {
             yield put(AssetActions.getBalanceSuccess({

@@ -28,11 +28,13 @@ export default StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         paddingVertical:Metrics.smallMargin,
+        alignItems:'center',
     },
     balanceInput:{
         paddingVertical:Metrics.smallMargin,
         fontSize:Fonts.size.input,
         color: Colors.textColor,
+        flex:1,
     },
     // address
     addressSection:{

@@ -92,8 +92,9 @@
   "ExportRemind002":"请确保周围没有其他人和摄像头",
   "ExportAction":"显示私钥",
 
-  "LogoutTitle":"退出当前身份-退出当前账户",
-  "LogoutRemind":"即将移除身份及所有导入的钱包，请确保所有钱包已备份。——退出账户前请确保账户信息已经备份，如未备份您将失去所有信息且无法找回     即将退出账户，请确保各游戏中未花费的充值金额已经全部提现成功并到账。",
+  "LogoutTitle":"退出当前账户",
+  "PreLogoutRemind":"即将退出账户，请确保各游戏中未花费的充值金额已经全部提现成功并到账。",
+  "LogoutRemind":"退出账户前请确保账户信息已经备份，如未备份您将失去所有信息,且无法找回。",
 
   "ConfirmInfo":"确认信息",
   "ConfirmRemind001":"我已仔细阅读并同意以上条款以及",
@@ -121,5 +122,8 @@
   "PrivateKey":"私钥",
 
   "SignMessage":"以下消息需要此账户签名",
-  "UnLoginRemind":"您尚未登录钱包"
+  "UnLoginRemind":"您尚未登录钱包",
+
+  "LackBalanceError":"转账金额应小于当前余额",
+  "InvalidAddressError":"请输入有效的收款地址"
 }

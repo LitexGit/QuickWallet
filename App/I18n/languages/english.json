@@ -150,7 +150,10 @@
   "PrivateKey":"Private Key",
 
   "SignMessage":"The following message requires this account signature",
-  "UnLoginRemind":"You are not logged into the wallet"
+  "UnLoginRemind":"You are not logged into the wallet",
+
+  "LackBalanceError":"转账金额应小于当前余额",
+  "InvalidAddressError":"请输入有效的收款地址"
 }
 
 

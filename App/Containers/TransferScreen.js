@@ -15,6 +15,7 @@ import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import {isValidAddress} from '../Lib/Utils';
+import {getDisplayFiat} from '../Lib/Format';
 
 class TransferScreen extends Component {
 
@@ -31,6 +32,7 @@ class TransferScreen extends Component {
 
             inputBalance:'0',
             inputAddress:'',
+            inputFiat:'',
 
             isShowSignTx:false,
             isShowPswdInput:false,
@@ -61,8 +63,12 @@ class TransferScreen extends Component {
   }
 
   _onChangeBalance=(text)=>{
+      const {selectedToken } = this.props;
+      const {Rate:rate} = selectedToken;
+      const inputFiat = rate * text;
       this.setState({
           inputBalance:text,
+          inputFiat
       });
   }
 
@@ -155,9 +161,11 @@ class TransferScreen extends Component {
   render () {
       const isCanTransfer = true;
 
-      const {inputGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
-      const { loading, selectedToken } = this.props;
+      const {inputGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput, inputFiat} = this.state;
+      const { loading, selectedToken, currency } = this.props;
       const {Symbol:symbol, count} = selectedToken;
+      const {symbol:mark} = currency;
+
 
       return (
           <View style={styles.container}>
@@ -182,14 +190,17 @@ class TransferScreen extends Component {
                               <Text style={styles.titleText}>{symbol}</Text>
                               <Text style={styles.balanceText}>{ I18n.t('Balance')}: {count} {symbol}</Text>
                           </View>
-                          <TextInput autoFocus style={styles.balanceInput}
-                              clearButtonMode='while-editing'
-                              multiline={false}
-                              placeholder={I18n.t('EnterAmount')}
-                              placeholderTextColor={Colors.separateLineColor}
-                              underlineColorAndroid={'transparent'}
-                              onChangeText={this._onChangeBalance}
-                              returnKeyType='next'/>
+                          <View style={styles.bananceTopView}>
+                              <TextInput autoFocus style={styles.balanceInput}
+                                  clearButtonMode='while-editing'
+                                  multiline={false}
+                                  placeholder={I18n.t('EnterAmount')}
+                                  placeholderTextColor={Colors.separateLineColor}
+                                  underlineColorAndroid={'transparent'}
+                                  onChangeText={this._onChangeBalance}
+                                  returnKeyType='next'/>
+                              <Text style={[styles.balanceText, {maxWidth:'35%'}]} numberOfLines={1}>{mark}: {getDisplayFiat(inputFiat)}</Text>
+                          </View>
                       </View>
                       <View style={styles.addressSection}>
                           <View style={styles.bananceTopView}>
@@ -234,12 +245,15 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('============state========================');
+    console.log(state);
+    console.log('=============state=======================');
     const {
-        user:{address, passphrase},
+        user:{address, passphrase, currency},
         assets:{selectedToken},
         wallet:{loading}
     } = state;
-    return { selectedToken, passphrase, address, loading};
+    return { selectedToken, passphrase, address, loading, currency};
 };
 
 const mapDispatchToProps = (dispatch) => ({

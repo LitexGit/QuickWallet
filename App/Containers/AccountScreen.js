@@ -66,12 +66,18 @@ class AccountScreen extends Component {
       this.setState({ isInit:true });
   }
 
+  _onPressConfirm=()=>this.props.logout();
 
-  _confirmBtnAction=()=>this.props.logout();
+  _onPressPreConfirm=()=>{
+      Alert.alert( I18n.t('LogoutTitle'),  I18n.t('LogoutRemind'),
+          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._onPressConfirm()}],
+          { cancelable: false }
+      );
+  };
 
   _onPressLogOut=()=>{
-      Alert.alert( I18n.t('LogoutTitle'),  I18n.t('LogoutRemind'),
-          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._confirmBtnAction()}],
+      Alert.alert( I18n.t('LogoutTitle'),  I18n.t('PreLogoutRemind'),
+          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._onPressPreConfirm()}],
           { cancelable: false }
       );
   }

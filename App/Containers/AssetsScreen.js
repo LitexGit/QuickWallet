@@ -11,7 +11,7 @@ import {getValue} from '../Lib/Format';
 
 class AssetsScreen extends Component {
   static navigationOptions = {
-      title:I18n.t('AccountTabTitle'),
+      title:I18n.t('AssetsTabTitle'),
   }
 
   _onRefresh=()=>{
