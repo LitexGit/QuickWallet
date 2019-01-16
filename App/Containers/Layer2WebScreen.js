@@ -17,16 +17,19 @@ import I18n from '../I18n';
 import Config from 'react-native-config';
 import {layer1} from '../Resources/inject';
 
-// const DEFAULT_URI = 'https://www.baidu.com';
+// https://stackoverrun.com/cn/q/12932611
 class Layer2WebScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-      title:'Layer2',
-      headerRight: (
-          <RightComponent
-              onPressRefresh={navigation.getParam('onPressRefresh')}
-              onPressShare={navigation.getParam('onPressShare')}/>),
+  static navigationOptions = ({ navigation }) => {
+      const { title=''} = navigation.state.params;
+      return {
+          title,
+          headerRight: (
+              <RightComponent
+                  onPressRefresh={navigation.getParam('onPressRefresh')}
+                  onPressShare={navigation.getParam('onPressShare')}/>),
+      };
 
-  });
+  };
 
   constructor(props){
       super(props);
@@ -103,15 +106,17 @@ _onPressRefresh=()=>{
 }
 
 _onPressShare=()=> {
-    const shareUrl = 'http://litex.io/';
+    const {url} = this.props.navigation.state.params;
     const {sharecode} = this.props;
     let shareParams = {};
     if (Platform.OS === 'ios') {
-        const url =  shareUrl + '?sharecode=' + sharecode;
-        shareParams = {url};
+        const shareUrl = url + '?sharecode=' + sharecode;
+        const message = '待分享的信息';
+        shareParams = {shareUrl, message};
     } else {
-        const message = shareUrl + '?sharecode=' + sharecode;
-        shareParams = {message};
+        const shareUrl = 'android 分享的 Url';
+        const message = url + '?sharecode=' + sharecode;
+        shareParams = {shareUrl,message};
     }
     Share.share(shareParams);
 };
@@ -195,9 +200,10 @@ _signMessage = async ({data:message='', id=8888})=>{
 }
 
 render  () {
-    // const uri = DEFAULT_URI;
     const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
     const {loading, web3Provider, address} = this.props;
+
+    const {url} = this.props.navigation.state.params;
 
     const sprintf = require('sprintf-js').sprintf;
     const signer = sprintf(layer1, address, Config.RPC_URL, Config.CHAIN_ID);
@@ -235,7 +241,8 @@ render  () {
                 onMessage={this._onMessage}
                 style={styles.container}
                 injectedJavaScript={injectScript}
-                source={require('./index.html')}/>
+                // source={require('./index.html')}
+                source={{uri:url}}/>
         </View>);
 }
 }

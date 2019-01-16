@@ -37,6 +37,7 @@ export default StyleSheet.create({
         flex:1,
         width: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5,
         height: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5 + 20,
+        // backgroundColor:'cyan',
     },
     imageItem:{
         width: (Metrics.screenWidth - Metrics.baseMargin * 2) / 5 - 25,

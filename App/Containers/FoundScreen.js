@@ -49,6 +49,7 @@ class FoundScreen extends Component {
   componentDidMount=()=>{
       this._resetRoot();
       this.props.getBanner();
+      this.props.getApps();
   }
 
   _onChangeText=(text)=>{
@@ -79,15 +80,13 @@ class FoundScreen extends Component {
       this.props.navigate('WebViewScreen', {url});
   }
 
-  _onPressItem = ()=>{
-      // TODO 001：url
-      // TODO 002：item
-      this.props.navigate('Layer2WebScreen');
+  _onPressItem = (item)=>{
+      const {Url:url, Name:title} = item;
+      this.props.navigate('Layer2WebScreen', {url, title});
   }
 
   _renderBanner = (item,key)=>{
-      const {Image:image_url='https://www.baidu.com'} = item;
-      // const image_url = 'http://n.sinaimg.cn/finance/crawl/383/w740h443/20180724/fXCQ-hftenhz3236820.jpg';
+      const {Image:image_url=''} = item;
       return (
           <TouchableOpacity key={key} style={styles.banner} onPress={()=>this._onPressBanner(item)}>
               <Image style={styles.banner} source={{ uri: image_url }}/>
@@ -96,33 +95,20 @@ class FoundScreen extends Component {
   }
 
   _renderItem = (item,key)=>{
-      const {img_url='', title=''} = item;
+      const {Icon:icon='', Name:name=''} = item;
       return (
           <TouchableOpacity key={key} style={styles.itemBack}  onPress={()=>this._onPressItem(item)}>
               <View style={styles.itemStyle}>
-                  <Image style={styles.imageItem} source={{ uri: img_url }} />
-                  <Text style={styles.titleItem}>{title}</Text>
+                  <Image style={styles.imageItem} source={{ uri: icon }} />
+                  <Text style={styles.titleItem}>{name}</Text>
               </View>
           </TouchableOpacity>
       );
   }
 
   render () {
-      const {bannerList} = this.props;
+      const {bannerList, appList} = this.props;
       const {webLink} = this.state;
-
-      const items = [
-          {'img_url': 'http://img18.3lian.com/d/file/201709/21/d8768c389b316e95ef29276c53a1e964.jpg','title':'1号'},
-          {'img_url': 'http://img18.3lian.com/d/file/201709/21/f498e01633b5b704ebfe0385f52bad20.jpg','title':'2号'},
-          {'img_url': 'http://pic1.16pic.com/00/10/09/16pic_1009413_b.jpg','title':'3号'},
-          {'img_url': 'http://img3.redocn.com/tupian/20140910/xingganyouximeinvzhaopian_3014685.jpg','title':'4号'},
-          {'img_url': 'http://img.juimg.com/tuku/yulantu/110322/8880-11032219110663.jpg','title':'5号'},
-          {'img_url': 'http://pic7.nipic.com/20100515/3017209_104952727479_2.jpg','title':'6号'},
-          {'img_url': 'http://img3.imgtn.bdimg.com/it/u=3142207919,2669735180&fm=200&gp=0.jpg','title':'7号'},
-          {'img_url': 'http://pic28.photophoto.cn/20130809/0036036814656859_b.jpg','title':'8号'},
-          {'img_url': 'http://img18.3lian.com/d/file/201709/21/d8768c389b316e95ef29276c53a1e964.jpg','title':'9号'},
-          {'img_url': 'http://img18.3lian.com/d/file/201709/21/f498e01633b5b704ebfe0385f52bad20.jpg','title':'10号'},
-      ];
 
       const  swiper = (
           <Swiper key={bannerList.length} autoplay loop showsPagination>
@@ -145,7 +131,7 @@ class FoundScreen extends Component {
               </View>
               <ScrollView style={styles.scrollView}
                   contentContainerStyle={styles.contentContainer}>
-                  {!!items && items.map((item, i) => this._renderItem(item, i))}
+                  {!!appList && appList.map((item, i) => this._renderItem(item, i))}
               </ScrollView>
           </View>
 
@@ -154,14 +140,14 @@ class FoundScreen extends Component {
 }
 
 const mapStateToProps = (state) =>{
-    const {found:{bannerList}} = state;
-    return { bannerList };
+    const {found:{bannerList, appList}} = state;
+    return { bannerList, appList};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     getBanner: () => dispatch(FoundActions.getBannerRequest()),
-    // this.props.navigate.dispatch(resetAction);
+    getApps: () => dispatch(FoundActions.getAppsRequest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundScreen);

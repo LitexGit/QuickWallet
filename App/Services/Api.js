@@ -17,9 +17,6 @@ const create = (baseURL = Config.API_URL) => {
     });
 
     api.addResponseTransform(response=>{
-        // console.log('===========response=========================');
-        // console.log(response);
-        // console.log('============response========================');
         const {data} = response;
         const {status, msg, data:array} = data;
         if (!array) return response;
@@ -47,6 +44,10 @@ const create = (baseURL = Config.API_URL) => {
      */
     const getBanner=()=>api.get('/api/banners');
     /**
+     * Dapp信息接口
+     */
+    const getApps=()=>api.get('/api/apps');
+    /**
      * 系统配置信息接口
      */
     const getConfig = () =>api.get('/api/settings');
@@ -64,6 +65,7 @@ const create = (baseURL = Config.API_URL) => {
         register,
         getUserInfo,
         getBanner,
+        getApps,
         getConfig,
         getTokenList,
 

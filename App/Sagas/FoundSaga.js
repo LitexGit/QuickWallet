@@ -18,15 +18,17 @@ export function * getBanner (api) {
     yield put(FoundActions.getBannerFailure());
 }
 
-export function * getBanner001 (api, action) {
-    const {data:params} = action;
-    const {address, type, os, phoneinfo} = params;
-    const response = yield call(api.getBanner, {address, type, os, phoneinfo});
-    const {status, data} = response;
+export function * getApps (api) {
+    const response = yield call(api.getApps);
+    const {data:result} = response;
+    const {data, status, msg} = result;
     if (status) {
-        yield put(FoundActions.getBannerSuccess(data));
+        yield put(FoundActions.getAppsSuccess(data));
         return;
     }
-
-    yield put(FoundActions.getBannerFailure(data));
+    Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER,
+    });
+    yield put(FoundActions.getAppsFailure());
 }
