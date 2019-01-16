@@ -82,11 +82,10 @@ export function * getUserInfo (api, action) {
 
 export function * logout () {
     DeviceStorage.saveItem(Keys.IS_USER_LOGINED, false);
-    DeviceStorage.saveItem(Keys.IS_SELECTED_USE_TERMS, false);
-    DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, false);
+    DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, false);
     DeviceStorage.saveItem(Keys.WALLET_ADDRESS, '');
 
-    yield put(UserActions.saveUserInfo({isLoginInfo:false, isAgreeInfo:false, passphrase:''}));
+    yield put(UserActions.saveUserInfo({isLoginInfo:false, passphrase:''}));
 
     yield put(WalletActions.savePrivateKey({privateKey:''}));
 

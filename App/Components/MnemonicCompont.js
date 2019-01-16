@@ -93,7 +93,6 @@ class MnemonicCompont extends Component {
   }
 
   render () {
-      const path = 'm/44’/60‘/0’/0';
 
       const {isCanPress, isShowPassword} = this.state;
       const {loading} = this.props;
@@ -126,10 +125,7 @@ class MnemonicCompont extends Component {
                       </View>
                       <View style={styles.infoView}>
                           <View style={ styles.sectionView }>
-                              <View style={ styles.section }>
-                                  <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
-                                  <AntDesign name={'warning'} size={Metrics.icons.tiny} color={Colors.separateLineColor} style={styles.warning}/>
-                              </View>
+                              <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
                               <View style={styles.section}>
                                   <TextInput style={styles.passwordInput}
                                       placeholder={I18n.t('WalletPassword')}

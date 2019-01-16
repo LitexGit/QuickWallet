@@ -22,7 +22,6 @@ export default StyleSheet.create({
         padding: Metrics.baseMargin,
         borderColor: Colors.separateLineColor,
         borderWidth: 1 / PixelRatio.get(),
-        height: 80,
     },
     infoView:{
     // backgroundColor:'yellow',
@@ -33,6 +32,7 @@ export default StyleSheet.create({
         lineHeight:15,
     },
     privateKeyInput:{
+        fontSize:Fonts.size.common,
 
     },
     sectionView:{

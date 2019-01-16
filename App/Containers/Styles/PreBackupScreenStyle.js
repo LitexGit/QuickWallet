@@ -30,6 +30,7 @@ export default StyleSheet.create({
         backgroundColor:Colors.dividingLineColor,
         color:Colors.textColor,
         fontWeight:'500',
+        fontSize:Fonts.size.common,
     },
     bottomSection:{
         flex:1,

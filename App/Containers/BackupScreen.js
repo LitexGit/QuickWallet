@@ -124,16 +124,14 @@ class BackupScreen extends Component {
       const { pressArray, unPressArray, isSorted} = this.state;
       const isCanPress = isSorted && !unPressArray.length;
 
-      const toastView = !isSorted ? (<View style={styles.toastView}>
-          <Text style={styles.toastText}>{I18n.t('AbnormalSortRemind')}</Text>
-      </View>):null;
+      const toastView = !isSorted ? (<Text style={styles.toastText}>{I18n.t('AbnormalSortRemind')}</Text>):null;
 
       const pressWord = pressArray.map((item, key)=>{
           const {title} = item;
           return (
               <TouchableOpacity key={key} onPress={()=>this._onPressSelected(item)}>
                   <View style={styles.wordsStyle}>
-                      <Text>{title}</Text>
+                      <Text style={styles.wordTitle}>{title}</Text>
                   </View>
               </TouchableOpacity>);
       });
@@ -143,7 +141,7 @@ class BackupScreen extends Component {
           return (
               <TouchableOpacity key={key} onPress={()=>this._onPressUnSelected(item)}>
                   <View style={styles.wordsStyle}>
-                      <Text>{title}</Text>
+                      <Text style={styles.wordTitle}>{title}</Text>
                   </View>
               </TouchableOpacity>);
       });
@@ -161,7 +159,9 @@ class BackupScreen extends Component {
                   <View style={styles.remindSection}>
                       <Text style={styles.remindText}>{I18n.t('BackupRemind')}</Text>
                   </View>
-                  {toastView}
+                  <View style={styles.toastView}>
+                      {toastView}
+                  </View>
                   <View style={styles.pressWordView}>
                       {pressWord}
                   </View>
@@ -172,7 +172,7 @@ class BackupScreen extends Component {
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
                       <Button onPress={()=>this._onPressCheck()}
-                          // disabled={!isCanPress}
+                          disabled={!isCanPress}
                           backgroundColor={Colors.textColor}
                           title={ I18n.t('Complete')}/>
                   </View>

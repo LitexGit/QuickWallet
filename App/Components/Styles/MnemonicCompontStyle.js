@@ -22,7 +22,6 @@ export default StyleSheet.create({
         padding: Metrics.baseMargin,
         borderColor: Colors.separateLineColor,
         borderWidth: 1 / PixelRatio.get(),
-        height: 80,
     },
     infoView:{
         // backgroundColor:'yellow',
@@ -32,6 +31,7 @@ export default StyleSheet.create({
         fontSize:Fonts.size.small,
     },
     mnemonicInput:{
+        fontSize:Fonts.size.common,
 
     },
     sectionView:{

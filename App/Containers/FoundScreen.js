@@ -8,7 +8,9 @@ import Swiper from 'react-native-swiper';
 import SearchBar from '../Components/SearchCompont';
 import styles from './Styles/FoundScreenStyle';
 
-import { NavigationActions } from 'react-navigation';
+import {StackActions, NavigationActions } from 'react-navigation';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+
 import FoundActions from '../Redux/FoundRedux';
 
 class FoundScreen extends Component {
@@ -26,7 +28,26 @@ class FoundScreen extends Component {
       };
   }
 
+  // https://reactnavigation.org/docs/en/stack-actions.html#reset 无效
+  _resetRoot=async()=>{
+      const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
+      const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
+      const isMount = await DeviceStorage.getItem(Keys.IS_NEW_SCREEN_DID_MOUNT) || false;
+
+      if (!isLogin && !isAgree && isMount) {
+          this.props.navigate.dispatch(StackActions.reset({
+              index: 0,
+              actions: [
+                  NavigationActions.navigate({ routeName: 'NewWalletScreen'}),
+                  // NavigationActions.navigate({ routeName: 'Layer2WebScreen'}),
+                  // NavigationActions.navigate({ routeName: 'BottomTab'})
+              ]
+          }));
+      }
+  }
+
   componentDidMount=()=>{
+      this._resetRoot();
       this.props.getBanner();
   }
 
@@ -65,7 +86,8 @@ class FoundScreen extends Component {
   }
 
   _renderBanner = (item,key)=>{
-      const {Image:image_url=''} = item;
+      const {Image:image_url='https://www.baidu.com'} = item;
+      // const image_url = 'http://n.sinaimg.cn/finance/crawl/383/w740h443/20180724/fXCQ-hftenhz3236820.jpg';
       return (
           <TouchableOpacity key={key} style={styles.banner} onPress={()=>this._onPressBanner(item)}>
               <Image style={styles.banner} source={{ uri: image_url }}/>
@@ -139,6 +161,7 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     getBanner: () => dispatch(FoundActions.getBannerRequest()),
+    // this.props.navigate.dispatch(resetAction);
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundScreen);

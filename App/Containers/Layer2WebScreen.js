@@ -25,6 +25,7 @@ class Layer2WebScreen extends Component {
           <RightComponent
               onPressRefresh={navigation.getParam('onPressRefresh')}
               onPressShare={navigation.getParam('onPressShare')}/>),
+
   });
 
   constructor(props){

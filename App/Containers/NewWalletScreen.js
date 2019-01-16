@@ -10,16 +10,20 @@ import InputInfoConfig from '../Config/InputInfoConfig';
 import { Button } from 'react-native-elements';
 import UserTermsAlert from '../Components/UserTermsAlert';
 import { NavigationActions } from 'react-navigation';
-import WalletActions from '../Redux/WalletRedux';
+// import WalletActions from '../Redux/WalletRedux';
 import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
 import LevelComponent from '../Components/LevelComponent';
 import {getPasspraseStrength} from '../Lib/Utils';
 import Toast from 'react-native-root-toast';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
 class NewWalletScreen extends Component {
+
+  // 未登录 && 已查看 && 未点击  => 显示
   static navigationOptions = {
       title:I18n.t('NewWalletTabTitle'),
+      headerLeft:null,
   }
 
   constructor (props) {
@@ -96,6 +100,9 @@ class NewWalletScreen extends Component {
       }
   }
 
+  componentDidMount=()=>{
+      DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, true);
+  }
 
   render () {
       const {isAgree} = this.props;

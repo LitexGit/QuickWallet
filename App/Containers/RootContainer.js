@@ -80,7 +80,8 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) =>state;
+const mapStateToProps = (state) =>({
+});
 
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),
@@ -90,4 +91,4 @@ const mapDispatchToProps = (dispatch) => ({
     gethInit: () => dispatch(WalletActions.gethInit()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);
+export default connect(mapStateToProps,mapDispatchToProps)(RootContainer);
