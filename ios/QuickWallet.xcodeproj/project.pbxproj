@@ -40,7 +40,7 @@
 		23AE74EA21E76E0300AADC57 /* RCTBundleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE74E921E76E0300AADC57 /* RCTBundleModule.m */; };
 		23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */; };
 		23B939D421EA081700EA6962 /* RCTLayer2Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B939D321EA081700EA6962 /* RCTLayer2Module.m */; };
-		23B939E021EA1FAE00EA6962 /* Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B939DF21EA1FAE00EA6962 /* Client.framework */; };
+		23BE331721EF519500F5D563 /* L2mobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BE331621EF519500F5D563 /* L2mobile.framework */; };
 		23D0A38121DB38E5000E3005 /* SignModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D0A38021DB38E5000E3005 /* SignModel.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -500,7 +500,7 @@
 		23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCWeb3Utils.swift; sourceTree = "<group>"; };
 		23B939D221EA081700EA6962 /* RCTLayer2Module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTLayer2Module.h; sourceTree = "<group>"; };
 		23B939D321EA081700EA6962 /* RCTLayer2Module.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTLayer2Module.m; sourceTree = "<group>"; };
-		23B939DF21EA1FAE00EA6962 /* Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Client.framework; sourceTree = "<group>"; };
+		23BE331621EF519500F5D563 /* L2mobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = L2mobile.framework; sourceTree = "<group>"; };
 		23D0A37F21DB38E5000E3005 /* SignModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignModel.h; sourceTree = "<group>"; };
 		23D0A38021DB38E5000E3005 /* SignModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignModel.m; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -566,7 +566,6 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
-				23B939E021EA1FAE00EA6962 /* Client.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				58977DA436C54C8FAAC971A3 /* libRNDeviceInfo.a in Frameworks */,
 				558AE28174584E47944DF548 /* libRNGestureHandler.a in Frameworks */,
@@ -576,6 +575,7 @@
 				C3BF47B619FD4DD886619944 /* libReactNativeConfig.a in Frameworks */,
 				37B716FF3B6346508AACCFE4 /* libRNSVG.a in Frameworks */,
 				6081B1B5DF9A4833893F81B2 /* libRNReactNativeHapticFeedback.a in Frameworks */,
+				23BE331721EF519500F5D563 /* L2mobile.framework in Frameworks */,
 				FCB99AB884BB46859F4BBE83 /* libRNCamera.a in Frameworks */,
 				0F629AF1AE04470EB203CF65 /* libReactNativePermissions.a in Frameworks */,
 				AD908613A2FD7C61EB8022CB /* Pods_QuickWallet.framework in Frameworks */,
@@ -733,7 +733,7 @@
 		2322F53521D0A2F200F9F04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				23B939DF21EA1FAE00EA6962 /* Client.framework */,
+				23BE331621EF519500F5D563 /* L2mobile.framework */,
 				23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */,
 				2397299C21D3C00600047AE0 /* Geth.framework */,
 			);

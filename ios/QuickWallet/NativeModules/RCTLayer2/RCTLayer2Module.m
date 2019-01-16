@@ -7,13 +7,13 @@
 //
 
 #import "RCTLayer2Module.h"
-#import <Client/Client.h>
+//#import <Client/Client.h>
 
 static RCTLayer2Module *_instance = nil;
 
 @interface RCTLayer2Module()
 
-@property (nonatomic, strong) ClientL2 *layer2;
+//@property (nonatomic, strong) ClientL2 *layer2;
 
 @property(nonatomic, copy) RCTResponseSenderBlock initCallback;
 
@@ -38,7 +38,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initL2SDK:(NSString*)cpKey address:(NSString*)address socketUrl:(NSString*)socketUrl initCallBack:(RCTResponseSenderBlock)callback){
   _initCallback = callback;
-  _instance.layer2 = nil;
+//  _instance.layer2 = nil;
   NSString *dataPath = @".................";
   NSDictionary *initParams = @{@"cpKey":cpKey,
                                @"dataPath": dataPath,
