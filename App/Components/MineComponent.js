@@ -49,8 +49,8 @@ class MineComponent extends Component {
   }
 
   _onPressShare=()=> {
-      const shareUrl = 'http://litex.io/';
-      const {sharecode} = this.props;
+      const shareUrl = Config.SHARE_URL;
+      const {sharecode=''} = this.props;
       let shareParams = {};
       if (Platform.OS === 'ios') {
           const url =  shareUrl + '?sharecode=' + sharecode;
@@ -98,9 +98,6 @@ class MineComponent extends Component {
       case MineConfig.agreement.key:
           typeImg = <Entypo name={'feather'} size={Metrics.icons.small} color={Colors.textColor}/>;
           break;
-      // case MineConfig.about.key:
-      //     typeImg = <MaterialCommunityIcons name={'clover'} size={Metrics.icons.small} color={Colors.textColor}/>;
-      //     break;
       case MineConfig.share.key:
           typeImg = <AntDesign name={'sharealt'} size={Metrics.icons.small} color={Colors.textColor}/>;
           break;

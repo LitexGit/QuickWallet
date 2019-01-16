@@ -16,17 +16,23 @@ import {getDisplayTxInfo} from '../Lib/Format';
 import I18n from '../I18n';
 import Config from 'react-native-config';
 import {layer1} from '../Resources/inject';
+import HeaderLeftComponent from '../Components/HeaderLeftComponent';
+import { StackActions } from 'react-navigation';
 
 // https://stackoverrun.com/cn/q/12932611
 class Layer2WebScreen extends Component {
   static navigationOptions = ({ navigation }) => {
       const { title=''} = navigation.state.params;
+
       return {
           title,
           headerRight: (
               <RightComponent
                   onPressRefresh={navigation.getParam('onPressRefresh')}
                   onPressShare={navigation.getParam('onPressShare')}/>),
+          headerLeft:(
+              <HeaderLeftComponent onPress={navigation.getParam('goBack')}/>
+          )
       };
 
   };
@@ -37,6 +43,7 @@ class Layer2WebScreen extends Component {
           isShowPassphrase:false,
           isShowSignTx:false,
           isShowSignMsg:false,
+          goBackEnabled:false,
       };
       this.signInfo = {};
   }
@@ -44,6 +51,7 @@ class Layer2WebScreen extends Component {
   componentDidMount() {
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
+      this.props.navigation.setParams({ goBack: this._goBack });
 
       this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
           if (isUnlock) {
@@ -60,6 +68,15 @@ class Layer2WebScreen extends Component {
 componentWillUnmount=()=>{
     this.lockListener.remove();
     this.isUnlockListener.remove();
+}
+
+_goBack=()=>{
+    const {goBackEnabled=false} = this.state;
+    if (goBackEnabled) {
+        this.webview.goBack();
+        return;
+    }
+    this.props.pop();
 }
 
 _signTxCancel=()=>{
@@ -120,6 +137,12 @@ _onPressShare=()=> {
     }
     Share.share(shareParams);
 };
+
+_onNavigationStateChange=(navState)=>{
+    this.setState({
+        goBackEnabled:navState.canGoBack,
+    });
+}
 
 
 _onMessage=(evt)=>{
@@ -241,6 +264,7 @@ render  () {
                 onMessage={this._onMessage}
                 style={styles.container}
                 injectedJavaScript={injectScript}
+                onNavigationStateChange={this._onNavigationStateChange}
                 // source={require('./index.html')}
                 source={{uri:url}}/>
         </View>);
@@ -258,6 +282,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+    pop:() => dispatch(StackActions.pop())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layer2WebScreen);

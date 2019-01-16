@@ -12,6 +12,8 @@ import {StackActions, NavigationActions } from 'react-navigation';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
 import FoundActions from '../Redux/FoundRedux';
+import {isValidUrl} from '../Lib/Utils';
+import Toast from 'react-native-root-toast';
 
 class FoundScreen extends Component {
   static navigationOptions = {
@@ -72,7 +74,15 @@ class FoundScreen extends Component {
   }
 
   _onSubmitEditing=()=>{
-      this.props.navigate('Layer2WebScreen');
+      const {webLink:url} = this.state;
+      if (!isValidUrl(url)) {
+          Toast.show(I18n.t('InvalidUrlError'), {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          return;
+      }
+      this.props.navigate('Layer2WebScreen', {url, title:'layer2'});
   }
 
   _onPressBanner = (item)=>{
@@ -126,8 +136,8 @@ class FoundScreen extends Component {
                       ref={(ref)=>this.searchBar = ref}
                       setValue={webLink}
                       onChangeText={(text)=>this._onChangeText(text)}
-                      onPressScan={()=>this._onPressScan()}
-                      onSubmitEditing={(text)=>this._onSubmitEditing(text)}/>
+                      onPressScan={this._onPressScan}
+                      onSubmitEditing={this._onSubmitEditing}/>
               </View>
               <ScrollView style={styles.scrollView}
                   contentContainerStyle={styles.contentContainer}>
