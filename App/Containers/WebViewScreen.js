@@ -46,62 +46,14 @@ export default class WebViewScreen extends Component {
       Share.share(shareParams);
   }
 
-  _onMessage=(evt)=>{
-      console.log('==========RN_onMessage==========================');
-      console.log(JSON.parse(evt.nativeEvent.data));
-      console.log('==========RN_onMessage==========================');
-
-      const params = JSON.parse(evt.nativeEvent.data);
-      const {name} = params;
-      switch (name) {
-      case 'signTransaction':{
-          const message = {
-              id: 8888,
-              error: null ,
-              value: {
-                  from: '0xb5538753F2641A83409D2786790b42aC857C5340',
-                  gasPrice: '20000000000',
-                  gas: '21000',
-                  to: '0x38bCc5B8b793F544d86a94bd2AE94196567b865c',
-                  value: '1000000000000000000',
-                  data: ''
-              }
-          };
-          this.webview.postMessage(JSON.stringify(message));
-
-      }
-          break;
-      case 'signMessage':{
-          const message = {
-              id: 8888,
-              error: null ,
-              value: {
-                  data:'signMessage'
-              }
-          };
-          this.webview.postMessage(JSON.stringify(message));
-      }
-          break;
-
-      default:
-          break;
-      }
-  }
-
   render () {
-      // const {params} =  this.props.navigation.state;
-      // const {url=DEFAULT_URI} = params;
-
-      // const alpha = require('../Resources/AlphaWallet-min.js');
-      // const injectScript = alpha + signer;
-
+      const {params} =  this.props.navigation.state;
+      const {url=DEFAULT_URI} = params;
       return (
           <WebView useWebKit
               ref ={ref=>this.webview = ref}
-              onMessage={this._onMessage}
               style={styles.container}
-              // injectedJavaScript={injectScript}
-              source={require('./index.html')}/>
+              source={{uri:url}}/>
       );
   }
 }
