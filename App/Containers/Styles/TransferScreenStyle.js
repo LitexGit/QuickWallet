@@ -8,6 +8,7 @@ export default StyleSheet.create({
     },
     bottomSection:{
         marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
+        height:Metrics.bottonBtnHeight,
     },
     titleText:{
         color:Colors.darkColor,

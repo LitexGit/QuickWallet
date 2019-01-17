@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Clipboard, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { Button } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
 import styles from './Styles/ExportScreenStyle';
@@ -12,6 +11,7 @@ import I18n from '../I18n';
 import PrivateKeyWarningAlert from '../Components/PrivateKeyWarningAlert';
 import Toast from 'react-native-root-toast';
 import { StackActions } from 'react-navigation';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 
 class ExportScreen extends Component {
 
@@ -67,9 +67,9 @@ render () {
             </View>
             <View style={styles.bottomSection}>
                 <View style={styles.btnStyle}>
-                    <Button onPress={()=>this._onPressBtn()}
-                        backgroundColor={Colors.textColor}
-                        title={ I18n.t('Complete')}/>
+                    <CommomBtnComponent
+                        title={ I18n.t('Complete')}
+                        onPress={()=>this._onPressBtn()}/>
                 </View>
             </View>
         </View>

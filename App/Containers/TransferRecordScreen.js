@@ -5,8 +5,7 @@ import { Colors, Images } from '../Themes';
 import styles from './Styles/TransferRecordScreenStyle';
 import ListFooterComponent from '../Components/ListFooterComponent';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
-import { Button } from 'react-native-elements';
-
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
 import {sectionlize, getToken, getValue} from '../Lib/Format';
@@ -148,10 +147,10 @@ class TransferRecordScreen extends Component {
                       onPress={this._loadMore}/>}
               />
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      backgroundColor={Colors.textColor}
+                  <CommomBtnComponent
                       disabled={isBalance}
-                      title={I18n.t('TransferAction')}/>
+                      title={I18n.t('TransferAction')}
+                      onPress={()=>this._onPressBtn()}/>
               </View>
           </View>
       );

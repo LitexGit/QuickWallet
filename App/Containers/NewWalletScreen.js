@@ -7,7 +7,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
-import { Button } from 'react-native-elements';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import UserTermsAlert from '../Components/UserTermsAlert';
 import { NavigationActions } from 'react-navigation';
 // import WalletActions from '../Redux/WalletRedux';
@@ -163,13 +163,12 @@ class NewWalletScreen extends Component {
                   </View>
               </KeyboardAvoidingView>
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      disabled={!isInputValid}
-                      containerViewStyle={styles.containerViewStyle}
-                      buttonStyle={styles.buttonStyle}
-                      textStyle={styles.btnTitle}
-                      backgroundColor={isInputValid ? Colors.textColor : Colors.separateLineColor}
-                      title={I18n.t('Create')}/>
+                  <View style={styles.bottomBtnSection}>
+                      <CommomBtnComponent
+                          disabled={!isInputValid}
+                          title={I18n.t('Create')}
+                          onPress={()=>this._onPressBtn()}/>
+                  </View>
               </View>
           </View>
       );

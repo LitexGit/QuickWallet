@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import styles from './Styles/MnemonicCompontStyle';
-import { Button } from 'react-native-elements';
 import { Colors, Metrics } from '../Themes';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
 import Toast from 'react-native-root-toast';
 import {isValidMnemonic} from '../Lib/Format';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 
 class MnemonicCompont extends Component {
     constructor (props) {
@@ -152,11 +151,10 @@ class MnemonicCompont extends Component {
                       </View>
                   </View>
                   <View style={styles.botttomSection}>
-                      <Button onPress={()=>this._onPressBtn()}
-                          textStyle={styles.btnTitle}
-                          backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
+                      <CommomBtnComponent
                           disabled={!isCanPress}
-                          title={I18n.t('Import')}/>
+                          title={I18n.t('Import')}
+                          onPress={()=>this._onPressBtn()}/>
                   </View>
               </ScrollView>
           </View>

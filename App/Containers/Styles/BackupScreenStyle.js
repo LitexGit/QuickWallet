@@ -34,6 +34,7 @@ export default StyleSheet.create({
     },
     btnStyle:{
         marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
+        height:Metrics.bottonBtnHeight,
     },
     pressWordView:{
         margin:Metrics.baseMargin,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/PreBackupScreenStyle';
-import { Button } from 'react-native-elements';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
@@ -40,9 +40,9 @@ class PreBackupScreen extends Component {
               </View>
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
-                      <Button onPress={()=>this._onPressBtn()}
-                          backgroundColor={Colors.textColor}
-                          title={I18n.t('NextStep')}/>
+                      <CommomBtnComponent
+                          title={I18n.t('NextStep')}
+                          onPress={()=>this._onPressBtn()}/>
                   </View>
               </View>
           </View>

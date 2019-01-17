@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Text, TouchableOpacity, Clipboard, Alert} from 'react-native';
 import { connect } from 'react-redux';
-import { Button, Avatar } from 'react-native-elements';
 import styles from './Styles/AccountScreenStyle';
 import { View } from 'react-native-animatable';
 import {AccountConfig} from '../Config/MineConfig';
@@ -16,7 +15,7 @@ import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Toast from 'react-native-root-toast';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import  Identicon from 'identicon.js';
-
+import { Avatar } from 'react-native-elements';
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -66,18 +65,18 @@ class AccountScreen extends Component {
       this.setState({ isInit:true });
   }
 
-  _onPressConfirm=()=>this.props.logout();
+  _onPressConfirmLogout=()=>this.props.logout();
 
-  _onPressPreConfirm=()=>{
+  _onPressPreConfirmLogout=()=>{
       Alert.alert( I18n.t('LogoutTitle'),  I18n.t('LogoutRemind'),
-          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._onPressConfirm()}],
+          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._onPressConfirmLogout()}],
           { cancelable: false }
       );
   };
 
   _onPressLogOut=()=>{
       Alert.alert( I18n.t('LogoutTitle'),  I18n.t('PreLogoutRemind'),
-          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._onPressPreConfirm()}],
+          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this._onPressPreConfirmLogout()}],
           { cancelable: false }
       );
   }
@@ -129,14 +128,12 @@ class AccountScreen extends Component {
                   <QRCode value={address} size={120}/>
               </View>
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBackup()}
-                      buttonStyle={styles.buttonStyle}
-                      textStyle={styles.backupTitle}
-                      title={I18n.t('BackUpAccount')}/>
-                  <Button onPress={()=>this._onPressLogOut()}
-                      buttonStyle={styles.buttonStyle}
-                      textStyle={styles.logOutTitle}
-                      title={I18n.t('LogoutAction')}/>
+                  <TouchableOpacity style={styles.buttonStyle}  onPress={()=>this._onPressBackup()}>
+                      <Text style={styles.backupTitle}>{I18n.t('BackUpAccount')}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonStyle}  onPress={()=>this._onPressLogOut()}>
+                      <Text style={styles.logOutTitle}>{I18n.t('LogoutAction')}</Text>
+                  </TouchableOpacity>
               </View>
           </View>
       );

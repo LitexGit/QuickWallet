@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, ScrollView, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Slider } from 'react-native';
 import { connect } from 'react-redux';
-import { Button } from 'react-native-elements';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import styles from './Styles/TransferScreenStyle';
 import { Colors } from '../Themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -234,10 +234,10 @@ class TransferScreen extends Component {
                   </View>
               </ScrollView>
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      backgroundColor={Colors.textColor}
+                  <CommomBtnComponent
                       disabled={!isCanTransfer}
-                      title={I18n.t('NextStep')}/>
+                      title={I18n.t('NextStep')}
+                      onPress={()=>this._onPressBtn()}/>
               </View>
           </View>
       );
@@ -245,9 +245,6 @@ class TransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('============state========================');
-    console.log(state);
-    console.log('=============state=======================');
     const {
         user:{address, passphrase, currency},
         assets:{selectedToken},
