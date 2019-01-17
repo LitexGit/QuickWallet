@@ -65,7 +65,8 @@ class KeyStoreCompont extends Component {
 
     componentDidMount=()=>{
         this.props.setLoading({loading:false});
-        this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
+        // this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
+        this.privateKey = '';
         this._checkInputIsValid();
     }
 

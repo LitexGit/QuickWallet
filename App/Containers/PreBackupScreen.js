@@ -6,7 +6,6 @@ import CommomBtnComponent from '../Components/CommomBtnComponent';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
-import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import MnemonicWarningAlert from '../Components/MnemonicWarningAlert';
 
@@ -15,13 +14,12 @@ import MnemonicWarningAlert from '../Components/MnemonicWarningAlert';
 class PreBackupScreen extends Component {
   static navigationOptions = {
       title:I18n.t('PreBackupTabTitle'),
+      headerLeft:null,
   }
   _onPressBtn=()=>{
       this.props.navigate('BackupScreen');
   }
-  componentDidMount=()=>{
-      this.props.gethRandomMnemonic();
-  }
+
   render () {
       const {mnemonic} = this.props;
 
@@ -61,7 +59,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    gethRandomMnemonic: () => dispatch(WalletActions.gethRandomMnemonic()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreBackupScreen);

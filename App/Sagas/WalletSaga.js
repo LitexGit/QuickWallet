@@ -74,6 +74,37 @@ export function *gethUnlockAccount (action) {
     }
 }
 
+export function *gethNewWallet(action){
+    try {
+        const {data:params} = action;
+        const {passphrase=''} = params;
+        yield put(WalletActions.setLoading({loading:true}));
+
+        const result =  yield GethModule.randomMnemonic();
+        const map = GethModule.getResolveMap(result);
+        const {mnemonic} = map;
+        yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
+
+        const importResult = yield GethModule.importMnemonic({mnemonic, passphrase});
+        const importMap = GethModule.getResolveMap(importResult);
+        const {address} = importMap;
+
+        const nickname = yield select(UserSelectors.getNickname);
+        yield put(UserActions.registerRequest({address, type:1, nickname, isPopToTop:false}));
+
+        yield put(WalletActions.setLoading({loading:false}));
+    } catch (error) {
+        yield put(WalletActions.gethRandomMnemonicFailure());
+        yield put(WalletActions.setLoading({loading:false}));
+        Toast.show(error.message, {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+    }
+}
+
+
+
 
 export function *gethRandomMnemonic () {
     try {
@@ -82,11 +113,11 @@ export function *gethRandomMnemonic () {
         const result =  yield GethModule.randomMnemonic();
         const map = GethModule.getResolveMap(result);
         const {mnemonic} = map;
-
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+        yield put(WalletActions.gethRandomMnemonicFailure());
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,

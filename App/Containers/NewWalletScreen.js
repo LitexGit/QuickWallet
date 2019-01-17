@@ -10,20 +10,20 @@ import InputInfoConfig from '../Config/InputInfoConfig';
 import CommomBtnComponent from '../Components/CommomBtnComponent';
 import UserTermsAlert from '../Components/UserTermsAlert';
 import { NavigationActions } from 'react-navigation';
-// import WalletActions from '../Redux/WalletRedux';
+import WalletActions from '../Redux/WalletRedux';
 import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
 import LevelComponent from '../Components/LevelComponent';
 import {getPasspraseStrength} from '../Lib/Utils';
 import Toast from 'react-native-root-toast';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 class NewWalletScreen extends Component {
 
-  // 未登录 && 已查看 && 未点击  => 显示
   static navigationOptions = {
       title:I18n.t('NewWalletTabTitle'),
-      headerLeft:null,
   }
 
   constructor (props) {
@@ -79,7 +79,7 @@ class NewWalletScreen extends Component {
       if (this.password.length >= 8 && this.confirm.length >= 8) {
           if (this.password === this.confirm) {
               this.props.saveUserInfo({nickname:this.name, passphrase:this.password});
-              this.props.navigate('PreBackupScreen');
+              this.props.gethNewWallet({passphrase:this.password});
               return;
           }
           error = '密码输入不一致';
@@ -88,8 +88,6 @@ class NewWalletScreen extends Component {
           shadow:true,
           position: Toast.positions.CENTER,
       });
-
-
   }
 
   _checkInputIsValid=()=>{
@@ -102,10 +100,27 @@ class NewWalletScreen extends Component {
 
   componentDidMount=()=>{
       DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, true);
+      this.props.setLoading({loading:false});
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_NEW_WALLET_SUCCESS, ({status, msg})=>{
+          if (!status) {
+              return;
+          }
+          Toast.show(msg, {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          this.afterTimer = setTimeout(()=>{
+              this.props.navigate('PreBackupScreen');
+          }, 1000);
+      });
+  }
+
+  componentWillUnmount=()=>{
+      this.afterTimer && clearTimeout(this.afterTimer);
   }
 
   render () {
-      const {isAgree} = this.props;
+      const {isAgree, loading} = this.props;
 
       const {isShowRemind, isInputValid, isShowPassword, strength}=this.state;
 
@@ -151,6 +166,9 @@ class NewWalletScreen extends Component {
       </View>): null);
       return (
           <View style={styles.container}>
+              <Spinner visible={loading} cancelable
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerText}/>
               {userTermsView}
               <View style={styles.topSection}>
                   <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
@@ -188,6 +206,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
+    gethNewWallet: (params) => dispatch(WalletActions.gethNewWallet(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

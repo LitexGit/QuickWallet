@@ -11,6 +11,7 @@ const { Types, Creators } = createActions({
     gethUnInit: null,
     gethIsUnlockAccount:null,
     gethUnlockAccount:['data'],
+    gethNewWallet: ['data'],
     gethRandomMnemonic:['data'],
     gethImportMnemonic: ['data'],
     gethImportPrivateKey: ['data'],
@@ -18,9 +19,11 @@ const { Types, Creators } = createActions({
     gethTransfer: ['data'],
 
     setLoading: ['data'],
-    gethRandomMnemonicSuccess:['data'],
     savePrivateKey:['data'],
     saveAddress:['data'],
+
+    gethRandomMnemonicSuccess:['data'],
+    gethRandomMnemonicFailure:null,
 
     removeKeyStore:['data']
 });
@@ -47,6 +50,7 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 export const WalletSelectors = {
+    getMnemonic: state => state.user.mnemonic,
 };
 
 /* ------------- Reducers ------------- */
@@ -55,8 +59,13 @@ export const saveAddress = (state, {data}) =>state.merge({...data});
 export const savePrivateKey = (state, {data}) =>
     state.merge({...data});
 
-export const gethRandomMnemonicSuccess = (state, {data}) =>
-    state.merge({...data});
+export const gethRandomMnemonicSuccess = (state, {data}) =>state.merge({...data});
+
+export const gethRandomMnemonicFailure = (state) => {
+    console.log('==========gethRandomMnemonicFailure==========================');
+    console.log(state);
+    console.log('==========gethRandomMnemonicFailure==========================');
+};
 
 export const setLoading = (state, {data}) =>
     state.merge({...data});

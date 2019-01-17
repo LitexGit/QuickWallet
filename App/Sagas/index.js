@@ -24,6 +24,7 @@ import {
     gethUnInit,
     gethIsUnlockAccount,
     gethUnlockAccount,
+    gethNewWallet,
     gethImportMnemonic,
     gethImportPrivateKey,
     gethExportPrivateKey,
@@ -65,6 +66,8 @@ export default function * root () {
         takeLatest(WalletTypes.GETH_UNLOCK_ACCOUNT, gethUnlockAccount),
         takeLatest(WalletTypes.GETH_UN_INIT, gethUnInit),
         takeLatest(WalletTypes.GETH_IS_UNLOCK_ACCOUNT, gethIsUnlockAccount),
+        takeLatest(WalletTypes.GETH_NEW_WALLET, gethNewWallet),
+
 
         // some sagas only receive an action
         takeLatest(StartupTypes.STARTUP, startup),

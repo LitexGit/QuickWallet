@@ -6,12 +6,14 @@ import WalletActions from '../Redux/WalletRedux';
 import { StackActions } from 'react-navigation';
 import Toast from 'react-native-root-toast';
 import BundleModule from '../Lib/NativeBridge/BundleModule';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+import I18n from '../I18n';
 
 
 export function * register (api, action) {
     try {
         const {data:params} = action;
-        const {address, type, nickname='', sharecode=''} = params;
+        const {address, type, nickname='', sharecode='', isPopToTop=true} = params;
 
         const os = DeviceInfo.getSystemName();
         const info = {
@@ -36,7 +38,15 @@ export function * register (api, action) {
             yield put(WalletActions.saveAddress({address}));
             yield put(UserActions.saveUserInfo({isLoginInfo:true}));
 
-            yield put(StackActions.popToTop());
+            if (isPopToTop) {
+                yield put(StackActions.popToTop());
+            } else {
+                const params = {
+                    status:true,
+                    msg:I18n.t('CreatedWalletSuccessfully')
+                };
+                EventEmitter.emit(EventKeys.IS_NEW_WALLET_SUCCESS, params);
+            }
             return;
         }
         Toast.show(msg, {

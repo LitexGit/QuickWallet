@@ -7,10 +7,8 @@ import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
 import SearchBar from '../Components/SearchCompont';
 import styles from './Styles/FoundScreenStyle';
-
 import {StackActions, NavigationActions } from 'react-navigation';
-import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
-
+// import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import FoundActions from '../Redux/FoundRedux';
 import {isValidUrl} from '../Lib/Utils';
 import Toast from 'react-native-root-toast';
@@ -30,26 +28,8 @@ class FoundScreen extends Component {
       };
   }
 
-  // https://reactnavigation.org/docs/en/stack-actions.html#reset 无效
-  _resetRoot=async()=>{
-      const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
-      const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
-      const isMount = await DeviceStorage.getItem(Keys.IS_NEW_SCREEN_DID_MOUNT) || false;
-
-      if (!isLogin && !isAgree && isMount) {
-          this.props.navigate.dispatch(StackActions.reset({
-              index: 0,
-              actions: [
-                  NavigationActions.navigate({ routeName: 'NewWalletScreen'}),
-                  // NavigationActions.navigate({ routeName: 'Layer2WebScreen'}),
-                  // NavigationActions.navigate({ routeName: 'BottomTab'})
-              ]
-          }));
-      }
-  }
-
   componentDidMount=()=>{
-      this._resetRoot();
+      // this._resetRoot();
       this.props.getBanner();
       this.props.getApps();
   }
@@ -161,3 +141,23 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundScreen);
+
+
+
+// // https://reactnavigation.org/docs/en/stack-actions.html#reset 无效
+// _resetRoot=async()=>{
+//     const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
+//     const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
+//     const isMount = await DeviceStorage.getItem(Keys.IS_NEW_SCREEN_DID_MOUNT) || false;
+
+//     if (!isLogin && !isAgree && isMount) {
+//         this.props.navigate.dispatch(StackActions.reset({
+//             index: 0,
+//             actions: [
+//                 NavigationActions.navigate({ routeName: 'NewWalletScreen'}),
+//                 // NavigationActions.navigate({ routeName: 'Layer2WebScreen'}),
+//                 // NavigationActions.navigate({ routeName: 'BottomTab'})
+//             ]
+//         }));
+//     }
+// };

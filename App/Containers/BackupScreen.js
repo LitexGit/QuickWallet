@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import styles from './Styles/BackupScreenStyle';
 import Feather from 'react-native-vector-icons/Feather';
 import { Colors } from '../Themes';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import Ramda from 'ramda';
-import Spinner from 'react-native-loading-spinner-overlay';
-import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import CommomBtnComponent from '../Components/CommomBtnComponent';
+import Toast from 'react-native-root-toast';
 
 
 class BackupScreen extends Component {
@@ -28,8 +27,11 @@ class BackupScreen extends Component {
   }
 
   _onPressCheck=()=>{
-      const {mnemonic, passphrase} = this.props;
-      this.props.gethImportMnemonic({mnemonic, passphrase});
+      Toast.show(I18n.t('BackupSuccessful'), {
+          shadow:true,
+          position: Toast.positions.CENTER,
+      });
+      this.props.popToTop();
   }
 
   _checkMnemonicSort=()=>{
@@ -104,8 +106,6 @@ class BackupScreen extends Component {
   }
 
   componentDidMount=()=>{
-      this.props.setLoading({loading:false});
-
       const {mnemonic} = this.props;
       const array = mnemonic.split(' ');
       array.sort(() => .5 - Math.random());
@@ -120,7 +120,6 @@ class BackupScreen extends Component {
   }
 
   render () {
-      const {loading} = this.props;
       const { pressArray, unPressArray, isSorted} = this.state;
       const isCanPress = isSorted && !unPressArray.length;
 
@@ -148,9 +147,6 @@ class BackupScreen extends Component {
 
       return (
           <View style={styles.container}>
-              <Spinner visible={loading} cancelable
-                  textContent={'Loading...'}
-                  textStyle={styles.spinnerText}/>
               <View style={styles.topSection}>
                   <View style={styles.topView}>
                       <Feather name={'check'} size={30} color={Colors.separateLineColor}/>
@@ -184,16 +180,14 @@ class BackupScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{ passphrase },
-        wallet:{ mnemonic, loading }
+        wallet:{ mnemonic }
     } = state;
-    return { mnemonic, loading, passphrase};
+    return { mnemonic};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
-    gethImportMnemonic: (params) => dispatch(WalletActions.gethImportMnemonic(params)),
+    popToTop: () => dispatch(StackActions.popToTop()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupScreen);
