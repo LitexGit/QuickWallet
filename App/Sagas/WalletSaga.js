@@ -61,7 +61,7 @@ export function *gethUnlockAccount (action) {
 
         DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         yield put(WalletActions.saveAddress({address}));
-        yield put(UserActions.saveUserInfo({passphrase, isLoginInfo:true}));
+        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
         EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
 
         yield put(WalletActions.setLoading({loading:false}));
@@ -137,7 +137,6 @@ export function *gethImportMnemonic (action) {
 
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
-        yield put(UserActions.saveUserInfo({passphrase}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
@@ -161,7 +160,6 @@ export function *gethImportPrivateKey (action) {
 
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
-        yield put(UserActions.saveUserInfo({passphrase}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
@@ -178,16 +176,6 @@ export function *gethExportPrivateKey (action) {
         const {data:params} = action;
         const {passphrase=''} = params;
         yield put(WalletActions.setLoading({loading:true}));
-
-        const isUnlockResult =  yield GethModule.isUnlockAccount();
-        const isUnlockMap = GethModule.getResolveMap(isUnlockResult);
-        const {isUnlock} = isUnlockMap;
-
-        if (!isUnlock) {
-            const unlockResult =  yield GethModule.unlockAccount({passphrase});
-            const unlockMap = GethModule.getResolveMap(unlockResult);
-            const {address} = unlockMap;
-        }
 
         const result = yield GethModule.exportPrivateKey({passphrase});
         const map = GethModule.getResolveMap(result);
@@ -216,7 +204,6 @@ export function *gethTransfer (action) {
         const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress});
         const map = GethModule.getResolveMap(result);
         const {txHash} = map;
-        yield put(UserActions.saveUserInfo({passphrase}));
         yield put(WalletActions.setLoading({loading:false}));
         yield put(StackActions.pop());
     } catch (error) {

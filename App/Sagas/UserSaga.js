@@ -95,7 +95,7 @@ export function * logout () {
     DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, false);
     DeviceStorage.saveItem(Keys.WALLET_ADDRESS, '');
 
-    yield put(UserActions.saveUserInfo({isLoginInfo:false, passphrase:''}));
+    yield put(UserActions.saveUserInfo({isLoginInfo:false}));
 
     yield put(WalletActions.savePrivateKey({privateKey:''}));
 

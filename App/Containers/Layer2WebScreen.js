@@ -20,6 +20,7 @@ import HeaderLeftComponent from '../Components/HeaderLeftComponent';
 import { StackActions } from 'react-navigation';
 
 // https://stackoverrun.com/cn/q/12932611
+
 class Layer2WebScreen extends Component {
   static navigationOptions = ({ navigation }) => {
       const { title=''} = navigation.state.params;
@@ -46,6 +47,7 @@ class Layer2WebScreen extends Component {
           goBackEnabled:false,
       };
       this.signInfo = {};
+      this.passphrase='';
   }
 
   componentDidMount() {
@@ -79,45 +81,6 @@ _goBack=()=>{
     this.props.pop();
 }
 
-_signTxCancel=()=>{
-    this.setState({
-        isShowSignTx:false,
-    });
-}
-
-_signTxConfirm=()=>{
-    this.setState({
-        isShowSignTx:false,
-    });
-    this.props.gethIsUnlockAccount();
-}
-
-_signMsgCancel=()=>{
-    this.setState({
-        isShowSignMsg:false,
-    });
-}
-
-_signMsgConfirm=()=>{
-    this.setState({
-        isShowSignMsg:false,
-    });
-    this.props.gethIsUnlockAccount();
-}
-
-_pswdCancel=()=>{
-    this.setState({
-        isShowPassphrase:false,
-    });
-}
-
-_pswdConfirm=(passphrase)=>{
-    this.setState({
-        isShowPassphrase:false,
-    });
-    this.props.gethUnlockAccount({passphrase});
-}
-
 _onPressRefresh=()=>{
     this.webview.reload();
 }
@@ -144,12 +107,67 @@ _onNavigationStateChange=(navState)=>{
     });
 }
 
+// passphrase
+_pswdCancel=()=>{
+    this.setState({
+        isShowPassphrase:false,
+    });
+}
+
+_pswdConfirm=(passphrase)=>{
+    this.passphrase = passphrase;
+    this.setState({
+        isShowPassphrase:false,
+    });
+    const {name} = this.signInfo;
+    switch (name) {
+    case 'signTransaction':
+        this._signInfo();
+        break;
+    case 'signMessage':
+        this.props.gethUnlockAccount({passphrase});
+        break;
+
+    default:
+        break;
+    }
+
+}
+
+// signTxAlert
+_signTxCancel=()=>{
+    this.setState({
+        isShowSignTx:false,
+    });
+}
+
+_signTxConfirm=()=>{
+    this.setState({
+        isShowSignTx:false,
+        isShowPassphrase:true,
+    });
+}
+
+
+// signMsgAlert
+_signMsgCancel=()=>{
+    this.setState({
+        isShowSignMsg:false,
+    });
+}
+
+_signMsgConfirm=()=>{
+    this.setState({
+        isShowSignMsg:false,
+    });
+    this.props.gethIsUnlockAccount();
+}
+
+// console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
+// console.log(JSON.parse(evt.nativeEvent.data));
+// console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
 
 _onMessage=(evt)=>{
-    // console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
-    // console.log(JSON.parse(evt.nativeEvent.data));
-    // console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
-
     const {isLoginInfo} = this.props;
     if (!isLoginInfo) {
         Toast.show(I18n.t('UnLoginRemind'), {
@@ -196,8 +214,7 @@ _signInfo=()=>{
 
 _signTransaction=async({signInfo, id=8888})=>{
     try {
-        const {passphrase=''} = this.props;
-        const signHash = await GethModule.signTransaction({passphrase, signInfo});
+        const signHash = await GethModule.signTransaction({passphrase:this.passphrase, signInfo});
         const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
@@ -210,8 +227,8 @@ _signTransaction=async({signInfo, id=8888})=>{
 
 _signMessage = async ({data:message='', id=8888})=>{
     try {
-        const {passphrase=''} = this.props;
-        const signHash = await GethModule.signMessage({passphrase, message});
+        const {address} = this.props;
+        const signHash = await GethModule.signMessage({address, message});
         const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
@@ -273,10 +290,10 @@ render  () {
 
 const mapStateToProps = (state) => {
     const {
-        user:{web3Provider, passphrase, isLoginInfo, address},
+        user:{web3Provider, isLoginInfo, address},
         wallet:{ loading }
     } = state;
-    return { loading, web3Provider, passphrase, isLoginInfo, address};
+    return { loading, web3Provider, isLoginInfo, address};
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -39,7 +39,6 @@ export const INITIAL_STATE = Immutable({
     error: null,
 
     address:'',
-    passphrase:'',
     nickname:'',
     sharecode:'',
 

@@ -137,6 +137,10 @@ class TransferScreen extends Component {
       );
   }
 
+  componentDidMount=()=>{
+      this.props.setLoading({loading:false});
+  }
+
   render () {
       const isCanTransfer = true;
 
@@ -233,6 +237,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    setLoading: (params) => dispatch(WalletActions.setLoading(params)),
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
 });

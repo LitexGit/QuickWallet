@@ -78,7 +78,6 @@ class NewWalletScreen extends Component {
       let error = '密码不少于8位字符';
       if (this.password.length >= 8 && this.confirm.length >= 8) {
           if (this.password === this.confirm) {
-              this.props.saveUserInfo({nickname:this.name, passphrase:this.password});
               this.props.gethNewWallet({passphrase:this.password});
               return;
           }
@@ -109,14 +108,8 @@ class NewWalletScreen extends Component {
               shadow:true,
               position: Toast.positions.CENTER,
           });
-          this.afterTimer = setTimeout(()=>{
-              this.props.navigate('PreBackupScreen');
-          }, 1000);
+          this.props.navigate('PreBackupScreen');
       });
-  }
-
-  componentWillUnmount=()=>{
-      this.afterTimer && clearTimeout(this.afterTimer);
   }
 
   render () {

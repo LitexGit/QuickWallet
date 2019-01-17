@@ -59,8 +59,8 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
 }
 
 
-async function signMessage({passphrase, message}){
-    const result = await gethModule.signMessage(passphrase, message);
+async function signMessage({address, message}){
+    const result = await gethModule.signMessage(address, message);
     return getResolveMap(result);
 }
 
