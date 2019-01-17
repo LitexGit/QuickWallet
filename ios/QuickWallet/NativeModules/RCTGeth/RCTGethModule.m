@@ -220,14 +220,30 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
 RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fromAddress toAddress:(NSString *)toAddress value:(NSString *)value gas:(NSString *)gas  resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   _resolveBlock = resolver;
   _rejectBlock = reject;
+  
   NSError *error = nil;
   
-  if (!self.account || !self.keyStore || !self.ethClient) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
-    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
+  if (!self.account) {
+    self.account = [self getAccount:passphrase];
+  }
+  if (!self.keyStore) {
+    self.keyStore = [self getKeyStore:passphrase];
+  }
+  if (self.ethClient) {
+    self.ethClient = [self getEthClient];
+  }
+  if (!self.account || !self.keyStore) {
+    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1001 userInfo:@{@"info":@"keyStore does not exist"}];
+    _rejectBlock(@"-1001", @"keyStore does not exist", error);
     return;
   }
   
+  BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
+  if (!isUnlock || error) {
+    _rejectBlock(@"-1010", @"Failed to unlock wallet", error);
+    return;
+  }
+
   GethContext *context = [[GethContext alloc] init];
   GethAddress *from = [[GethAddress alloc] initFromHex:fromAddress];
   int64_t number = -1;
@@ -268,9 +284,19 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   _rejectBlock = reject;
   NSError *error = nil;
   
-  if (!self.account || !self.keyStore || !self.ethClient) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1008 userInfo:@{@"info":@"Wallet not unlocked"}];
-    _rejectBlock(@"-1009", @"Wallet not unlocked", error);
+  if (!self.account) {
+    self.account = [self getAccount:passphrase];
+  }
+  if (!self.keyStore) {
+    self.keyStore = [self getKeyStore:passphrase];
+  }
+  if (self.ethClient) {
+    self.ethClient = [self getEthClient];
+  }
+  
+  BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
+  if (isUnlock || error) {
+    _rejectBlock(@"-1010", @"Failed to unlock wallet", error);
     return;
   }
 
@@ -453,6 +479,46 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   NSString *filedir = [keydir stringByAppendingPathComponent:fileName];
   [[NSUserDefaults standardUserDefaults] setObject:filedir forKey:keyStoreFileDir];
+}
+
+
+- (GethEthereumClient *)getEthClient{
+  NSString *contactIp = [[NSUserDefaults standardUserDefaults] objectForKey:contactIpKey];
+  return [[GethEthereumClient alloc] init:contactIp];
+}
+
+- (GethKeyStore *)getKeyStore:(NSString *)passphrase{
+  
+  NSError *error = nil;
+  NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
+  [FileManager createDirectoryIfNotExists:keyTemp];
+  self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
+  
+  NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
+  BOOL isExists = [FileManager fileExistsAtPath:keydir];
+  if (!isExists) return nil;
+  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
+
+  [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
+  if (error) return nil;
+  return self.keyStore;
+}
+
+
+- (GethAccount *)getAccount:(NSString *)passphrase{
+  NSError *error = nil;
+  self.keyStore = [self getKeyStore:passphrase];
+  if (!self.keyStore) return nil;
+  
+  NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
+  BOOL isExists = [FileManager fileExistsAtPath:keydir];
+  if (!isExists) return nil;
+  
+  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
+  
+  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
+  if (error) return nil;
+  return self.account;
 }
 
 @end

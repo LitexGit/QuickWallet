@@ -11,7 +11,6 @@ import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
-import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
 import {isValidAddress} from '../Lib/Utils';
@@ -105,11 +104,10 @@ class TransferScreen extends Component {
   _signConfirm=()=>{
       this.setState({
           isShowSignTx:false,
+          isShowPswdInput:true,
       });
-      this.props.gethIsUnlockAccount();
   }
 
-  // 解锁钱包
   _pswdInputCancel=()=>{
       this.setState({
           isShowPswdInput:false,
@@ -119,12 +117,11 @@ class TransferScreen extends Component {
       this.setState({
           isShowPswdInput:false,
       });
-      this.props.gethUnlockAccount({passphrase});
+      this._transfer(passphrase);
   }
 
-
-  _transfer=()=>{
-      const {passphrase='', address='', selectedToken} = this.props;
+  _transfer=(passphrase)=>{
+      const { address='', selectedToken} = this.props;
       const {Tokenaddress:tokenAddress, Symbol:symbol, Decimal:decimal} = selectedToken;
       const {inputBalance, inputAddress, inputGas} = this.state;
 
@@ -138,24 +135,6 @@ class TransferScreen extends Component {
           decimal,
           tokenAddress}
       );
-  }
-
-  componentDidMount=()=>{
-      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
-          if (isUnlock) {
-              this._transfer();
-              return;
-          }
-          this.setState({
-              isShowPswdInput:true,
-          });
-      });
-      this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, this._transfer);
-  }
-
-  componentWillUnmount=()=>{
-      this.lockListener.remove();
-      this.isUnlockListener.remove();
   }
 
   render () {
@@ -246,17 +225,15 @@ class TransferScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{address, passphrase, currency},
+        user:{address, currency},
         assets:{selectedToken},
         wallet:{loading}
     } = state;
-    return { selectedToken, passphrase, address, loading, currency};
+    return { selectedToken, address, loading, currency};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
-    gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
-    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
     gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
 });
 
