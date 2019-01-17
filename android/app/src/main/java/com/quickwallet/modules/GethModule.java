@@ -62,7 +62,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             if (!isLogin) return;
             if (TextUtils.isEmpty(contactIp) || contactIp.length() == 0) return;
             if (account == null || keyStore == null) return;
-            ethClient = new EthereumClient(contactIp);
+            ethClient = getGethEthClient();
         } catch (Exception e) {
             Log.d("err", e.getMessage());
         }
@@ -73,10 +73,20 @@ public class GethModule extends ReactContextBaseJavaModule {
         if (account != null) account = null;
         if (keyStore != null) keyStore = null;
         if (ethClient != null) ethClient = null;
+
         String keyTemp = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
         FileUtil.deleteDirectory(keyTemp);
         String keydir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
         FileUtil.deleteDirectory(keydir);
+    }
+
+    @ReactMethod
+    public void newWallet(String passphrase, Promise promise) {
+
+        WritableMap map = Arguments.createMap();
+        map.putString("mnemonic","mnemonic");
+        map.putString("address","address");
+        promise.resolve(map);
     }
 
     @ReactMethod
@@ -95,26 +105,22 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void unlockAccount( String passphrase, Promise promise ) {
         try {
-            String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
-            ethClient = new EthereumClient(contactIp);
-
-            String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
-            FileUtil.createDir(tempDir);
-            keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
-
-
-            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
-            boolean isExists =  FileUtil.isFileExists(keydir);
-            if (!isExists){
+            if (ethClient == null){
+                ethClient = getGethEthClient();
+            }
+            if (account == null){
+                account = getGethAccount(passphrase);
+            }
+            if (keyStore == null){
+                keyStore = getGethKeyStore(passphrase);
+            }
+            if (account == null ||keyStore == null ){
                 Exception err = new Exception();
                 promise.reject("-1001",err);
                 return;
             }
 
-            File keyFile = FileUtil.getFile(keydir);
-            byte[] data = ByteUtil.getFileToByte(keyFile);
-
-            account = keyStore.importKey(data, passphrase, passphrase);
+            keyStore.unlock(account, passphrase);
             String address = account.getAddress().getHex();
 
             WritableMap map = Arguments.createMap();
@@ -143,8 +149,9 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void importPrivateKey( String privateKey, String passphrase, Promise promise ) {
         try {
-            String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
-            ethClient = new EthereumClient(contactIp);
+            if (ethClient == null){
+                ethClient = getGethEthClient();
+            }
 
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
             FileUtil.deleteDirectory(filesDir);
@@ -166,8 +173,9 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void importMnemonic( String mnemonic, String passphrase, Promise promise ) {
         try {
-            String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
-            ethClient = new EthereumClient(contactIp);
+            if (ethClient == null){
+                ethClient = getGethEthClient();
+            }
 
             String filesDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStore";
             FileUtil.deleteDirectory(filesDir);
@@ -191,21 +199,20 @@ public class GethModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void exportPrivateKey( String passphrase, Promise promise ) {
         try {
-            String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
-            FileUtil.createDir(tempDir);
-            keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
-
-            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
-            boolean isExists =  FileUtil.isFileExists(keydir);
-            if (!isExists){
+            if (account == null){
+                account = getGethAccount(passphrase);
+            }
+            if (keyStore == null){
+                keyStore = getGethKeyStore(passphrase);
+            }
+            if (account == null ||keyStore == null ){
                 Exception err = new Exception();
                 promise.reject("-1001",err);
                 return;
             }
-            File keyFile = FileUtil.getFile(keydir);
-            byte[] data = ByteUtil.getFileToByte(keyFile);
 
-            account = keyStore.importKey(data, passphrase, passphrase);
+            keyStore.unlock(account, passphrase);
+
             String privateKey = keyStore.exportECSDAKeyHex(account, passphrase);
 
             WritableMap map = Arguments.createMap();
@@ -227,12 +234,23 @@ public class GethModule extends ReactContextBaseJavaModule {
             Promise promise
     ) {
         try {
-            if (account == null || keyStore == null || ethClient == null){
-                // Wallet not unlocked
+            if (ethClient == null){
+                ethClient = getGethEthClient();
+            }
+            if (account == null){
+                account = getGethAccount(passphrase);
+            }
+            if (keyStore == null){
+                keyStore = getGethKeyStore(passphrase);
+            }
+            if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1007",err);
+                promise.reject("-1001",err);
                 return;
             }
+
+            keyStore.unlock(account, passphrase);
+
             Address from = new Address(fromAddress);
             long number = -1;
             long nonce = 0;
@@ -272,12 +290,23 @@ public class GethModule extends ReactContextBaseJavaModule {
             Promise promise
     ) {
         try {
-            if (account == null || keyStore == null || ethClient == null){
-                // Wallet not unlocked
+            if (ethClient == null){
+                ethClient = getGethEthClient();
+            }
+            if (account == null){
+                account = getGethAccount(passphrase);
+            }
+            if (keyStore == null){
+                keyStore = getGethKeyStore(passphrase);
+            }
+            if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1007",err);
+                promise.reject("-1001",err);
                 return;
             }
+
+            keyStore.unlock(account, passphrase);
+
             Address from = new Address(fromAddress);
             long number = -1;
             long nonce = 0;
@@ -323,19 +352,22 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void signMessage(
-            String passphrase,
+            String from,
             String message,
             Promise promise
     ) {
         try {
-            if (account == null || keyStore == null || ethClient == null){
+            if (account == null || keyStore == null){
                 Exception err = new Exception();
                 promise.reject("-1007",err);
                 return;
             }
 
             byte[] unSignHash = org.web3j.crypto.Hash.sha3(message.getBytes());
-            byte[] signByte = keyStore.signHashPassphrase(account, passphrase, unSignHash);
+            Address address = new Address(from);
+            byte[] signByte =  keyStore.signHash(address, unSignHash);
+
+//            keyStore.signHashPassphrase(account, passphrase, unSignHash);
             String data = Numeric.toHexString(signByte);
 
             WritableMap map = Arguments.createMap();
@@ -353,11 +385,22 @@ public class GethModule extends ReactContextBaseJavaModule {
             Promise promise
     ) {
         try {
-            if (account == null || keyStore == null || ethClient == null){
+            if (ethClient == null){
+                ethClient = getGethEthClient();
+            }
+            if (account == null){
+                account = getGethAccount(passphrase);
+            }
+            if (keyStore == null){
+                keyStore = getGethKeyStore(passphrase);
+            }
+            if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1007",err);
+                promise.reject("-1001",err);
                 return;
             }
+
+            keyStore.unlock(account, passphrase);
 
             String fromAddress = signInfo.getString("from");
             Address from = new Address(fromAddress);
@@ -411,6 +454,60 @@ public class GethModule extends ReactContextBaseJavaModule {
                     + Character.digit(s.charAt(i+1), 16));
         }
         return data;
+    }
+
+    public EthereumClient getGethEthClient(){
+        String contactIp = String.valueOf(sharedPreferencesHelper.getSharedPreference(CONTACT_IP_KEY, ""));
+        ethClient = new EthereumClient(contactIp);
+        return ethClient;
+    }
+
+    public KeyStore getGethKeyStore(String passphrase){
+
+        try {
+            String tempDir = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/keyStoreTemp";
+            FileUtil.createDir(tempDir);
+            keyStore = new KeyStore(tempDir, SCRYPT_N,  SCRYPT_P);
+
+
+            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+            boolean isExists =  FileUtil.isFileExists(keydir);
+            if (!isExists){
+                return null;
+            }
+
+            File keyFile = FileUtil.getFile(keydir);
+            byte[] data = ByteUtil.getFileToByte(keyFile);
+
+            keyStore.importKey(data, passphrase, passphrase);
+            return keyStore;
+
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    public Account getGethAccount(String passphrase){
+        try {
+            KeyStore keyStore = getGethKeyStore(passphrase);
+            if (keyStore == null){
+                return null;
+            }
+            String keydir = String.valueOf(sharedPreferencesHelper.getSharedPreference(KEY_DIR, ""));
+            boolean isExists =  FileUtil.isFileExists(keydir);
+            if (!isExists){
+                return null;
+            }
+
+            File keyFile = FileUtil.getFile(keydir);
+            byte[] data = ByteUtil.getFileToByte(keyFile);
+
+            account = keyStore.importKey(data, passphrase, passphrase);
+            return account;
+
+        } catch (Exception e){
+            return null;
+        }
     }
 
 

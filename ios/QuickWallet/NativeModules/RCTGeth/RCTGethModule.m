@@ -113,8 +113,8 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
 
 
 RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
-  NSError *error =nil;
   
+  NSError *error =nil;
   NSString *mnemonic = GethCreateRandomMnemonic(&error);
   if (error) {
     reject(@"-1003", @"Generate mnemonic word exceptions", error);
