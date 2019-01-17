@@ -2,7 +2,7 @@ import { call, put, select, all } from 'redux-saga/effects';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
-import { StackActions } from 'react-navigation';
+import { StackActions ,NavigationActions} from 'react-navigation';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Toast from 'react-native-root-toast';
@@ -178,13 +178,25 @@ export function *gethExportPrivateKey (action) {
         const {data:params} = action;
         const {passphrase=''} = params;
         yield put(WalletActions.setLoading({loading:true}));
+
+        const isUnlockResult =  yield GethModule.isUnlockAccount();
+        const isUnlockMap = GethModule.getResolveMap(isUnlockResult);
+        const {isUnlock} = isUnlockMap;
+
+        if (!isUnlock) {
+            const unlockResult =  yield GethModule.unlockAccount({passphrase});
+            const unlockMap = GethModule.getResolveMap(unlockResult);
+            const {address} = unlockMap;
+        }
+
         const result = yield GethModule.exportPrivateKey({passphrase});
         const map = GethModule.getResolveMap(result);
         const {privateKey} = map;
-
         const displayKey = GethModule.getDisplayedPrivateKey(privateKey);
+
         yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
-        yield put(UserActions.saveUserInfo({passphrase}));
+
+        yield put(NavigationActions.navigate({routeName:'ExportScreen'}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {

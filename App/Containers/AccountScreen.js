@@ -13,9 +13,9 @@ import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Toast from 'react-native-root-toast';
-import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import  Identicon from 'identicon.js';
 import { Avatar } from 'react-native-elements';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -28,37 +28,14 @@ class AccountScreen extends Component {
       this.state={
           isInit:false,
       };
-      this.passphrase = '';
   }
-
-  componentDidMount=()=>{
-      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
-          if (isUnlock) {
-              const {passphrase=''} = this.props;
-              this.props.navigate('ExportScreen', {passphrase});
-              return;
-          }
-          this.props.gethUnlockAccount({passphrase:this.passphrase});
-      });
-      this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, ()=>{
-          const {passphrase=''} = this.props;
-          this.props.navigate('ExportScreen', {passphrase});
-      });
-  }
-
-  componentWillUnmount=()=>{
-      this.lockListener.remove();
-      this.isUnlockListener.remove();
-  }
-
 
   _onPressCancel=()=>{
       this.setState({ isInit:false });
   }
   _onPressConfirm=(passphrase)=>{
-      this.passphrase = passphrase;
       this.setState({ isInit:false });
-      this.props.gethIsUnlockAccount();
+      this.props.gethExportPrivateKey({passphrase});
   }
 
   _onPressBackup=()=>{
@@ -93,7 +70,7 @@ class AccountScreen extends Component {
   render () {
 
       const {isInit} = this.state;
-      const {address, nickname, sharecode} = this.props;
+      const {address, nickname, sharecode, loading} = this.props;
       const settings = {'avatar':address, 'account': nickname, 'inviteCode':sharecode};
 
       const avatar = new Identicon(address).toString();
@@ -114,6 +91,9 @@ class AccountScreen extends Component {
 
       return (
           <View style={styles.container}>
+              <Spinner visible={loading} cancelable
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerText}/>
               <PassphraseInputAlert isInit={isInit} onPressCancel={()=>this._onPressCancel()} onPressConfirm={(password)=>this._onPressConfirm(password)}/>
               <View style={styles.topSection}>
                   {infoView}
@@ -142,16 +122,17 @@ class AccountScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{nickname, sharecode, address, passphrase}
+        wallet:{loading},
+        user:{nickname, sharecode, address}
     } = state;
-    return {address, nickname, sharecode, passphrase};
+    return {address, nickname, sharecode, loading};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     logout: () => dispatch(UserActions.logout()),
-    gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
-    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+    gethExportPrivateKey: (params) => dispatch(WalletActions.gethExportPrivateKey(params)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);

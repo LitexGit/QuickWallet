@@ -208,27 +208,6 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   _rejectBlock = reject;
   
   NSError *error = nil;
-  
-  NSString *keyTemp = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystoreTemp"];
-  [FileManager createDirectoryIfNotExists:keyTemp];
-  self.keyStore = [[GethKeyStore alloc] init:keyTemp scryptN:GethStandardScryptN scryptP:GethStandardScryptP];
-  
-  NSString *keydir = [[NSUserDefaults standardUserDefaults] objectForKey:keyStoreFileDir];
-  BOOL isExists = [FileManager fileExistsAtPath:keydir];
-  if (!isExists) {
-    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1001 userInfo:@{@"info":@"keyStore does not exist"}];
-    _rejectBlock(@"-1001", @"keyStore does not exist", error);
-    return;
-  }
-  
-  NSData *data = [[NSFileManager defaultManager] contentsAtPath:keydir];
-  
-  self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
-  if (error) {
-    _rejectBlock(@"-1007", @"Import keyStore file exception", error);
-    return;
-  }
-
   NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&error];
   if (error) {
     _rejectBlock(@"-1008", @"Export private key exception", error);
