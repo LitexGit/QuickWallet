@@ -41,6 +41,8 @@
 		23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */; };
 		23B939D421EA081700EA6962 /* RCTLayer2Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B939D321EA081700EA6962 /* RCTLayer2Module.m */; };
 		23BE331721EF519500F5D563 /* L2mobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BE331621EF519500F5D563 /* L2mobile.framework */; };
+		23BE337621EF786200F5D563 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE334321EF786200F5D563 /* iVersion.m */; };
+		23BE337721EF786200F5D563 /* iVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23BE334421EF786200F5D563 /* iVersion.bundle */; };
 		23D0A38121DB38E5000E3005 /* SignModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D0A38021DB38E5000E3005 /* SignModel.m */; };
 		2BF3AF0578C646B99DDB954A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013884A82ADA4FEAA514C867 /* Zocial.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -501,6 +503,9 @@
 		23B939D221EA081700EA6962 /* RCTLayer2Module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTLayer2Module.h; sourceTree = "<group>"; };
 		23B939D321EA081700EA6962 /* RCTLayer2Module.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTLayer2Module.m; sourceTree = "<group>"; };
 		23BE331621EF519500F5D563 /* L2mobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = L2mobile.framework; sourceTree = "<group>"; };
+		23BE334221EF786200F5D563 /* iVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iVersion.h; sourceTree = "<group>"; };
+		23BE334321EF786200F5D563 /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
+		23BE334421EF786200F5D563 /* iVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iVersion.bundle; sourceTree = "<group>"; };
 		23D0A37F21DB38E5000E3005 /* SignModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignModel.h; sourceTree = "<group>"; };
 		23D0A38021DB38E5000E3005 /* SignModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignModel.m; sourceTree = "<group>"; };
 		2A8E4B651E764C47B3F39AAA /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -733,6 +738,7 @@
 		2322F53521D0A2F200F9F04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23BE334121EF786200F5D563 /* iVersion */,
 				23BE331621EF519500F5D563 /* L2mobile.framework */,
 				23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */,
 				2397299C21D3C00600047AE0 /* Geth.framework */,
@@ -913,6 +919,16 @@
 				23B939D321EA081700EA6962 /* RCTLayer2Module.m */,
 			);
 			path = RCTLayer2;
+			sourceTree = "<group>";
+		};
+		23BE334121EF786200F5D563 /* iVersion */ = {
+			isa = PBXGroup;
+			children = (
+				23BE334221EF786200F5D563 /* iVersion.h */,
+				23BE334321EF786200F5D563 /* iVersion.m */,
+				23BE334421EF786200F5D563 /* iVersion.bundle */,
+			);
+			path = iVersion;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -1630,6 +1646,7 @@
 				E945214CAFF14531BBB9271B /* FontAwesome5_Brands.ttf in Resources */,
 				8F9BAB8C5D084DBFAC62552D /* FontAwesome5_Regular.ttf in Resources */,
 				E86581114AB94105AA501CA2 /* FontAwesome5_Solid.ttf in Resources */,
+				23BE337721EF786200F5D563 /* iVersion.bundle in Resources */,
 				51382BF3C8464C878A486E23 /* Foundation.ttf in Resources */,
 				F3F6546B68304B0492B9DB90 /* Ionicons.ttf in Resources */,
 				3CDBA95915AD4408B6C885A1 /* MaterialCommunityIcons.ttf in Resources */,
@@ -1771,6 +1788,7 @@
 				2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */,
 				23B939D421EA081700EA6962 /* RCTLayer2Module.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				23BE337621EF786200F5D563 /* iVersion.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2397295521D3972A00047AE0 /* FileManager.m in Sources */,
 				23D0A38121DB38E5000E3005 /* SignModel.m in Sources */,
