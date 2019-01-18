@@ -8,6 +8,7 @@
 
 #import "RCTLayer2Module.h"
 #import <L2mobile/L2mobile.h>
+#import "FileManager.h"
 
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
@@ -40,7 +41,10 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(initL2SDK:(NSString*)cpKey address:(NSString*)address socketUrl:(NSString*)socketUrl initCallBack:(RCTResponseSenderBlock)callback){
   
   NSError *error = nil;
-  NSString *dataPath = @".................";
+  
+  NSString *dataPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"puppet"];
+  [FileManager createDirectoryIfNotExists:dataPath];
+  
   BOOL isInit = [_instance.layer2 initL2SDK:cpKey dataPath:dataPath address:address socketUrl:socketUrl signHandler:self error:&error];
   if (!isInit || error) {
     callback(@[@[error, [NSNull null]]]);
@@ -76,7 +80,7 @@ RCT_EXPORT_METHOD(call:(NSString*)command body:(NSString*)body callback:(RCTResp
 }
 
 - (void)signMsg:(NSString *)msg callback:(id<L2mobileCallback>)callback {
-  // SignTX
+  // SignMsg
   NSString *error = @"callback-error-msg";
   NSDictionary *info = @{@"data":@"0XBKHSJCKSCBSKCSJACNB"};
   NSString *json = [self dictToJsonStr:info];

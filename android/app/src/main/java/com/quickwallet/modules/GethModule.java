@@ -41,6 +41,19 @@ public class GethModule extends ReactContextBaseJavaModule {
     private final long SCRYPT_N = Geth.StandardScryptN; // 1024
     private final long SCRYPT_P = Geth.StandardScryptP; // 1
 
+
+    private static final String E_UNLOCK_ACCOUNT_ERROR = "E_UNLOCK_ACCOUNT_ERROR";
+    private static final String E_UNLOCK_WALLET_ERROR = "E_UNLOCK_WALLET_ERROR";
+    private static final String E_RANDOM_MNEMONIC_ERROR = "E_RANDOM_MNEMONIC_ERROR";
+    private static final String E_IMPORT_ECDSAKEY_ERROR = "E_IMPORT_ECDSAKEY_ERROR";
+    private static final String E_IMPORT_MNEMONIC_ERROR = "E_IMPORT_MNEMONIC_ERROR";
+    private static final String E_EXPORT_ECDSAKEY_ERROR = "E_EXPORT_ECDSAKEY_ERROR";
+    private static final String E_SEND_TRANSCTION_ERROR = "E_SEND_TRANSCTION_ERROR";
+    private static final String E_WALLET_UNLOCK_ERROR = "E_WALLET_UNLOCK_ERROR";
+    private static final String E_SIGN_HASH_ERROR = "E_SIGN_HASH_ERROR";
+    private static final String E_SIGN_TRANSCTION_ERROR = "E_SIGN_TRANSCTION_ERROR";
+
+
     private SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getReactApplicationContext(),GETH_INFO);
 
 
@@ -55,17 +68,13 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init( boolean isLogin, String contactIp, String chainId ) {
-        try {
-            sharedPreferencesHelper.put(CONTACT_IP_KEY, contactIp);
-            sharedPreferencesHelper.put(CHAIN_ID_KEY, chainId);
+        sharedPreferencesHelper.put(CONTACT_IP_KEY, contactIp);
+        sharedPreferencesHelper.put(CHAIN_ID_KEY, chainId);
 
-            if (!isLogin) return;
-            if (TextUtils.isEmpty(contactIp) || contactIp.length() == 0) return;
-            if (account == null || keyStore == null) return;
-            ethClient = getGethEthClient();
-        } catch (Exception e) {
-            Log.d("err", e.getMessage());
-        }
+        if (!isLogin) return;
+        if (TextUtils.isEmpty(contactIp) || contactIp.length() == 0) return;
+        if (account == null || keyStore == null) return;
+        ethClient = getGethEthClient();
     }
 
     @ReactMethod
@@ -116,7 +125,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             }
             if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1001",err);
+                promise.reject(E_UNLOCK_ACCOUNT_ERROR, err);
                 return;
             }
 
@@ -128,7 +137,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1002",e);
+            promise.reject(E_UNLOCK_WALLET_ERROR,e);
         }
     }
 
@@ -140,7 +149,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("mnemonic",mnemonic);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1003",e);
+            promise.reject(E_RANDOM_MNEMONIC_ERROR,e);
         }
     }
 
@@ -166,7 +175,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("address",address);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1004",e);
+            promise.reject(E_IMPORT_ECDSAKEY_ERROR,e);
         }
     }
 
@@ -192,7 +201,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1005",e);
+            promise.reject(E_IMPORT_MNEMONIC_ERROR, e);
         }
     }
 
@@ -207,7 +216,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             }
             if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1001",err);
+                promise.reject(E_UNLOCK_ACCOUNT_ERROR, err);
                 return;
             }
 
@@ -220,7 +229,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1006",e.getMessage());
+            promise.reject(E_EXPORT_ECDSAKEY_ERROR, e);
         }
     }
 
@@ -245,7 +254,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             }
             if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1001",err);
+                promise.reject(E_UNLOCK_ACCOUNT_ERROR, err);
                 return;
             }
 
@@ -275,7 +284,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("txHash",txHash);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1008",e);
+            promise.reject(E_SEND_TRANSCTION_ERROR, e);
         }
     }
 
@@ -301,7 +310,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             }
             if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1001",err);
+                promise.reject(E_UNLOCK_ACCOUNT_ERROR,err);
                 return;
             }
 
@@ -346,7 +355,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("txHash",txHash);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1009",e.getMessage());
+            promise.reject(E_SEND_TRANSCTION_ERROR,e.getMessage());
         }
     }
 
@@ -359,7 +368,7 @@ public class GethModule extends ReactContextBaseJavaModule {
         try {
             if (account == null || keyStore == null){
                 Exception err = new Exception();
-                promise.reject("-1007",err);
+                promise.reject(E_WALLET_UNLOCK_ERROR,err);
                 return;
             }
 
@@ -374,7 +383,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             map.putString("data",data);
             promise.resolve(map);
         } catch (Exception e) {
-            promise.reject("-1003",e);
+            promise.reject(E_SIGN_HASH_ERROR,e);
         }
     }
 
@@ -396,7 +405,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             }
             if (account == null ||keyStore == null ){
                 Exception err = new Exception();
-                promise.reject("-1001",err);
+                promise.reject(E_UNLOCK_ACCOUNT_ERROR,err);
                 return;
             }
 
@@ -435,7 +444,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.resolve(map);
 
         } catch (Exception e) {
-            promise.reject("-1003",e);
+            promise.reject(E_SIGN_TRANSCTION_ERROR,e);
         }
     }
 
