@@ -107,9 +107,6 @@
   "ChoosePath":"选择路径-已经没有了",
   "Default":"默认",
 
-
-  "NoRecord":"暂无记录 ",
-
   "LoadingAction":"加载更多",
   "BackUpAccount":"备份此账户",
   "TransferAction":"发起转账",
@@ -128,5 +125,8 @@
   "InvalidAddressError":"请输入有效的收款地址",
   "InvalidUrlError":"请输入合法的Dapp地址",
   "CreatedWalletSuccessfully":"创建成功",
-  "BackupSuccessful":"备份成功"
+
+  "NoRecord":"暂无记录 ",
+  "NoMoewRecord":"没有更多记录了"
+
 }

@@ -5,7 +5,10 @@ import {UserSelectors} from '../Redux/UserRedux';
 import {AssetSelectors} from '../Redux/AssetRedux';
 import Toast from 'react-native-root-toast';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
-import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
+import {CurrencyConfig} from '../Config/MineConfig';
+import I18n from '../I18n';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+
 
 import Moment from 'moment';
 import cn from 'moment/locale/zh-cn';
@@ -13,7 +16,7 @@ Moment.locale('zh-cn');
 
 const apiKey = Config.ETHERSCAN_API_KEY;
 const environment = 'rinkeby';
-const timeout = 10000;
+const timeout = 20000;
 
 export function *getTokenList(api){
     try {
@@ -159,7 +162,13 @@ export function * getTxlist (action) {
         });
         yield put(AssetActions.getTxlistFailure());
     } catch (error) {
-        const errMsg = error.message || error;
+        const {data:params} = action;
+        const {page=1} = params;
+        let errMsg =  I18n.t('NoRecord');
+        if (page !== 1) {
+            errMsg = I18n.t('NoMoewRecord');
+            EventEmitter.emit(EventKeys.NO_MORE_RECORD);
+        }
         Toast.show(errMsg, {
             shadow:true, position:
            Toast.positions.CENTER

@@ -32,6 +32,7 @@ export default StyleSheet.create({
     },
     mnemonicInput:{
         fontSize:Fonts.size.common,
+        minHeight:40,
 
     },
     sectionView:{

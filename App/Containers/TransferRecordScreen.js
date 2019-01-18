@@ -12,6 +12,7 @@ import {sectionlize, getToken, getValue} from '../Lib/Format';
 import {getTxDirection} from '../Lib/Utils';
 import I18n from '../I18n';
 import Identicon from 'identicon.js';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 
 class TransferRecordScreen extends Component {
@@ -30,6 +31,12 @@ class TransferRecordScreen extends Component {
       const page = 1;
       this._getTxlist(page);
       this.setState({ page });
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.NO_MORE_RECORD, ()=>{
+          const {page} = this.state;
+          this.setState({
+              page:page - 1,
+          });
+      });
   }
 
   _onRefresh=()=>{

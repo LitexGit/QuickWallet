@@ -7,8 +7,7 @@ import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
 import SearchBar from '../Components/SearchCompont';
 import styles from './Styles/FoundScreenStyle';
-import {StackActions, NavigationActions } from 'react-navigation';
-// import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import { NavigationActions } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
 import {isValidUrl} from '../Lib/Utils';
 import Toast from 'react-native-root-toast';
@@ -29,7 +28,6 @@ class FoundScreen extends Component {
   }
 
   componentDidMount=()=>{
-      // this._resetRoot();
       this.props.getBanner();
       this.props.getApps();
   }

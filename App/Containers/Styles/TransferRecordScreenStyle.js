@@ -93,7 +93,7 @@ export default StyleSheet.create({
         marginLeft:Metrics.baseMargin,
     },
     bottomSection:{
-        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
+        marginBottom:Metrics.bottomSpace,
         height:Metrics.bottonBtnHeight,
     }
 
