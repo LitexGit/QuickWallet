@@ -60,7 +60,8 @@ class FoundScreen extends Component {
           });
           return;
       }
-      this.props.navigate('Layer2WebScreen', {url, title:'layer2'});
+      // layer2
+      this.props.navigate('Layer2WebScreen', {url, title:''});
   }
 
   _onPressBanner = (item)=>{

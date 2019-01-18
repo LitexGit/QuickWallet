@@ -169,6 +169,7 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     // From node_modules
     implementation(name: 'geth', ext: 'aar')
+    implementation(name: 'l2mobile', ext: 'aar')
     compile ('org.web3j:core:3.3.1-android')
 
     compile 'com.qianwen:update-app:3.5.2'

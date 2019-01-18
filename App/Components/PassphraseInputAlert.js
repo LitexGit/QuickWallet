@@ -61,7 +61,7 @@ export default class PassphraseInputAlert extends Component {
                             style={styles.textInput}
                             autoFocus
                             maxLength={20}
-                            secureTextEntry={isShowPassword}
+                            secureTextEntry={!isShowPassword}
                             clearButtonMode='while-editing'
                             underlineColorAndroid={'transparent'}
                             onChangeText={this._onChangeText}/>

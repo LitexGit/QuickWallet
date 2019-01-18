@@ -52,7 +52,7 @@ render () {
                     <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>
                     <Text style={styles.titleStytle}>{I18n.t('BackupAccount')}</Text>
                 </View>
-                <TouchableOpacity onLongPress={()=>this._onPressCopy()}>
+                <TouchableOpacity onPress={()=>this._onPressCopy()}>
                     <Text style={styles.mnemonicText}>{privateKey}</Text>
                 </TouchableOpacity>
                 <QRCode value={privateKey} size={120}/>

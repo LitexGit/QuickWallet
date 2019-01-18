@@ -8,12 +8,13 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
+import l2mobile.L2mobile;
+
 
 public class Layer2Module extends ReactContextBaseJavaModule {
     private final String SOCKET_URL  = "socketUrl";
     private final String DATA_PATH  = "dataPath";
 
-    private Callback initCallback;
     private Callback callCallback;
 
 
@@ -29,8 +30,6 @@ public class Layer2Module extends ReactContextBaseJavaModule {
     @ReactMethod
     public void initL2SDK(String cpKey, String address, String socketUrl,  Callback callback) {
         try{
-            initCallback = callback;
-
 
 
             WritableMap map = Arguments.createMap();
@@ -42,7 +41,7 @@ public class Layer2Module extends ReactContextBaseJavaModule {
             WritableArray array = Arguments.createArray();
             array.pushNull();
             array.pushMap(map);
-            initCallback.invoke(array);
+            callback.invoke(array);
 
         } catch (Exception e){
 
