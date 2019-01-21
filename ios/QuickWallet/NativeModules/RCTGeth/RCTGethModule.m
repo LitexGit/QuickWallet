@@ -163,10 +163,17 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   [FileManager removeFileAtPath:keydir];
   [FileManager createDirectoryIfNotExists:keydir];
   
-  NSData *privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &error);
-  if (error) {
-    reject(@"-1005", @"Mnemonic words derive private key exceptions", error);
-    return;
+  
+  NSData *privateKey = nil;
+  @try {
+      privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &error);
+  } @catch (NSException *exception) {
+    NSLog(@"exception==> %@",exception);
+  } @finally {
+    if (error) {
+      reject(@"-1005", @"Mnemonic words derive private key exceptions", error);
+      return;
+    }
   }
   
   self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN scryptP:GethStandardScryptP];

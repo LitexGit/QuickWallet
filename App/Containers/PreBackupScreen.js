@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/PreBackupScreenStyle';
 import CommomBtnComponent from '../Components/CommomBtnComponent';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../Themes';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import I18n from '../I18n';
 import MnemonicWarningAlert from '../Components/MnemonicWarningAlert';
 
@@ -20,6 +20,13 @@ class PreBackupScreen extends Component {
       this.props.navigate('BackupScreen');
   }
 
+  _onPressSkip=()=>{
+      Alert.alert( I18n.t('SkipBackup'),  I18n.t('SkipBackupRemind'),
+          [{text: I18n.t('CancelAction'), style: 'cancel'}, {text: I18n.t('ConfirmAction'), onPress: () => this.props.popToTop()}],
+          { cancelable: false }
+      );
+  }
+
   render () {
       const {mnemonic} = this.props;
 
@@ -30,6 +37,9 @@ class PreBackupScreen extends Component {
                   <View style={styles.topView}>
                       <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>
                       <Text style={styles.titleStytle}>备份助记词</Text>
+                      <TouchableOpacity style={styles.skipBtn} onPress={()=>this._onPressSkip()}>
+                          <Text style={styles.skipTitle}>{I18n.t('Skip')}</Text>
+                      </TouchableOpacity>
                   </View>
                   <View style={styles.remindSection}>
                       <Text style={styles.remindText}>{I18n.t('PreBackupRemind')}</Text>
@@ -59,6 +69,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    popToTop:()=>dispatch(StackActions.popToTop())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreBackupScreen);

@@ -78,6 +78,7 @@ class NewWalletScreen extends Component {
       let error = '密码不少于8位字符';
       if (this.password.length >= 8 && this.confirm.length >= 8) {
           if (this.password === this.confirm) {
+              this.props.saveUserInfo({nickname:this.name});
               this.props.gethNewWallet({passphrase:this.password});
               return;
           }

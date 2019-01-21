@@ -60,5 +60,11 @@ export default StyleSheet.create({
         color:'red',
         textAlign:'center',
         fontSize:Fonts.size.input,
+    },
+    textInput:{
+        height:'100%',
+        width:'50%',
+        textAlign:'right',
+        color:Colors.textColor,
     }
 });

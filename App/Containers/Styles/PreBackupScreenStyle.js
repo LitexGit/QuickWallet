@@ -39,5 +39,15 @@ export default StyleSheet.create({
     btnStyle:{
         marginBottom:Metrics.bottomSpace,
         height:Metrics.bottonBtnHeight,
+    },
+    skipBtn:{
+        position:'absolute',
+        right:Metrics.section,
+        top:Metrics.section,
+    },
+    skipTitle:{
+        color:Colors.textColor,
+        fontWeight:'500',
+        fontSize:Fonts.size.common,
     }
 });

@@ -25,6 +25,7 @@ const images = {
 
     ethIcon: require('../Images/Icons/eth_icon.png'),
     erc20Icon: require('../Images/Icons/erc20_icon.png'),
+    headerIcon: require('../Images/Icons/header.png'),
 };
 
 export default images;

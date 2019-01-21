@@ -13,7 +13,7 @@ import I18n from '../I18n';
 export function * register (api, action) {
     try {
         const {data:params} = action;
-        const {address, type, nickname='', sharecode='', isPopToTop=true} = params;
+        const {address='', type=1, nickname='', sharecode='', isPopToTop=true} = params;
 
         const os = DeviceInfo.getSystemName();
         const info = {
@@ -68,6 +68,7 @@ export function * getUserInfo (api, action) {
         const {data:params} = action;
         const {address} = params;
         const response = yield call(api.getUserInfo, {address});
+
         const {data:result} = response;
         const {data, status, msg} = result;
         if (status) {
@@ -95,7 +96,12 @@ export function * logout () {
     DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, false);
     DeviceStorage.saveItem(Keys.WALLET_ADDRESS, '');
 
-    yield put(UserActions.saveUserInfo({isLoginInfo:false}));
+    yield put(UserActions.saveUserInfo({
+        isLoginInfo:false,
+        address:'',
+        nickname:'',
+        sharecode:'',
+    }));
 
     yield put(WalletActions.savePrivateKey({privateKey:''}));
 

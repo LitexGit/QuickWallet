@@ -156,7 +156,11 @@
   "BackupSuccessful":"备份成功",
 
   "NoRecord":"NoRecord ",
-  "NoMoewRecord":"没有更多记录了"
+  "NoMoewRecord":"没有更多记录了",
+
+  "Skip":"跳过",
+  "SkipBackup":"跳过备份",
+  "SkipBackupRemind":"助记词仅出现一次，是否决定跳过备份助记词流程？"
 }
 
 

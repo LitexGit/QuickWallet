@@ -6,9 +6,10 @@ import Ramda from 'ramda';
 const create = (baseURL = Config.API_URL) => {
     const api = apisauce.create({
         baseURL,
-        headers: {'Cache-Control': 'no-cache', 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'},
+        headers: {'Cache-Control': 'no-cache'},
         timeout: 10000
     });
+    // , 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'
 
     api.addRequestTransform((request)=>{
         // console.log('==========request==========================');
@@ -17,6 +18,9 @@ const create = (baseURL = Config.API_URL) => {
     });
 
     api.addResponseTransform(response=>{
+        // console.log('===========response=========================');
+        // console.log(response);
+        // console.log('============response========================');
         const {data} = response;
         const {status, msg, data:array} = data;
         if (!array) return response;

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {Text, TouchableOpacity, Clipboard, Alert} from 'react-native';
+import {Text, TouchableOpacity, Clipboard, Alert, TextInput} from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/AccountScreenStyle';
 import { View } from 'react-native-animatable';
 import {AccountConfig} from '../Config/MineConfig';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Metrics , Colors } from '../Themes';
+import { Metrics , Colors, Images } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
@@ -70,10 +70,21 @@ class AccountScreen extends Component {
   componentDidMount=()=>{
       this.props.setLoading({loading:false});
   }
+
+  _onSubmitEditing= (event)=>{
+      const {address} = this.props;
+      const nickname = event.nativeEvent.text;
+      this.props.register({address, nickname});
+  }
+
   render () {
 
       const {isInit} = this.state;
-      const {address, nickname, sharecode, loading} = this.props;
+      const {nickname, sharecode, loading} = this.props;
+      let {address=''} = this.props;
+      if (!address || address.length < 15) {
+          address= '123456789012345';
+      }
       const settings = {'avatar':address, 'account': nickname, 'inviteCode':sharecode};
 
       const avatar = new Identicon(address).toString();
@@ -82,9 +93,27 @@ class AccountScreen extends Component {
       const infoView = Object.values(AccountConfig).map((config, index)=>{
           const { key='' } = config;
           config.details = settings[key];
-          const { title='', type=1, details='' } = config;
+          const { title='', type=1, details='', index:itemIndex=0 } = config;
+          let rightView = null;
+          switch (itemIndex) {
+          case 0:
+              rightView = (<Avatar small rounded source={{uri: avatar_64}}/>);
+              break;
+          case 1:
+              rightView = (<TextInput style={styles.textInput}
+                  defaultValue={details}
+                  underlineColorAndroid="transparent"
+                  blurOnSubmit
+                  onSubmitEditing={this._onSubmitEditing}
+              />);
+              break;
+          case 2:
+              rightView = (<Text style={styles.detailsStyle}>{details}</Text>);
+              break;
 
-          const rightView = type === 1 ? <Avatar small rounded source={{uri: avatar_64}}/> : <Text style={styles.detailsStyle}>{details}</Text>;
+          default:
+              break;
+          }
 
           return (<View key={index} style={styles.itemView}>
               <Text style={styles.titleStyle}>{title}</Text>
@@ -136,6 +165,7 @@ const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     logout: () => dispatch(UserActions.logout()),
     gethExportPrivateKey: (params) => dispatch(WalletActions.gethExportPrivateKey(params)),
+    register:(params)=>dispatch(UserActions.registerRequest(params)),
 
 });
 
