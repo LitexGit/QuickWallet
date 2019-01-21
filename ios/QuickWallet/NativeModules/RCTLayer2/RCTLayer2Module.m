@@ -7,7 +7,7 @@
 //
 
 #import "RCTLayer2Module.h"
-#import <L2mobile/L2mobile.h>
+//#import <L2mobile/L2mobile.h>
 #import "FileManager.h"
 #import "RCTGethModule.h"
 
@@ -15,9 +15,10 @@
 
 static RCTLayer2Module *_instance = nil;
 
-@interface RCTLayer2Module()<L2mobileSignHandler, L2mobileCallback>
+//<L2mobileSignHandler, L2mobileCallback>
+@interface RCTLayer2Module()
 
-@property (nonatomic, strong) L2mobileL2 *layer2;
+//@property (nonatomic, strong) L2mobileL2 *layer2;
 
 @property (nonatomic, strong) RCTGethModule *signer;
 
@@ -35,7 +36,7 @@ RCT_EXPORT_MODULE();
     if (!_instance) {
       _instance = [[self alloc] init];
 //      _instance.layer2 = [[L2mobileL2 alloc] init];
-      _instance.signer = [[RCTGethModule alloc] init];
+//      _instance.signer = [[RCTGethModule alloc] init];
     }
   });
   return _instance;
@@ -44,16 +45,16 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initL2SDK:(NSString*)cpKey address:(NSString*)address socketUrl:(NSString*)socketUrl initCallBack:(RCTResponseSenderBlock)callback){
   
-  NSError *error = nil;
+//  NSError *error = nil;
   
   NSString *dataPath = [DOCUMENT_PATH stringByAppendingPathComponent:@"puppet"];
   [FileManager createDirectoryIfNotExists:dataPath];
   
-  BOOL isInit = [_instance.layer2 initL2SDK:cpKey dataPath:dataPath address:address socketUrl:socketUrl signHandler:self error:&error];
-  if (!isInit || error) {
-    callback(@[@[error, [NSNull null]]]);
-    return;
-  }
+//  BOOL isInit = [_instance.layer2 initL2SDK:cpKey dataPath:dataPath address:address socketUrl:socketUrl signHandler:self error:&error];
+//  if (!isInit || error) {
+//    callback(@[@[error, [NSNull null]]]);
+//    return;
+//  }
   
   NSDictionary *initParams = @{@"cpKey":cpKey,
                                @"dataPath": dataPath,
@@ -64,48 +65,48 @@ RCT_EXPORT_METHOD(initL2SDK:(NSString*)cpKey address:(NSString*)address socketUr
 };
 
 RCT_EXPORT_METHOD(call:(NSString*)command body:(NSString*)body callback:(RCTResponseSenderBlock)callback){
-  _callback = callback;
-  NSError *error = nil;
-  BOOL isCall = [_instance.layer2 call:command body:body callback:self error:&error];
-  if (!isCall || error) {
-    callback(@[@[error, [NSNull null]]]);
-    return;
-  }
+//  _callback = callback;
+//  NSError *error = nil;
+//  BOOL isCall = [_instance.layer2 call:command body:body callback:self error:&error];
+//  if (!isCall || error) {
+//    callback(@[@[error, [NSNull null]]]);
+//    return;
+//  }
 };
 
-#pragma mark --- L2mobileSignHandler ---
-- (void)sendTx:(NSString *)tx callback:(id<L2mobileCallback>)callback {
-  [_instance.signer sendTx:tx signerCallBack:^(NSString * _Nonnull data) {
-    NSLog(@"sendTx ==> %@", data);
-    
-    
-    // SignTX
-    NSString *error = @"callback-error-msg";
-    NSDictionary *info = @{@"isSend":@YES};
-    NSString *json = [self dictToJsonStr:info];
-    [callback onResult:error info:json];
-  }];
-  
-}
-
-- (void)signMsg:(NSString *)msg callback:(id<L2mobileCallback>)callback {
-  [_instance.signer signMsg:msg signerCallBack:^(NSString * _Nonnull data) {
-    NSLog(@"signMsg ==> %@", data);
-    
-    
-    // SignMsg
-    NSString *error = @"callback-error-msg";
-    NSDictionary *info = @{@"data":@"0XBKHSJCKSCBSKCSJACNB"};
-    NSString *json = [self dictToJsonStr:info];
-    [callback onResult:error info:json];
-  }];
-}
-
-#pragma mark --- L2mobileCallback ---
-- (void)onResult:(NSString *)err info:(NSString *)info {
-  NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1111 userInfo:@{@"err":err}];
-  self.callback(@[@[error, info]]);
-}
+//#pragma mark --- L2mobileSignHandler ---
+//- (void)sendTx:(NSString *)tx callback:(id<L2mobileCallback>)callback {
+//  [_instance.signer sendTx:tx signerCallBack:^(NSString * _Nonnull data) {
+//    NSLog(@"sendTx ==> %@", data);
+//
+//
+//    // SignTX
+//    NSString *error = @"callback-error-msg";
+//    NSDictionary *info = @{@"isSend":@YES};
+//    NSString *json = [self dictToJsonStr:info];
+//    [callback onResult:error info:json];
+//  }];
+//
+//}
+//
+//- (void)signMsg:(NSString *)msg callback:(id<L2mobileCallback>)callback {
+//  [_instance.signer signMsg:msg signerCallBack:^(NSString * _Nonnull data) {
+//    NSLog(@"signMsg ==> %@", data);
+//
+//
+//    // SignMsg
+//    NSString *error = @"callback-error-msg";
+//    NSDictionary *info = @{@"data":@"0XBKHSJCKSCBSKCSJACNB"};
+//    NSString *json = [self dictToJsonStr:info];
+//    [callback onResult:error info:json];
+//  }];
+//}
+//
+//#pragma mark --- L2mobileCallback ---
+//- (void)onResult:(NSString *)err info:(NSString *)info {
+//  NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1111 userInfo:@{@"err":err}];
+//  self.callback(@[@[error, info]]);
+//}
 
 /**
  *  dict转换成json字符串

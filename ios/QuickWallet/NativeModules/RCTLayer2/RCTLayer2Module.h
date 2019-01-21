@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
-//#import <React/RCTEventEmitter.h>
 
 NS_ASSUME_NONNULL_BEGIN
-// RCTEventEmitter
+
 @interface RCTLayer2Module : NSObject<RCTBridgeModule>
 
 @end

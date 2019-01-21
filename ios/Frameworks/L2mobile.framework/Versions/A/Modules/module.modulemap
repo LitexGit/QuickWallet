@@ -1,8 +1,0 @@
-framework module "L2mobile" {
-	header "ref.h"
-    header "L2mobile.objc.h"
-    header "Universe.objc.h"
-    header "L2mobile.h"
-
-    export *
-}
