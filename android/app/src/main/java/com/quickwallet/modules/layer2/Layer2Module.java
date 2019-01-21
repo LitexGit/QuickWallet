@@ -13,13 +13,15 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import sdk.L2;
-import sdk.SignHandler;
+//import sdk.L2;
+//import sdk.SignHandler;
 
-public class Layer2Module extends ReactContextBaseJavaModule implements SignHandler, sdk.Callback {
+
+//implements SignHandler, sdk.Callback
+public class Layer2Module extends ReactContextBaseJavaModule  {
 
     private Callback callCallback;
-    private L2 layer2;
+//    private L2 layer2;
 
 
     public Layer2Module(ReactApplicationContext reactContext) {
@@ -34,24 +36,22 @@ public class Layer2Module extends ReactContextBaseJavaModule implements SignHand
     @ReactMethod
     public void initL2SDK(String cpKey, String address, String socketUrl,  Callback callback) {
         try{
-            layer2 = new L2();
-            String dataPath = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/puppet";
-            getPuppetDir(dataPath);
-
-            layer2.initL2SDK(cpKey, dataPath, address, socketUrl, this);
-
-            
-
-            WritableMap map = Arguments.createMap();
-            map.putString("cpKey", cpKey);
-            map.putString("dataPath", dataPath);
-            map.putString("address", address);
-            map.putString("socketUrl", socketUrl);
-
-            WritableArray array = Arguments.createArray();
-            array.pushNull();
-            array.pushMap(map);
-            callback.invoke(array);
+//            layer2 = new L2();
+//            String dataPath = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/puppet";
+//            getPuppetDir(dataPath);
+//
+//            layer2.initL2SDK(cpKey, dataPath, address, socketUrl, this);
+//
+//            WritableMap map = Arguments.createMap();
+//            map.putString("cpKey", cpKey);
+//            map.putString("dataPath", dataPath);
+//            map.putString("address", address);
+//            map.putString("socketUrl", socketUrl);
+//
+//            WritableArray array = Arguments.createArray();
+//            array.pushNull();
+//            array.pushMap(map);
+//            callback.invoke(array);
 
         } catch (Exception e){
 
@@ -61,16 +61,16 @@ public class Layer2Module extends ReactContextBaseJavaModule implements SignHand
     @ReactMethod
     public void call(String command, String body,  Callback callback) {
         try{
-            callCallback = callback;
-
-            WritableMap map = Arguments.createMap();
-            map.putString("command", command);
-            map.putString("body", body);
-
-            WritableArray array = Arguments.createArray();
-            array.pushNull();
-            array.pushMap(map);
-            callCallback.invoke(array);
+//            callCallback = callback;
+//
+//            WritableMap map = Arguments.createMap();
+//            map.putString("command", command);
+//            map.putString("body", body);
+//
+//            WritableArray array = Arguments.createArray();
+//            array.pushNull();
+//            array.pushMap(map);
+//            callCallback.invoke(array);
 
         } catch (Exception e){
 
@@ -79,48 +79,48 @@ public class Layer2Module extends ReactContextBaseJavaModule implements SignHand
 
 
 
-    @Override
-    public void sendTx(String s, sdk.Callback callback) {
-        // SignTx
-
-        String error = "callback-error-msg";
-        Map map = new HashMap();
-        map.put("isSend",true);
-        String json = JSON.toJSONString(map);
-
-        callback.onResult(error, json);
-    }
-
-    @Override
-    public void signMsg(String s, sdk.Callback callback) {
-        // SignMsg
-
-        String error = "callback-error-msg";
-        Map map = new HashMap();
-        map.put("data","0XBKHSJCKSCBSKCSJACNB");
-        String json = JSON.toJSONString(map);
-
-        callback.onResult(error, json);
-    }
-
-    @Override
-    public void onResult(String s, String s1) {
-
-
-        WritableArray array = Arguments.createArray();
-        array.pushString(s);
-        array.pushString(s1);
-        callCallback.invoke(array);
-    }
-
-
-    public static boolean getPuppetDir(String dataPath) {
-        File file = new File(dataPath);
-        if (file.isFile()){
-            file.delete();
-        }
-        if (file.isDirectory()) return true;
-        return file.mkdirs();
-    }
+//    @Override
+//    public void sendTx(String s, sdk.Callback callback) {
+//        // SignTx
+//
+//        String error = "callback-error-msg";
+//        Map map = new HashMap();
+//        map.put("isSend",true);
+//        String json = JSON.toJSONString(map);
+//
+//        callback.onResult(error, json);
+//    }
+//
+//    @Override
+//    public void signMsg(String s, sdk.Callback callback) {
+//        // SignMsg
+//
+//        String error = "callback-error-msg";
+//        Map map = new HashMap();
+//        map.put("data","0XBKHSJCKSCBSKCSJACNB");
+//        String json = JSON.toJSONString(map);
+//
+//        callback.onResult(error, json);
+//    }
+//
+//    @Override
+//    public void onResult(String s, String s1) {
+//
+//
+//        WritableArray array = Arguments.createArray();
+//        array.pushString(s);
+//        array.pushString(s1);
+//        callCallback.invoke(array);
+//    }
+//
+//
+//    public static boolean getPuppetDir(String dataPath) {
+//        File file = new File(dataPath);
+//        if (file.isFile()){
+//            file.delete();
+//        }
+//        if (file.isDirectory()) return true;
+//        return file.mkdirs();
+//    }
 
 }
