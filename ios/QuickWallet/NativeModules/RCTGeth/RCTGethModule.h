@@ -12,8 +12,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^SignerCallBack)(NSString *);
+
 @interface RCTGethModule : NSObject<RCTBridgeModule>
 
+- (void)sendTx:(NSString *)tx signerCallBack:(SignerCallBack)callback;
+
+- (void)signMsg:(NSString *)msg signerCallBack:(SignerCallBack)callback;
 
 @end
 

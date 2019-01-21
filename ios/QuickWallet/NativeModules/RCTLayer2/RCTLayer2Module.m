@@ -9,6 +9,7 @@
 #import "RCTLayer2Module.h"
 #import <L2mobile/L2mobile.h>
 #import "FileManager.h"
+#import "RCTGethModule.h"
 
 #define DOCUMENT_PATH   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 
@@ -17,6 +18,8 @@ static RCTLayer2Module *_instance = nil;
 @interface RCTLayer2Module()<L2mobileSignHandler, L2mobileCallback>
 
 @property (nonatomic, strong) L2mobileL2 *layer2;
+
+@property (nonatomic, strong) RCTGethModule *signer;
 
 @property(nonatomic, copy) RCTResponseSenderBlock callback;
 
@@ -32,6 +35,7 @@ RCT_EXPORT_MODULE();
     if (!_instance) {
       _instance = [[self alloc] init];
 //      _instance.layer2 = [[L2mobileL2 alloc] init];
+      _instance.signer = [[RCTGethModule alloc] init];
     }
   });
   return _instance;
@@ -71,20 +75,30 @@ RCT_EXPORT_METHOD(call:(NSString*)command body:(NSString*)body callback:(RCTResp
 
 #pragma mark --- L2mobileSignHandler ---
 - (void)sendTx:(NSString *)tx callback:(id<L2mobileCallback>)callback {
-  // SignTX
-  NSString *error = @"callback-error-msg";
-  NSDictionary *info = @{@"isSend":@YES};
-  NSString *json = [self dictToJsonStr:info];
-  [callback onResult:error info:json];
+  [_instance.signer sendTx:tx signerCallBack:^(NSString * _Nonnull data) {
+    NSLog(@"sendTx ==> %@", data);
+    
+    
+    // SignTX
+    NSString *error = @"callback-error-msg";
+    NSDictionary *info = @{@"isSend":@YES};
+    NSString *json = [self dictToJsonStr:info];
+    [callback onResult:error info:json];
+  }];
   
 }
 
 - (void)signMsg:(NSString *)msg callback:(id<L2mobileCallback>)callback {
-  // SignMsg
-  NSString *error = @"callback-error-msg";
-  NSDictionary *info = @{@"data":@"0XBKHSJCKSCBSKCSJACNB"};
-  NSString *json = [self dictToJsonStr:info];
-  [callback onResult:error info:json];
+  [_instance.signer signMsg:msg signerCallBack:^(NSString * _Nonnull data) {
+    NSLog(@"signMsg ==> %@", data);
+    
+    
+    // SignMsg
+    NSString *error = @"callback-error-msg";
+    NSDictionary *info = @{@"data":@"0XBKHSJCKSCBSKCSJACNB"};
+    NSString *json = [self dictToJsonStr:info];
+    [callback onResult:error info:json];
+  }];
 }
 
 #pragma mark --- L2mobileCallback ---
