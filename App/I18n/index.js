@@ -1,17 +1,30 @@
-import I18n from 'react-native-i18n';
+import I18n, {getLanguages} from 'react-native-i18n';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import {ConfigSelectors} from '../Redux/ConfigRedux';
 
 import en from './languages/english.json';
 import zh from './languages/zh.json';
-
 
 I18n.translations = {
     en,
     zh,
 };
 I18n.fallbacks = true;
-I18n.defaultLocale = 'en';
+I18n.defaultLocale = 'zh';
+
+// I18n.locale = 'en';
+DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT).then((value) => {
+    const {locale} = value;
+    I18n.locale = locale;
+}, (error) => {
+    console.log('========error============================');
+    console.log(error);
+    console.log('========error============================');
+});
 
 export default I18n;
+
+
 
 
 // const missingTranslationRegex = /^\[missing ".*" translation\]$/;

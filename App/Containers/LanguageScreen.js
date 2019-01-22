@@ -10,6 +10,7 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { StackActions } from 'react-navigation';
 import ButtonComponent from '../Components/ButtonComponent';
 import UserActions from '../Redux/UserRedux';
+import ConfigActions from '../Redux/ConfigRedux';
 
 class LanguageScreen extends Component {
 
@@ -30,6 +31,9 @@ class LanguageScreen extends Component {
   }
 
   _onPressComplete=()=>{
+      const {locale} = this.languageItem;
+      I18n.locale = locale;
+      this.props.saveConfig({locale});
       DeviceStorage.saveItem(Keys.LANGUAGE_ENVIRONMENT, this.languageItem);
       this.props.saveUserInfo({language:this.languageItem});
       this.props.pop();
@@ -96,6 +100,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    saveConfig: (params) => dispatch(ConfigActions.saveConfig(params)),
     pop:() => dispatch(StackActions.pop())
 });
 

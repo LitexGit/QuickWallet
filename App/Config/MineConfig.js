@@ -70,10 +70,13 @@ export const LanguageConfig = {
     zh:{
         key:'zh',
         title:'简体中文',
+        locale:'zh'
+
     },
     english:{
         key:'english',
         title:'English',
+        locale:'en'
     }
 };
 

@@ -12,6 +12,7 @@ import ConfigActions from '../Redux/ConfigRedux';
 import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 
 import Layer2Module from '../Lib/NativeBridge/Layer2Module';
+import I18n from '../I18n';
 
 class RootContainer extends Component {
 
@@ -68,6 +69,11 @@ class RootContainer extends Component {
   componentDidMount  () {
       this._initializes();
       // this._initLayer2();
+      I18n.locale = this.props.locale;
+      console.log('===========currentLocale=========================');
+      console.log(I18n.currentLocale());
+      console.log('===========currentLocale=========================');
+
   }
 
   render () {
@@ -80,8 +86,12 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) =>({
-});
+const mapStateToProps = (state) =>{
+    const {
+        config:{locale}
+    } = state;
+    return {locale};
+};
 
 const mapDispatchToProps = (dispatch) => ({
     getUserInfoRequest: (params) => dispatch(UserActions.getUserInfoRequest(params)),
