@@ -38,8 +38,8 @@ public class GethModule extends ReactContextBaseJavaModule {
     private final String CHAIN_ID_KEY = "chain_id_key";
     private final String KEY_DIR = "key_dir";
 
-    private final long SCRYPT_N = Geth.StandardScryptN; // 1024
-    private final long SCRYPT_P = Geth.StandardScryptP; // 1
+    private final long SCRYPT_N = Geth.StandardScryptN / 2;
+    private final long SCRYPT_P = Geth.StandardScryptP;
 
 
     private static final String E_UNLOCK_ACCOUNT_ERROR = "E_UNLOCK_ACCOUNT_ERROR";

@@ -187,7 +187,6 @@ _onMessage=(evt)=>{
     case 'signMessage':
         this.setState({isShowSignMsg:true});
         break;
-
     default:
         break;
     }
@@ -282,11 +281,11 @@ render  () {
                 style={styles.container}
                 injectedJavaScript={injectScript}
                 onNavigationStateChange={this._onNavigationStateChange}
-                // source={require('./index.html')}
-                source={{uri:url}}/>
+                source={require('./index.html')}/>
         </View>);
 }
 }
+// source={{uri:url}}
 
 const mapStateToProps = (state) => {
     const {

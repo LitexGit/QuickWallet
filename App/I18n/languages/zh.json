@@ -22,7 +22,7 @@
   "SearchApplication":"输入应用网址",
   "CreateYourFirst":"创建你的第一个 ",
   "Layer2Account":"Layer2加速账户",
-  "Identity":"身份名-账户名",
+  "Identity":"身份名",
   "Password":"密码",
   "ConfirmPassword":"重复输入密码",
   "Create":"创建",
@@ -104,7 +104,7 @@
 
   "Combined":"总计",
   "TotalAssets":"资产总价值:",
-  "ChoosePath":"选择路径-已经没有了",
+  "ChoosePath":"选择路径",
   "Default":"默认",
 
   "LoadingAction":"加载更多",
