@@ -7,6 +7,7 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Toast from 'react-native-root-toast';
 import {UserSelectors} from '../Redux/UserRedux';
+import I18n from '../I18n';
 
 
 export function *gethInit () {
@@ -205,6 +206,12 @@ export function *gethTransfer (action) {
         const map = GethModule.getResolveMap(result);
         const {txHash} = map;
         yield put(WalletActions.setLoading({loading:false}));
+
+        Toast.show(I18n.t('TransferSuccess'), {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+
         yield put(StackActions.pop());
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));

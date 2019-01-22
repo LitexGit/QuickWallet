@@ -149,7 +149,7 @@
   "SignMessage":"The following message requires this account signature",
   "UnLoginRemind":"You are not logged into the wallet",
 
-  "LackBalanceError":"转账金额应小于当前余额",
+  "LackBalanceError":"请输入有效的转账金额",
   "InvalidAddressError":"请输入有效的收款地址",
   "InvalidUrlError":"请输入有效的Dapp地址",
   "CreatedWalletSuccessfully":"创建成功",
@@ -160,7 +160,8 @@
 
   "Skip":"跳过",
   "SkipBackup":"跳过备份",
-  "SkipBackupRemind":"助记词仅出现一次，是否决定跳过备份助记词流程？"
+  "SkipBackupRemind":"助记词仅出现一次，是否决定跳过备份助记词流程？",
+  "TransferSuccess":"发起转账成功，请到转账记录查看"
 }
 
 

@@ -13,7 +13,7 @@ import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
-import {isValidAddress} from '../Lib/Utils';
+import {isValidAddress, isValidTransferAmount} from '../Lib/Utils';
 import {getDisplayFiat} from '../Lib/Format';
 
 class TransferScreen extends Component {
@@ -42,13 +42,14 @@ class TransferScreen extends Component {
       const {selectedToken} = this.props;
       const {count} = selectedToken;
       const {inputBalance, inputAddress} = this.state;
-      if (parseFloat(inputBalance) >= parseFloat(count)) {
+      if (!isValidTransferAmount(inputBalance) || parseFloat(inputBalance) >= parseFloat(count)) {
           Toast.show(I18n.t('LackBalanceError'), {
               shadow:true,
               position: Toast.positions.CENTER,
           });
           return;
       }
+
       if (!isValidAddress(inputAddress)) {
           Toast.show(I18n.t('InvalidAddressError'), {
               shadow:true,

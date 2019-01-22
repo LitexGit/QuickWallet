@@ -1,3 +1,4 @@
+import Ramda from 'ramda';
 
 export function runGenerator(generatorFUN, initialValue) {
     const generator = generatorFUN(initialValue);
@@ -28,6 +29,9 @@ export function runGenerator(generatorFUN, initialValue) {
  * return 0 支出
  */
 export function getTxDirection({address, from, to}) {
+    address = address.toLocaleLowerCase();
+    from = from.toLocaleLowerCase();
+    to = to.toLocaleLowerCase();
     if (address === to && address !== from) {
         return 1;
     }
@@ -73,3 +77,23 @@ export function isValidUrl(str_url){
     }
     return (false);
 }
+
+// export const isNumber = n => Number(n)===n;
+export function isValidTransferAmount(amount){
+    try {
+        if (!amount || !amount.length) {
+            return false;
+        }
+        amount = parseFloat(amount);
+        if (amount < 0) {
+            return false;
+        }
+        const regex = '^[0-9]+(.[0-9]{0,18})?$';
+        const re=new RegExp(regex);
+        return re.test(amount);
+    } catch (error) {
+        return false;
+    }
+}
+
+
