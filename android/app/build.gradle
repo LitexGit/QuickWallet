@@ -156,6 +156,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':realm')
     compile project(':react-native-camera')
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-svg')
