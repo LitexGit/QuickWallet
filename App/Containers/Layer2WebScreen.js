@@ -19,7 +19,7 @@ import {layer1} from '../Resources/inject';
 import HeaderLeftComponent from '../Components/HeaderLeftComponent';
 import { StackActions } from 'react-navigation';
 
-// https://test.eth4.fun/test/examples/
+// https://stackoverrun.com/cn/q/12932611
 
 class Layer2WebScreen extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -163,12 +163,11 @@ _signMsgConfirm=()=>{
     this.props.gethIsUnlockAccount();
 }
 
-
+// console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
+// console.log(JSON.parse(evt.nativeEvent.data));
+// console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
 
 _onMessage=(evt)=>{
-  console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
-  console.log(JSON.parse(evt.nativeEvent.data));
-  console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
     const {isLoginInfo} = this.props;
     if (!isLoginInfo) {
         Toast.show(I18n.t('UnLoginRemind'), {
@@ -249,14 +248,6 @@ render  () {
     const signer = sprintf(layer1, address, Config.RPC_URL, Config.CHAIN_ID);
     const injectScript = web3Provider + '' + signer;
 
-    // console.log('===============web3Provider=====================');
-    // console.log(web3Provider);
-    // console.log('===============web3Provider=====================');
-
-    // console.log('===============signer=====================');
-    // console.log(signer);
-    // console.log('===============signer=====================');
-
     const {object={}} = this.signInfo;
     const {data=''} = object;
     const signInfo = getDisplayTxInfo(object);
@@ -290,12 +281,11 @@ render  () {
                 style={styles.container}
                 injectedJavaScript={injectScript}
                 onNavigationStateChange={this._onNavigationStateChange}
-                source={{uri:'https://test.eth4.fun/test/examples/'}}
-                // source={require('./index.html')}
-                />
+                source={require('./index.html')}/>
         </View>);
 }
 }
+// source={{uri:url}}
 
 const mapStateToProps = (state) => {
     const {
