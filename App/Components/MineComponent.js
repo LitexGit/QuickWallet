@@ -17,12 +17,14 @@ import UserActions from '../Redux/UserRedux';
 import  Identicon from 'identicon.js';
 import I18n from '../I18n';
 import {toFixed} from '../Lib/Format';
+import AssetActions from '../Redux/AssetRedux';
 
 class MineComponent extends Component {
 
     componentDidMount=()=>{
         const {address} = this.props;
         this.props.getUserInfo({address});
+        this.props.getTokenList();
     }
 
   _onPressAvatar=()=>{
@@ -170,6 +172,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     getUserInfo: (params) => dispatch(UserActions.getUserInfoRequest(params)),
+    getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineComponent);

@@ -18,7 +18,19 @@ class MineScreen extends Component {
       )
   }
 
-  componentDidMount=()=>console.log();
+  componentDidMount=()=>{
+      this.willFocusSubscription = this.props.navigation.addListener('willFocus', () =>{
+          // console.log('===========willFocus=========================');
+      });
+      this.didFocusSubscription = this.props.navigation.addListener('didFocus', () =>{
+          // console.log('===========didFocus=========================');
+      });
+  };
+
+  componentWillUnmount=()=>{
+      this.willFocusSubscription.remove();
+      this.didFocusSubscription.remove();
+  }
 
   render () {
       const {isLoginInfo} = this.props;

@@ -52,18 +52,19 @@ class RootContainer extends Component {
       const currency = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || CurrencyConfig.CNY;
       this.props.saveUserInfo({language, currency});
 
+      const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
+      this.props.saveUserInfo({isAgreeInfo:isAgree});
+
       const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
       this.props.saveUserInfo({isLoginInfo:isLogin});
+
+      this.props.getConfigRequest();
 
       this.props.gethInit();
       if (!isLogin) return;
 
       const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
       this.props.getUserInfoRequest({address});
-      this.props.getConfigRequest();
-
-      const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
-      this.props.saveUserInfo({isAgreeInfo:isAgree});
   }
 
   componentDidMount  () {

@@ -10,6 +10,7 @@ import { Metrics , Colors } from '../Themes';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import ButtonComponent from '../Components/ButtonComponent';
 import UserActions from '../Redux/UserRedux';
+import AssetActions from '../Redux/AssetRedux';
 
 class CurrencyScreen extends Component {
   static navigationOptions = {
@@ -36,6 +37,7 @@ class CurrencyScreen extends Component {
   _onPressComplete=()=>{
       DeviceStorage.saveItem(Keys.MONETARY_UNIT, this.currencyItem);
       this.props.saveUserInfo({currency:this.currencyItem});
+      this.props.getTokenList();
       this.props.pop();
   }
 
@@ -96,8 +98,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
-    pop:() => dispatch(StackActions.pop())
-
+    getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
+    pop:() => dispatch(StackActions.pop()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrencyScreen);
