@@ -164,11 +164,11 @@ class NewWalletScreen extends Component {
                   textContent={'Loading...'}
                   textStyle={styles.spinnerText}/>
               {userTermsView}
-              <View style={styles.topSection}>
-                  <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
-                  <Text style={styles.titleStytle}>{ I18n.t('CreatAction') }</Text>
-              </View>
               <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
+                  <View style={styles.topSection}>
+                      <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
+                      <Text style={styles.titleStytle}>{ I18n.t('CreatAction') }</Text>
+                  </View>
                   <View style={styles.inputSection}>
                       {inputs}
                       {remindView}

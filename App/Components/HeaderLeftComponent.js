@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import styles from './Styles/HeaderLeftComponentStyle';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Metrics, Colors, Fonts } from '../Themes';
+import { Fonts , Metrics} from '../Themes';
 
 export default class HeaderLeftComponent extends Component {
 
@@ -22,12 +22,16 @@ export default class HeaderLeftComponent extends Component {
 
     render () {
         const {headerBackTitle, onPress} = this.props;
+        const leftBtn =  Platform.OS === 'ios' ? (<View style={styles.container}>
+            <Ionicons name={'ios-arrow-back'} size={Fonts.size.h3} color='#333333'/>
+            <Text style={styles.backTitle}>{headerBackTitle}</Text>
+        </View>) : (<View style={[styles.container, {marginLeft:Metrics.smallMargin}]}>
+            <Ionicons name={'md-arrow-back'} size={Fonts.size.h4} color='#333333'/>
+        </View>);
+
         return (
             <TouchableOpacity onPress={onPress}>
-                <View style={styles.container}>
-                    <Ionicons name={'ios-arrow-back'} size={Fonts.size.h4} color='#333333'/>
-                    <Text style={styles.backTitle}>{headerBackTitle}</Text>
-                </View>
+                {leftBtn}
             </TouchableOpacity>
         );
     }

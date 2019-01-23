@@ -111,19 +111,17 @@ class KeyStoreCompont extends Component {
                         <View style={styles.infoView}>
                             <View style={ styles.sectionView }>
                                 <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
-                                <View style={styles.section}>
-                                    <TextInput style={styles.passwordInput}
-                                        placeholder={ I18n.t('WalletPassword')}
-                                        placeholderTextColor={ Colors.separateLineColor }
-                                        underlineColorAndroid={ 'transparent' }
-                                        clearButtonMode='while-editing'
-                                        secureTextEntry={!isShowPassword}
-                                        maxLength={ 20 }
-                                        onChangeText={(text) => this._onChangePassword(text)}/>
-                                </View>
+                                <TextInput style={styles.passwordInput}
+                                    placeholder={ I18n.t('WalletPassword')}
+                                    placeholderTextColor={ Colors.separateLineColor }
+                                    underlineColorAndroid={ 'transparent' }
+                                    clearButtonMode='while-editing'
+                                    secureTextEntry={!isShowPassword}
+                                    maxLength={ 20 }
+                                    onChangeText={(text) => this._onChangePassword(text)}/>
                             </View>
                             <View style={styles.confirmView}>
-                                <TextInput style={styles.section}
+                                <TextInput style={styles.confirmInput}
                                     placeholder={I18n.t('RepeatPassword')}
                                     placeholderTextColor={ Colors.separateLineColor }
                                     underlineColorAndroid={ 'transparent' }

@@ -12,5 +12,6 @@ export default StyleSheet.create({
         fontSize:Fonts.size.h6,
         paddingLeft: Metrics.baseMargin,
         alignSelf: 'center',
+        paddingTop:3,
     }
 });

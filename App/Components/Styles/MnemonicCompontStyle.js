@@ -1,4 +1,4 @@
-import { StyleSheet, PixelRatio } from 'react-native';
+import { StyleSheet, PixelRatio, Platform} from 'react-native';
 import { Colors, Fonts, Metrics } from '../../Themes/';
 
 export default StyleSheet.create({
@@ -24,7 +24,7 @@ export default StyleSheet.create({
         borderWidth: 1 / PixelRatio.get(),
     },
     infoView:{
-        // backgroundColor:'yellow',
+
     },
     remindText:{
         color:Colors.darkColor,
@@ -35,36 +35,39 @@ export default StyleSheet.create({
         minHeight:40,
 
     },
-    sectionView:{
-        margin: Metrics.baseMargin,
-        padding:Metrics.baseMargin,
-        marginTop:0,
-        borderBottomColor: Colors.separateLineColor,
-        borderBottomWidth: 1 / PixelRatio.get(),
-    },
-
     warning:{
         marginTop:Metrics.smallMargin,
         marginLeft: Metrics.smallMargin,
     },
-    confirmView:{
+
+    sectionView:{
         marginHorizontal : Metrics.baseMargin,
         paddingHorizontal :Metrics.baseMargin,
-        flexDirection: 'row',
-        alignContent:'center',
+        marginTop:0,
+        borderBottomColor: Colors.separateLineColor,
+        borderBottomWidth: 1 / PixelRatio.get(),
+        paddingBottom: Platform.OS === 'ios' ? Metrics.baseMargin : 0,
     },
 
-    section:{
+    confirmView:{
+        marginHorizontal : Metrics.baseMargin,
+        paddingHorizontal : Metrics.baseMargin,
+        flexDirection: 'row',
+        alignContent:'center',
+        marginTop: Platform.OS === 'ios' ? Metrics.baseMargin : 0,
+    },
+
+    confirmInput:{
         flex:1,
         flexDirection: 'row',
-        alignContent: 'center',
-        marginTop:Metrics.baseMargin,
+        alignItems: 'center',
     },
     sectionText:{
         flex:1,
     },
     passwordInput:{
         flex:1,
+        paddingTop: Platform.OS === 'ios' ? Metrics.baseMargin : Metrics.smallMargin,
     },
     spinnerText:{
         fontSize:Fonts.size.medium,
@@ -74,5 +77,8 @@ export default StyleSheet.create({
         color:'red',
         fontSize:Fonts.size.small,
         marginTop:Metrics.baseMargin,
+    },
+    pathText:{
+        paddingLeft:Platform.OS === 'ios' ? 0 : Metrics.smallMargin,
     }
 });
