@@ -12,6 +12,7 @@ import ButtonComponent from '../Components/ButtonComponent';
 import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
 import {Preferences, PrefKeys} from '../Lib/Preferences';
+import RNExitApp from 'react-native-exit-app';
 
 class LanguageScreen extends Component {
 
@@ -34,10 +35,13 @@ class LanguageScreen extends Component {
   _onPressComplete=()=>{
       const {locale} = this.languageItem;
       I18n.locale = locale;
+
       this.props.saveConfig({locale});
-      Preferences.setPrefsObjectFor(PrefKeys.LANGUAGE_ENVIRONMENT, this.languageItem);
-      DeviceStorage.saveItem(Keys.LANGUAGE_ENVIRONMENT, this.languageItem);
+
       this.props.saveUserInfo({language:this.languageItem});
+      Preferences.setPrefsObjectFor(PrefKeys.LANGUAGE_ENVIRONMENT, this.languageItem);
+
+      RNExitApp.exitApp();
       this.props.pop();
   }
 

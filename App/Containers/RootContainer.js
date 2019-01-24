@@ -10,10 +10,6 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
 import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
-
-import Layer2Module from '../Lib/NativeBridge/Layer2Module';
-import I18n from '../I18n';
-
 import {Preferences, PrefKeys} from '../Lib/Preferences';
 
 class RootContainer extends Component {
@@ -26,7 +22,7 @@ class RootContainer extends Component {
   _initializes= async ()=>{
       this.props.getInjectScript();
 
-      const language = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
+      const language = Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
       const currency = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || CurrencyConfig.CNY;
       this.props.saveUserInfo({language, currency});
 
@@ -47,34 +43,9 @@ class RootContainer extends Component {
 
   componentDidMount  () {
       this._initializes();
-
-      // console.log('====================================');
-      // console.log(Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || {});
-      // console.log('====================================');
-
-
-      // const Realm = require('realm');
-
-      // Realm.open({
-      //   schema: [{name: 'Dog', properties: {name: 'string'}}]
-      // }).then(realm => {
-      //   realm.write(() => {
-      //     realm.create('Dog', {name: 'Rex'});
-      //     realm.create('Dog', {name: 'AAA'});
-      //     realm.create('Dog', {name: 'BBB'});
-      //   });
-      //   this.setState({ realm });
-      // });
   }
 
   render () {
-    // const info = this.state.realm
-    //   ? 'Number of dogs in this Realm: ' + this.state.realm.objects('Dog').length
-    //   : 'Loading...';
-    //   console.log('===========info=========================');
-    //   console.log(info);
-    //   console.log('===========info=========================');
-
       return (
           <View style={styles.applicationView}>
               <StatusBar barStyle='light-content' />

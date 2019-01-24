@@ -7,5 +7,4 @@ export default {
     // string
     WALLET_ADDRESS:'wallet_address',
     MONETARY_UNIT:'monetary_unit',
-    LANGUAGE_ENVIRONMENT:'language_environment',
 };
