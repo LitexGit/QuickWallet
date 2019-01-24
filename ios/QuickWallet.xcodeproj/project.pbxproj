@@ -58,6 +58,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* QuickWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* QuickWalletTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		37B716FF3B6346508AACCFE4 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F2964793AB4CCA94DE05E9 /* libRNSVG.a */; };
+		3898B22046704AEFBEA980FF /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EB12679B1C43D9B73C425D /* libz.tbd */; };
 		3CDBA95915AD4408B6C885A1 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1DBEECDFBF684B429C213CCE /* MaterialCommunityIcons.ttf */; };
 		46ED279195C44B8DA061AB3A /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89060D38617D431E9F708B94 /* libRNVectorIcons-tvOS.a */; };
 		51382BF3C8464C878A486E23 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC761742F30547898A49FCFA /* Foundation.ttf */; };
@@ -65,6 +66,7 @@
 		58977DA436C54C8FAAC971A3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0BBB81C782479D897658BB /* libRNDeviceInfo.a */; };
 		6081B1B5DF9A4833893F81B2 /* libRNReactNativeHapticFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0DD1A3F583947A18CE7D28D /* libRNReactNativeHapticFeedback.a */; };
 		64E8F8A12638465EB095F7E0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43543AB7752445C5A5E5AEA9 /* Octicons.ttf */; };
+		659742F69E4A48B997CBE40A /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41888BE1BCFD4398815C2497 /* libRealmReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8F9BAB8C5D084DBFAC62552D /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F6844FF8540E4D679AC8BD1B /* FontAwesome5_Regular.ttf */; };
 		98D2FB8E48DE43A485D986E1 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C3E14362390436C820482B7 /* FontAwesome.ttf */; };
@@ -75,6 +77,7 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B154B398E7964E58B4616B93 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A8E4B651E764C47B3F39AAA /* Feather.ttf */; };
 		BF7E63B82A5540D4B97F96CB /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C46EA6BE2ECD4F569CAFAB19 /* EvilIcons.ttf */; };
+		C27C0C734F5E43A0B5BBAB4E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6F615977724F70890B82E8 /* libc++.tbd */; };
 		C3BF47B619FD4DD886619944 /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEF680337FFD49CC808418A2 /* libReactNativeConfig.a */; };
 		E4B8E050F9A44EB3AFD7A4B6 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7DC8C8697D9E4F25BBE2C65B /* MaterialIcons.ttf */; };
 		E86581114AB94105AA501CA2 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBA59006032B4AC197E3D9B8 /* FontAwesome5_Solid.ttf */; };
@@ -231,6 +234,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9D23B34F1C767B80008B4819;
 			remoteInfo = ReactNativePermissions;
+		};
+		23C014CE21F8A2DA00C87342 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 36411966AF404138B8F8A34B /* RealmReact.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F60690131CA2766F0003FB26;
+			remoteInfo = RealmReact;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -471,6 +481,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = QuickWallet/main.m; sourceTree = "<group>"; };
 		13DE575A9F3148DB8FD0A2A0 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		1D6F615977724F70890B82E8 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		1DBEECDFBF684B429C213CCE /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2074D8872D0F428FA52DC517 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
@@ -511,7 +522,10 @@
 		2D02E4901E0B4A5D006451C7 /* QuickWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuickWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E47D9617B3346C3BC06AA7E /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		36411966AF404138B8F8A34B /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
+		37EB12679B1C43D9B73C425D /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4040AEA3FF1341DAA39E6E6D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		41888BE1BCFD4398815C2497 /* libRealmReact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRealmReact.a; sourceTree = "<group>"; };
 		43543AB7752445C5A5E5AEA9 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		4C6E711985624617BC0A7D82 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -581,6 +595,9 @@
 				FCB99AB884BB46859F4BBE83 /* libRNCamera.a in Frameworks */,
 				0F629AF1AE04470EB203CF65 /* libReactNativePermissions.a in Frameworks */,
 				AD908613A2FD7C61EB8022CB /* Pods_QuickWallet.framework in Frameworks */,
+				659742F69E4A48B997CBE40A /* libRealmReact.a in Frameworks */,
+				C27C0C734F5E43A0B5BBAB4E /* libc++.tbd in Frameworks */,
+				3898B22046704AEFBEA980FF /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +755,8 @@
 				23BE334121EF786200F5D563 /* iVersion */,
 				23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */,
 				2397299C21D3C00600047AE0 /* Geth.framework */,
+				1D6F615977724F70890B82E8 /* libc++.tbd */,
+				37EB12679B1C43D9B73C425D /* libz.tbd */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -757,6 +776,7 @@
 				C0DD1A3F583947A18CE7D28D /* libRNReactNativeHapticFeedback.a */,
 				EECC8E57E35C4029B700FC74 /* libRNCamera.a */,
 				06F21580FE1A46A39C4546A5 /* libReactNativePermissions.a */,
+				41888BE1BCFD4398815C2497 /* libRealmReact.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -927,6 +947,14 @@
 			path = iVersion;
 			sourceTree = "<group>";
 		};
+		23C014CB21F8A2DA00C87342 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				23C014CF21F8A2DA00C87342 /* libRealmReact.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -980,6 +1008,7 @@
 				B93E09A84ED84FA3901EE77D /* RNReactNativeHapticFeedback.xcodeproj */,
 				0E77E766E1AD4DF786C3F7AD /* RNCamera.xcodeproj */,
 				7E26704DF4104C2DACE65AB7 /* ReactNativePermissions.xcodeproj */,
+				36411966AF404138B8F8A34B /* RealmReact.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1236,6 +1265,10 @@
 					ProjectRef = 7E26704DF4104C2DACE65AB7 /* ReactNativePermissions.xcodeproj */;
 				},
 				{
+					ProductGroup = 23C014CB21F8A2DA00C87342 /* Products */;
+					ProjectRef = 36411966AF404138B8F8A34B /* RealmReact.xcodeproj */;
+				},
+				{
 					ProductGroup = 23919D7421CBADB400C91624 /* Products */;
 					ProjectRef = 0E77E766E1AD4DF786C3F7AD /* RNCamera.xcodeproj */;
 				},
@@ -1413,6 +1446,13 @@
 			fileType = archive.ar;
 			path = libReactNativePermissions.a;
 			remoteRef = 23919DC021CBB7FD00C91624 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		23C014CF21F8A2DA00C87342 /* libRealmReact.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRealmReact.a;
+			remoteRef = 23C014CE21F8A2DA00C87342 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
@@ -1862,12 +1902,14 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = QuickWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1909,12 +1951,14 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = QuickWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1969,6 +2013,7 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = QuickWallet/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -2019,6 +2064,7 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = QuickWallet/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -2061,11 +2107,13 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = "QuickWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2114,11 +2162,13 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = "QuickWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2166,11 +2216,13 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = "QuickWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2218,11 +2270,13 @@
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
+					"$(SRCROOT)/../node_modules/realm/src/**",
 				);
 				INFOPLIST_FILE = "QuickWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar} from 'react-native';
+import { View, StatusBar, Text} from 'react-native';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import styles from './Styles/RootContainerStyles';
@@ -14,35 +14,13 @@ import {LanguageConfig, CurrencyConfig} from '../Config/MineConfig';
 import Layer2Module from '../Lib/NativeBridge/Layer2Module';
 import I18n from '../I18n';
 
+import {Preferences, PrefKeys} from '../Lib/Preferences';
+
 class RootContainer extends Component {
 
-  _initLayer2 = async ()=>{
-
-      const cpKey = 'HDNQOXNWALXMIWNCBHD';
-      const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-      const socketUrl = 'www.baidu.com';
-
-      Layer2Module.initL2SDK(cpKey,  address, socketUrl,(data)=>{
-
-          console.log('====================================');
-          console.log(data);
-          console.log('====================================');
-      });
-
-
-      const command = 'HDNQOXNWALXMIWNCBHD';
-      const params = {
-          pnAddress:'0xb5538753F2641A83409D2786790b42aC857C5340 0xb5538753F2641A83409D2786790b42aC857C5340',
-          amount:'10000'
-      };
-      const body = JSON.stringify(params);
-
-      Layer2Module.call(command, body, (data)=>{
-          console.log('====================================');
-          console.log(data);
-          console.log('====================================');
-      });
-
+  constructor(props){
+    super(props);
+    this.state = { realm: null };
   }
 
   _initializes= async ()=>{
@@ -69,15 +47,34 @@ class RootContainer extends Component {
 
   componentDidMount  () {
       this._initializes();
-      // this._initLayer2();
-      I18n.locale = this.props.locale;
-      console.log('===========currentLocale=========================');
-      console.log(I18n.currentLocale());
-      console.log('===========currentLocale=========================');
 
+      console.log('====================================');
+      console.log(Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || {});
+      console.log('====================================');
+
+
+      const Realm = require('realm');
+
+      Realm.open({
+        schema: [{name: 'Dog', properties: {name: 'string'}}]
+      }).then(realm => {
+        realm.write(() => {
+          realm.create('Dog', {name: 'Rex'});
+          realm.create('Dog', {name: 'AAA'});
+          realm.create('Dog', {name: 'BBB'});
+        });
+        this.setState({ realm });
+      });
   }
 
   render () {
+    const info = this.state.realm
+      ? 'Number of dogs in this Realm: ' + this.state.realm.objects('Dog').length
+      : 'Loading...';
+      console.log('===========info=========================');
+      console.log(info);
+      console.log('===========info=========================');
+
       return (
           <View style={styles.applicationView}>
               <StatusBar barStyle='light-content' />
@@ -103,3 +100,34 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(RootContainer);
+
+
+
+// _initLayer2 = async ()=>{
+
+//   const cpKey = 'HDNQOXNWALXMIWNCBHD';
+//   const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
+//   const socketUrl = 'www.baidu.com';
+
+//   Layer2Module.initL2SDK(cpKey,  address, socketUrl,(data)=>{
+
+//       console.log('====================================');
+//       console.log(data);
+//       console.log('====================================');
+//   });
+
+
+//   const command = 'HDNQOXNWALXMIWNCBHD';
+//   const params = {
+//       pnAddress:'0xb5538753F2641A83409D2786790b42aC857C5340 0xb5538753F2641A83409D2786790b42aC857C5340',
+//       amount:'10000'
+//   };
+//   const body = JSON.stringify(params);
+
+//   Layer2Module.call(command, body, (data)=>{
+//       console.log('====================================');
+//       console.log(data);
+//       console.log('====================================');
+//   });
+
+// }

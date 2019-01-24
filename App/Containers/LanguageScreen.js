@@ -11,6 +11,7 @@ import { StackActions } from 'react-navigation';
 import ButtonComponent from '../Components/ButtonComponent';
 import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
+import {Preferences, PrefKeys} from '../Lib/Preferences';
 
 class LanguageScreen extends Component {
 
@@ -34,6 +35,7 @@ class LanguageScreen extends Component {
       const {locale} = this.languageItem;
       I18n.locale = locale;
       this.props.saveConfig({locale});
+      Preferences.setPrefsObjectFor(PrefKeys.LANGUAGE_ENVIRONMENT, this.languageItem);
       DeviceStorage.saveItem(Keys.LANGUAGE_ENVIRONMENT, this.languageItem);
       this.props.saveUserInfo({language:this.languageItem});
       this.props.pop();

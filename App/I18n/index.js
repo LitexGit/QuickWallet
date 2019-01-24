@@ -1,6 +1,5 @@
-import I18n, {getLanguages} from 'react-native-i18n';
-import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
-import {ConfigSelectors} from '../Redux/ConfigRedux';
+import I18n from 'react-native-i18n';
+import {Preferences, PrefKeys} from '../Lib/Preferences';
 
 import en from './languages/english.json';
 import zh from './languages/zh.json';
@@ -10,17 +9,9 @@ I18n.translations = {
     zh,
 };
 I18n.fallbacks = true;
-I18n.defaultLocale = 'zh';
-
-// I18n.locale = 'en';
-DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT).then((value) => {
-    const {locale} = value;
-    I18n.locale = locale;
-}, (error) => {
-    console.log('========error============================');
-    console.log(error);
-    console.log('========error============================');
-});
+I18n.defaultLocale = I18n.currentLocale();
+const {locale} = Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || {locale:I18n.currentLocale()}
+I18n.locale = locale;
 
 export default I18n;
 
