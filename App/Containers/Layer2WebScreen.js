@@ -163,33 +163,34 @@ _signMsgConfirm=()=>{
     this.props.gethIsUnlockAccount();
 }
 
-// console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
-// console.log(JSON.parse(evt.nativeEvent.data));
-// console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
-
 _onMessage=(evt)=>{
-    const {isLoginInfo} = this.props;
-    if (!isLoginInfo) {
-        Toast.show(I18n.t('UnLoginRemind'), {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-        return;
-    }
 
-    const params = JSON.parse(evt.nativeEvent.data);
-    this.signInfo = params;
-    const {name} = params;
-    switch (name) {
-    case 'signTransaction':
-        this.setState({isShowSignTx:true});
-        break;
-    case 'signMessage':
-        this.setState({isShowSignMsg:true});
-        break;
-    default:
-        break;
-    }
+  console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
+  console.log(JSON.parse(evt.nativeEvent.data));
+  console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
+
+    // const {isLoginInfo} = this.props;
+    // if (!isLoginInfo) {
+    //     Toast.show(I18n.t('UnLoginRemind'), {
+    //         shadow:true,
+    //         position: Toast.positions.CENTER,
+    //     });
+    //     return;
+    // }
+
+    // const params = JSON.parse(evt.nativeEvent.data);
+    // this.signInfo = params;
+    // const {name} = params;
+    // switch (name) {
+    // case 'signTransaction':
+    //     this.setState({isShowSignTx:true});
+    //     break;
+    // case 'signMessage':
+    //     this.setState({isShowSignMsg:true});
+    //     break;
+    // default:
+    //     break;
+    // }
 }
 
 _signInfo=()=>{
@@ -275,17 +276,26 @@ render  () {
             <Spinner visible={loading} cancelable
                 textContent={'Loading...'}
                 textStyle={styles.spinnerText}/>
-            <WebView useWebKit
+            <WebView
+                useWebKit={true}
                 ref ={ref=>this.webview = ref}
-                onMessage={this._onMessage}
                 style={styles.container}
-                injectedJavaScript={injectScript}
                 onNavigationStateChange={this._onNavigationStateChange}
-                source={require('./index.html')}/>
+                allowUniversalAccessFromFileURLs={true}
+                allowFileAccess={true}
+                onMessage={this._onMessage}
+                injectedJavaScript={injectScript}
+                // source={require('./index.html')}
+                source={{uri:'https://test.eth4.fun/test/examples/'}}
+                />
         </View>);
 }
 }
-// source={{uri:url}}
+// mixedContentMode='always'
+// renderLoading
+// startInLoadingState
+// onError
+//
 
 const mapStateToProps = (state) => {
     const {

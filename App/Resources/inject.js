@@ -4,14 +4,13 @@ const addressHex = '%1$s';
 const rpcURL = '%2$s';
 const chainID = %3$s;
 
-window.document.addEventListener('message', ({data})=>{
+window.document.addEventListener('message', function({data}){
   const params = JSON.parse(data);
   const {id, error, value} = params;
   executeCallback(id, error, value);
 });
 
 function executeCallback (id, error, value) {
-    $input.value = 'executeCallback' + JSON.stringify({id, error, value});
     AlphaWallet.executeCallback(id, error, value);
 }
 
@@ -23,7 +22,6 @@ AlphaWallet.init(rpcURL, {
         console.log('signing a transaction', tx);
         AlphaWallet.addCallback(id, cb);
 
-        $input.value = 'signTransaction' + JSON.stringify(tx);
         const params = {'name': 'signTransaction', 'object': tx, id};
         window.postMessage(JSON.stringify(params));
     },
@@ -34,21 +32,17 @@ AlphaWallet.init(rpcURL, {
         console.log('signing a message', msgParams);
         AlphaWallet.addCallback(id, cb);
 
-        $input.value = 'signMessage' + JSON.stringify(msgParams);
         const params = {'name': 'signMessage', 'object': { data }, id};
         window.postMessage(JSON.stringify(params));
     },
 
-
     signPersonalMessage (msgParams, cb) {
-        $input.value = 'signPersonalMessage';
 
         const { data } = msgParams;
         const { id = 8888 } = msgParams;
         console.log('signing a personal message', msgParams);
         AlphaWallet.addCallback(id, cb);
 
-        $input.value = 'signPersonalMessage' + JSON.stringify(msgParams);
         const params = {'name': 'signPersonalMessage', 'object': { data }, id};
         window.postMessage(JSON.stringify(params));
     },
@@ -59,7 +53,6 @@ AlphaWallet.init(rpcURL, {
         console.log('signing a typed message', msgParams);
         AlphaWallet.addCallback(id, cb);
 
-        $input.value = 'signTypedMessage' + JSON.stringify(msgParams);
         const params = {'name': 'signTypedMessage', 'object': { data }, id};
         window.postMessage(JSON.stringify(params));
     }
