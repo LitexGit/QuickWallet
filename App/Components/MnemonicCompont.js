@@ -77,19 +77,19 @@ class MnemonicCompont extends Component {
       });
   }
 
+  _checkInputIsValid=()=>{
+    if (this.mnemonic.length && this.password.length &&  this.confirm.length) {
+        this.setState({isCanPress:true});
+        return;
+    }
+    this.setState({isCanPress:false});
+  }
+
   componentDidMount=()=>{
       this.props.setLoading({loading:false});
       this.mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
       // this.mnemonic = '';
       this._checkInputIsValid();
-  }
-
-  _checkInputIsValid=()=>{
-      if (this.mnemonic.length && this.password.length &&  this.confirm.length) {
-          this.setState({isCanPress:true});
-          return;
-      }
-      this.setState({isCanPress:false});
   }
 
   render () {
