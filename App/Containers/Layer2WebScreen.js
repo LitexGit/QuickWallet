@@ -182,6 +182,9 @@ _onMessage=(evt)=>{
     const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
     const {name} = params;
+    // const {object={}} = this.signInfo;
+    // const signInfo = getDisplayTxInfo(object);
+
     switch (name) {
 
     case 'signMessage':
@@ -201,9 +204,6 @@ _signInfo=()=>{
     switch (name) {
     case 'signTransaction':{
         const signInfo = getDisplayTxInfo(object);
-        console.log('====signInfo================================');
-        console.log(signInfo);
-        console.log('====signInfo================================');
         this._signTransaction({signInfo, id});
     }
         break;
@@ -236,11 +236,6 @@ _signMessage = async ({data:message='', id=8888})=>{
     try {
         const {address} = this.props;
         const signHash = await GethModule.signMessage({address, message});
-
-        console.log('=========signHash===========================');
-        console.log(signHash);
-        console.log('=========signHash===========================');
-
         const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {

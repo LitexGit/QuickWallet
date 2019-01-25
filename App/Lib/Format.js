@@ -2,10 +2,6 @@
 import I18n from '../I18n';
 import utils from 'ethers-utils';
 import Ramda from 'ramda';
-import { Platform } from 'react-native';
-import { isArray } from './Utils';
-import Toast from 'react-native-root-toast';
-
 
 function groupBy(objectArray, property) {
     return objectArray.reduce((acc, obj) => {
@@ -91,7 +87,10 @@ export function getDisplayTxInfo(signInfo) {
     if (!value || isNaN(value)) {
         value = '0';
     }
-    const info = {...signInfo, gas, gasPrice, value};
+    if (!data || isNaN(data)) {
+      data=''
+    }
+    const info = {...signInfo, gas, gasPrice, value, data};
     return info;
 }
 
