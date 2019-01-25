@@ -41,6 +41,10 @@ public class GethModule extends ReactContextBaseJavaModule {
     private final long SCRYPT_N = Geth.StandardScryptN / 2;
     private final long SCRYPT_P = Geth.StandardScryptP;
 
+    private static final String UNLOCK_ERROR = "1001";
+
+
+
 
     private static final String E_UNLOCK_ACCOUNT_ERROR = "E_UNLOCK_ACCOUNT_ERROR";
     private static final String E_UNLOCK_WALLET_ERROR = "E_UNLOCK_WALLET_ERROR";
@@ -129,7 +133,13 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1001",new Exception("1001"));
+                return;
+            }
+
             String address = account.getAddress().getHex();
 
             WritableMap map = Arguments.createMap();
@@ -170,7 +180,12 @@ public class GethModule extends ReactContextBaseJavaModule {
             byte[] data = hexStringToByteArray(privateKey);
             account = keyStore.importECDSAKey(data, passphrase);
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1003",new Exception("1003"));
+                return;
+            }
 
             saveKeystorePath(account);
             String address = account.getAddress().getHex();
@@ -198,7 +213,12 @@ public class GethModule extends ReactContextBaseJavaModule {
 
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1003",new Exception("1003"));
+                return;
+            }
 
             saveKeystorePath(account);
             String address = account.getAddress().getHex();
@@ -226,7 +246,12 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1003",new Exception("1003"));
+                return;
+            }
 
             String privateKey = keyStore.exportECSDAKeyHex(account, passphrase);
 
@@ -264,7 +289,12 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1003",new Exception("1003"));
+                return;
+            }
 
             Address from = new Address(fromAddress);
             long number = -1;
@@ -320,7 +350,12 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1003",new Exception("1003"));
+                return;
+            }
 
             Address from = new Address(fromAddress);
             long number = -1;
@@ -415,7 +450,12 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            keyStore.unlock(account, passphrase);
+            try {
+                keyStore.unlock(account, passphrase);
+            } catch (Exception e){
+                promise.reject("1003",new Exception("1003"));
+                return;
+            }
 
             String fromAddress = signInfo.getString("from");
             Address from = new Address(fromAddress);

@@ -8,20 +8,15 @@ import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Toast from 'react-native-root-toast';
 import {UserSelectors} from '../Redux/UserRedux';
 import I18n from '../I18n';
+import { Platform } from 'react-native';
 
 
 export function *gethInit () {
     try {
         yield GethModule.init();
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -29,14 +24,8 @@ export function *gethUnInit () {
     try {
         yield GethModule.unInit();
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -48,14 +37,8 @@ export function *gethIsUnlockAccount () {
         const {isUnlock} = map;
         EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -76,14 +59,8 @@ export function *gethUnlockAccount (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -107,15 +84,9 @@ export function *gethNewWallet(action){
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.gethRandomMnemonicFailure());
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -133,15 +104,9 @@ export function *gethRandomMnemonic () {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.gethRandomMnemonicFailure());
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -159,14 +124,8 @@ export function *gethImportMnemonic (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -185,14 +144,8 @@ export function *gethImportPrivateKey (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -213,14 +166,8 @@ export function *gethExportPrivateKey (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -241,14 +188,34 @@ export function *gethTransfer (action) {
 
         yield put(StackActions.pop());
     } catch (error) {
-      console.log('==========error==========================');
-      console.log(error);
-      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
+}
+
+function throwError (error){
+
+  const code = error.message;
+  switch (code) {
+    case '1003':{
+      const msg = 'code:'+code+' '+'msg:'+I18n.t('InvalidPassword');
+      Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER,
+      });
+    }
+      break;
+
+    default:{
+      const errCode = Platform.OS === 'ios' ? code : '1111';
+
+      const msg = 'code:'+errCode+' '+'msg:'+I18n.t('SystemException');
+      Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER,
+      });
+    }
+      break;
+  }
 }
 

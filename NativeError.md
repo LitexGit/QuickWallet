@@ -14,8 +14,8 @@
 # 1013:  signHash error
 
 
-#android
-1001:  keyStore does not exist
+##android
+# 1003:  unlock error
 1002:  unlockAccount exceptions
 1003:  randomMnemonic exceptions
 1004:  Import private key exception

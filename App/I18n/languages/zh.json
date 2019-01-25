@@ -131,5 +131,17 @@
   "Skip":"跳过",
   "SkipBackup":"跳过备份",
   "SkipBackupRemind":"助记词仅出现一次，是否决定跳过备份助记词流程？",
-  "TransferSuccess":"发起转账成功，请到转账记录查看"
+  "TransferSuccess":"发起转账成功，请到转账记录查看",
+
+  "InvalidPassword":"密码错误",
+  "SystemException":"系统错误",
+
+  "Payment":"付款",
+  "Collection":"收款"
+
+
+
+
+
+
 }
