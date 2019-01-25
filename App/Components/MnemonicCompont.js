@@ -148,13 +148,13 @@ class MnemonicCompont extends Component {
                           </View>
                       </View>
                   </View>
-                  <View style={styles.botttomSection}>
-                      <CommomBtnComponent
-                          disabled={!isCanPress}
-                          title={I18n.t('Import')}
-                          onPress={()=>this._onPressBtn()}/>
-                  </View>
               </ScrollView>
+              <View style={styles.botttomSection}>
+                  <CommomBtnComponent
+                      disabled={!isCanPress}
+                      title={I18n.t('Import')}
+                      onPress={()=>this._onPressBtn()}/>
+              </View>
           </View>
       );
   }

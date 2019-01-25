@@ -6,7 +6,8 @@ export default StyleSheet.create({
         flex: 1,
     },
     botttomSection:{
-        marginTop: 50,
+      height:Metrics.bottonBtnHeight,
+
     },
     btnTitle:{
         fontSize:Fonts.size.input,
