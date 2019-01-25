@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import styles from './Styles/SignMsgResultAlertStyle';
 import Overlay from 'react-native-modal-overlay';
 import AccountComponent from '../Components/AccountComponent';
@@ -39,7 +39,7 @@ export default class SignMsgResultAlert extends Component {
                       <Text style={styles.signMsg}>{I18n.t('SignMessage')}</Text>
                   </View>
                   <View style={styles.msgSection}>
-                      <Text style={styles.message}>{message}</Text>
+                      <Text style={styles.message} numberOfLines={3} ellipsizeMode='tail'>{message}</Text>
                   </View>
                   <View style={styles.bottomSection}>
                       <TouchableOpacity style={styles.btnContainer} onPress={onPressCancel}>

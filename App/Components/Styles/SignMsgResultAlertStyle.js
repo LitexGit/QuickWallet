@@ -22,6 +22,7 @@ export default StyleSheet.create({
         borderTopColor: Colors.dividingLineColor,
         borderTopWidth: Metrics.doubleBaseMargin / PixelRatio.get(),
         marginTop: Metrics.baseMargin,
+        maxHeight:100,
     },
     addressSection:{
 

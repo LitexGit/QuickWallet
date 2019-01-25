@@ -125,6 +125,7 @@ _pswdConfirm=(passphrase)=>{
         this._signInfo();
         break;
     case 'signMessage':
+    case 'signPersonalMessage':
         this.props.gethUnlockAccount({passphrase});
         break;
 
@@ -178,19 +179,21 @@ _onMessage=(evt)=>{
     //     return;
     // }
 
-    // const params = JSON.parse(evt.nativeEvent.data);
-    // this.signInfo = params;
-    // const {name} = params;
-    // switch (name) {
-    // case 'signTransaction':
-    //     this.setState({isShowSignTx:true});
-    //     break;
-    // case 'signMessage':
-    //     this.setState({isShowSignMsg:true});
-    //     break;
-    // default:
-    //     break;
-    // }
+    const params = JSON.parse(evt.nativeEvent.data);
+    this.signInfo = params;
+    const {name} = params;
+    switch (name) {
+
+    case 'signMessage':
+    case 'signPersonalMessage':
+        this.setState({isShowSignMsg:true});
+        break;
+    case 'signTransaction':
+    this.setState({isShowSignTx:true});
+        break;
+    default:
+        break;
+    }
 }
 
 _signInfo=()=>{
@@ -201,7 +204,8 @@ _signInfo=()=>{
         this._signTransaction({signInfo, id});
     }
         break;
-    case 'signMessage': {
+    case 'signMessage':
+    case 'signPersonalMessage': {
         const {data=''} = object;
         this._signMessage({data, id});
     }
@@ -229,6 +233,11 @@ _signMessage = async ({data:message='', id=8888})=>{
     try {
         const {address} = this.props;
         const signHash = await GethModule.signMessage({address, message});
+
+        console.log('=========signHash===========================');
+        console.log(signHash);
+        console.log('=========signHash===========================');
+
         const signMsg = { id, error: null, value: signHash };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {

@@ -147,6 +147,8 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   
   [self saveKeystorePath:self.account];
   
+  [self.keyStore unlock:self.account passphrase:passphrase error:&error];
+  
   NSString *address = [[self.account getAddress] getHex];
   resolver(@[@{@"address":address}]);
 }
@@ -182,6 +184,8 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
     reject(@"-1006", [self getLocalizedDescription:error], error);
     return;
   }
+  
+  [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   
   [self saveKeystorePath:self.account];
   
@@ -382,11 +386,11 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 RCT_EXPORT_METHOD(signMessage:(NSString *)from message:(NSString *)message resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   
    NSString *hash = [self signMessage:from message:message];
-  if (!hash) {
-    reject(@"-1020", self.errMsg, self.error);
-    return;
-  }
-  resolver(@[@{@"data":hash}]);
+    if (!hash) {
+      reject(@"-1020", self.errMsg, self.error);
+      return;
+    }
+    resolver(@[@{@"data":hash}]);
 }
 
 RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary *)signInfo resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
@@ -509,6 +513,8 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   
   NSData *signData = [self.keyStore signHash:address hash:hash256 error:&error];
   if (error) {
+    self.error = error;
+    self.errMsg = [self getLocalizedDescription:error];
     return nil;
   }
   
