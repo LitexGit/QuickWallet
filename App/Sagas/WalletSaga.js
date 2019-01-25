@@ -14,6 +14,9 @@ export function *gethInit () {
     try {
         yield GethModule.init();
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -26,6 +29,9 @@ export function *gethUnInit () {
     try {
         yield GethModule.unInit();
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -42,6 +48,9 @@ export function *gethIsUnlockAccount () {
         const {isUnlock} = map;
         EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -67,6 +76,9 @@ export function *gethUnlockAccount (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -95,6 +107,9 @@ export function *gethNewWallet(action){
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.gethRandomMnemonicFailure());
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
@@ -118,6 +133,9 @@ export function *gethRandomMnemonic () {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.gethRandomMnemonicFailure());
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
@@ -141,6 +159,9 @@ export function *gethImportMnemonic (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -164,6 +185,9 @@ export function *gethImportPrivateKey (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -189,6 +213,9 @@ export function *gethExportPrivateKey (action) {
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,
@@ -214,6 +241,9 @@ export function *gethTransfer (action) {
 
         yield put(StackActions.pop());
     } catch (error) {
+      console.log('==========error==========================');
+      console.log(error);
+      console.log('==========error==========================');
         yield put(WalletActions.setLoading({loading:false}));
         Toast.show(error.message, {
             shadow:true,

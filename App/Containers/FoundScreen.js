@@ -53,13 +53,13 @@ class FoundScreen extends Component {
 
   _onSubmitEditing=()=>{
       const {webLink:url} = this.state;
-      if (!isValidUrl(url)) {
-          Toast.show(I18n.t('InvalidUrlError'), {
-              shadow:true,
-              position: Toast.positions.CENTER,
-          });
-          return;
-      }
+      // if (!isValidUrl(url)) {
+      //     Toast.show(I18n.t('InvalidUrlError'), {
+      //         shadow:true,
+      //         position: Toast.positions.CENTER,
+      //     });
+      //     return;
+      // }
       // layer2
       this.props.navigate('Layer2WebScreen', {url, title:''});
   }

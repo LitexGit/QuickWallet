@@ -221,8 +221,8 @@ _signInfo=()=>{
 
 _signTransaction=async({signInfo, id=8888})=>{
     try {
-        const signHash = await GethModule.signTransaction({passphrase:this.passphrase, signInfo});
-        const signMsg = { id, error: null, value: signHash };
+        const {data=''} = await GethModule.signTransaction({passphrase:this.passphrase, signInfo});
+        const signMsg = { id, error: null, value: data };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
@@ -235,8 +235,9 @@ _signTransaction=async({signInfo, id=8888})=>{
 _signMessage = async ({data:message='', id=8888})=>{
     try {
         const {address} = this.props;
-        const signHash = await GethModule.signMessage({address, message});
-        const signMsg = { id, error: null, value: signHash };
+        const {data=''} = await GethModule.signMessage({address, message});
+
+        const signMsg = { id, error: null, value: data };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
