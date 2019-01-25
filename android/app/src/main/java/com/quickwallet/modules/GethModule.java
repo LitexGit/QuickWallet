@@ -169,6 +169,9 @@ public class GethModule extends ReactContextBaseJavaModule {
             keyStore = new KeyStore(filesDir, SCRYPT_N,  SCRYPT_P);
             byte[] data = hexStringToByteArray(privateKey);
             account = keyStore.importECDSAKey(data, passphrase);
+
+            keyStore.unlock(account, passphrase);
+
             saveKeystorePath(account);
             String address = account.getAddress().getHex();
             WritableMap map = Arguments.createMap();
@@ -194,6 +197,9 @@ public class GethModule extends ReactContextBaseJavaModule {
             byte[] privateKeyFromMnemonic = Geth.getPrivateKeyFromMnemonic(mnemonic);
 
             account = keyStore.importECDSAKey(privateKeyFromMnemonic, passphrase);
+
+            keyStore.unlock(account, passphrase);
+
             saveKeystorePath(account);
             String address = account.getAddress().getHex();
             WritableMap map = Arguments.createMap();
@@ -436,7 +442,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 
-            ethClient.sendTransaction(Geth.newContext(), signedTx);
+//            ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             String txHash = signedTx.getHash().getHex();
             WritableMap map = Arguments.createMap();

@@ -170,14 +170,14 @@ _onMessage=(evt)=>{
   console.log(JSON.parse(evt.nativeEvent.data));
   console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
 
-    // const {isLoginInfo} = this.props;
-    // if (!isLoginInfo) {
-    //     Toast.show(I18n.t('UnLoginRemind'), {
-    //         shadow:true,
-    //         position: Toast.positions.CENTER,
-    //     });
-    //     return;
-    // }
+    const {isLoginInfo} = this.props;
+    if (!isLoginInfo) {
+        Toast.show(I18n.t('UnLoginRemind'), {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
+        return;
+    }
 
     const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
@@ -201,6 +201,9 @@ _signInfo=()=>{
     switch (name) {
     case 'signTransaction':{
         const signInfo = getDisplayTxInfo(object);
+        console.log('====signInfo================================');
+        console.log(signInfo);
+        console.log('====signInfo================================');
         this._signTransaction({signInfo, id});
     }
         break;
