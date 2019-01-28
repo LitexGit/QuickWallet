@@ -9,8 +9,6 @@ import SearchBar from '../Components/SearchCompont';
 import styles from './Styles/FoundScreenStyle';
 import { NavigationActions } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
-import {isValidUrl} from '../Lib/Utils';
-import Toast from 'react-native-root-toast';
 
 class FoundScreen extends Component {
   static navigationOptions = {
@@ -53,14 +51,6 @@ class FoundScreen extends Component {
 
   _onSubmitEditing=()=>{
       const {webLink:url} = this.state;
-      // if (!isValidUrl(url)) {
-      //     Toast.show(I18n.t('InvalidUrlError'), {
-      //         shadow:true,
-      //         position: Toast.positions.CENTER,
-      //     });
-      //     return;
-      // }
-      // layer2
       this.props.navigate('Layer2WebScreen', {url, title:''});
   }
 
@@ -141,22 +131,3 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundScreen);
 
-
-
-// // https://reactnavigation.org/docs/en/stack-actions.html#reset 无效
-// _resetRoot=async()=>{
-//     const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
-//     const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
-//     const isMount = await DeviceStorage.getItem(Keys.IS_NEW_SCREEN_DID_MOUNT) || false;
-
-//     if (!isLogin && !isAgree && isMount) {
-//         this.props.navigate.dispatch(StackActions.reset({
-//             index: 0,
-//             actions: [
-//                 NavigationActions.navigate({ routeName: 'NewWalletScreen'}),
-//                 // NavigationActions.navigate({ routeName: 'Layer2WebScreen'}),
-//                 // NavigationActions.navigate({ routeName: 'BottomTab'})
-//             ]
-//         }));
-//     }
-// };

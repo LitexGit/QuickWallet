@@ -64,6 +64,11 @@ async function signMessage({address, message}){
     return getResolveMap(result);
 }
 
+async function signPersonalMessage({address, message}){
+  const result = await gethModule.signPersonalMessage(address, message);
+  return getResolveMap(result);
+}
+
 async function signTransaction({passphrase, signInfo}){
     // const {chainType='ETH'} = signInfo;
     const result = await gethModule.signTransaction(passphrase, signInfo);
@@ -106,5 +111,6 @@ export default {
     getGethPrivateKey,
     getResolveMap,
     signMessage,
+    signPersonalMessage,
     signTransaction,
 };

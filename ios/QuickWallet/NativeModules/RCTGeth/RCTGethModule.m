@@ -13,6 +13,7 @@
 #import "SignModel.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "Web3swift-Swift.h"
+#import "NSData+Category.h"
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
 static NSString *contactIpKey  = @"contact_ip_key";
@@ -414,6 +415,17 @@ RCT_EXPORT_METHOD(signMessage:(NSString *)from message:(NSString *)message resol
     resolver(@[@{@"data":hash}]);
 }
 
+RCT_EXPORT_METHOD(signPersonalMessage:(NSString *)from message:(NSString *)message resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
+  
+  NSString *hash = [self signPersonalMessage:from message:message];
+  if (!hash) {
+    reject(@"1001-1002-1013", self.errMsg, self.error);
+    return;
+  }
+  resolver(@[@{@"data":hash}]);
+}
+
+
 RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary *)signInfo resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject){
   
   NSString *hash =  [self sendTransaction:passphrase signInfo:signInfo];
@@ -526,26 +538,58 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
 - (NSString *)signMessage:(NSString *)from message:(NSString *)message{
   
   NSError *error = nil;
-  
   if (!self.account || !self.keyStore) {
     return nil;
   }
   
-  NSData *msgData = [message dataUsingEncoding:NSUTF8StringEncoding];
-  NSData *hash256 = [OCWeb3Utils keccak256:msgData];
+  NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+
+  NSData *hash256 = [OCWeb3Utils keccak256:data];
   GethAddress *address = [[GethAddress alloc] initFromHex:from];
-  
   NSData *signData = [self.keyStore signHash:address hash:hash256 error:&error];
+
   if (error) {
     self.error = error;
 //    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1013";
     return nil;
   }
-  
   NSString *hash = [OCWeb3Utils hex:signData];
   return hash;
 }
+
+- (NSString *)signPersonalMessage:(NSString *)from message:(NSString *)message{
+  
+  NSError *error = nil;
+  if (!self.account || !self.keyStore) {
+    return nil;
+  }
+  
+  NSMutableString *muMsg = [NSMutableString stringWithString:message];
+  NSString *personMsg = [muMsg stringByReplacingOccurrencesOfString:@"0x" withString:@""];
+  
+  NSData *info = [NSData dataWithHexString:personMsg];
+  NSData *fixData = [OCWeb3Utils getFixData:info];
+  
+  NSMutableData *data = [NSMutableData dataWithData:fixData];
+  [data appendData:info];
+  
+  NSData *hash256 = [OCWeb3Utils keccak256:data];
+  
+  GethAddress *address = [[GethAddress alloc] initFromHex:from];
+  NSData *signData = [self.keyStore signHash:address hash:hash256 error:&error];
+  
+  if (error) {
+    self.error = error;
+    //    self.errMsg = [self getLocalizedDescription:error];
+    self.errMsg = @"1013";
+    return nil;
+  }
+  NSData *configData = [OCWeb3Utils getConfigurableData:signData];
+  NSString *hash = [OCWeb3Utils hex:configData];
+  return hash;
+}
+
 
 - (NSString *)sendTransaction:(NSString *)passphrase signInfo:(NSDictionary *)signInfo{
   
@@ -604,12 +648,12 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return nil;
   }
   
-    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
-    if (!isSend || error) {
-      self.error = error;
-      self.errMsg = @"1010";
-      return nil;
-    }
+//    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
+//    if (!isSend || error) {
+//      self.error = error;
+//      self.errMsg = @"1010";
+//      return nil;
+//    }
   
   NSString *hash = [[signedTx getHash] getHex];
   return hash;
@@ -626,6 +670,19 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   } @finally {
     return msg;
   }
+}
+
+- (NSString*)serializeDeviceToken:(NSData*) deviceToken{
+  NSMutableString *str = [NSMutableString stringWithCapacity:64];
+  NSUInteger length = [deviceToken length];
+  char *bytes = malloc(sizeof(char) * length);
+  
+  [deviceToken getBytes:bytes length:length];
+  for (int i = 0; i < length; i++){
+    [str appendFormat:@"%02.2hhX", bytes[i]];
+  }
+  free(bytes);
+  return str;
 }
 
 

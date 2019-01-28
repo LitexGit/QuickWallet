@@ -77,11 +77,11 @@ export function getDisplayTxInfo(signInfo) {
     let {data='', gas='', gasPrice='', value=''} = signInfo;
     gas = parseInt(gas, 16).toString();
     if (!gas || isNaN(gas)) {
-        gas = '0';
+        gas = '21000';
     }
     gasPrice = parseInt(gasPrice, 16).toString();
     if (!gasPrice || isNaN(gasPrice)) {
-        gasPrice = '0';
+        gasPrice =10 * 1e9 + '';
     }
     value = parseInt(value, 16).toString();
     if (!value || isNaN(value)) {

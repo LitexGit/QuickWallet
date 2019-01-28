@@ -17,5 +17,16 @@ public class OCWeb3Utils:NSObject {
   @objc public static func hex(_ data: Data) -> String?{
     return "0x" + data.toHexString();
   }
+  
+  @objc public static func getFixData(_ data: Data) -> Data?{
+    let prefix = "\u{19}Ethereum Signed Message:\n\(data.count)".data(using: .utf8)!
+    return prefix;
+  }
+  
+  @objc public static func getConfigurableData(_ data: Data) -> Data?{
+    var byte = data;
+    byte[64] += 27;
+    return byte;
+  }
 }
 

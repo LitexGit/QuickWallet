@@ -482,7 +482,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 
-            ethClient.sendTransaction(Geth.newContext(), signedTx);
+//            ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             String txHash = signedTx.getHash().getHex();
             WritableMap map = Arguments.createMap();

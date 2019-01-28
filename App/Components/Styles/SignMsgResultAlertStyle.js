@@ -22,7 +22,7 @@ export default StyleSheet.create({
         borderTopColor: Colors.dividingLineColor,
         borderTopWidth: Metrics.doubleBaseMargin / PixelRatio.get(),
         marginTop: Metrics.baseMargin,
-        maxHeight:100,
+        maxHeight:150,
     },
     addressSection:{
 
@@ -57,7 +57,7 @@ export default StyleSheet.create({
     message:{
         fontSize:Fonts.size.small,
         color:Colors.textColor,
-        textAlign:'center',
+        textAlign:'left',
         padding:Metrics.doubleBaseMargin,
     }
 });

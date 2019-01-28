@@ -27,6 +27,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
+		234D1F6E21FEA28A00E8C829 /* NSData+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 234D1F6D21FEA28A00E8C829 /* NSData+Category.m */; };
 		2397295021D3972A00047AE0 /* RNCUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294321D3972A00047AE0 /* RNCUIWebView.m */; };
 		2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294421D3972A00047AE0 /* RNCWKWebView.m */; };
 		2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */; };
@@ -495,6 +496,8 @@
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
 		2322F51721D0A21F00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Frameworks/Geth.framework; sourceTree = "<group>"; };
 		232C8BA421E07149005773AA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		234D1F6C21FEA28A00E8C829 /* NSData+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Category.h"; sourceTree = "<group>"; };
+		234D1F6D21FEA28A00E8C829 /* NSData+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+Category.m"; sourceTree = "<group>"; };
 		2397294321D3972A00047AE0 /* RNCUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebView.m; sourceTree = "<group>"; };
 		2397294421D3972A00047AE0 /* RNCWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebView.m; sourceTree = "<group>"; };
 		2397294521D3972A00047AE0 /* RNCWKWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebViewManager.h; sourceTree = "<group>"; };
@@ -723,6 +726,7 @@
 		13B07FAE1A68108700A75B9A /* QuickWallet */ = {
 			isa = PBXGroup;
 			children = (
+				234D1F3721FEA25200E8C829 /* Category */,
 				23B9399121E9D12000EA6962 /* Swift */,
 				2397294121D3972A00047AE0 /* NativeModules */,
 				2322F53521D0A2F200F9F04C /* Frameworks */,
@@ -842,6 +846,16 @@
 				232F1C4B21CA69DA00F2C490 /* libRNSVG-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		234D1F3721FEA25200E8C829 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				234D1F6C21FEA28A00E8C829 /* NSData+Category.h */,
+				234D1F6D21FEA28A00E8C829 /* NSData+Category.m */,
+			);
+			name = Category;
+			path = QuickWallet/Category;
 			sourceTree = "<group>";
 		};
 		2381ED5821F9B2680081A4D8 /* Products */ = {
@@ -1849,6 +1863,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				234D1F6E21FEA28A00E8C829 /* NSData+Category.m in Sources */,
 				23AE74A221E5A6B400AADC57 /* RNTLayer2WebViewManager.m in Sources */,
 				23AE74A521E5A72B00AADC57 /* RNTLayer2WebView.m in Sources */,
 				23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */,

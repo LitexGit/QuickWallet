@@ -17,7 +17,8 @@ import I18n from '../I18n';
 import Config from 'react-native-config';
 import {layer1} from '../Resources/inject';
 import HeaderLeftComponent from '../Components/HeaderLeftComponent';
-import { StackActions } from 'react-navigation';
+import { StackActions, SafeAreaView } from 'react-navigation';
+import {getGethPrivateKey} from '../Lib/NativeBridge/WalletUtils';
 
 // https://stackoverrun.com/cn/q/12932611
 
@@ -182,8 +183,12 @@ _onMessage=(evt)=>{
     const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
     const {name} = params;
-    // const {object={}} = this.signInfo;
-    // const signInfo = getDisplayTxInfo(object);
+    const {object={}} = this.signInfo;
+    const signInfo = getDisplayTxInfo(object);
+
+    console.log('=========signInfo===========================');
+    console.log(signInfo);
+    console.log('==========signInfo==========================');
 
     switch (name) {
 
@@ -207,10 +212,14 @@ _signInfo=()=>{
         this._signTransaction({signInfo, id});
     }
         break;
-    case 'signMessage':
+    case 'signMessage':{
+      const {data=''} = object;
+        this._signMessage({data, id});
+    }
+        break;
     case 'signPersonalMessage': {
         const {data=''} = object;
-        this._signMessage({data, id});
+        this._signPersonalMessage({data, id});
     }
         break;
 
@@ -238,6 +247,9 @@ _signMessage = async ({data:message='', id=8888})=>{
         const {data=''} = await GethModule.signMessage({address, message});
 
         const signMsg = { id, error: null, value: data };
+        console.log('===========signMessage=========================');
+        console.log(signMsg);
+        console.log('============signMessage========================');
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
@@ -245,6 +257,24 @@ _signMessage = async ({data:message='', id=8888})=>{
             position: Toast.positions.CENTER,
         });
     }
+}
+
+_signPersonalMessage = async ({data:message='', id=8888})=>{
+  try {
+      const {address} = this.props;
+      const {data=''} = await GethModule.signPersonalMessage({address, message});
+
+      const signMsg = { id, error: null, value: data };
+      console.log('===========signPersonalMessage=========================');
+      console.log(signMsg);
+      console.log('============signPersonalMessage========================');
+      this.webview.postMessage(JSON.stringify(signMsg));
+  } catch (error) {
+      Toast.show(error.message, {
+          shadow:true,
+          position: Toast.positions.CENTER,
+      });
+  }
 }
 
 render  () {
@@ -263,7 +293,7 @@ render  () {
     const {to='', value='', gasPrice=''} = signInfo;
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <SignTxResultAlert
                 isInit={isShowSignTx}
                 isWallet={false}
@@ -293,12 +323,12 @@ render  () {
                 allowFileAccess={true}
                 onMessage={this._onMessage}
                 injectedJavaScript={injectScript}
-                // source={require('./index.html')}
                 source={{uri:'https://test.eth4.fun/test/examples/'}}
                 />
-        </View>);
+        </SafeAreaView>);
 }
 }
+// source={require('./index.html')}
 // mixedContentMode='always'
 // renderLoading
 // startInLoadingState
