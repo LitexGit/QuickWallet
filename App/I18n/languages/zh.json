@@ -36,7 +36,7 @@
   "AssetsValue":"资产总价值:",
   "UseSetting":"使用设置",
   "HelpFeedback":"帮助与反馈",
-  "UserAgreement":"用户协议",
+  "UserAgreement":"使用条款",
   "AboutUs":"关于我们",
   "Share":"分享",
   "Multilingual":"多语言",
@@ -48,7 +48,7 @@
   "NextStep":"下一步",
   "ConfirmMnemonic":"确认助记词",
   "Complete":"完成",
-  "Refreshing":"Refreshing...",
+  "Refreshing":"刷新中...",
   "Assets":"资产",
   "Loading":"加载中...",
   "Balance":"余额",
@@ -84,7 +84,7 @@
   "AbnormalSortRemind":"助记词顺序不正确，请校对",
 
   "ImportMnemonicRemind":"使用助记词导入时可以修改钱包密码。",
-  "ImportPrivateKeyRemind":"输入 Private Key 文件内容至输入框。或通过扫描 Private Key 内容生成的二维码录入。请留意字符大小写。",
+  "ImportPrivateKeyRemind":"输入 Private Key 文件内容至输入框,或通过扫描 Private Key 内容生成的二维码录入。请留意字符大小写。",
   "ImportRemind":"设置新的密码后,旧密码将在导入账户后失效",
 
   "ExportRemindTitle":"警告",
@@ -125,9 +125,12 @@
   "InvalidAddressError":"请输入有效的收款地址",
   "InvalidUrlError":"请输入合法的Dapp地址",
   "CreatedWalletSuccessfully":"创建成功",
+  "BackupSuccessful":"备份成功",
+
 
   "NoRecord":"暂无记录 ",
   "NoMoewRecord":"没有更多记录了",
+
   "Skip":"跳过",
   "SkipBackup":"跳过备份",
   "SkipBackupRemind":"助记词仅出现一次，是否决定跳过备份助记词流程？",

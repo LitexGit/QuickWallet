@@ -15,6 +15,8 @@ import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
+import org.web3j.crypto.Hash;
+import org.web3j.protocol.Web3j;
 import org.web3j.utils.Numeric;
 
 import java.io.File;
@@ -40,6 +42,9 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     private final long SCRYPT_N = Geth.StandardScryptN / 2;
     private final long SCRYPT_P = Geth.StandardScryptP;
+
+    private static final String PERSONAL_MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
+
 
     private static final String UNLOCK_ERROR = "1001";
 
@@ -413,12 +418,51 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            byte[] unSignHash = org.web3j.crypto.Hash.sha3(message.getBytes());
+            byte[] hashByte = Numeric.hexStringToByteArray(message);
+
             Address address = new Address(from);
-            byte[] signByte =  keyStore.signHash(address, unSignHash);
+            byte[] signByte =  keyStore.signHash(address, hashByte);
 
 //            keyStore.signHashPassphrase(account, passphrase, unSignHash);
             String data = Numeric.toHexString(signByte);
+
+            WritableMap map = Arguments.createMap();
+            map.putString("data",data);
+            promise.resolve(map);
+
+        } catch (Exception e) {
+            promise.reject(E_SIGN_HASH_ERROR,e);
+        }
+    }
+
+    @ReactMethod
+    public void signPersonalMessage(
+            String from,
+            String message,
+            Promise promise
+    ) {
+        try {
+            if (account == null || keyStore == null){
+                Exception err = new Exception();
+                promise.reject(E_WALLET_UNLOCK_ERROR,err);
+                return;
+            }
+
+            String msg = message.replace("0x", "");
+            byte[] info = hexStringToByteArray(msg);
+
+            String prefix = PERSONAL_MESSAGE_PREFIX + info.length;
+            byte[] fixByte = prefix.getBytes();
+
+            byte[] msgByte = arraycat(fixByte, info);
+
+
+            byte[] hash256 = org.web3j.crypto.Hash.sha3(msgByte);
+
+            Address address = new Address(from);
+            byte[] signData =  keyStore.signHash(address, hash256);
+
+            String data = Numeric.toHexString(signData);
 
             WritableMap map = Arguments.createMap();
             map.putString("data",data);
@@ -427,6 +471,12 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.reject(E_SIGN_HASH_ERROR,e);
         }
     }
+
+    //  keyStore.signHashPassphrase(account, passphrase, unSignHash);
+
+
+
+
 
     @ReactMethod
     public void signTransaction(
@@ -482,7 +532,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             BigInt chainID = new BigInt(chainId);
             Transaction signedTx = keyStore.signTxPassphrase(account, passphrase, transaction, chainID);
 
-//            ethClient.sendTransaction(Geth.newContext(), signedTx);
+            ethClient.sendTransaction(Geth.newContext(), signedTx);
 
             String txHash = signedTx.getHash().getHex();
             WritableMap map = Arguments.createMap();
@@ -566,4 +616,22 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
 
+    public byte[] arraycat(byte[] buf1,byte[] buf2) {
+        byte[] bufret=null;
+        int len1=0;
+        int len2=0;
+        if(buf1!=null)
+            len1=buf1.length;
+        if(buf2!=null)
+            len2=buf2.length;
+        if(len1+len2>0)
+            bufret=new byte[len1+len2];
+        if(len1>0)
+            System.arraycopy(buf1,0,bufret,0,len1);
+        if(len2>0)
+            System.arraycopy(buf2,0,bufret,len1,len2);
+        return bufret;
+    }
 }
+
+
