@@ -542,11 +542,12 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return nil;
   }
   
-  NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
-
-  NSData *hash256 = [OCWeb3Utils keccak256:data];
+//  NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+  
+  NSData *hexData = [OCWeb3Utils hexToData:message];
+//  NSData *hash256 = [OCWeb3Utils keccak256:data];
   GethAddress *address = [[GethAddress alloc] initFromHex:from];
-  NSData *signData = [self.keyStore signHash:address hash:hash256 error:&error];
+  NSData *signData = [self.keyStore signHash:address hash:hexData error:&error];
 
   if (error) {
     self.error = error;

@@ -28,5 +28,9 @@ public class OCWeb3Utils:NSObject {
     byte[64] += 27;
     return byte;
   }
+  
+  @objc public static func hexToData(_ hex: String) -> Data?{
+    return Web3Utils.hexToData(hex);
+  }
 }
 

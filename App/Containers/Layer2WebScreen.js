@@ -183,15 +183,7 @@ _onMessage=(evt)=>{
     const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
     const {name} = params;
-    const {object={}} = this.signInfo;
-    const signInfo = getDisplayTxInfo(object);
-
-    console.log('=========signInfo===========================');
-    console.log(signInfo);
-    console.log('==========signInfo==========================');
-
     switch (name) {
-
     case 'signMessage':
     case 'signPersonalMessage':
         this.setState({isShowSignMsg:true});
@@ -231,6 +223,9 @@ _signInfo=()=>{
 _signTransaction=async({signInfo, id=8888})=>{
     try {
         const {data=''} = await GethModule.signTransaction({passphrase:this.passphrase, signInfo});
+        console.log('=======signTransaction=============================');
+        console.log(data);
+        console.log('=======signTransaction=============================');
         const signMsg = { id, error: null, value: data };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
@@ -245,11 +240,10 @@ _signMessage = async ({data:message='', id=8888})=>{
     try {
         const {address} = this.props;
         const {data=''} = await GethModule.signMessage({address, message});
-
+        console.log('=======signMessage=============================');
+        console.log(data);
+        console.log('=======signMessage=============================');
         const signMsg = { id, error: null, value: data };
-        console.log('===========signMessage=========================');
-        console.log(signMsg);
-        console.log('============signMessage========================');
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
@@ -263,11 +257,11 @@ _signPersonalMessage = async ({data:message='', id=8888})=>{
   try {
       const {address} = this.props;
       const {data=''} = await GethModule.signPersonalMessage({address, message});
+      console.log('=======signPersonalMessage=============================');
+      console.log(data);
+      console.log('=======signPersonalMessage=============================');
 
       const signMsg = { id, error: null, value: data };
-      console.log('===========signPersonalMessage=========================');
-      console.log(signMsg);
-      console.log('============signPersonalMessage========================');
       this.webview.postMessage(JSON.stringify(signMsg));
   } catch (error) {
       Toast.show(error.message, {
