@@ -18,7 +18,6 @@ import Config from 'react-native-config';
 import {layer1} from '../Resources/inject';
 import HeaderLeftComponent from '../Components/HeaderLeftComponent';
 import { StackActions, SafeAreaView } from 'react-navigation';
-import {getGethPrivateKey} from '../Lib/NativeBridge/WalletUtils';
 
 // https://stackoverrun.com/cn/q/12932611
 
@@ -257,11 +256,10 @@ _signPersonalMessage = async ({data:message='', id=8888})=>{
   try {
       const {address} = this.props;
       const {data=''} = await GethModule.signPersonalMessage({address, message});
-      console.log('=======signPersonalMessage=============================');
-      console.log(data);
-      console.log('=======signPersonalMessage=============================');
-
       const signMsg = { id, error: null, value: data };
+      console.log('=======signPersonalMessage=============================');
+      console.log(signMsg);
+      console.log('=======signPersonalMessage=============================');
       this.webview.postMessage(JSON.stringify(signMsg));
   } catch (error) {
       Toast.show(error.message, {
@@ -277,13 +275,17 @@ render  () {
 
     const {url} = this.props.navigation.state.params;
 
+    console.log('============address========================');
+    console.log(address);
+    console.log('============address========================');
     const sprintf = require('sprintf-js').sprintf;
-    const signer = sprintf(layer1, address, Config.RPC_URL, Config.CHAIN_ID);
+    const signer = sprintf(layer1, address.toLocaleLowerCase(), Config.RPC_URL, Config.CHAIN_ID);
     const injectScript = web3Provider + '' + signer;
 
     const {object={}} = this.signInfo;
     const {data=''} = object;
     const signInfo = getDisplayTxInfo(object);
+
     const {to='', value='', gasPrice=''} = signInfo;
 
     return (
