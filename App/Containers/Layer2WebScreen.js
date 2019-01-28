@@ -275,9 +275,6 @@ render  () {
 
     const {url} = this.props.navigation.state.params;
 
-    console.log('============address========================');
-    console.log(address);
-    console.log('============address========================');
     const sprintf = require('sprintf-js').sprintf;
     const signer = sprintf(layer1, address.toLocaleLowerCase(), Config.RPC_URL, Config.CHAIN_ID);
     const injectScript = web3Provider + '' + signer;

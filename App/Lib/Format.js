@@ -81,7 +81,7 @@ export function getDisplayTxInfo(signInfo) {
     }
     gasPrice = parseInt(gasPrice, 16).toString();
     if (!gasPrice || isNaN(gasPrice)) {
-        gasPrice =10 * 1e9 + '';
+        gasPrice = 1e9 + '';
     }
     value = parseInt(value, 16).toString();
     if (!value || isNaN(value)) {

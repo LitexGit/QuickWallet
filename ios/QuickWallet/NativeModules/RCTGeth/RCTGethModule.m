@@ -646,12 +646,12 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return nil;
   }
   
-//    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
-//    if (!isSend || error) {
-//      self.error = error;
-//      self.errMsg = @"1010";
-//      return nil;
-//    }
+    BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
+    if (!isSend || error) {
+      self.error = error;
+      self.errMsg = @"1010";
+      return nil;
+    }
   
   NSString *hash = [[signedTx getHash] getHex];
   return hash;
