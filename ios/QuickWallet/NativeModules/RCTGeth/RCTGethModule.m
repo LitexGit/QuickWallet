@@ -552,7 +552,8 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     self.errMsg = @"1013";
     return nil;
   }
-  NSString *hash = [OCWeb3Utils hex:signData];
+  NSData *configData = [OCWeb3Utils getConfigurableData:signData];
+  NSString *hash = [OCWeb3Utils hex:configData];
   return hash;
 }
 

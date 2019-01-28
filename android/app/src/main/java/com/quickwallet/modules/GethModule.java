@@ -474,10 +474,6 @@ public class GethModule extends ReactContextBaseJavaModule {
 
     //  keyStore.signHashPassphrase(account, passphrase, unSignHash);
 
-
-
-
-
     @ReactMethod
     public void signTransaction(
             String passphrase,
