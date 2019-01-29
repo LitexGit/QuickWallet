@@ -462,6 +462,11 @@ public class GethModule extends ReactContextBaseJavaModule {
             Address address = new Address(from);
             byte[] signData =  keyStore.signHash(address, hash256);
 
+            byte subv = (byte)(signData[64]);
+            if (subv < 27) {
+                subv += 27;
+            }
+
             String data = Numeric.toHexString(signData);
 
             WritableMap map = Arguments.createMap();
