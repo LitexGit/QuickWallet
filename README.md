@@ -1,16 +1,44 @@
 #  QuickWallet
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/)
+```
+QuickWallet introduction
+```
+## :earth_asia: Environment
+### :wrench: 开发工具
+```
+0.ReactNative[JS]：Visual Studio code V1.32.0
+1.iOS：Xcode V10.1
+2.Android：Android Studio V3.2.1
+```
+### :blue_book: 开发环境
+```
+"react": "16.3.1",
+"react-native": "^0.55.3",
 
-* Standard compliant React Native App Utilizing [Ignite](https://github.com/infinitered/ignite)
+npm  6.8.0
+node v10.14.2
+```
 
-## :arrow_up: How to Setup
+## :arrow_up: Setup
 
-**Step 1:** git clone this repo:
+**Step 1:** `git clone` [repo](https://github.com/typicode/husky)
 
-**Step 2:** cd to the cloned repo:
+**Step 2:** `npm install`
 
-**Step 3:** Install the Application with `yarn` or `npm i`
+**Step 3:** `react-native link`
 
+**Step 4:** `cd ios && pod install && cd ..`
+
+## :arrow_forward: Run App
+
+1. cd to the repo
+2. Run Build for either OS
+  * for iOS
+    * run `react-native run-ios`
+    * or  `npm start ipx`
+  * for Android (真机调试)
+    * 001: `adb reverse tcp:8081 tcp:8081`
+    * 002: Android Studio :arrow_forward:
 
 ## :arrow_forward: How to Run App
 
@@ -24,44 +52,17 @@
 
 ## :no_entry_sign: Standard Compliant
 
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-This project adheres to Standard.  Our CI enforces this, so we suggest you enable linting to keep your project compliant during development.
-
-**To Lint on Commit**
-
-This is implemented using [husky](https://github.com/typicode/husky). There is no additional setup needed.
-
-**Bypass Lint**
-
-If you have to bypass lint for a special commit that you will come back and clean (pushing something to a branch etc.) then you can bypass git hooks with adding `--no-verify` to your commit command.
-
-**Understanding Linting Errors**
-
-The linting rules are from JS Standard and React-Standard.  [Regular JS errors can be found with descriptions here](http://eslint.org/docs/rules/), while [React errors and descriptions can be found here](https://github.com/yannickcr/eslint-plugin-react).
-
 ## :closed_lock_with_key: Secrets
-
-This project uses [react-native-config](https://github.com/luggit/react-native-config) to expose config variables to your javascript code in React Native. You can store API keys
-and other sensitive information in a `.env` file:
-
+### xcode 10 third-party相关错误解决方案
+**Step 1:**
 ```
-API_URL=https://myapi.com
-GOOGLE_MAPS_API_KEY=abcdefgh
+cd  node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
 ```
-
-and access them from React Native like so:
-
+**Step 2:**
 ```
-import Secrets from 'react-native-config'
-
-Secrets.API_URL  // 'https://myapi.com'
-Secrets.GOOGLE_MAPS_API_KEY  // 'abcdefgh'
+cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-configure-glog.sh && cd ../../../../
 ```
-
-The `.env` file is ignored by git keeping those secrets out of your repo.
-
-### Get started:
-1. Copy .env.example to .env
-2. Add your config variables
-3. Follow instructions at [https://github.com/luggit/react-native-config#setup](https://github.com/luggit/react-native-config#setup)
-4. Done!
+**Step 3:**
+```
+cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
+```
