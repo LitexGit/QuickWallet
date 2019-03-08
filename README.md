@@ -40,16 +40,6 @@ node v10.14.2
     * 001: `adb reverse tcp:8081 tcp:8081`
     * 002: Android Studio :arrow_forward:
 
-## :arrow_forward: How to Run App
-
-1. cd to the repo
-2. Run Build for either OS
-  * for iOS
-    * run `react-native run-ios`
-  * for Android
-    * Run Genymotion
-    * run `react-native run-android`
-
 ## :no_entry_sign: Standard Compliant
 
 ## :closed_lock_with_key: Secrets
@@ -66,3 +56,9 @@ cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-config
 ```
 cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
 ```
+## :satellite: Link
+[React Native中文网](https://reactnative.cn/)
+
+[Redux 中文文档](https://www.redux.org.cn/s)
+
+[Ignite CLI](https://vuex.vuejs.org/zh/)
