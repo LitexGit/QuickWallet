@@ -28,15 +28,9 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
 		234D1F6E21FEA28A00E8C829 /* NSData+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 234D1F6D21FEA28A00E8C829 /* NSData+Category.m */; };
-		2397295021D3972A00047AE0 /* RNCUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294321D3972A00047AE0 /* RNCUIWebView.m */; };
-		2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294421D3972A00047AE0 /* RNCWKWebView.m */; };
-		2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */; };
-		2397295321D3972A00047AE0 /* RNCUIWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */; };
 		2397295421D3972A00047AE0 /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294D21D3972A00047AE0 /* RCTGethModule.m */; };
 		2397295521D3972A00047AE0 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294E21D3972A00047AE0 /* FileManager.m */; };
 		2397299D21D3C00600047AE0 /* Geth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2397299C21D3C00600047AE0 /* Geth.framework */; };
-		23AE74A221E5A6B400AADC57 /* RNTLayer2WebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE74A121E5A6B400AADC57 /* RNTLayer2WebViewManager.m */; };
-		23AE74A521E5A72B00AADC57 /* RNTLayer2WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE74A421E5A72B00AADC57 /* RNTLayer2WebView.m */; };
 		23AE74E621E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */; };
 		23AE74EA21E76E0300AADC57 /* RCTBundleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 23AE74E921E76E0300AADC57 /* RCTBundleModule.m */; };
 		23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B939CA21E9DDD800EA6962 /* OCWeb3Utils.swift */; };
@@ -498,23 +492,11 @@
 		232C8BA421E07149005773AA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		234D1F6C21FEA28A00E8C829 /* NSData+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Category.h"; sourceTree = "<group>"; };
 		234D1F6D21FEA28A00E8C829 /* NSData+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+Category.m"; sourceTree = "<group>"; };
-		2397294321D3972A00047AE0 /* RNCUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebView.m; sourceTree = "<group>"; };
-		2397294421D3972A00047AE0 /* RNCWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebView.m; sourceTree = "<group>"; };
-		2397294521D3972A00047AE0 /* RNCWKWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebViewManager.h; sourceTree = "<group>"; };
-		2397294621D3972A00047AE0 /* RNCUIWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebViewManager.h; sourceTree = "<group>"; };
-		2397294721D3972A00047AE0 /* RNCUIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCUIWebView.h; sourceTree = "<group>"; };
-		2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCWKWebViewManager.m; sourceTree = "<group>"; };
-		2397294921D3972A00047AE0 /* RNCWKWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCWKWebView.h; sourceTree = "<group>"; };
-		2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCUIWebViewManager.m; sourceTree = "<group>"; };
 		2397294C21D3972A00047AE0 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		2397294D21D3972A00047AE0 /* RCTGethModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTGethModule.m; sourceTree = "<group>"; };
 		2397294E21D3972A00047AE0 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		2397294F21D3972A00047AE0 /* RCTGethModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTGethModule.h; sourceTree = "<group>"; };
 		2397299C21D3C00600047AE0 /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Geth.framework; sourceTree = "<group>"; };
-		23AE74A021E5A6B400AADC57 /* RNTLayer2WebViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTLayer2WebViewManager.h; sourceTree = "<group>"; };
-		23AE74A121E5A6B400AADC57 /* RNTLayer2WebViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTLayer2WebViewManager.m; sourceTree = "<group>"; };
-		23AE74A321E5A72B00AADC57 /* RNTLayer2WebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNTLayer2WebView.h; sourceTree = "<group>"; };
-		23AE74A421E5A72B00AADC57 /* RNTLayer2WebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTLayer2WebView.m; sourceTree = "<group>"; };
 		23AE74E521E76BEB00AADC57 /* AlphaWalletWeb3Provider.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlphaWalletWeb3Provider.bundle; sourceTree = "<group>"; };
 		23AE74E821E76E0300AADC57 /* RCTBundleModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTBundleModule.h; sourceTree = "<group>"; };
 		23AE74E921E76E0300AADC57 /* RCTBundleModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTBundleModule.m; sourceTree = "<group>"; };
@@ -895,27 +877,10 @@
 			children = (
 				23B939CE21EA064000EA6962 /* RCTLayer2 */,
 				23AE74E721E76D8700AADC57 /* RCTBundle */,
-				23AE749F21E5A64C00AADC57 /* RNTLayer2WebView */,
-				2397294221D3972A00047AE0 /* RCTWebView */,
 				2397294B21D3972A00047AE0 /* RCTGeth */,
 			);
 			name = NativeModules;
 			path = QuickWallet/NativeModules;
-			sourceTree = "<group>";
-		};
-		2397294221D3972A00047AE0 /* RCTWebView */ = {
-			isa = PBXGroup;
-			children = (
-				2397294321D3972A00047AE0 /* RNCUIWebView.m */,
-				2397294721D3972A00047AE0 /* RNCUIWebView.h */,
-				2397294621D3972A00047AE0 /* RNCUIWebViewManager.h */,
-				2397294A21D3972A00047AE0 /* RNCUIWebViewManager.m */,
-				2397294921D3972A00047AE0 /* RNCWKWebView.h */,
-				2397294421D3972A00047AE0 /* RNCWKWebView.m */,
-				2397294521D3972A00047AE0 /* RNCWKWebViewManager.h */,
-				2397294821D3972A00047AE0 /* RNCWKWebViewManager.m */,
-			);
-			path = RCTWebView;
 			sourceTree = "<group>";
 		};
 		2397294B21D3972A00047AE0 /* RCTGeth */ = {
@@ -929,17 +894,6 @@
 				2397294D21D3972A00047AE0 /* RCTGethModule.m */,
 			);
 			path = RCTGeth;
-			sourceTree = "<group>";
-		};
-		23AE749F21E5A64C00AADC57 /* RNTLayer2WebView */ = {
-			isa = PBXGroup;
-			children = (
-				23AE74A321E5A72B00AADC57 /* RNTLayer2WebView.h */,
-				23AE74A421E5A72B00AADC57 /* RNTLayer2WebView.m */,
-				23AE74A021E5A6B400AADC57 /* RNTLayer2WebViewManager.h */,
-				23AE74A121E5A6B400AADC57 /* RNTLayer2WebViewManager.m */,
-			);
-			path = RNTLayer2WebView;
 			sourceTree = "<group>";
 		};
 		23AE74E721E76D8700AADC57 /* RCTBundle */ = {
@@ -1864,20 +1818,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				234D1F6E21FEA28A00E8C829 /* NSData+Category.m in Sources */,
-				23AE74A221E5A6B400AADC57 /* RNTLayer2WebViewManager.m in Sources */,
-				23AE74A521E5A72B00AADC57 /* RNTLayer2WebView.m in Sources */,
 				23B939CB21E9DDD800EA6962 /* OCWeb3Utils.swift in Sources */,
-				2397295221D3972A00047AE0 /* RNCWKWebViewManager.m in Sources */,
-				2397295121D3972A00047AE0 /* RNCWKWebView.m in Sources */,
 				23B939D421EA081700EA6962 /* RCTLayer2Module.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				23BE337621EF786200F5D563 /* iVersion.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2397295521D3972A00047AE0 /* FileManager.m in Sources */,
 				23D0A38121DB38E5000E3005 /* SignModel.m in Sources */,
-				2397295321D3972A00047AE0 /* RNCUIWebViewManager.m in Sources */,
 				23AE74EA21E76E0300AADC57 /* RCTBundleModule.m in Sources */,
-				2397295021D3972A00047AE0 /* RNCUIWebView.m in Sources */,
 				2397295421D3972A00047AE0 /* RCTGethModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
