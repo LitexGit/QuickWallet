@@ -66,3 +66,9 @@ cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-config
 ```
 cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
 ```
+## :satellite: Link
+[React Native中文网](https://reactnative.cn/)
+
+[Redux 中文文档](https://www.redux.org.cn/s)
+
+[Ignite CLI](https://vuex.vuejs.org/zh/)
