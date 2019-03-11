@@ -1,7 +1,9 @@
 #  QuickWallet
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/)
 ```
-QuickWallet introduction
+QuickWallet is an Ethereum digital currency wallet.
+QuickWallet has a relatively low user threshold compared to other Ethereum wallets to make it friendlier to new users of Blockchian. A dapp browser is also embedded in QuickWallet.
+More optimizations and updates is on the way, please stay tuned.
 ```
 ## :earth_asia: Environment
 ### :wrench: 开发工具
@@ -61,8 +63,6 @@ External link Geth library: export the IOS and Android library files by compilin
     * 001: `adb reverse tcp:8081 tcp:8081`
     * 002: Android Studio :arrow_forward:
 
-## :no_entry_sign: Standard Compliant
-
 ## :closed_lock_with_key: Secrets
 ### xcode 10 third-party相关错误解决方案
 **Step 1:**
@@ -83,3 +83,5 @@ cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/re
 [Redux 中文文档](https://www.redux.org.cn/s)
 
 [Ignite CLI](https://vuex.vuejs.org/zh/)
+
+[Gomobile](https://github.com/golang/go/wiki/Mobile#sdk-applications-and-generating-bindings)
