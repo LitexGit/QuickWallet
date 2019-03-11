@@ -58,3 +58,15 @@ buck-out/
 # Misc
 #
 .env
+ios/Pods/
+package-lock.json
+ios/Podfile.lock
+ios/assets/
+android/app/src/main/res/drawable*
+ethers
+ios/main.jsbundle.meta
+android/app/release
+android/app/src/main/assets/index.android.bundle*
+.env.production
+.env.staging
+android/keystore.properties

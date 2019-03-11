@@ -39,14 +39,14 @@ class SignTxResultAlert extends Component {
       const {isInit, isWallet=true, address='', to='', onPressCancel, onPressConfirm, currency, selectedToken} = this.props;
       let {balance='', gas=''} = this.props;
       const {symbol:mark='ETH'} = currency;
-      const {Rate:rate='563.2'} = selectedToken;
+      const {Rate:rate='567'} = selectedToken;
 
+      const gasLimit = 21000;
       if (isWallet) {
-          const gasLimit = 21000;
           gas = getWei(gas, 9) * gasLimit / 1e18;
       } else {
           balance /= 1e18;
-          gas /= 1e18;
+          gas = gas * gasLimit / 1e18;
       }
 
       const totalBanance = parseFloat(balance) + gas;

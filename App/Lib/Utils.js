@@ -1,4 +1,4 @@
-import {UserSelectors} from '../Redux/UserRedux';
+import Ramda from 'ramda';
 
 export function runGenerator(generatorFUN, initialValue) {
     const generator = generatorFUN(initialValue);
@@ -29,6 +29,9 @@ export function runGenerator(generatorFUN, initialValue) {
  * return 0 支出
  */
 export function getTxDirection({address, from, to}) {
+    address = address.toLocaleLowerCase();
+    from = from.toLocaleLowerCase();
+    to = to.toLocaleLowerCase();
     if (address === to && address !== from) {
         return 1;
     }
@@ -54,4 +57,45 @@ export function getPasspraseStrength(passprase) {
 }
 
 export const isValidAddress = (address) => /^0x[0-9a-fA-F]{40}$/.test(address);
+
+export const isArray = (data) => Object.prototype.toString.call(data) === '[object Array]';
+
+export function isValidUrl(str_url){
+    const strRegex = '^((https|http|ftp|rtsp|mms)?://)'
+      + '?(([0-9a-z_!~*\'().&=+$%-]+: )?[0-9a-z_!~*\'().&=+$%-]+@)?' //ftp的user@
+      + '(([0-9]{1,3}\.){3}[0-9]{1,3}' // IP形式的URL- 199.194.52.184
+      + '|' // 允许IP和DOMAIN（域名）
+      + '([0-9a-z_!~*\'()-]+\.)*' // 域名- www.
+      + '([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.' // 二级域名
+      + '[a-z]{2,6})' // first level domain- .com or .museum
+      + '(:[0-9]{1,4})?' // 端口- :80
+      + '((/?)|' // 如果没有文件名，则不需要斜杠
+      + '(/[0-9a-z_!~*\'().;?:@&=+$,%#-]+)+/?)$';
+    const re=new RegExp(strRegex);
+    if (re.test(str_url)){
+        return (true);
+    }
+    return (false);
+}
+
+// export const isNumber = n => Number(n)===n;
+export function isValidTransferAmount(amount){
+    try {
+        if (!amount || !amount.length) {
+            return false;
+        }
+        amount = parseFloat(amount);
+        if (amount < 0) {
+            return false;
+        }
+        const regex = '^[0-9]+(.[0-9]{0,18})?$';
+        const re=new RegExp(regex);
+        return re.test(amount);
+    } catch (error) {
+        return false;
+    }
+}
+
+
+
 

@@ -30,12 +30,24 @@ export default StyleSheet.create({
         backgroundColor:Colors.dividingLineColor,
         color:Colors.textColor,
         fontWeight:'500',
+        fontSize:Fonts.size.common,
     },
     bottomSection:{
         flex:1,
         justifyContent:'flex-end',
     },
     btnStyle:{
-        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
+        marginBottom:Metrics.bottomSpace,
+        height:Metrics.bottonBtnHeight,
+    },
+    skipBtn:{
+        position:'absolute',
+        right:Metrics.section,
+        top:Metrics.section,
+    },
+    skipTitle:{
+        color:Colors.textColor,
+        fontWeight:'500',
+        fontSize:Fonts.size.common,
     }
 });

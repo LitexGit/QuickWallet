@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
 import { View, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import styles from './Styles/KeyStoreCompontStyle';
-import { Button } from 'react-native-elements';
 import { Colors, Metrics } from '../Themes';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import WalletActions from '../Redux/WalletRedux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import I18n from '../I18n';
 import Toast from 'react-native-root-toast';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 
 class KeyStoreCompont extends Component {
     constructor (props) {
@@ -67,7 +65,8 @@ class KeyStoreCompont extends Component {
 
     componentDidMount=()=>{
         this.props.setLoading({loading:false});
-        this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
+        // this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
+        this.privateKey = '';
         this._checkInputIsValid();
     }
 
@@ -111,23 +110,18 @@ class KeyStoreCompont extends Component {
                         </View>
                         <View style={styles.infoView}>
                             <View style={ styles.sectionView }>
-                                <View style={ styles.section }>
-                                    <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
-                                    <AntDesign name={'warning'} size={Metrics.icons.tiny} color={Colors.separateLineColor} style={styles.warning}/>
-                                </View>
-                                <View style={styles.section}>
-                                    <TextInput style={styles.passwordInput}
-                                        placeholder={ I18n.t('WalletPassword')}
-                                        placeholderTextColor={ Colors.separateLineColor }
-                                        underlineColorAndroid={ 'transparent' }
-                                        clearButtonMode='while-editing'
-                                        secureTextEntry={!isShowPassword}
-                                        maxLength={ 20 }
-                                        onChangeText={(text) => this._onChangePassword(text)}/>
-                                </View>
+                                <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
+                                <TextInput style={styles.passwordInput}
+                                    placeholder={ I18n.t('WalletPassword')}
+                                    placeholderTextColor={ Colors.separateLineColor }
+                                    underlineColorAndroid={ 'transparent' }
+                                    clearButtonMode='while-editing'
+                                    secureTextEntry={!isShowPassword}
+                                    maxLength={ 20 }
+                                    onChangeText={(text) => this._onChangePassword(text)}/>
                             </View>
                             <View style={styles.confirmView}>
-                                <TextInput style={styles.section}
+                                <TextInput style={styles.confirmInput}
                                     placeholder={I18n.t('RepeatPassword')}
                                     placeholderTextColor={ Colors.separateLineColor }
                                     underlineColorAndroid={ 'transparent' }
@@ -139,15 +133,13 @@ class KeyStoreCompont extends Component {
                             </View>
                         </View>
                     </View>
-                    <View style={styles.botttomSection}>
-                        <Button onPress={()=>this._onPressBtn()}
-                            textStyle={styles.btnTitle}
-                            backgroundColor={isCanPress ? Colors.textColor : Colors.separateLineColor}
-                            disabled={!isCanPress}
-                            title={I18n.t('Import')}/>
-                    </View>
                 </ScrollView>
-
+                <View style={styles.botttomSection}>
+                    <CommomBtnComponent
+                        disabled={!isCanPress}
+                        title={I18n.t('Import')}
+                        onPress={()=>this._onPressBtn()}/>
+                </View>
             </View>
         );
     }

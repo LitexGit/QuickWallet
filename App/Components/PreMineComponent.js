@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import styles from './Styles/PreMineComponentStyle';
 import { connect } from 'react-redux';
@@ -10,16 +9,6 @@ import { NavigationActions } from 'react-navigation';
 import I18n from '../I18n';
 
 class PreMineComponent extends Component {
-    // Prop type warnings
-    static propTypes = {
-        // someProperty: PropTypes.object,
-        // someSetting: PropTypes.bool.isRequired,
-    }
-
-    // Defaults for props
-    static defaultProps = {
-        // someSetting: false
-    }
 
     _onPressBtn = (key)=>{
         const {navigate} = this.props;

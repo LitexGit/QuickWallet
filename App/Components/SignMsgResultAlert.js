@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import styles from './Styles/SignMsgResultAlertStyle';
 import Overlay from 'react-native-modal-overlay';
 import AccountComponent from '../Components/AccountComponent';
@@ -21,7 +21,7 @@ export default class SignMsgResultAlert extends Component {
   componentDidMount=()=>console.log();
 
   render () {
-      const to = 'web3Provider  不支持 toAddress';
+      // const to = 'web3Provider  不支持 toAddress';
       const {isInit, message='' ,onPressCancel, onPressConfirm} = this.props;
       return (
           <Overlay
@@ -34,12 +34,12 @@ export default class SignMsgResultAlert extends Component {
                   <View style={styles.topSection}>
                       <View style={styles.addressSection}>
                           <Text style={styles.titleStyle}>{I18n.t('ConfirmInfo')}</Text>
-                          <AccountComponent address={to}/>
+                          {/* <AccountComponent address={to}/> */}
                       </View>
                       <Text style={styles.signMsg}>{I18n.t('SignMessage')}</Text>
                   </View>
                   <View style={styles.msgSection}>
-                      <Text style={styles.message}>{message}</Text>
+                      <Text style={styles.message} numberOfLines={5} ellipsizeMode='tail'>{message}</Text>
                   </View>
                   <View style={styles.bottomSection}>
                       <TouchableOpacity style={styles.btnContainer} onPress={onPressCancel}>

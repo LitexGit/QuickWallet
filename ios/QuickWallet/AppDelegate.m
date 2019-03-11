@@ -10,13 +10,25 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-@interface AppDelegate()
+#import "ReactNativeConfig.h"
+#import "iVersion.h"
 
+@interface AppDelegate()
 
 @end
 
-
 @implementation AppDelegate
+
++ (void)initialize{
+//  [self checkNewVersion];
+}
+
++ (void)checkNewVersion {
+  iVersion *versionUtils = [iVersion sharedInstance];
+  NSString *updateURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", [ReactNativeConfig envFor:@"IOS_UPDATE_URL"]];
+  versionUtils.updateURL = [NSURL URLWithString: updateURL];
+  versionUtils.remoteVersionsPlistURL = [ReactNativeConfig envFor:@"IOS_VERSION_PLIST_URL"];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

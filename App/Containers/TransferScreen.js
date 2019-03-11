@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, ScrollView, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Slider } from 'react-native';
 import { connect } from 'react-redux';
-import { Button } from 'react-native-elements';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import styles from './Styles/TransferScreenStyle';
 import { Colors } from '../Themes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,10 +11,10 @@ import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
 import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
-import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
-import {isValidAddress} from '../Lib/Utils';
+import {isValidAddress, isValidTransferAmount} from '../Lib/Utils';
+import {getDisplayFiat} from '../Lib/Format';
 
 class TransferScreen extends Component {
 
@@ -31,6 +31,7 @@ class TransferScreen extends Component {
 
             inputBalance:'0',
             inputAddress:'',
+            inputFiat:'',
 
             isShowSignTx:false,
             isShowPswdInput:false,
@@ -41,13 +42,14 @@ class TransferScreen extends Component {
       const {selectedToken} = this.props;
       const {count} = selectedToken;
       const {inputBalance, inputAddress} = this.state;
-      if (parseFloat(inputBalance) >= parseFloat(count)) {
+      if (!isValidTransferAmount(inputBalance) || parseFloat(inputBalance) >= parseFloat(count)) {
           Toast.show(I18n.t('LackBalanceError'), {
               shadow:true,
               position: Toast.positions.CENTER,
           });
           return;
       }
+
       if (!isValidAddress(inputAddress)) {
           Toast.show(I18n.t('InvalidAddressError'), {
               shadow:true,
@@ -61,8 +63,12 @@ class TransferScreen extends Component {
   }
 
   _onChangeBalance=(text)=>{
+      const {selectedToken } = this.props;
+      const {Rate:rate} = selectedToken;
+      const inputFiat = rate * text;
       this.setState({
           inputBalance:text,
+          inputFiat
       });
   }
 
@@ -99,11 +105,10 @@ class TransferScreen extends Component {
   _signConfirm=()=>{
       this.setState({
           isShowSignTx:false,
+          isShowPswdInput:true,
       });
-      this.props.gethIsUnlockAccount();
   }
 
-  // 解锁钱包
   _pswdInputCancel=()=>{
       this.setState({
           isShowPswdInput:false,
@@ -113,12 +118,11 @@ class TransferScreen extends Component {
       this.setState({
           isShowPswdInput:false,
       });
-      this.props.gethUnlockAccount({passphrase});
+      this._transfer(passphrase);
   }
 
-
-  _transfer=()=>{
-      const {passphrase='', address='', selectedToken} = this.props;
+  _transfer=(passphrase)=>{
+      const { address='', selectedToken} = this.props;
       const {Tokenaddress:tokenAddress, Symbol:symbol, Decimal:decimal} = selectedToken;
       const {inputBalance, inputAddress, inputGas} = this.state;
 
@@ -135,29 +139,17 @@ class TransferScreen extends Component {
   }
 
   componentDidMount=()=>{
-      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
-          if (isUnlock) {
-              this._transfer();
-              return;
-          }
-          this.setState({
-              isShowPswdInput:true,
-          });
-      });
-      this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, this._transfer);
-  }
-
-  componentWillUnmount=()=>{
-      this.lockListener.remove();
-      this.isUnlockListener.remove();
+      this.props.setLoading({loading:false});
   }
 
   render () {
       const isCanTransfer = true;
 
-      const {inputGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput} = this.state;
-      const { loading, selectedToken } = this.props;
+      const {inputGas=10,  minGas=1, maxGas=100, isShowSignTx, inputAddress,inputBalance, isShowPswdInput, inputFiat} = this.state;
+      const { loading, selectedToken, currency } = this.props;
       const {Symbol:symbol, count} = selectedToken;
+      const {symbol:mark} = currency;
+
 
       return (
           <View style={styles.container}>
@@ -182,14 +174,17 @@ class TransferScreen extends Component {
                               <Text style={styles.titleText}>{symbol}</Text>
                               <Text style={styles.balanceText}>{ I18n.t('Balance')}: {count} {symbol}</Text>
                           </View>
-                          <TextInput autoFocus style={styles.balanceInput}
-                              clearButtonMode='while-editing'
-                              multiline={false}
-                              placeholder={I18n.t('EnterAmount')}
-                              placeholderTextColor={Colors.separateLineColor}
-                              underlineColorAndroid={'transparent'}
-                              onChangeText={this._onChangeBalance}
-                              returnKeyType='next'/>
+                          <View style={styles.bananceTopView}>
+                              <TextInput autoFocus style={styles.balanceInput}
+                                  clearButtonMode='while-editing'
+                                  multiline={false}
+                                  placeholder={I18n.t('EnterAmount')}
+                                  placeholderTextColor={Colors.separateLineColor}
+                                  underlineColorAndroid={'transparent'}
+                                  onChangeText={this._onChangeBalance}
+                                  returnKeyType='next'/>
+                              <Text style={[styles.balanceText, {maxWidth:'35%'}]} numberOfLines={1}>{mark}: {getDisplayFiat(inputFiat)}</Text>
+                          </View>
                       </View>
                       <View style={styles.addressSection}>
                           <View style={styles.bananceTopView}>
@@ -223,10 +218,10 @@ class TransferScreen extends Component {
                   </View>
               </ScrollView>
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      backgroundColor={Colors.textColor}
+                  <CommomBtnComponent
                       disabled={!isCanTransfer}
-                      title={I18n.t('NextStep')}/>
+                      title={I18n.t('NextStep')}
+                      onPress={()=>this._onPressBtn()}/>
               </View>
           </View>
       );
@@ -235,17 +230,16 @@ class TransferScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{address, passphrase},
+        user:{address, currency},
         assets:{selectedToken},
         wallet:{loading}
     } = state;
-    return { selectedToken, passphrase, address, loading};
+    return { selectedToken, address, loading, currency};
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    setLoading: (params) => dispatch(WalletActions.setLoading(params)),
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
-    gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
-    gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
     gethTransfer: (params) => dispatch(WalletActions.gethTransfer(params)),
 });
 

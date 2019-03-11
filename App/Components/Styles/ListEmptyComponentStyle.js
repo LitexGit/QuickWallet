@@ -5,7 +5,6 @@ const IMAGE_SIZE = 70;
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:Colors.separateLineColor,
         alignItems: 'center',
         justifyContent: 'center',
     },

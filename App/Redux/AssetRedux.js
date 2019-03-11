@@ -92,12 +92,6 @@ export const getTokenBalanceSuccess = (state, { data }) =>{
 
 export const getTokenBalanceFailure = (state, { data }) => state;
 
-// const test = {selectedToken:{
-//     Symbol: 'ETH',
-//     Tokenaddress: '0x6d0e04bd467347d6eac8f9b02cc86b8ddb0d8c11',
-//     count: 30,
-//     Decimal: 18
-// }};
 export const setSelectedToken = (state, { data }) =>state.merge({...data});
 
 export const request = (state, action) =>{
@@ -105,7 +99,7 @@ export const request = (state, action) =>{
     if (type === 'GET_TXLIST_REQUEST') {
         const {page = 1} = data;
         if (page === 1) {
-            return state.merge({refreshing: true, loading: false, error: false});
+            return state.merge({refreshing: true, loading: false, error: false, txlist:[]});
         }
         return state.merge({refreshing: false, loading: true, error: false});
     }

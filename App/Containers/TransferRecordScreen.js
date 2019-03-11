@@ -5,14 +5,14 @@ import { Colors, Images } from '../Themes';
 import styles from './Styles/TransferRecordScreenStyle';
 import ListFooterComponent from '../Components/ListFooterComponent';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
-import { Button } from 'react-native-elements';
-
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import { NavigationActions } from 'react-navigation';
 import AssetActions from '../Redux/AssetRedux';
 import {sectionlize, getToken, getValue} from '../Lib/Format';
 import {getTxDirection} from '../Lib/Utils';
 import I18n from '../I18n';
 import Identicon from 'identicon.js';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 
 class TransferRecordScreen extends Component {
@@ -31,6 +31,12 @@ class TransferRecordScreen extends Component {
       const page = 1;
       this._getTxlist(page);
       this.setState({ page });
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.NO_MORE_RECORD, ()=>{
+          const {page} = this.state;
+          this.setState({
+              page:page - 1,
+          });
+      });
   }
 
   _onRefresh=()=>{
@@ -70,7 +76,7 @@ class TransferRecordScreen extends Component {
       const {address} = this.props;
       const { from='', to='', time='', value='', txreceipt_status='1', Decimal:decimal = 18 } = item;
       const isInput =  getTxDirection({address, from, to});
-      const title = isInput ? '收款' : '付款';
+      const title = isInput ? I18n.t('Collection') : I18n.t('Payment');
       const direction = isInput ? 'From:'+from : 'To:'+ to;
       const amount = getToken(value, decimal);
 
@@ -148,10 +154,10 @@ class TransferRecordScreen extends Component {
                       onPress={this._loadMore}/>}
               />
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      backgroundColor={Colors.textColor}
+                  <CommomBtnComponent
                       disabled={isBalance}
-                      title={I18n.t('TransferAction')}/>
+                      title={I18n.t('TransferAction')}
+                      onPress={()=>this._onPressBtn()}/>
               </View>
           </View>
       );

@@ -1,17 +1,21 @@
 import I18n from 'react-native-i18n';
+import {Preferences, PrefKeys} from '../Lib/Preferences';
 
 import en from './languages/english.json';
 import zh from './languages/zh.json';
-
 
 I18n.translations = {
     en,
     zh,
 };
 I18n.fallbacks = true;
-I18n.defaultLocale = 'en';
+I18n.defaultLocale = I18n.currentLocale();
+const {locale} = Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || {locale:I18n.currentLocale()}
+I18n.locale = locale;
 
 export default I18n;
+
+
 
 
 // const missingTranslationRegex = /^\[missing ".*" translation\]$/;

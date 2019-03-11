@@ -10,6 +10,8 @@ const { Types, Creators } = createActions({
     getConfigRequest: ['data'],
     getConfigSuccess: ['data'],
     getConfigFailure: null,
+
+    saveConfig: ['data'],
 });
 
 export const ConfigTypes = Types;
@@ -28,16 +30,19 @@ export const INITIAL_STATE = Immutable({
     loading: null,
     failure: null,
     error: null,
-    baseUrl:'http://wallet.milewan.com:8088'
+    baseUrl:'http://wallet.milewan.com:8088',
+    locale:'zh'
 });
 
 /* ------------- Selectors ------------- */
 
 export const ConfigSelectors = {
-    baseUrl: state => state.user.baseUrl,
+    baseUrl: state => state.config.baseUrl,
+    getLocale: state => state.config.locale,
 };
 
 /* ------------- Reducers ------------- */
+export const saveConfig = (state, { data }) =>state.merge(data);
 
 // request the avatar for a user
 export const request = (state, action) =>
@@ -59,5 +64,7 @@ export const failure = (state) =>
 export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_CONFIG_REQUEST]: request,
     [Types.GET_CONFIG_SUCCESS]: success,
-    [Types.GET_CONFIG_FAILURE]: failure
+    [Types.GET_CONFIG_FAILURE]: failure,
+
+    [Types.SAVE_CONFIG]: saveConfig,
 });

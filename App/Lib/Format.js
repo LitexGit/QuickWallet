@@ -3,8 +3,6 @@ import I18n from '../I18n';
 import utils from 'ethers-utils';
 import Ramda from 'ramda';
 
-
-
 function groupBy(objectArray, property) {
     return objectArray.reduce((acc, obj) => {
         const key = obj[property];
@@ -79,19 +77,36 @@ export function getDisplayTxInfo(signInfo) {
     let {data='', gas='', gasPrice='', value=''} = signInfo;
     gas = parseInt(gas, 16).toString();
     if (!gas || isNaN(gas)) {
-        gas = '0';
+        gas = '21000';
     }
     gasPrice = parseInt(gasPrice, 16).toString();
     if (!gasPrice || isNaN(gasPrice)) {
-        gasPrice = '0';
+        gasPrice = 1e9 + '';
     }
     value = parseInt(value, 16).toString();
     if (!value || isNaN(value)) {
         value = '0';
     }
-    const info = {...signInfo, gas, gasPrice, value};
+    if (!data || isNaN(data)) {
+      data=''
+    }
+    const info = {...signInfo, gas, gasPrice, value, data};
     return info;
 }
+
+export function getDisplayFiat(inputFiat) {
+    if (!inputFiat || isNaN(inputFiat)) {
+        inputFiat = '0.00';
+    }
+    return parseFloat(inputFiat).toFixed(2);
+}
+
+
+export const isString = n => typeof(n)==='string';
+export const isNumber = n => Number(n)===n;
+export const isInt = n => Number(n) === n && n % 1 === 0;
+export const isFloat = n => Number(n) === n && n % 1 !== 0;
+
 
 
 

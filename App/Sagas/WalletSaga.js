@@ -2,11 +2,13 @@ import { call, put, select, all } from 'redux-saga/effects';
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions  from '../Redux/UserRedux';
-import { StackActions } from 'react-navigation';
+import { StackActions ,NavigationActions} from 'react-navigation';
 import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import Toast from 'react-native-root-toast';
 import {UserSelectors} from '../Redux/UserRedux';
+import I18n from '../I18n';
+import { Platform } from 'react-native';
 
 
 export function *gethInit () {
@@ -14,10 +16,7 @@ export function *gethInit () {
         yield GethModule.init();
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -26,10 +25,7 @@ export function *gethUnInit () {
         yield GethModule.unInit();
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -42,10 +38,7 @@ export function *gethIsUnlockAccount () {
         EventEmitter.emit(EventKeys.IS_UNLOCK_ACCOUNT, {isUnlock});
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -61,18 +54,43 @@ export function *gethUnlockAccount (action) {
 
         DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
         yield put(WalletActions.saveAddress({address}));
-        yield put(UserActions.saveUserInfo({passphrase, isLoginInfo:true}));
+        yield put(UserActions.saveUserInfo({isLoginInfo:true}));
         EventEmitter.emit(EventKeys.WALLET_UNLOCKED);
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
+
+export function *gethNewWallet(action){
+    try {
+        const {data:params} = action;
+        const {passphrase=''} = params;
+        yield put(WalletActions.setLoading({loading:true}));
+
+        const result =  yield GethModule.randomMnemonic();
+        const map = GethModule.getResolveMap(result);
+        const {mnemonic} = map;
+        yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
+
+        const importResult = yield GethModule.importMnemonic({mnemonic, passphrase});
+        const importMap = GethModule.getResolveMap(importResult);
+        const {address} = importMap;
+
+        const nickname = yield select(UserSelectors.getNickname);
+        yield put(UserActions.registerRequest({address, type:1, nickname, isPopToTop:false}));
+
+        yield put(WalletActions.setLoading({loading:false}));
+    } catch (error) {
+        yield put(WalletActions.gethRandomMnemonicFailure());
+        yield put(WalletActions.setLoading({loading:false}));
+        throwError(error);
+    }
+}
+
+
 
 
 export function *gethRandomMnemonic () {
@@ -82,16 +100,13 @@ export function *gethRandomMnemonic () {
         const result =  yield GethModule.randomMnemonic();
         const map = GethModule.getResolveMap(result);
         const {mnemonic} = map;
-
         yield put(WalletActions.gethRandomMnemonicSuccess({mnemonic}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
+        yield put(WalletActions.gethRandomMnemonicFailure());
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -106,15 +121,11 @@ export function *gethImportMnemonic (action) {
 
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
-        yield put(UserActions.saveUserInfo({passphrase}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -130,15 +141,11 @@ export function *gethImportPrivateKey (action) {
 
         const nickname = yield select(UserSelectors.getNickname);
         yield put(UserActions.registerRequest({address, type:1, nickname}));
-        yield put(UserActions.saveUserInfo({passphrase}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
@@ -147,46 +154,68 @@ export function *gethExportPrivateKey (action) {
         const {data:params} = action;
         const {passphrase=''} = params;
         yield put(WalletActions.setLoading({loading:true}));
+
         const result = yield GethModule.exportPrivateKey({passphrase});
         const map = GethModule.getResolveMap(result);
         const {privateKey} = map;
-
         const displayKey = GethModule.getDisplayedPrivateKey(privateKey);
+
         yield put(WalletActions.savePrivateKey({privateKey:displayKey}));
-        yield put(UserActions.saveUserInfo({passphrase}));
+
+        yield put(NavigationActions.navigate({routeName:'ExportScreen'}));
 
         yield put(WalletActions.setLoading({loading:false}));
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
 }
 
 export function *gethTransfer (action) {
     try {
+        yield put(WalletActions.setLoading({loading:true}));
         const {data:params} = action;
         const {symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress} = params;
-        // TODO 参数异常校验
-        // yield put(WalletActions.setLoading({loading:true}));
         const result =  yield GethModule.transfer({symbol, passphrase, fromAddress, toAddress, value, gasPrice, decimal, tokenAddress});
-
-
         const map = GethModule.getResolveMap(result);
         const {txHash} = map;
+        yield put(WalletActions.setLoading({loading:false}));
 
-        yield put(UserActions.saveUserInfo({passphrase}));
-        // yield put(WalletActions.setLoading({loading:false}));
+        Toast.show(I18n.t('TransferSuccess'), {
+            shadow:true,
+            position: Toast.positions.CENTER,
+        });
 
         yield put(StackActions.pop());
     } catch (error) {
         yield put(WalletActions.setLoading({loading:false}));
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
+        throwError(error);
     }
+}
+
+function throwError (error){
+
+  const code = error.message;
+  switch (code) {
+    case '1003':{
+      const msg = 'code:'+code+' '+'msg:'+I18n.t('InvalidPassword');
+      Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER,
+      });
+    }
+      break;
+
+    default:{
+      const errCode = Platform.OS === 'ios' ? code : '1111';
+
+      const msg = 'code:'+errCode+' '+'msg:'+I18n.t('SystemException');
+      Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER,
+      });
+    }
+      break;
+  }
 }
 

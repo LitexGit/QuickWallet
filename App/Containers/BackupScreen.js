@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/BackupScreenStyle';
-import { Button } from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import { Colors } from '../Themes';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import Ramda from 'ramda';
-import Spinner from 'react-native-loading-spinner-overlay';
-import WalletActions from '../Redux/WalletRedux';
 import I18n from '../I18n';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
+import Toast from 'react-native-root-toast';
 
 
 class BackupScreen extends Component {
@@ -28,8 +27,11 @@ class BackupScreen extends Component {
   }
 
   _onPressCheck=()=>{
-      const {mnemonic, passphrase} = this.props;
-      this.props.gethImportMnemonic({mnemonic, passphrase});
+      Toast.show(I18n.t('BackupSuccessful'), {
+          shadow:true,
+          position: Toast.positions.CENTER,
+      });
+      this.props.popToTop();
   }
 
   _checkMnemonicSort=()=>{
@@ -104,8 +106,6 @@ class BackupScreen extends Component {
   }
 
   componentDidMount=()=>{
-      this.props.setLoading({loading:false});
-
       const {mnemonic} = this.props;
       const array = mnemonic.split(' ');
       array.sort(() => .5 - Math.random());
@@ -120,20 +120,17 @@ class BackupScreen extends Component {
   }
 
   render () {
-      const {loading} = this.props;
       const { pressArray, unPressArray, isSorted} = this.state;
       const isCanPress = isSorted && !unPressArray.length;
 
-      const toastView = !isSorted ? (<View style={styles.toastView}>
-          <Text style={styles.toastText}>{I18n.t('AbnormalSortRemind')}</Text>
-      </View>):null;
+      const toastView = !isSorted ? (<Text style={styles.toastText}>{I18n.t('AbnormalSortRemind')}</Text>):null;
 
       const pressWord = pressArray.map((item, key)=>{
           const {title} = item;
           return (
               <TouchableOpacity key={key} onPress={()=>this._onPressSelected(item)}>
                   <View style={styles.wordsStyle}>
-                      <Text>{title}</Text>
+                      <Text style={styles.wordTitle}>{title}</Text>
                   </View>
               </TouchableOpacity>);
       });
@@ -143,16 +140,13 @@ class BackupScreen extends Component {
           return (
               <TouchableOpacity key={key} onPress={()=>this._onPressUnSelected(item)}>
                   <View style={styles.wordsStyle}>
-                      <Text>{title}</Text>
+                      <Text style={styles.wordTitle}>{title}</Text>
                   </View>
               </TouchableOpacity>);
       });
 
       return (
           <View style={styles.container}>
-              <Spinner visible={loading} cancelable
-                  textContent={'Loading...'}
-                  textStyle={styles.spinnerText}/>
               <View style={styles.topSection}>
                   <View style={styles.topView}>
                       <Feather name={'check'} size={30} color={Colors.separateLineColor}/>
@@ -161,7 +155,9 @@ class BackupScreen extends Component {
                   <View style={styles.remindSection}>
                       <Text style={styles.remindText}>{I18n.t('BackupRemind')}</Text>
                   </View>
-                  {toastView}
+                  <View style={styles.toastView}>
+                      {toastView}
+                  </View>
                   <View style={styles.pressWordView}>
                       {pressWord}
                   </View>
@@ -171,10 +167,10 @@ class BackupScreen extends Component {
               </View>
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
-                      <Button onPress={()=>this._onPressCheck()}
-                          // disabled={!isCanPress}
-                          backgroundColor={Colors.textColor}
-                          title={ I18n.t('Complete')}/>
+                      <CommomBtnComponent
+                          title={ I18n.t('Complete')}
+                          disabled={!isCanPress}
+                          onPress={()=>this._onPressCheck()}/>
                   </View>
               </View>
           </View>
@@ -184,16 +180,14 @@ class BackupScreen extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        user:{ passphrase },
-        wallet:{ mnemonic, loading }
+        wallet:{ mnemonic }
     } = state;
-    return { mnemonic, loading, passphrase};
+    return { mnemonic};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
-    gethImportMnemonic: (params) => dispatch(WalletActions.gethImportMnemonic(params)),
+    popToTop: () => dispatch(StackActions.popToTop()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupScreen);

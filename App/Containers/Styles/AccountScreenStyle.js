@@ -47,11 +47,24 @@ export default StyleSheet.create({
         borderTopColor:Colors.separateLineColor,
         borderTopWidth: 1 / PixelRatio.get(),
         backgroundColor:Colors.backgroundColor,
+        height:Metrics.bottonBtnHeight,
+        justifyContent:'center',
+        alignItems:'center',
     },
     backupTitle:{
         color:Colors.textColor,
+        textAlign:'center',
+        fontSize:Fonts.size.input,
     },
     logOutTitle:{
         color:'red',
+        textAlign:'center',
+        fontSize:Fonts.size.input,
+    },
+    textInput:{
+        height:'100%',
+        width:'50%',
+        textAlign:'right',
+        color:Colors.textColor,
     }
 });

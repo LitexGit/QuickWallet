@@ -7,7 +7,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors, Metrics } from '../Themes';
 import InputInfoConfig from '../Config/InputInfoConfig';
-import { Button } from 'react-native-elements';
+import CommomBtnComponent from '../Components/CommomBtnComponent';
 import UserTermsAlert from '../Components/UserTermsAlert';
 import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
@@ -16,8 +16,12 @@ import I18n from '../I18n';
 import LevelComponent from '../Components/LevelComponent';
 import {getPasspraseStrength} from '../Lib/Utils';
 import Toast from 'react-native-root-toast';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 class NewWalletScreen extends Component {
+
   static navigationOptions = {
       title:I18n.t('NewWalletTabTitle'),
   }
@@ -74,8 +78,8 @@ class NewWalletScreen extends Component {
       let error = '密码不少于8位字符';
       if (this.password.length >= 8 && this.confirm.length >= 8) {
           if (this.password === this.confirm) {
-              this.props.saveUserInfo({nickname:this.name, passphrase:this.password});
-              this.props.navigate('PreBackupScreen');
+              this.props.saveUserInfo({nickname:this.name});
+              this.props.gethNewWallet({passphrase:this.password});
               return;
           }
           error = '密码输入不一致';
@@ -84,8 +88,6 @@ class NewWalletScreen extends Component {
           shadow:true,
           position: Toast.positions.CENTER,
       });
-
-
   }
 
   _checkInputIsValid=()=>{
@@ -96,9 +98,23 @@ class NewWalletScreen extends Component {
       }
   }
 
+  componentDidMount=()=>{
+      DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, true);
+      this.props.setLoading({loading:false});
+      this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_NEW_WALLET_SUCCESS, ({status, msg})=>{
+          if (!status) {
+              return;
+          }
+          Toast.show(msg, {
+              shadow:true,
+              position: Toast.positions.CENTER,
+          });
+          this.props.navigate('PreBackupScreen');
+      });
+  }
 
   render () {
-      const {isAgree} = this.props;
+      const {isAgree, loading} = this.props;
 
       const {isShowRemind, isInputValid, isShowPassword, strength}=this.state;
 
@@ -144,25 +160,27 @@ class NewWalletScreen extends Component {
       </View>): null);
       return (
           <View style={styles.container}>
+              <Spinner visible={loading} cancelable
+                  textContent={'Loading...'}
+                  textStyle={styles.spinnerText}/>
               {userTermsView}
-              <View style={styles.topSection}>
-                  <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
-                  <Text style={styles.titleStytle}>{ I18n.t('CreatAction') }</Text>
-              </View>
               <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={100}>
+                  <View style={styles.topSection}>
+                      <SimpleLineIcons name={'wallet'} size={30} color={Colors.separateLineColor}/>
+                      <Text style={styles.titleStytle}>{ I18n.t('CreatAction') }</Text>
+                  </View>
                   <View style={styles.inputSection}>
                       {inputs}
                       {remindView}
                   </View>
               </KeyboardAvoidingView>
               <View style={styles.bottomSection}>
-                  <Button onPress={()=>this._onPressBtn()}
-                      disabled={!isInputValid}
-                      containerViewStyle={styles.containerViewStyle}
-                      buttonStyle={styles.buttonStyle}
-                      textStyle={styles.btnTitle}
-                      backgroundColor={isInputValid ? Colors.textColor : Colors.separateLineColor}
-                      title={I18n.t('Create')}/>
+                  <View style={styles.bottomBtnSection}>
+                      <CommomBtnComponent
+                          disabled={!isInputValid}
+                          title={I18n.t('Create')}
+                          onPress={()=>this._onPressBtn()}/>
+                  </View>
               </View>
           </View>
       );
@@ -182,6 +200,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    setLoading: ({loading}) => dispatch(WalletActions.setLoading({loading})),
+    gethNewWallet: (params) => dispatch(WalletActions.gethNewWallet(params)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWalletScreen);

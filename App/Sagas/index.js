@@ -15,7 +15,7 @@ import { GithubTypes } from '../Redux/GithubRedux';
 
 
 /* ------------- Sagas ------------- */
-import { getBanner } from './FoundSaga';
+import { getBanner, getApps}  from './FoundSaga';
 import { register, getUserInfo, logout, getInjectScript} from './UserSaga';
 import { getConfig } from './ConfigSaga';
 import { getTokenList, getTxlist, getBalance, getTokenBalance} from './AssetSaga';
@@ -24,6 +24,7 @@ import {
     gethUnInit,
     gethIsUnlockAccount,
     gethUnlockAccount,
+    gethNewWallet,
     gethImportMnemonic,
     gethImportPrivateKey,
     gethExportPrivateKey,
@@ -46,6 +47,7 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create();
 export default function * root () {
     yield all([
         takeLatest(FoundTypes.GET_BANNER_REQUEST, getBanner, api),
+        takeLatest(FoundTypes.GET_APPS_REQUEST, getApps, api),
         takeLatest(UserTypes.GET_USER_INFO_REQUEST, getUserInfo, api),
         takeLatest(UserTypes.LOGOUT, logout),
         takeLatest(UserTypes.GET_INJECT_SCRIPT, getInjectScript),
@@ -64,6 +66,8 @@ export default function * root () {
         takeLatest(WalletTypes.GETH_UNLOCK_ACCOUNT, gethUnlockAccount),
         takeLatest(WalletTypes.GETH_UN_INIT, gethUnInit),
         takeLatest(WalletTypes.GETH_IS_UNLOCK_ACCOUNT, gethIsUnlockAccount),
+        takeLatest(WalletTypes.GETH_NEW_WALLET, gethNewWallet),
+
 
         // some sagas only receive an action
         takeLatest(StartupTypes.STARTUP, startup),

@@ -16,10 +16,7 @@ export default StyleSheet.create({
         color:Colors.backColor,
         marginTop: Metrics.baseMargin,
     },
-    remindSection:{
-        margin:Metrics.section,
-        marginTop:0,
-    },
+
     remindText:{
         fontSize:Fonts.size.small,
         color:Colors.separateLineColor,
@@ -36,7 +33,8 @@ export default StyleSheet.create({
         justifyContent:'flex-end',
     },
     btnStyle:{
-        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
+        marginBottom:Metrics.bottomSpace,
+        height:Metrics.bottonBtnHeight,
     },
     pressWordView:{
         margin:Metrics.baseMargin,
@@ -62,14 +60,20 @@ export default StyleSheet.create({
         padding:Metrics.smallMargin,
         backgroundColor:Colors.backgroundColor,
     },
+    remindSection:{
+    },
     toastView:{
         justifyContent:'center',
         alignItems:'center',
-        margin:Metrics.baseMargin,
         marginTop:0,
+        height:45,
     },
     toastText:{
         color:'red',
         fontSize:Fonts.small,
+    },
+    wordTitle:{
+        fontSize:Fonts.size.common,
+
     }
 });

@@ -22,12 +22,7 @@ export default StyleSheet.create({
         fontWeight: '800',
         color:Colors.textColor,
     },
-    textInput:{
-        margin:Metrics.doubleBaseMargin,
-        borderBottomColor: Colors.dividingLineColor,
-        borderBottomWidth: 1 / PixelRatio.get(),
-        marginBottom: 0,
-    },
+
     bottomSection:{
         flexDirection:'row',
         alignItems:'stretch'
@@ -38,5 +33,19 @@ export default StyleSheet.create({
     actionStyle:{
         padding: 15,
         textAlign:'center',
-    }
+    },
+    centerSection:{
+        flexDirection:'row',
+        alignItems:'flex-end',
+        paddingHorizontal: Metrics.doubleBaseMargin,
+        paddingTop:Metrics.doubleBaseMargin,
+
+
+    },
+    textInput:{
+        borderBottomColor: Colors.dividingLineColor,
+        borderBottomWidth: 1 / PixelRatio.get(),
+        flex:1,
+        paddingBottom: Metrics.smallMargin,
+    },
 });

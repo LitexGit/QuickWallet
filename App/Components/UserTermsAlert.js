@@ -43,7 +43,7 @@ class UserTermsAlert extends Component {
             <View style={styles.container}>
                 <View style={styles.topSection}>
                     <Text style={styles.titleStyle}>{I18n.t('TermsOfUse')}</Text>
-                    <FontAwesome name={'compass'} size={Metrics.icons.small} color={Colors.textColor}/>
+                    {/* <FontAwesome name={'compass'} size={Metrics.icons.small} color={Colors.textColor}/> */}
                 </View>
                 <ScrollView style={styles.scrollView}>
                     <Text>{remin001}{remin002}</Text>

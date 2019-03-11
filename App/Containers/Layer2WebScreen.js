@@ -16,16 +16,27 @@ import {getDisplayTxInfo} from '../Lib/Format';
 import I18n from '../I18n';
 import Config from 'react-native-config';
 import {layer1} from '../Resources/inject';
+import HeaderLeftComponent from '../Components/HeaderLeftComponent';
+import { StackActions, SafeAreaView } from 'react-navigation';
 
-// const DEFAULT_URI = 'https://www.baidu.com';
+// https://stackoverrun.com/cn/q/12932611
+
 class Layer2WebScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-      title:'Layer2',
-      headerRight: (
-          <RightComponent
-              onPressRefresh={navigation.getParam('onPressRefresh')}
-              onPressShare={navigation.getParam('onPressShare')}/>),
-  });
+  static navigationOptions = ({ navigation }) => {
+      const { title=''} = navigation.state.params;
+
+      return {
+          title,
+          headerRight: (
+              <RightComponent
+                  onPressRefresh={navigation.getParam('onPressRefresh')}
+                  onPressShare={navigation.getParam('onPressShare')}/>),
+          headerLeft:(
+              <HeaderLeftComponent onPress={navigation.getParam('goBack')}/>
+          )
+      };
+
+  };
 
   constructor(props){
       super(props);
@@ -33,13 +44,16 @@ class Layer2WebScreen extends Component {
           isShowPassphrase:false,
           isShowSignTx:false,
           isShowSignMsg:false,
+          goBackEnabled:false,
       };
       this.signInfo = {};
+      this.passphrase='';
   }
 
   componentDidMount() {
       this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });
       this.props.navigation.setParams({ onPressShare: this._onPressShare });
+      this.props.navigation.setParams({ goBack: this._goBack });
 
       this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_UNLOCK_ACCOUNT, ({isUnlock})=>{
           if (isUnlock) {
@@ -58,6 +72,70 @@ componentWillUnmount=()=>{
     this.isUnlockListener.remove();
 }
 
+_goBack=()=>{
+    const {goBackEnabled=false} = this.state;
+    if (goBackEnabled) {
+        this.webview.goBack();
+        return;
+    }
+    this.props.pop();
+}
+
+_onPressRefresh=()=>{
+    this.webview.reload();
+}
+
+_onPressShare=()=> {
+    const {url} = this.props.navigation.state.params;
+    const {sharecode} = this.props;
+    let shareParams = {};
+    if (Platform.OS === 'ios') {
+        const shareUrl = url + '?sharecode=' + sharecode;
+        const message = '待分享的信息';
+        shareParams = {shareUrl, message};
+    } else {
+        const shareUrl = 'android 分享的 Url';
+        const message = url + '?sharecode=' + sharecode;
+        shareParams = {shareUrl,message};
+    }
+    Share.share(shareParams);
+};
+
+_onNavigationStateChange=(navState)=>{
+    this.setState({
+        goBackEnabled:navState.canGoBack,
+    });
+}
+
+// passphrase
+_pswdCancel=()=>{
+    this.setState({
+        isShowPassphrase:false,
+    });
+}
+
+_pswdConfirm=(passphrase)=>{
+    this.passphrase = passphrase;
+    this.setState({
+        isShowPassphrase:false,
+    });
+    const {name} = this.signInfo;
+    switch (name) {
+    case 'signTransaction':
+        this._signInfo();
+        break;
+    case 'signMessage':
+    case 'signPersonalMessage':
+        this.props.gethUnlockAccount({passphrase});
+        break;
+
+    default:
+        break;
+    }
+
+}
+
+// signTxAlert
 _signTxCancel=()=>{
     this.setState({
         isShowSignTx:false,
@@ -67,10 +145,12 @@ _signTxCancel=()=>{
 _signTxConfirm=()=>{
     this.setState({
         isShowSignTx:false,
+        isShowPassphrase:true,
     });
-    this.props.gethIsUnlockAccount();
 }
 
+
+// signMsgAlert
 _signMsgCancel=()=>{
     this.setState({
         isShowSignMsg:false,
@@ -84,39 +164,12 @@ _signMsgConfirm=()=>{
     this.props.gethIsUnlockAccount();
 }
 
-_pswdCancel=()=>{
-    this.setState({
-        isShowPassphrase:false,
-    });
-}
-
-_pswdConfirm=(passphrase)=>{
-    this.setState({
-        isShowPassphrase:false,
-    });
-    this.props.gethUnlockAccount({passphrase});
-}
-
-_onPressRefresh=()=>{
-    this.webview.reload();
-}
-
-_onPressShare=()=> {
-    const shareUrl = 'http://litex.io/';
-    const {sharecode} = this.props;
-    let shareParams = {};
-    if (Platform.OS === 'ios') {
-        const url =  shareUrl + '?sharecode=' + sharecode;
-        shareParams = {url};
-    } else {
-        const message = shareUrl + '?sharecode=' + sharecode;
-        shareParams = {message};
-    }
-    Share.share(shareParams);
-};
-
-
 _onMessage=(evt)=>{
+
+  console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
+  console.log(JSON.parse(evt.nativeEvent.data));
+  console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
+
     const {isLoginInfo} = this.props;
     if (!isLoginInfo) {
         Toast.show(I18n.t('UnLoginRemind'), {
@@ -130,13 +183,13 @@ _onMessage=(evt)=>{
     this.signInfo = params;
     const {name} = params;
     switch (name) {
-    case 'signTransaction':
-        this.setState({isShowSignTx:true});
-        break;
     case 'signMessage':
+    case 'signPersonalMessage':
         this.setState({isShowSignMsg:true});
         break;
-
+    case 'signTransaction':
+    this.setState({isShowSignTx:true});
+        break;
     default:
         break;
     }
@@ -150,9 +203,14 @@ _signInfo=()=>{
         this._signTransaction({signInfo, id});
     }
         break;
-    case 'signMessage': {
-        const {data=''} = object;
+    case 'signMessage':{
+      const {data=''} = object;
         this._signMessage({data, id});
+    }
+        break;
+    case 'signPersonalMessage': {
+        const {data=''} = object;
+        this._signPersonalMessage({data, id});
     }
         break;
 
@@ -163,9 +221,11 @@ _signInfo=()=>{
 
 _signTransaction=async({signInfo, id=8888})=>{
     try {
-        const {passphrase=''} = this.props;
-        const signHash = await GethModule.signTransaction({passphrase, signInfo});
-        const signMsg = { id, error: null, value: signHash };
+        const {data=''} = await GethModule.signTransaction({passphrase:this.passphrase, signInfo});
+        console.log('=======signTransaction=============================');
+        console.log(data);
+        console.log('=======signTransaction=============================');
+        const signMsg = { id, error: null, value: data };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
@@ -177,9 +237,12 @@ _signTransaction=async({signInfo, id=8888})=>{
 
 _signMessage = async ({data:message='', id=8888})=>{
     try {
-        const {passphrase=''} = this.props;
-        const signHash = await GethModule.signMessage({passphrase, message});
-        const signMsg = { id, error: null, value: signHash };
+        const {address} = this.props;
+        const {data=''} = await GethModule.signMessage({address, message});
+        console.log('=======signMessage=============================');
+        console.log(data);
+        console.log('=======signMessage=============================');
+        const signMsg = { id, error: null, value: data };
         this.webview.postMessage(JSON.stringify(signMsg));
     } catch (error) {
         Toast.show(error.message, {
@@ -189,22 +252,41 @@ _signMessage = async ({data:message='', id=8888})=>{
     }
 }
 
+_signPersonalMessage = async ({data:message='', id=8888})=>{
+  try {
+      const {address} = this.props;
+      const {data=''} = await GethModule.signPersonalMessage({address, message});
+      const signMsg = { id, error: null, value: data };
+      console.log('=======signPersonalMessage=============================');
+      console.log(signMsg);
+      console.log('=======signPersonalMessage=============================');
+      this.webview.postMessage(JSON.stringify(signMsg));
+  } catch (error) {
+      Toast.show(error.message, {
+          shadow:true,
+          position: Toast.positions.CENTER,
+      });
+  }
+}
+
 render  () {
-    // const uri = DEFAULT_URI;
     const {isShowPassphrase, isShowSignTx, isShowSignMsg} = this.state;
     const {loading, web3Provider, address} = this.props;
 
+    const {url} = this.props.navigation.state.params;
+
     const sprintf = require('sprintf-js').sprintf;
-    const signer = sprintf(layer1, address, Config.RPC_URL, Config.CHAIN_ID);
+    const signer = sprintf(layer1, address.toLocaleLowerCase(), Config.RPC_URL, Config.CHAIN_ID);
     const injectScript = web3Provider + '' + signer;
 
     const {object={}} = this.signInfo;
     const {data=''} = object;
     const signInfo = getDisplayTxInfo(object);
+
     const {to='', value='', gasPrice=''} = signInfo;
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <SignTxResultAlert
                 isInit={isShowSignTx}
                 isWallet={false}
@@ -225,27 +307,39 @@ render  () {
             <Spinner visible={loading} cancelable
                 textContent={'Loading...'}
                 textStyle={styles.spinnerText}/>
-            <WebView useWebKit
+            <WebView
+                useWebKit={true}
                 ref ={ref=>this.webview = ref}
-                onMessage={this._onMessage}
                 style={styles.container}
+                onNavigationStateChange={this._onNavigationStateChange}
+                allowUniversalAccessFromFileURLs={true}
+                allowFileAccess={true}
+                onMessage={this._onMessage}
                 injectedJavaScript={injectScript}
-                source={require('./index.html')}/>
-        </View>);
+                source={{uri:'https://test.eth4.fun/test/examples/'}}
+                />
+        </SafeAreaView>);
 }
 }
+// source={require('./index.html')}
+// mixedContentMode='always'
+// renderLoading
+// startInLoadingState
+// onError
+//
 
 const mapStateToProps = (state) => {
     const {
-        user:{web3Provider, passphrase, isLoginInfo, address},
+        user:{web3Provider, isLoginInfo, address},
         wallet:{ loading }
     } = state;
-    return { loading, web3Provider, passphrase, isLoginInfo, address};
+    return { loading, web3Provider, isLoginInfo, address};
 };
 
 const mapDispatchToProps = (dispatch) => ({
     gethIsUnlockAccount: () => dispatch(WalletActions.gethIsUnlockAccount()),
     gethUnlockAccount: (params) => dispatch(WalletActions.gethUnlockAccount(params)),
+    pop:() => dispatch(StackActions.pop())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layer2WebScreen);

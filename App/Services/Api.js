@@ -6,9 +6,10 @@ import Ramda from 'ramda';
 const create = (baseURL = Config.API_URL) => {
     const api = apisauce.create({
         baseURL,
-        headers: {'Cache-Control': 'no-cache', 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'},
+        headers: {'Cache-Control': 'no-cache'},
         timeout: 10000
     });
+    // , 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'
 
     api.addRequestTransform((request)=>{
         // console.log('==========request==========================');
@@ -47,6 +48,10 @@ const create = (baseURL = Config.API_URL) => {
      */
     const getBanner=()=>api.get('/api/banners');
     /**
+     * Dapp信息接口
+     */
+    const getApps=()=>api.get('/api/apps');
+    /**
      * 系统配置信息接口
      */
     const getConfig = () =>api.get('/api/settings');
@@ -64,6 +69,7 @@ const create = (baseURL = Config.API_URL) => {
         register,
         getUserInfo,
         getBanner,
+        getApps,
         getConfig,
         getTokenList,
 

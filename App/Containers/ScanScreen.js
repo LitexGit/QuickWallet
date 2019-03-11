@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, Animated, Easing, Image, Platform } from 'react-native';
-import { connect } from 'react-redux';
 import styles from './Styles/ScanScreenStyle';
 import { RNCamera } from 'react-native-camera';
 import I18n from '../I18n';
@@ -95,6 +94,11 @@ export default class ScanScreen extends Component {
           </View>);
   }
 }
+
+
+
+
+
 
 
 

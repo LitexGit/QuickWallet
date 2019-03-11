@@ -19,15 +19,9 @@ export const MineConfig = {
         title:I18n.t('UserAgreement'),
         isNext:true,
     },
-    about:{
-        key:'about',
-        index:3,
-        title:I18n.t('AboutUs'),
-        isNext:true,
-    },
     share:{
         key:'share',
-        index:4,
+        index:3,
         title:I18n.t('Share'),
         isNext:false,
     },
@@ -76,10 +70,13 @@ export const LanguageConfig = {
     zh:{
         key:'zh',
         title:'简体中文',
+        locale:'zh'
+
     },
     english:{
         key:'english',
         title:'English',
+        locale:'en'
     }
 };
 

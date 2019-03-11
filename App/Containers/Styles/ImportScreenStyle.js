@@ -15,7 +15,7 @@ export default StyleSheet.create({
     },
     bottomSection:{
         flex:1,
-        marginBottom:Metrics.bottomSpace + Metrics.baseMargin,
+        marginBottom:Metrics.bottomSpace,
     },
     tabBarUnderline:{
         backgroundColor:Colors.textColor,
@@ -24,5 +24,16 @@ export default StyleSheet.create({
     tabBarStyle:{
         flex:1,
     },
+    userTermsStyle:{
+        flex:1,
+        backgroundColor:'rgba(0,0,0,0.3)',
+        position:'absolute',
+        left:0,
+        top:0,
+        right:0,
+        bottom:0,
+        justifyContent:'center',
+        alignItems:'center'
+    }
 
 });
