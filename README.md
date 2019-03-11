@@ -1,7 +1,9 @@
 #  QuickWallet
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/)
 ```
-QuickWallet introduction
+    QuickWallet is an Ethereum digital currency wallet.
+    QuickWallet has a relatively low user threshold compared to other Ethereum wallets to make it friendlier to new users of Blockchian. A dapp browser is also embedded in QuickWallet.
+    More optimizations and updates is on the way, please stay tuned.
 ```
 ## :earth_asia: Environment
 ### :wrench: 开发工具
