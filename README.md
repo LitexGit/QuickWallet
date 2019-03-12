@@ -1,18 +1,19 @@
 #  QuickWallet
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://cn.eslint.org/)
 ```
 QuickWallet is an Ethereum digital currency wallet.
 QuickWallet has a relatively low user threshold compared to other Ethereum wallets to make it friendlier to new users of Blockchian. A dapp browser is also embedded in QuickWallet.
 More optimizations and updates is on the way, please stay tuned.
 ```
 ## :earth_asia: Environment
-### :wrench: 开发工具
+
+### :wrench: Development tools
 ```
 0.ReactNative[JS]：Visual Studio code V1.32.0
 1.iOS：Xcode V10.1
 2.Android：Android Studio V3.2.1
 ```
-### :blue_book: 开发环境
+### :blue_book: Development environment
 ```
 "react": "16.3.1",
 "react-native": "^0.55.3",
@@ -34,6 +35,7 @@ node v10.14.2
 ## :school_satchel: Rely
 
 ###  iOS
+
 1. Geth.framework
 
 ###  Android
@@ -55,16 +57,21 @@ External link Geth library: export the IOS and Android library files by compilin
 ## :arrow_forward: Run App
 
 1. cd to the repo
+
 2. Run Build for either OS
+
   * for iOS
     * run `react-native run-ios`
     * or  `npm start ipx`
-  * for Android (真机调试)
+
+  * for Android
     * 001: `adb reverse tcp:8081 tcp:8081`
     * 002: Android Studio :arrow_forward:
 
 ## :closed_lock_with_key: Secrets
-### xcode 10 third-party相关错误解决方案
+
+### xcode 10 third-party Related error resolution
+
 **Step 1:**
 ```
 cd  node_modules/react-native/scripts && ./ios-install-third-party.sh && cd ../../../
@@ -78,10 +85,13 @@ cd node_modules/react-native/third-party/glog-0.3.4/ && ../../scripts/ios-config
 cp ios/build/Build/Products/Debug-iphonesimulator/libfishhook.a  node_modules/react-native/Libraries/WebSocket/
 ```
 ## :satellite: Link
-[React Native中文网](https://reactnative.cn/)
 
-[Redux 中文文档](https://www.redux.org.cn/s)
+[React](https://reactnative.cn/)
+
+[Redux](https://www.redux.org.cn/s)
 
 [Ignite CLI](https://vuex.vuejs.org/zh/)
 
 [Gomobile](https://github.com/golang/go/wiki/Mobile#sdk-applications-and-generating-bindings)
+
+[ESLint](https://cn.eslint.org/)
