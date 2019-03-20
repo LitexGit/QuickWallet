@@ -34,7 +34,7 @@
 {
   NSArray *imageList = @[@"http://foo.com/bar1.png",
                          @"http://foo.com/bar2.png"];
-  
+
   NSDictionary *props = @{@"images" : imageList};
 
   NSURL *jsCodeLocation;
@@ -52,7 +52,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+
   return YES;
 }
 

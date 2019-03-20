@@ -156,6 +156,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':react-native-fs')
     compile project(':react-native-exit-app')
     compile project(':realm')
     compile project(':react-native-camera')

@@ -7,4 +7,47 @@ target 'QuickWallet' do
 
   # Pods for QuickWallet
   pod 'web3swift'
+
+  pod 'React', :path => '../node_modules/react-native',:subspecs => [
+    'Core',
+    'CxxBridge',
+    'ART',
+    'DevSupport',
+    'RCTText',
+    'RCTImage',
+    'RCTNetwork',
+    'RCTWebSocket',
+    'RCTPushNotification',
+    'RCTBlob',
+    'RCTActionSheet',
+    'RCTAnimation',
+    'RCTSettings',
+    'RCTLinkingIOS',
+    'RCTGeolocation',
+    'RCTAnimation',
+    'tvOS'
+    ]
+
+    pod 'RNFS', :path => '../node_modules/react-native-fs'
+    pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+    # pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+    # pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+    pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
 end
+
+#'Core',
+#'CxxBridge',
+#'DevSupport',
+#'RCTBlob',
+#'RCTImage',
+#'RCTNetwork',
+#'RCTLinkingIOS',
+#'RCTSettings',
+#'RCTText',
+#'RCTWebSocket',
+#'RCTAnimation',
+#'RCTPushNotification',
+#'RCTActionSheet',
+#'RCTGeolocation',
+#'tvOS'

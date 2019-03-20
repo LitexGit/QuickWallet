@@ -27,6 +27,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		22CEDFED396A47BEBD2A97A4 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA44359F49C43C886735EAB /* libRNI18n.a */; };
+		234D142722412CF60080012E /* React.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 234D142622412CF60080012E /* React.framework */; };
 		234D1F6E21FEA28A00E8C829 /* NSData+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 234D1F6D21FEA28A00E8C829 /* NSData+Category.m */; };
 		2397295421D3972A00047AE0 /* RCTGethModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294D21D3972A00047AE0 /* RCTGethModule.m */; };
 		2397295521D3972A00047AE0 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2397294E21D3972A00047AE0 /* FileManager.m */; };
@@ -490,6 +491,7 @@
 		231D7E0A21D090FD0070E53A /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Framework/Geth.framework; sourceTree = "<group>"; };
 		2322F51721D0A21F00F9F04C /* Geth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Geth.framework; path = QuickWallet/Frameworks/Geth.framework; sourceTree = "<group>"; };
 		232C8BA421E07149005773AA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		234D142622412CF60080012E /* React.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = React.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		234D1F6C21FEA28A00E8C829 /* NSData+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Category.h"; sourceTree = "<group>"; };
 		234D1F6D21FEA28A00E8C829 /* NSData+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+Category.m"; sourceTree = "<group>"; };
 		2397294C21D3972A00047AE0 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				234D142722412CF60080012E /* React.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -946,6 +949,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				234D142622412CF60080012E /* React.framework */,
 				231D7E0A21D090FD0070E53A /* Geth.framework */,
 				2322F51721D0A21F00F9F04C /* Geth.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
@@ -1731,39 +1735,47 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-QuickWallet/Pods-QuickWallet-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-QuickWallet/Pods-QuickWallet-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/EthereumABI/EthereumABI.framework",
 				"${BUILT_PRODUCTS_DIR}/EthereumAddress/EthereumAddress.framework",
+				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/RNFS/RNFS.framework",
+				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftRLP/SwiftRLP.framework",
+				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
 				"${BUILT_PRODUCTS_DIR}/scrypt/scrypt.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1_swift/secp256k1_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/web3swift/Web3swift.framework",
+				"${BUILT_PRODUCTS_DIR}/yoga/yoga.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EthereumABI.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EthereumAddress.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftRLP.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/scrypt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickWallet/Pods-QuickWallet-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-QuickWallet/Pods-QuickWallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
