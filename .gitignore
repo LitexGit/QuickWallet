@@ -58,7 +58,7 @@ buck-out/
 # Misc
 #
 # .env
-ios/QuickWallet/Frameworks/Geth.framework
+ios/Frameworks/Geth.framework
 ios/Pods/
 package-lock.json
 ios/Podfile.lock
