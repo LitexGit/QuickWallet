@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.rnfs.RNFSPackage;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
-import io.realm.react.RealmReactPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.horcrux.svg.SvgPackage;
@@ -39,7 +38,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNFSPackage(),
             new RNExitAppPackage(),
-            new RealmReactPackage(),
             new RNCameraPackage(),
             new RNReactNativeHapticFeedbackPackage(),
             new SvgPackage(),

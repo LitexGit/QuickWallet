@@ -158,7 +158,6 @@ repositories {
 dependencies {
     compile project(':react-native-fs')
     compile project(':react-native-exit-app')
-    compile project(':realm')
     compile project(':react-native-camera')
     compile project(':react-native-haptic-feedback')
     compile project(':react-native-svg')

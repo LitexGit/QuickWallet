@@ -57,7 +57,8 @@ buck-out/
 
 # Misc
 #
-.env
+# .env
+ios/QuickWallet/Frameworks/Geth.framework
 ios/Pods/
 package-lock.json
 ios/Podfile.lock
@@ -69,4 +70,4 @@ android/app/release
 android/app/src/main/assets/index.android.bundle*
 .env.production
 .env.staging
-android/keystore.properties
+android/keystore.propertiess

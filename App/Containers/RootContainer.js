@@ -14,11 +14,6 @@ import {Preferences, PrefKeys} from '../Lib/Preferences';
 
 class RootContainer extends Component {
 
-  constructor(props){
-    super(props);
-    this.state = { realm: null };
-  }
-
   _initializes= async ()=>{
       this.props.getInjectScript();
 
