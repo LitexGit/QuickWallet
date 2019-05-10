@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00694586862547F391B87D51 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86665A73F0F64570B1BE0D35 /* libRNSVG-tvOS.a */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -1164,11 +1165,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = QG8NK8GEE7;
+						DevelopmentTeam = H9Y3FRUC6H;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = QG8NK8GEE7;
+						DevelopmentTeam = H9Y3FRUC6H;
 						LastSwiftMigration = 1010;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -1874,7 +1875,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				DEVELOPMENT_TEAM = H9Y3FRUC6H;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1928,7 +1929,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				DEVELOPMENT_TEAM = H9Y3FRUC6H;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
@@ -1982,7 +1983,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				DEVELOPMENT_TEAM = H9Y3FRUC6H;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2015,7 +2016,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-1";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-6";
 				PRODUCT_NAME = QuickWallet;
 				SWIFT_OBJC_BRIDGING_HEADER = "QuickWallet/Swift/QuickWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2033,7 +2034,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = QG8NK8GEE7;
+				DEVELOPMENT_TEAM = H9Y3FRUC6H;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2066,7 +2067,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-1";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-6";
 				PRODUCT_NAME = QuickWallet;
 				SWIFT_OBJC_BRIDGING_HEADER = "QuickWallet/Swift/QuickWallet-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;

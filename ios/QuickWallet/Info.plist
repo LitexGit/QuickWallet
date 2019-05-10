@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>QuickWallet will access your camera to give you a more complete interactive experience </string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>QuickWallet will access your photo album to give you a more complete interactive experience</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>QuickWallet will access your microphone to give you a more complete interactive experience</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -43,8 +37,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>QuickWallet will access your camera to give you a more complete interactive experience </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>QuickWallet will access your microphone to give you a more complete interactive experience</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>QuickWallet will access your photo album to give you a more complete interactive experience</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

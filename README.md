@@ -12,9 +12,9 @@ More optimizations and updates is on the way, please stay tuned.
 
 **Step 2:** `npm install`
 
-**Step 3:** `react-native link`
+<!-- **Step 3:** `react-native link` -->
 
-**Step 4:** `cd ios && pod install && cd ..`
+**Step 3:** `cd ios && pod install && cd ..`
 
 ## :school_satchel: Rely
 
@@ -45,6 +45,7 @@ External link Geth library: export the IOS and Android library files by compilin
 2. Run Build for either OS
 
   * for iOS
+    * run `npm run bundle:ios`
     * run `react-native run-ios`
     * or  `npm start ipx`
 
