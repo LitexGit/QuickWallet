@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>QuickWallet will access your camera to give you a more complete interactive experience </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>QuickWallet will access your microphone to give you a more complete interactive experience</string>
 	<key>NSPhotoLibraryUsageDescription</key>
