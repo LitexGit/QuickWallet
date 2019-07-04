@@ -67,33 +67,3 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps,mapDispatchToProps)(RootContainer);
 
-
-
-// _initLayer2 = async ()=>{
-
-//   const cpKey = 'HDNQOXNWALXMIWNCBHD';
-//   const address = '0xb5538753F2641A83409D2786790b42aC857C5340';
-//   const socketUrl = 'www.baidu.com';
-
-//   Layer2Module.initL2SDK(cpKey,  address, socketUrl,(data)=>{
-
-//       console.log('====================================');
-//       console.log(data);
-//       console.log('====================================');
-//   });
-
-
-//   const command = 'HDNQOXNWALXMIWNCBHD';
-//   const params = {
-//       pnAddress:'0xb5538753F2641A83409D2786790b42aC857C5340 0xb5538753F2641A83409D2786790b42aC857C5340',
-//       amount:'10000'
-//   };
-//   const body = JSON.stringify(params);
-
-//   Layer2Module.call(command, body, (data)=>{
-//       console.log('====================================');
-//       console.log(data);
-//       console.log('====================================');
-//   });
-
-// }

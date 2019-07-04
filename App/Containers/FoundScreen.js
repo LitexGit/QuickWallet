@@ -56,6 +56,9 @@ class FoundScreen extends Component {
 
   _onPressBanner = (item)=>{
       const {Url:url} = item;
+      console.log('=========url===========================');
+      console.log(url);
+      console.log('==========url==========================');
       this.props.navigate('WebViewScreen', {url});
   }
 
