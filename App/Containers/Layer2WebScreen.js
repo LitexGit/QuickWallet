@@ -316,12 +316,13 @@ class Layer2WebScreen extends Component {
           allowFileAccess={true}
           onMessage={this._onMessage}
           injectedJavaScript={injectScript}
-          // source={{uri:'https://test.eth4.fun/test/examples/'}}
-          source={require('./index.html')}
+          source={{uri: url}}
+
         />
       </SafeAreaView>);
   }
 }
+// source={{uri:'https://test.eth4.fun/test/examples/'}}
 // source={require('./index.html')}
 // mixedContentMode='always'
 // renderLoading

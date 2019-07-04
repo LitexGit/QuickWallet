@@ -14,6 +14,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "Web3swift-Swift.h"
 #import "NSData+Category.h"
+#import <Foundation/Foundation.h>
 
 static NSString *keyStoreFileDir  = @"keystore_file_dir";
 static NSString *contactIpKey  = @"contact_ip_key";
@@ -47,6 +48,7 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin contactIp:(NSString *)contactIp chainId:(NS
   if (!contactIp || !contactIp.length) return;
   if (self.account && self.ethClient) return;
   self.ethClient = [self getEthClient];
+  NSLog(@"====init======>%@",self.ethClient);
 }
 
 RCT_EXPORT_METHOD(unInit) {
@@ -131,9 +133,9 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
   
   NSError * error = nil;
   
-  if (!self.ethClient) {
-    self.ethClient = [self getEthClient];
-  }
+//  if (!self.ethClient) {
+//    self.ethClient = [self getEthClient];
+//  }
 
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
@@ -163,12 +165,13 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
 }
 
 RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
+  mnemonic = @"tag fee recycle palace nominee van dawn mail approve crash opinion scheme";
   
   NSError *error = nil;
   
-  if (!self.ethClient) {
-    self.ethClient = [self getEthClient];
-  }
+//  if (!self.ethClient) {
+//    self.ethClient = [self getEthClient];
+//  }
   
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
@@ -245,7 +248,7 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   if (!self.keyStore) {
     self.keyStore = [self getKeyStore:passphrase];
   }
-  if (self.ethClient) {
+  if (!self.ethClient) {
     self.ethClient = [self getEthClient];
   }
   if (!self.account || !self.keyStore) {
@@ -278,6 +281,10 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   
   NSData *data = [NSData data];
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
+//  NSString *classStr = @"GethTransaction";
+  NSLog(@"===>%@",NSStringFromClass([GethTransaction class]));
+  
+//  NSStringFromClass([transaction class])
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
 //    reject(@"1009", self.errMsg, error);
@@ -307,7 +314,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   if (!self.keyStore) {
     self.keyStore = [self getKeyStore:passphrase];
   }
-  if (self.ethClient) {
+  if (!self.ethClient) {
     self.ethClient = [self getEthClient];
   }
   
@@ -342,6 +349,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   GethCallMsg *callMsg = [[GethCallMsg alloc] init];
   GethAddress *dataAddress = [[GethAddress alloc] initFromHex:toAddress];
   GethBigInt *dataAmount = [[GethBigInt alloc] init:[value longLongValue]];
+  [dataAmount setString:value base:(long)10];
   
   [callMsg setFrom:from];
   [callMsg setGasPrice:gasPrice];
@@ -364,7 +372,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
     reject(@"1012", @"1012", error);
     return;
   }
-  gasLimit *= 2;
+  gasLimit *= 10;
   
   
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];

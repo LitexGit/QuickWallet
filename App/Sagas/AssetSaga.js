@@ -1,11 +1,11 @@
 import { call, put, select, all } from 'redux-saga/effects';
 import Config from 'react-native-config';
 import AssetActions from '../Redux/AssetRedux';
-import {UserSelectors} from '../Redux/UserRedux';
-import {AssetSelectors} from '../Redux/AssetRedux';
+import { UserSelectors } from '../Redux/UserRedux';
+import { AssetSelectors } from '../Redux/AssetRedux';
 import Toast from 'react-native-root-toast';
-import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
-import {CurrencyConfig} from '../Config/MineConfig';
+import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
+import { CurrencyConfig } from '../Config/MineConfig';
 import I18n from '../I18n';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
@@ -16,165 +16,187 @@ Moment.locale('zh-cn');
 
 const apiKey = Config.ETHERSCAN_API_KEY;
 const environment = 'rinkeby';
-const timeout = 20000;
+const timeout = 10000;
 
-export function *getTokenList(api){
-    try {
-        const response = yield call(api.getTokenList);
-        const {data:result} = response;
-        const {data, status, msg} = result;
-        if (status) {
-            const {tokenList} = data;
+export function* getTokenList(api) {
+  try {
+    const response = yield call(api.getTokenList);
+    const { data: result } = response;
+    const { data, status, msg } = result;
+    if (status) {
+      const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: "LXT", Tokenaddress: "0x641f543E76cD0Dfe81717d91Ab532831468FA3CE", Rate: "0.18" }
+      const { tokenList } = data;
+      tokenList.push(lxt)
+      console.log('==============tokenList======================');
+      console.log(tokenList);
+      console.log('==============tokenList======================');
 
-            const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
-            const {key='CNY'} = currency;
-            const tokenArray = tokenList.map((token)=>{
-                let {Rate:rate} = token;
-                rate = JSON.parse(rate);
-                token.Rate = rate[key];
-                return token;
-            });
-            yield put(AssetActions.getTokenListSuccess(data));
+      const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
+      const { key = 'CNY' } = currency;
+      const tokenArray = tokenList.map((token) => {
+        let { Rate: rate = '0.18' } = token;
+        rate = JSON.parse(rate);
+        token.Rate = rate[key];
+        return token;
+      });
+      yield put(AssetActions.getTokenListSuccess(data));
 
-            for (const token of tokenArray) {
-                const {Symbol:symbol, Tokenaddress:tokenAddress} = token;
-                const address = yield select(UserSelectors.getAddress);
-                if (symbol === 'ETH') {
-                    yield put(AssetActions.getBalanceRequest({address}));
-                } else {
-                    const api = require('etherscan-api').init(apiKey, environment, timeout);
-                    const response =yield call(api.account.tokenbalance, address, '', tokenAddress);
-                    const {status, message, result} = response;
-                    if (status) {
-                        yield put(AssetActions.getTokenBalanceSuccess({
-                            symbol,
-                            banance:result,
-                        }));
-                    } else {
-                        yield put(AssetActions.getTokenBalanceFailure());
-                    }
-                }
-            }
-        } else {
-            yield put(AssetActions.getTokenListFailure());
-            Toast.show(msg, {
-                shadow:true,
-                position: Toast.positions.CENTER,
-            });
-        }
-    } catch (error) {
-        Toast.show(error.message, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-        yield put(AssetActions.getTokenListFailure());
-    }
-}
-
-export function * getBalance (action) {
-    try {
-        const {data:params} = action;
-        const {address} = params;
-        const api = require('etherscan-api').init(apiKey, environment, timeout);
-
-        const response =yield call(api.account.balance,address);
-        const {status, message, result} = response;
-        if (status) {
-            yield put(AssetActions.getBalanceSuccess({
-                symbol:'ETH',
-                banance:result,
-            }));
-            return;
-        }
-        yield put(AssetActions.getBalanceFailure(message));
-    } catch (error) {
-        yield put(AssetActions.getBalanceFailure());
-        const errMsg = error.message || error;
-        Toast.show(errMsg, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-    }
-}
-
-
-export function * getTokenBalance(action) {
-    try {
-        const {data:params} = action;
-        const {tokenname,contractaddress, address} = params;
-        const api = require('etherscan-api').init(apiKey, environment, timeout);
-        const response =yield call(api.account.tokenbalance, address, '', contractaddress );
-        const {status, message, result} = response;
-        if (status) {
-            yield put(AssetActions.getTokenBalanceSuccess({
-                symbol:tokenname,
-                banance:result,
-            }));
-            return;
-        }
-        yield put(AssetActions.getTokenBalanceFailure(message));
-    } catch (error) {
-        const errMsg = error.message || error;
-        Toast.show(errMsg, {
-            shadow:true,
-            position: Toast.positions.CENTER,
-        });
-        yield put(AssetActions.getTokenBalanceFailure());
-    }
-}
-
-export function * getTxlist (action) {
-    try {
-        const {data:params} = action;
-        const {address, page=1, offset=20, symbol='ETH', tokenAddress=''} = params;
-        const startblock = 0;
-        const endblock='999999999';
-        const sort='desc';
-        const api = require('etherscan-api').init(apiKey, environment, timeout);
-
-        let response = {};
+      for (const token of tokenArray) {
+        const { Symbol: symbol, Tokenaddress: tokenAddress } = token;
+        const address = yield select(UserSelectors.getAddress);
         if (symbol === 'ETH') {
-            response = yield call(api.account.txlist,address, startblock, endblock, page, offset, sort);
+          yield put(AssetActions.getBalanceRequest({ address }));
         } else {
-            response = yield call(api.account.tokentx, address, tokenAddress, startblock, endblock, page, offset, sort);
+          // address, tokenname, contractaddress
+          const api = require('etherscan-api').init(apiKey, environment, timeout);
+          const response = yield call(api.account.tokenbalance, address, '', tokenAddress);
+          const { status, message, result } = response;
+          if (status) {
+            yield put(AssetActions.getTokenBalanceSuccess({
+              symbol,
+              banance: result,
+            }));
+          } else {
+            yield put(AssetActions.getTokenBalanceFailure());
+          }
         }
-
-        const {status, message, result} = response;
-        let txlist = result.map((item) => {
-            const {timeStamp=''} = item;
-            const date = Moment.unix(timeStamp).format('YYYY-MM-DD');
-            const time = Moment.unix(timeStamp).format('HH:mm:ss');
-            return {...item, time, date};
-        });
-
-        if (status && txlist.length) {
-            if (page > 1) {
-                const oldData = yield select(AssetSelectors.getTxlist);
-                txlist = [...oldData, ...txlist];
-            }
-
-            yield put(AssetActions.getTxlistSuccess({txlist}));
-            return;
-        }
-        Toast.show(message, {
-            shadow:true,
-            position: Toast.positions.CENTER
-        });
-        yield put(AssetActions.getTxlistFailure());
-    } catch (error) {
-        const {data:params} = action;
-        const {page=1} = params;
-        let errMsg =  I18n.t('NoRecord');
-        if (page !== 1) {
-            errMsg = I18n.t('NoMoewRecord');
-            EventEmitter.emit(EventKeys.NO_MORE_RECORD);
-        }
-        Toast.show(errMsg, {
-            shadow:true, position:
-           Toast.positions.CENTER
-        });
-        yield put(AssetActions.getTxlistFailure());
+      }
+    } else {
+      yield put(AssetActions.getTokenListFailure());
+      Toast.show(msg, {
+        shadow: true,
+        position: Toast.positions.CENTER,
+      });
     }
+  } catch (error) {
+    Toast.show(error.message || error, {
+      shadow: true,
+      position: Toast.positions.CENTER,
+    });
+    yield put(AssetActions.getTokenListFailure());
+  }
+}
+
+export function* getBalance(action) {
+  try {
+    const { data: params } = action;
+    const { address } = params;
+    const api = require('etherscan-api').init(apiKey, environment, timeout);
+
+    // console.log('====================================');
+    // api.account.balance('0x38bCc5B8b793F544d86a94bd2AE94196567b865c').then(function(balanceData){
+    //   console.log('===========console.log(balanceData);=========================');
+    //   console.log(balanceData);
+    //   console.log('===========console.log(balanceData);=========================');
+    // });
+    // console.log('====================================');
+
+    const response = yield call(api.account.balance, address);
+    const { status, message, result } = response;
+    if (status) {
+      yield put(AssetActions.getBalanceSuccess({
+        symbol: 'ETH',
+        banance: result,
+      }));
+      return;
+    }
+    yield put(AssetActions.getBalanceFailure(message));
+  } catch (error) {
+    yield put(AssetActions.getBalanceFailure());
+    const errMsg = error.message || error;
+    Toast.show(errMsg, {
+      shadow: true,
+      position: Toast.positions.CENTER,
+    });
+  }
+}
+
+
+export function* getTokenBalance(action) {
+  try {
+    const { data: params } = action;
+    const { tokenname, contractaddress, address } = params;
+    const api = require('etherscan-api').init(apiKey, environment, timeout);
+    const response = yield call(api.account.tokenbalance, address, '', contractaddress);
+    const { status, message, result } = response;
+    if (status) {
+      yield put(AssetActions.getTokenBalanceSuccess({
+        symbol: tokenname,
+        banance: result,
+      }));
+      return;
+    }
+    yield put(AssetActions.getTokenBalanceFailure(message));
+  } catch (error) {
+    const errMsg = error.message || error;
+    Toast.show(errMsg, {
+      shadow: true,
+      position: Toast.positions.CENTER,
+    });
+    yield put(AssetActions.getTokenBalanceFailure());
+  }
+}
+
+export function* getTxlist(action) {
+  try {
+    const { data: params } = action;
+    const { address, page = 1, offset = 20, symbol = 'ETH', tokenAddress = '' } = params;
+    const startblock = 0;
+    const endblock = 'latest';
+    const sort = 'desc';
+    const api = require('etherscan-api').init(apiKey, environment, timeout);
+
+    let response = {};
+    if (symbol === 'ETH') {
+      response = yield call(api.account.txlist, address, startblock, endblock, page, offset, sort);
+      console.log('===========txlist=========================');
+      console.log(response);
+      console.log('===========txlist=========================');
+    } else {
+      if (page === 1) {
+        response = yield call(api.account.tokentx, address, tokenAddress, startblock, endblock, sort);
+      }
+      console.log('===========tokentx=========================');
+      console.log(response);
+      console.log('===========tokentx=========================');
+    }
+
+    const { status, message, result } = response;
+    let txlist = result.map((item) => {
+      const { timeStamp = '' } = item;
+      const date = Moment.unix(timeStamp).format('YYYY-MM-DD');
+      const time = Moment.unix(timeStamp).format('HH:mm:ss');
+      return { ...item, time, date };
+    });
+
+    if (status && txlist.length) {
+      if (page > 1) {
+        const oldData = yield select(AssetSelectors.getTxlist);
+        txlist = [...oldData, ...txlist];
+      }
+
+      yield put(AssetActions.getTxlistSuccess({ txlist }));
+      return;
+    }
+    Toast.show(message, {
+      shadow: true,
+      position: Toast.positions.CENTER
+    });
+    yield put(AssetActions.getTxlistFailure());
+  } catch (error) {
+    const { data: params } = action;
+    const { page = 1 } = params;
+    let errMsg = I18n.t('NoRecord');
+    if (page !== 1) {
+      errMsg = I18n.t('NoMoewRecord');
+      EventEmitter.emit(EventKeys.NO_MORE_RECORD);
+    }
+    Toast.show(errMsg, {
+      shadow: true, position:
+        Toast.positions.CENTER
+    });
+    yield put(AssetActions.getTxlistFailure());
+  }
 
 }
 

@@ -5,7 +5,7 @@ import styles from './Styles/AccountScreenStyle';
 import { View } from 'react-native-animatable';
 import {AccountConfig} from '../Config/MineConfig';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Metrics , Colors, Images } from '../Themes';
+import { Metrics , Colors } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
 import { NavigationActions, NavigationEvents } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
