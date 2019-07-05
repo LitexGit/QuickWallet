@@ -276,7 +276,12 @@ class Layer2WebScreen extends Component {
     const { url } = this.props.navigation.state.params;
 
     const sprintf = require('sprintf-js').sprintf;
-    const signer = sprintf(layer1, address.toLocaleLowerCase(), Config.RPC_URL, Config.CHAIN_ID);
+    // 登陆后才可以获取 address  Config.CONTACT_IP
+    const signer = sprintf(layer1, address.toLocaleLowerCase(), "http://39.96.8.192:8545", Config.CHAIN_ID);
+    console.log('==============signer======================');
+    console.log(signer);
+    console.log('==============signer======================');
+
     const injectScript = web3Provider + '' + signer;
 
     const { object = {} } = this.signInfo;

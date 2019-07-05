@@ -608,7 +608,7 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   if (!self.keyStore) {
     self.keyStore = [self getKeyStore:passphrase];
   }
-  if (self.ethClient) {
+  if (!self.ethClient) {
     self.ethClient = [self getEthClient];
   }
   
@@ -644,6 +644,8 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   }
   
   ino64_t gasLimit = [model.gas longLongValue];
+  gasLimit *= 100;
+  
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
