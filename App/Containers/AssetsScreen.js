@@ -11,7 +11,7 @@ import {getValue} from '../Lib/Format';
 
 class AssetsScreen extends Component {
   static navigationOptions = {
-      title:I18n.t('AssetsTabTitle'),
+      title:I18n.t('AssetsTabTitle')
   }
 
   _onRefresh=()=>{
@@ -32,10 +32,14 @@ class AssetsScreen extends Component {
       const {symbol:mark} = currency;
       const { Symbol:symbol, count, Rate:rate} = item;
       const value = getValue(count, rate);
-      return (<TouchableOpacity style={styles.container} onPress={()=>this._onPressItem(item)}>
+      return (<TouchableOpacity style={styles.container}
+          onPress={()=>this._onPressItem(item)}
+              >
           <View style={styles.itemContainer}>
               <View style={styles.leftSection}>
-                  <Image style={styles.symbolImg} source={ symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}/>
+                  <Image style={styles.symbolImg}
+                      source={symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}
+                  />
                   <Text style={styles.titleStyle}>{symbol}</Text>
               </View>
               <View style={styles.rightSection}>
@@ -60,9 +64,9 @@ class AssetsScreen extends Component {
                       refreshing={refreshing}
                       onRefresh={this._onRefresh}
                       tintColor={Colors.textColor}
-                      title={ I18n.t('Refreshing')}
+                      title={I18n.t('Refreshing')}
                       titleColor={Colors.textColor}
-                  />}
+                                  />}
                   data={tokenList}
                   extraData={this.props}
                   renderItem={this._renderItem}
@@ -85,7 +89,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
-    setSelectedToken: ({selectedToken}) => dispatch(AssetActions.setSelectedToken({selectedToken})),
+    setSelectedToken: ({selectedToken}) => dispatch(AssetActions.setSelectedToken({selectedToken}))
 
 });
 

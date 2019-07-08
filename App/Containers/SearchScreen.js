@@ -14,7 +14,7 @@ class SearchScreen extends Component {
   render () {
       return (
           <ScrollView style={styles.container}>
-              <KeyboardAvoidingView behavior='position'>
+              <KeyboardAvoidingView behavior="position">
                   <Text>SearchScreen</Text>
               </KeyboardAvoidingView>
           </ScrollView>

@@ -12,7 +12,7 @@ import ExamplesRegistry from '../Services/ExamplesRegistry';
 /* istanbul ignore next */
 ExamplesRegistry.addComponentExample('Rounded Button', () =>
     (<RoundedButton
-        text='real buttons have curves'
+        text="real buttons have curves"
         onPress={() => window.alert('Rounded Button Pressed!')}
     />)
 );
@@ -32,7 +32,9 @@ export default class RoundedButton extends Component {
 
   render () {
       return (
-          <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
+          <TouchableOpacity style={styles.button}
+              onPress={this.props.onPress}
+          >
               <Text style={styles.buttonText}>{this.getText()}</Text>
           </TouchableOpacity>
       );

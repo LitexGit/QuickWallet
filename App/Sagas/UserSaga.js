@@ -23,7 +23,7 @@ export function * register (api, action) {
             'bundleId':DeviceInfo.getBundleId(),
             'buildNumber':DeviceInfo.getBuildNumber(),
             'systemName':DeviceInfo.getSystemName(),
-            'deviceId':DeviceInfo.getDeviceId(),
+            'deviceId':DeviceInfo.getDeviceId()
         };
         const phoneinfo = JSON.stringify(info);
         const response = yield call(api.register, {address, type, os, phoneinfo, nickname});
@@ -51,13 +51,13 @@ export function * register (api, action) {
         }
         Toast.show(msg, {
             shadow:true,
-            position: Toast.positions.CENTER,
+            position: Toast.positions.CENTER
         });
         yield put(UserActions.registerFailure());
     } catch (error) {
         Toast.show(error.message, {
             shadow:true,
-            position: Toast.positions.CENTER,
+            position: Toast.positions.CENTER
         });
         yield put(UserActions.registerFailure());
     }
@@ -77,13 +77,13 @@ export function * getUserInfo (api, action) {
         }
         Toast.show(msg, {
             shadow:true,
-            position: Toast.positions.CENTER,
+            position: Toast.positions.CENTER
         });
         yield put(UserActions.getUserInfoFailure());
     } catch (error) {
         Toast.show(error.message, {
             shadow:true,
-            position: Toast.positions.CENTER,
+            position: Toast.positions.CENTER
         });
         yield put(UserActions.getUserInfoFailure());
     }
@@ -100,7 +100,7 @@ export function * logout () {
         isLoginInfo:false,
         address:'',
         nickname:'',
-        sharecode:'',
+        sharecode:''
     }));
 
     yield put(WalletActions.savePrivateKey({privateKey:''}));

@@ -14,7 +14,10 @@ class MineScreen extends Component {
   static navigationOptions = {
       tabBarLabel: I18n.t('MineTabBarLabel'),
       tabBarIcon: ({tintColor}) => (
-          <Ionicons name={'md-person'} size={Metrics.bottomTabIconSize} color={tintColor}/>
+          <Ionicons name={'md-person'}
+              size={Metrics.bottomTabIconSize}
+              color={tintColor}
+          />
       )
   }
 

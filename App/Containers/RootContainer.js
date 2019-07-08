@@ -14,6 +14,9 @@ import {Preferences, PrefKeys} from '../Lib/Preferences';
 
 class RootContainer extends Component {
 
+  componentDidMount  () {
+    this._initializes();
+}
   _initializes= async ()=>{
       this.props.getInjectScript();
 
@@ -36,14 +39,12 @@ class RootContainer extends Component {
       this.props.getUserInfoRequest({address});
   }
 
-  componentDidMount  () {
-      this._initializes();
-  }
+
 
   render () {
       return (
           <View style={styles.applicationView}>
-              <StatusBar barStyle='light-content' />
+              <StatusBar barStyle="light-content" />
               <ReduxNavigation />
           </View>
       );
@@ -62,7 +63,7 @@ const mapDispatchToProps = (dispatch) => ({
     getInjectScript: () => dispatch(UserActions.getInjectScript()),
     getConfigRequest: () => dispatch(ConfigActions.getConfigRequest()),
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
-    gethInit: () => dispatch(WalletActions.gethInit()),
+    gethInit: () => dispatch(WalletActions.gethInit())
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(RootContainer);

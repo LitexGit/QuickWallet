@@ -11,7 +11,7 @@ export default class SignMsgResultAlert extends Component {
   static propTypes = {
       isInit: PropTypes.bool,
       onPressCancel:PropTypes.func,
-      onPressConfirm:PropTypes.func,
+      onPressConfirm:PropTypes.func
   }
 
   static defaultProps = {
@@ -28,8 +28,9 @@ export default class SignMsgResultAlert extends Component {
               containerStyle={styles.overlay}
               childrenWrapperStyle={styles.content}
               visible={isInit}
-              animationType='zoomIn'
-              animationDuration={300}>
+              animationType="zoomIn"
+              animationDuration={300}
+          >
               <View style={styles.container}>
                   <View style={styles.topSection}>
                       <View style={styles.addressSection}>
@@ -39,13 +40,20 @@ export default class SignMsgResultAlert extends Component {
                       <Text style={styles.signMsg}>{I18n.t('SignMessage')}</Text>
                   </View>
                   <View style={styles.msgSection}>
-                      <Text style={styles.message} numberOfLines={5} ellipsizeMode='tail'>{message}</Text>
+                      <Text style={styles.message}
+                          numberOfLines={5}
+                          ellipsizeMode="tail"
+                      >{message}</Text>
                   </View>
                   <View style={styles.bottomSection}>
-                      <TouchableOpacity style={styles.btnContainer} onPress={onPressCancel}>
+                      <TouchableOpacity style={styles.btnContainer}
+                          onPress={onPressCancel}
+                      >
                           <Text style={styles.btnTitle}>{I18n.t('CancelAction')}</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={[styles.btnContainer, {backgroundColor: Colors.textColor}]} onPress={onPressConfirm}>
+                      <TouchableOpacity style={[styles.btnContainer, {backgroundColor: Colors.textColor}]}
+                          onPress={onPressConfirm}
+                      >
                           <Text style={styles.btnTitle}>{I18n.t('ConfirmAction')}</Text>
                       </TouchableOpacity>
                   </View>

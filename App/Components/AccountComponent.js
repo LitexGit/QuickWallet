@@ -6,11 +6,11 @@ import  Identicon from 'identicon.js';
 
 export default class AccountComponent extends Component {
     static propTypes = {
-        address: PropTypes.string,
+        address: PropTypes.string
     }
 
     static defaultProps = {
-        address: '',
+        address: ''
     }
 
     componentDidMount=()=>console.log();
@@ -22,9 +22,13 @@ export default class AccountComponent extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.avatar}>
-                    <Image source={{uri:baseImg}} style={styles.imageStyle}/>
+                    <Image source={{uri:baseImg}}
+                        style={styles.imageStyle}
+                    />
                 </View>
-                <Text style={styles.content} numberOfLines={0}>{address}</Text>
+                <Text numberOfLines={0}
+                    style={styles.content}
+                >{address}</Text>
             </View>
         );
     }

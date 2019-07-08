@@ -8,11 +8,11 @@ import I18n from '../I18n';
 export default class ListEmptyComponent extends Component {
     static propTypes = {
         title: PropTypes.string,
-        containerStyle: PropTypes.object,
+        containerStyle: PropTypes.object
     }
     static defaultProps = {
         title: I18n.t('NoRecord'),
-        containerStyle: {},
+        containerStyle: {}
     }
 
     componentDidMount=()=>console.log();
@@ -21,7 +21,9 @@ export default class ListEmptyComponent extends Component {
         const {title, containerStyle} = this.props;
         return (
             <View style={[styles.container, containerStyle]}>
-                <Image style={styles.image} source={Images.emptyImg} />
+                <Image source={Images.emptyImg}
+                    style={styles.image}
+                />
                 <Text style={styles.text}>{title}</Text>
             </View>
         );

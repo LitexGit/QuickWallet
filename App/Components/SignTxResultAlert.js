@@ -20,7 +20,7 @@ class SignTxResultAlert extends Component {
       gas:PropTypes.string,
 
       onPressCancel:PropTypes.func,
-      onPressConfirm:PropTypes.func,
+      onPressConfirm:PropTypes.func
   }
 
   static defaultProps = {
@@ -28,7 +28,7 @@ class SignTxResultAlert extends Component {
       isWallet: true,
       to:'0x',
       balance:'0',
-      gas:'0',
+      gas:'0'
   }
 
   componentDidMount=()=>{
@@ -69,7 +69,9 @@ class SignTxResultAlert extends Component {
           }
 
           const {title, units, value} = config;
-          return (<View key={key} style={styles.infoItem}>
+          return (<View key={key}
+              style={styles.infoItem}
+                  >
               <Text style={styles.itemTitle}>{title}</Text>
               <View>
                   <Text style={styles.itemCount}>{units}</Text>
@@ -83,8 +85,9 @@ class SignTxResultAlert extends Component {
               containerStyle={styles.overlay}
               childrenWrapperStyle={styles.content}
               visible={isInit}
-              animationType='zoomIn'
-              animationDuration={300}>
+              animationType="zoomIn"
+              animationDuration={300}
+          >
               <View style={styles.container}>
                   <View style={styles.topSection}>
                       <View style={styles.addressSection}>
@@ -92,7 +95,10 @@ class SignTxResultAlert extends Component {
                           <AccountComponent address={address}/>
                           <View style={styles.direction}>
                               <View style={styles.separateLine}/>
-                              <EvilIcons name={'arrow-down'} size={Metrics.bottomTabIconSize} color={Colors.textColor}/>
+                              <EvilIcons name={'arrow-down'}
+                                  size={Metrics.bottomTabIconSize}
+                                  color={Colors.textColor}
+                              />
                               <View style={styles.separateLine}/>
                           </View>
                           <AccountComponent address={to}/>
@@ -102,10 +108,14 @@ class SignTxResultAlert extends Component {
                       </View>
                   </View>
                   <View style={styles.bottomSection}>
-                      <TouchableOpacity style={styles.btnContainer} onPress={onPressCancel}>
+                      <TouchableOpacity style={styles.btnContainer}
+                          onPress={onPressCancel}
+                      >
                           <Text style={styles.btnTitle}>{I18n.t('CancelAction')}</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={[styles.btnContainer, {backgroundColor: Colors.textColor}]} onPress={onPressConfirm}>
+                      <TouchableOpacity style={[styles.btnContainer, {backgroundColor: Colors.textColor}]}
+                          onPress={onPressConfirm}
+                      >
                           <Text style={styles.btnTitle}>{I18n.t('ConfirmAction')}</Text>
                       </TouchableOpacity>
                   </View>

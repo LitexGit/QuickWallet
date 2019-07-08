@@ -25,12 +25,14 @@ class PreMineScreen extends Component {
           const {key, backgroundColor, title, borderRadius} = config;
           const textStyle = key === 'import' ? {color:Colors.textColor} : {color:'#FFFFFF'};
           return (
-              <Button key={index} onPress={()=>this._onPressBtn(key)}
+              <Button key={index}
+                  onPress={()=>this._onPressBtn(key)}
                   buttonStyle={styles.buttonStyle}
                   textStyle={textStyle}
                   borderRadius={borderRadius}
                   backgroundColor={backgroundColor}
-                  title={title}/>
+                  title={title}
+              />
           );
       });
       return (
@@ -51,7 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route}))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreMineScreen);

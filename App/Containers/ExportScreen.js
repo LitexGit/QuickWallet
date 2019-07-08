@@ -14,7 +14,7 @@ import CommomBtnComponent from '../Components/CommomBtnComponent';
 class ExportScreen extends Component {
 
   static navigationOptions = {
-      title:I18n.t('ExportTabTitle'),
+      title:I18n.t('ExportTabTitle')
   }
 
   constructor(props){
@@ -29,7 +29,7 @@ class ExportScreen extends Component {
       Clipboard.setString(privateKey);
       Toast.show(I18n.t('PrivateKeyCopied'), {
           shadow:true,
-          position: Toast.positions.CENTER,
+          position: Toast.positions.CENTER
       });
   }
 
@@ -49,19 +49,25 @@ render () {
             <PrivateKeyWarningAlert onPressShow={()=>this._onPressShow()}/>
             <View style={styles.topSection}>
                 <View style={styles.topView}>
-                    <FontAwesome name={'pencil-square-o'} size={30} color={Colors.separateLineColor}/>
+                    <FontAwesome name={'pencil-square-o'}
+                        size={30}
+                        color={Colors.separateLineColor}
+                    />
                     <Text style={styles.titleStytle}>{I18n.t('BackupAccount')}</Text>
                 </View>
                 <TouchableOpacity onPress={()=>this._onPressCopy()}>
                     <Text style={styles.mnemonicText}>{privateKey}</Text>
                 </TouchableOpacity>
-                <QRCode value={privateKey} size={120}/>
+                <QRCode value={privateKey}
+                    size={120}
+                />
             </View>
             <View style={styles.bottomSection}>
                 <View style={styles.btnStyle}>
                     <CommomBtnComponent
-                        title={ I18n.t('Complete')}
-                        onPress={()=>this._onPressBtn()}/>
+                        title={I18n.t('Complete')}
+                        onPress={()=>this._onPressBtn()}
+                    />
                 </View>
             </View>
         </View>

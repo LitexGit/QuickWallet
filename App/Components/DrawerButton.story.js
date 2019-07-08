@@ -8,8 +8,8 @@ storiesOf('DrawerButton')
     .add('Default', () => (
         <View style={{ backgroundColor: 'black' }}>
             <DrawerButton
-                text='Drawer Button'
                 onPress={() => { }}
+                text="Drawer Button"
             />
         </View>
     ));

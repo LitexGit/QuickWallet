@@ -20,13 +20,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 class AccountScreen extends Component {
   static navigationOptions = {
       title:I18n.t('AccountTabTitle'),
-      backgroundColor: 'red',
+      backgroundColor: 'red'
   }
 
   constructor(props){
       super(props);
       this.state={
-          isInit:false,
+          isInit:false
       };
   }
 
@@ -78,7 +78,7 @@ class AccountScreen extends Component {
       Clipboard.setString(address);
       Toast.show(I18n.t('AddressCopied'), {
           shadow:true,
-          position: Toast.positions.CENTER,
+          position: Toast.positions.CENTER
       });
   }
 
@@ -108,7 +108,10 @@ class AccountScreen extends Component {
           let rightView = null;
           switch (itemIndex) {
           case 0:
-              rightView = (<Avatar small rounded source={{uri: avatar_64}}/>);
+              rightView = (<Avatar small
+                  rounded
+                  source={{uri: avatar_64}}
+                           />);
               break;
           case 1:
               rightView = (<TextInput style={styles.textInput}
@@ -116,7 +119,7 @@ class AccountScreen extends Component {
                   underlineColorAndroid="transparent"
                   blurOnSubmit
                   onSubmitEditing={this._onSubmitEditing}
-              />);
+                           />);
               break;
           case 2:
               rightView = (<Text style={styles.detailsStyle}>{details}</Text>);
@@ -126,7 +129,9 @@ class AccountScreen extends Component {
               break;
           }
 
-          return (<View key={index} style={styles.itemView}>
+          return (<View key={index}
+              style={styles.itemView}
+                  >
               <Text style={styles.titleStyle}>{title}</Text>
               {rightView}
           </View>);
@@ -149,27 +154,43 @@ class AccountScreen extends Component {
                   }}
               >
               </NavigationEvents>
-              <Spinner visible={loading} cancelable
+              <Spinner visible={loading}
+                  cancelable
                   textContent={'Loading...'}
-                  textStyle={styles.spinnerText}/>
-              <PassphraseInputAlert isInit={isInit} onPressCancel={()=>this._onPressCancel()} onPressConfirm={(password)=>this._onPressConfirm(password)}/>
+                  textStyle={styles.spinnerText}
+              />
+              <PassphraseInputAlert isInit={isInit}
+                  onPressCancel={()=>this._onPressCancel()}
+                  onPressConfirm={(password)=>this._onPressConfirm(password)}
+              />
               <View style={styles.topSection}>
                   {infoView}
               </View>
               <View style={styles.centerSection}>
                   <View style={styles.addressSection}>
-                      <Text style={styles.address} numberOfLines={1}>{address}</Text>
+                      <Text style={styles.address}
+                          numberOfLines={1}
+                      >{address}</Text>
                       <TouchableOpacity onPress={()=>this._onPressCopy()}>
-                          <FontAwesome name={'copy'} size={Metrics.icons.small} color={Colors.textColor}/>
+                          <FontAwesome name={'copy'}
+                              size={Metrics.icons.small}
+                              color={Colors.textColor}
+                          />
                       </TouchableOpacity>
                   </View>
-                  <QRCode value={address} size={120}/>
+                  <QRCode value={address}
+                      size={120}
+                  />
               </View>
               <View style={styles.bottomSection}>
-                  <TouchableOpacity style={styles.buttonStyle}  onPress={()=>this._onPressBackup()}>
+                  <TouchableOpacity style={styles.buttonStyle}
+                      onPress={()=>this._onPressBackup()}
+                  >
                       <Text style={styles.backupTitle}>{I18n.t('BackUpAccount')}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonStyle}  onPress={()=>this._onPressLogOut()}>
+                  <TouchableOpacity style={styles.buttonStyle}
+                      onPress={()=>this._onPressLogOut()}
+                  >
                       <Text style={styles.logOutTitle}>{I18n.t('LogoutAction')}</Text>
                   </TouchableOpacity>
               </View>
@@ -191,7 +212,7 @@ const mapDispatchToProps = (dispatch) => ({
     navigate: (route, params) => dispatch(NavigationActions.navigate({routeName: route, params})),
     logout: () => dispatch(UserActions.logout()),
     gethExportPrivateKey: (params) => dispatch(WalletActions.gethExportPrivateKey(params)),
-    register:(params)=>dispatch(UserActions.registerRequest(params)),
+    register:(params)=>dispatch(UserActions.registerRequest(params))
 
 });
 

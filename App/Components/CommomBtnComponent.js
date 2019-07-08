@@ -9,7 +9,7 @@ export default class CommomBtnComponent extends Component {
     static propTypes = {
         disabled: PropTypes.bool,
         title: PropTypes.string,
-        onPress: PropTypes.func,
+        onPress: PropTypes.func
     }
 
     static defaultProps = {
@@ -24,7 +24,10 @@ export default class CommomBtnComponent extends Component {
         const bgColor = disabled ? Colors.dividingLineColor : Colors.textColor;
 
         return (
-            <TouchableOpacity style={styles.container} onPress={onPress} disabled={disabled}>
+            <TouchableOpacity disabled={disabled}
+                onPress={onPress}
+                style={styles.container}
+            >
                 <View style={[styles.contentView, {backgroundColor:bgColor}]}>
                     <Text style={styles.titleStyle}>{title}</Text>
                 </View>

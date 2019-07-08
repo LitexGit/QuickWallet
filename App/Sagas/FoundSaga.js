@@ -16,7 +16,7 @@ export function * getBanner (api) {
     }
     Toast.show(msg, {
         shadow:true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
     });
     yield put(FoundActions.getBannerFailure());
 }
@@ -31,7 +31,7 @@ export function * getApps (api) {
     }
     Toast.show(msg, {
         shadow:true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
     });
     yield put(FoundActions.getAppsFailure());
 }

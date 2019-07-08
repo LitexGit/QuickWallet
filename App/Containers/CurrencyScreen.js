@@ -14,14 +14,14 @@ import AssetActions from '../Redux/AssetRedux';
 
 class CurrencyScreen extends Component {
   static navigationOptions = {
-      title:I18n.t('CurrencyTabTitle'),
+      title:I18n.t('CurrencyTabTitle')
   }
 
   constructor(props){
       super(props);
 
       this.state={
-          data:[],
+          data:[]
       };
   }
 
@@ -59,7 +59,10 @@ class CurrencyScreen extends Component {
   _renderItem=({item})=>{
       const {title='', isSelected} = item;
       const nextImg = (<View>
-          <Feather name={'check'} size={Metrics.icons.small} color={Colors.textColor}/>
+          <Feather name={'check'}
+              size={Metrics.icons.small}
+              color={Colors.textColor}
+          />
       </View>);
 
       return ( <TouchableOpacity onPress={()=>this._onPressItem(item)}>
@@ -79,9 +82,12 @@ class CurrencyScreen extends Component {
               <FlatList style={styles.flatList}
                   data={data}
                   keyExtractor={(item,index)=>''+index}
-                  renderItem={ this._renderItem }
-                  ItemSeparatorComponent = {this._renderItemSeparator}/>
-              <ButtonComponent style={styles.btnStyle} onPress={this._onPressComplete}>
+                  renderItem={this._renderItem}
+                  ItemSeparatorComponent={this._renderItemSeparator}
+              />
+              <ButtonComponent style={styles.btnStyle}
+                  onPress={this._onPressComplete}
+              >
                   <Text style={styles.btnTitle}>完成</Text>
               </ButtonComponent>
           </View>
@@ -99,7 +105,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
     getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
-    pop:() => dispatch(StackActions.pop()),
+    pop:() => dispatch(StackActions.pop())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrencyScreen);

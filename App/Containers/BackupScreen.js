@@ -13,7 +13,7 @@ import Toast from 'react-native-root-toast';
 
 class BackupScreen extends Component {
   static navigationOptions = {
-      title:I18n.t('BackupTabTitle'),
+      title:I18n.t('BackupTabTitle')
   }
 
   constructor (props) {
@@ -22,14 +22,28 @@ class BackupScreen extends Component {
           words:[],
           pressArray:[],
           unPressArray:[],
-          isSorted:true,
+          isSorted:true
       };
   }
+
+  componentDidMount=()=>{
+    const {mnemonic} = this.props;
+    const array = mnemonic.split(' ');
+    array.sort(() => .5 - Math.random());
+    const words = array.map((title, key)=>{
+        const wordObj = {title, key, sort:key};
+        return wordObj;
+    });
+    this.setState({
+        words,
+        unPressArray:words
+    });
+}
 
   _onPressCheck=()=>{
       Toast.show(I18n.t('BackupSuccessful'), {
           shadow:true,
-          position: Toast.positions.CENTER,
+          position: Toast.positions.CENTER
       });
       this.props.popToTop();
   }
@@ -77,7 +91,7 @@ class BackupScreen extends Component {
       const sortArray = Ramda.sort(diff)(unPressArray);
       this.setState({
           pressArray:removeArray,
-          unPressArray:sortArray,
+          unPressArray:sortArray
       },()=>{
           this._checkMnemonicSort();
       });
@@ -99,23 +113,9 @@ class BackupScreen extends Component {
       });
       this.setState({
           pressArray,
-          unPressArray:removeArray,
+          unPressArray:removeArray
       },()=>{
           this._checkMnemonicSort();
-      });
-  }
-
-  componentDidMount=()=>{
-      const {mnemonic} = this.props;
-      const array = mnemonic.split(' ');
-      array.sort(() => .5 - Math.random());
-      const words = array.map((title, key)=>{
-          const wordObj = {title, key, sort:key};
-          return wordObj;
-      });
-      this.setState({
-          words,
-          unPressArray:words
       });
   }
 
@@ -128,7 +128,9 @@ class BackupScreen extends Component {
       const pressWord = pressArray.map((item, key)=>{
           const {title} = item;
           return (
-              <TouchableOpacity key={key} onPress={()=>this._onPressSelected(item)}>
+              <TouchableOpacity key={key}
+                  onPress={()=>this._onPressSelected(item)}
+              >
                   <View style={styles.wordsStyle}>
                       <Text style={styles.wordTitle}>{title}</Text>
                   </View>
@@ -138,7 +140,9 @@ class BackupScreen extends Component {
       const unPressWord = unPressArray.map((item, key)=>{
           const {title} = item;
           return (
-              <TouchableOpacity key={key} onPress={()=>this._onPressUnSelected(item)}>
+              <TouchableOpacity key={key}
+                  onPress={()=>this._onPressUnSelected(item)}
+              >
                   <View style={styles.wordsStyle}>
                       <Text style={styles.wordTitle}>{title}</Text>
                   </View>
@@ -149,7 +153,10 @@ class BackupScreen extends Component {
           <View style={styles.container}>
               <View style={styles.topSection}>
                   <View style={styles.topView}>
-                      <Feather name={'check'} size={30} color={Colors.separateLineColor}/>
+                      <Feather name={'check'}
+                          size={30}
+                          color={Colors.separateLineColor}
+                      />
                       <Text style={styles.titleStytle}>{I18n.t('ConfirmMnemonic')}</Text>
                   </View>
                   <View style={styles.remindSection}>
@@ -168,9 +175,10 @@ class BackupScreen extends Component {
               <View style={styles.bottomSection}>
                   <View style={styles.btnStyle}>
                       <CommomBtnComponent
-                          title={ I18n.t('Complete')}
+                          title={I18n.t('Complete')}
                           disabled={!isCanPress}
-                          onPress={()=>this._onPressCheck()}/>
+                          onPress={()=>this._onPressCheck()}
+                      />
                   </View>
               </View>
           </View>
@@ -187,7 +195,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    popToTop: () => dispatch(StackActions.popToTop()),
+    popToTop: () => dispatch(StackActions.popToTop())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupScreen);

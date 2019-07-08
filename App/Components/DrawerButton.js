@@ -12,8 +12,8 @@ import ExamplesRegistry from '../Services/ExamplesRegistry';
 /* istanbul ignore next */
 ExamplesRegistry.addComponentExample('Drawer Button', () =>
     (<DrawerButton
-        text='Example left drawer button'
         onPress={() => window.alert('Your drawers are showing')}
+        text="Example left drawer button"
     />)
 );
 

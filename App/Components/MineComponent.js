@@ -87,21 +87,36 @@ class MineComponent extends Component {
   _renderItem=({item})=>{
       const {key='', title='', isNext=false} = item;
       const nextImg = isNext ? (<View>
-          <MaterialIcons name={'navigate-next'} size={Metrics.icons.medium} color={Colors.textColor}/>
+          <MaterialIcons color={Colors.textColor}
+              name={'navigate-next'}
+              size={Metrics.icons.medium}
+          />
       </View>) : null;
       let typeImg = null;
       switch (key) {
       case MineConfig.setting.key:
-          typeImg = <AntDesign name={'setting'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          typeImg = <AntDesign color={Colors.textColor}
+              name={'setting'}
+              size={Metrics.icons.small}
+                    />;
           break;
       case MineConfig.help.key:
-          typeImg = <MaterialCommunityIcons name={'headset'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          typeImg = <MaterialCommunityIcons color={Colors.textColor}
+              name={'headset'}
+              size={Metrics.icons.small}
+                    />;
           break;
       case MineConfig.agreement.key:
-          typeImg = <Entypo name={'feather'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          typeImg = <Entypo color={Colors.textColor}
+              name={'feather'}
+              size={Metrics.icons.small}
+                    />;
           break;
       case MineConfig.share.key:
-          typeImg = <AntDesign name={'sharealt'} size={Metrics.icons.small} color={Colors.textColor}/>;
+          typeImg = <AntDesign color={Colors.textColor}
+              name={'sharealt'}
+              size={Metrics.icons.small}
+                    />;
           break;
       default:
           break;
@@ -136,24 +151,30 @@ class MineComponent extends Component {
       return (
           <View style={styles.container}>
               <View style={styles.topSection}>
-                  <TouchableOpacity style={styles.avatarSection} onPress={()=>this._onPressAvatar()}>
+                  <TouchableOpacity onPress={()=>this._onPressAvatar()}
+                      style={styles.avatarSection}
+                  >
                       <View style={styles.avatarSection}>
-                          <Image style ={styles.avatar} source={{uri: avatar_64}}/>
+                          <Image source={{uri: avatar_64}}
+                              style={styles.avatar}
+                          />
                           <Text style={styles.nameText}>{nickname}</Text>
                       </View>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.assetsSection} onPress={()=>this._onPressAssets()}>
+                  <TouchableOpacity onPress={()=>this._onPressAssets()}
+                      style={styles.assetsSection}
+                  >
                       <Text style={styles.assetsStyle}>{I18n.t('AssetsValue')} {symbol} {toFixed(banance)}</Text>
                   </TouchableOpacity>
 
               </View>
               <View style={styles.bottomSection}>
                   <FlatList
-                      style={styles.flatList}
                       data={data}
+                      ItemSeparatorComponent={this._renderItemSeparator}
                       keyExtractor={(item,index)=>''+index}
-                      renderItem={ this._renderItem }
-                      ItemSeparatorComponent = {this._renderItemSeparator}
+                      renderItem={this._renderItem}
+                      style={styles.flatList}
                   />
               </View>
           </View>
@@ -172,7 +193,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
     getUserInfo: (params) => dispatch(UserActions.getUserInfoRequest(params)),
-    getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
+    getTokenList: () => dispatch(AssetActions.getTokenListRequest())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineComponent);

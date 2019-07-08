@@ -11,7 +11,7 @@ import styles from './Styles/SettingScreenStyle';
 class SettingScreen extends Component {
 
   static navigationOptions = {
-      title:I18n.t('SettingTabTitle'),
+      title:I18n.t('SettingTabTitle')
   }
 
   _onPressItem=(key)=>{
@@ -32,7 +32,10 @@ class SettingScreen extends Component {
   _renderItem=({item})=>{
       const {key='', title='', details=''} = item;
       const nextImg = (<View>
-          <MaterialIcons name={'navigate-next'} size={Metrics.icons.medium} color={Colors.textColor}/>
+          <MaterialIcons name={'navigate-next'}
+              size={Metrics.icons.medium}
+              color={Colors.textColor}
+          />
       </View>);
 
       return ( <TouchableOpacity onPress={()=>this._onPressItem(key)}>
@@ -61,8 +64,8 @@ class SettingScreen extends Component {
               <FlatList style={styles.flatList}
                   data={data}
                   keyExtractor={(item,index)=>''+index}
-                  renderItem={ this._renderItem }
-                  ItemSeparatorComponent = {this._renderItemSeparator}
+                  renderItem={this._renderItem}
+                  ItemSeparatorComponent={this._renderItemSeparator}
               />
           </View>
       );
@@ -77,7 +80,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
+    navigate: (route) => dispatch(NavigationActions.navigate({routeName: route}))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingScreen);

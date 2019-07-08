@@ -10,7 +10,7 @@ export const RefreshState = {
     FooterRefreshing: 2,
     NoMoreData:       3,
     Failure:          4,
-    EmptyData:        5,
+    EmptyData:        5
 };
 
 export default class RefreshSectionListview extends Component {
@@ -35,7 +35,7 @@ export default class RefreshSectionListview extends Component {
       footerRefreshingComponent: PropTypes.element,
       footerFailureComponent: PropTypes.element,
       footerNoMoreDataComponent: PropTypes.element,
-      footerEmptyDataComponent: PropTypes.element,
+      footerEmptyDataComponent: PropTypes.element
   }
 
   static defaultProps = {
@@ -52,7 +52,7 @@ export default class RefreshSectionListview extends Component {
       footerRefreshingComponent: null,
       footerFailureComponent: null,
       footerNoMoreDataComponent: null,
-      footerEmptyDataComponent: null,
+      footerEmptyDataComponent: null
   }
 
   shouldComponentUpdate = (nextProps, nextState)=>{
@@ -98,12 +98,12 @@ export default class RefreshSectionListview extends Component {
           <SectionList style={styles.container}
               ref={sectionRef}
               extraData={this.state}
-              renderItem = {renderItem}
-              refreshing = {refreshState === RefreshState.HeaderRefreshing}
-              onRefresh = {this._onRefresh}
-              onEndReachedThreshold = {0.1}
-              onEndReached = {this._onEndReached}
-              ListFooterComponent = {this._renderListFooter}
+              renderItem={renderItem}
+              refreshing={refreshState === RefreshState.HeaderRefreshing}
+              onRefresh={this._onRefresh}
+              onEndReachedThreshold={0.1}
+              onEndReached={this._onEndReached}
+              ListFooterComponent={this._renderListFooter}
               {...rest}
           />
       );
@@ -130,7 +130,9 @@ export default class RefreshSectionListview extends Component {
           const refreshStyle = {marginLeft: 7};
           footer = footerRefreshingComponent || (
               <View style={styles.footerContainer} >
-                  <ActivityIndicator size="small" color="#888888" />
+                  <ActivityIndicator size="small"
+                      color="#888888"
+                  />
                   <Text style={[styles.footerText, refreshStyle]}>{footerRefreshingText}</Text>
               </View>);
           return footer;

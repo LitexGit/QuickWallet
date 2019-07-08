@@ -14,7 +14,7 @@ export default class ListFooterComponent extends Component {
 
   static defaultProps = {
       loading: false,
-      text: I18n.t('LoadingAction'),
+      text: I18n.t('LoadingAction')
   }
 
   componentDidMount=()=>{
@@ -26,8 +26,10 @@ export default class ListFooterComponent extends Component {
       const loadingText =  I18n.t('Loading');
       return (
           <View style={styles.container}>
-              <TouchableOpacity style={styles.footerButton} onPress={onPress}>
-                  <Text style={styles.footerText}>{ loading ? loadingText : text }</Text>
+              <TouchableOpacity onPress={onPress}
+                  style={styles.footerButton}
+              >
+                  <Text style={styles.footerText}>{loading ? loadingText : text}</Text>
               </TouchableOpacity>
           </View>
       );

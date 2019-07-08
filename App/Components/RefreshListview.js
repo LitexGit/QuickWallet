@@ -9,7 +9,7 @@ export const RefreshState = {
     FooterRefreshing: 2,
     NoMoreData:       3,
     Failure:          4,
-    EmptyData:        5,
+    EmptyData:        5
 };
 
 export default class RefreshListview extends Component {
@@ -36,7 +36,7 @@ static propTypes = {
     footerNoMoreDataComponent: PropTypes.element,
     footerEmptyDataComponent: PropTypes.element,
 
-    renderItem: PropTypes.func,
+    renderItem: PropTypes.func
 }
 
 static defaultProps = {
@@ -57,7 +57,7 @@ static defaultProps = {
     footerNoMoreDataComponent: null,
     footerEmptyDataComponent: null,
 
-    renderItem: ()=>null,
+    renderItem: ()=>null
 }
 
 shouldComponentUpdate = (nextProps, nextState)=>{
@@ -103,12 +103,12 @@ render(){
         <FlatList
             ref={listRef}
             extraData={this.state}
-            renderItem = {renderItem}
-            refreshing = {refreshState === RefreshState.HeaderRefreshing}
-            onRefresh = {this._onRefresh}
-            onEndReachedThreshold = {0.1}
-            onEndReached = {this._onEndReached}
-            ListFooterComponent = {this._renderListFooter}
+            renderItem={renderItem}
+            refreshing={refreshState === RefreshState.HeaderRefreshing}
+            onRefresh={this._onRefresh}
+            onEndReachedThreshold={0.1}
+            onEndReached={this._onEndReached}
+            ListFooterComponent={this._renderListFooter}
             {...rest}
         />
     );
@@ -136,7 +136,9 @@ _renderListFooter = ()=>{
         const refreshStyle = {marginLeft: 7};
         footer = footerRefreshingComponent || (
             <View style={styles.footerContainer} >
-                <ActivityIndicator size="small" color="#888888" />
+                <ActivityIndicator size="small"
+                    color="#888888"
+                />
                 <Text style={[styles.footerText, refreshStyle]}>{footerRefreshingText}>{footerRefreshingText}</Text>
             </View>);
         return footer;

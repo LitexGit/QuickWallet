@@ -7,7 +7,7 @@ import { Colors } from '../Themes';
 export default class LevelComponent extends Component {
 
     static propTypes = {
-        level: PropTypes.number,
+        level: PropTypes.number
     }
 
     static defaultProps = {
@@ -37,7 +37,9 @@ export default class LevelComponent extends Component {
 
         const levelArray = [4, 3, 2, 1].map((item, key)=>{
             const colorStyle = item <= level ? {backgroundColor:Colors.textColor} : {backgroundColor:Colors.separateLineColor};
-            return (<View key={key} style={[styles.level, colorStyle]}>
+            return (<View key={key}
+                style={[styles.level, colorStyle]}
+                    >
             </View>);
         });
         return (

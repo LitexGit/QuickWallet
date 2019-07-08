@@ -29,8 +29,9 @@ class Layer2WebScreen extends Component {
       title,
       headerRight: (
         <RightComponent
-          onPressRefresh={navigation.getParam('onPressRefresh')}
-          onPressShare={navigation.getParam('onPressShare')} />),
+            onPressRefresh={navigation.getParam('onPressRefresh')}
+            onPressShare={navigation.getParam('onPressShare')}
+        />),
       headerLeft: (
         <HeaderLeftComponent onPress={navigation.getParam('goBack')} />
       )
@@ -44,7 +45,7 @@ class Layer2WebScreen extends Component {
       isShowPassphrase: false,
       isShowSignTx: false,
       isShowSignMsg: false,
-      goBackEnabled: false,
+      goBackEnabled: false
     };
     this.signInfo = {};
     this.passphrase = '';
@@ -61,7 +62,7 @@ class Layer2WebScreen extends Component {
         return;
       }
       this.setState({
-        isShowPassphrase: true,
+        isShowPassphrase: true
       });
     });
     this.lockListener = EventEmitter.addListener(EventKeys.WALLET_UNLOCKED, () => this._signInfo());
@@ -103,21 +104,21 @@ class Layer2WebScreen extends Component {
 
   _onNavigationStateChange = (navState) => {
     this.setState({
-      goBackEnabled: navState.canGoBack,
+      goBackEnabled: navState.canGoBack
     });
   }
 
   // passphrase
   _pswdCancel = () => {
     this.setState({
-      isShowPassphrase: false,
+      isShowPassphrase: false
     });
   }
 
   _pswdConfirm = (passphrase) => {
     this.passphrase = passphrase;
     this.setState({
-      isShowPassphrase: false,
+      isShowPassphrase: false
     });
     const { name } = this.signInfo;
     switch (name) {
@@ -138,14 +139,14 @@ class Layer2WebScreen extends Component {
   // signTxAlert
   _signTxCancel = () => {
     this.setState({
-      isShowSignTx: false,
+      isShowSignTx: false
     });
   }
 
   _signTxConfirm = () => {
     this.setState({
       isShowSignTx: false,
-      isShowPassphrase: true,
+      isShowPassphrase: true
     });
   }
 
@@ -153,13 +154,13 @@ class Layer2WebScreen extends Component {
   // signMsgAlert
   _signMsgCancel = () => {
     this.setState({
-      isShowSignMsg: false,
+      isShowSignMsg: false
     });
   }
 
   _signMsgConfirm = () => {
     this.setState({
-      isShowSignMsg: false,
+      isShowSignMsg: false
     });
     this.props.gethIsUnlockAccount();
   }
@@ -174,7 +175,7 @@ class Layer2WebScreen extends Component {
     if (!isLoginInfo) {
       Toast.show(I18n.t('UnLoginRemind'), {
         shadow: true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
       return;
     }
@@ -230,7 +231,7 @@ class Layer2WebScreen extends Component {
     } catch (error) {
       Toast.show(error.message, {
         shadow: true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
     }
   }
@@ -247,7 +248,7 @@ class Layer2WebScreen extends Component {
     } catch (error) {
       Toast.show(error.message, {
         shadow: true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
     }
   }
@@ -264,7 +265,7 @@ class Layer2WebScreen extends Component {
     } catch (error) {
       Toast.show(error.message, {
         shadow: true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
     }
   }
@@ -277,7 +278,7 @@ class Layer2WebScreen extends Component {
 
     const sprintf = require('sprintf-js').sprintf;
     // 登陆后才可以获取 address  Config.CONTACT_IP
-    const signer = sprintf(layer1, address.toLocaleLowerCase(), "http://39.96.8.192:8545", Config.CHAIN_ID);
+    const signer = sprintf(layer1, address.toLocaleLowerCase(), 'http://39.96.8.192:8545', Config.CHAIN_ID);
     console.log('==============signer======================');
     console.log(signer);
     console.log('==============signer======================');
@@ -293,35 +294,40 @@ class Layer2WebScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <SignTxResultAlert
-          isInit={isShowSignTx}
-          isWallet={false}
-          to={to}
-          balance={value}
-          gas={gasPrice}
-          onPressCancel={() => this._signTxCancel()}
-          onPressConfirm={() => this._signTxConfirm()} />
+            isInit={isShowSignTx}
+            isWallet={false}
+            to={to}
+            balance={value}
+            gas={gasPrice}
+            onPressCancel={() => this._signTxCancel()}
+            onPressConfirm={() => this._signTxConfirm()}
+        />
         <SignMsgResultAlert
-          isInit={isShowSignMsg}
-          message={data}
-          onPressCancel={() => this._signMsgCancel()}
-          onPressConfirm={() => this._signMsgConfirm()} />
+            isInit={isShowSignMsg}
+            message={data}
+            onPressCancel={() => this._signMsgCancel()}
+            onPressConfirm={() => this._signMsgConfirm()}
+        />
         <PassphraseInputAlert
-          isInit={isShowPassphrase}
-          onPressCancel={() => this._pswdCancel()}
-          onPressConfirm={(passphrase) => this._pswdConfirm(passphrase)} />
-        <Spinner visible={loading} cancelable
-          textContent={'Loading...'}
-          textStyle={styles.spinnerText} />
+            isInit={isShowPassphrase}
+            onPressCancel={() => this._pswdCancel()}
+            onPressConfirm={(passphrase) => this._pswdConfirm(passphrase)}
+        />
+        <Spinner visible={loading}
+            cancelable
+            textContent={'Loading...'}
+            textStyle={styles.spinnerText}
+        />
         <WebView
-          useWebKit={true}
-          ref={ref => this.webview = ref}
-          style={styles.container}
-          onNavigationStateChange={this._onNavigationStateChange}
-          allowUniversalAccessFromFileURLs={true}
-          allowFileAccess={true}
-          onMessage={this._onMessage}
-          injectedJavaScript={injectScript}
-          source={{uri: url}}
+            useWebKit
+            ref={ref => this.webview = ref}
+            style={styles.container}
+            onNavigationStateChange={this._onNavigationStateChange}
+            allowUniversalAccessFromFileURLs
+            allowFileAccess
+            onMessage={this._onMessage}
+            injectedJavaScript={injectScript}
+            source={{uri: url}}
 
         />
       </SafeAreaView>);

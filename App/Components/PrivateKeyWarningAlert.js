@@ -9,7 +9,7 @@ import I18n from '../I18n';
 
 export default class PrivateKeyWarningAlert extends Component {
     static propTypes = {
-        onPressShow: PropTypes.func,
+        onPressShow: PropTypes.func
     }
 
     static defaultProps = {
@@ -18,13 +18,13 @@ export default class PrivateKeyWarningAlert extends Component {
     constructor(props){
         super(props);
         this.state={
-            isShow:true,
+            isShow:true
         };
     }
 
     _onPressShow=()=>{
         this.setState({
-            isShow:false,
+            isShow:false
         });
         const {onPressShow} = this.props;
         onPressShow();
@@ -37,12 +37,16 @@ export default class PrivateKeyWarningAlert extends Component {
             <Overlay
                 containerStyle={styles.overlay}
                 childrenWrapperStyle={styles.content}
-                visible = {isShow}
-                animationType='zoomIn'
-                animationDuration={300}>
+                visible={isShow}
+                animationType="zoomIn"
+                animationDuration={300}
+            >
                 <View style={styles.container}>
                     <View style={styles.topSection}>
-                        <Entypo name={'warning'} size={Metrics.icons.small} color='#FED605'/>
+                        <Entypo name={'warning'}
+                            size={Metrics.icons.small}
+                            color="#FED605"
+                        />
                         <Text style={styles.remind001}>{I18n.t('ExportRemindTitle')}</Text>
                     </View>
                     <View style={styles.centerSection}>
@@ -50,7 +54,9 @@ export default class PrivateKeyWarningAlert extends Component {
                         <Text style={[styles.remind001, {marginVertical:Metrics.baseMargin}]}>{I18n.t('ExportRemind002')}</Text>
                     </View>
                     <View style={styles.bottomSection}>
-                        <TouchableOpacity style={styles.actionView} onPress={()=>this._onPressShow()}>
+                        <TouchableOpacity style={styles.actionView}
+                            onPress={()=>this._onPressShow()}
+                        >
                             <Text style={styles.actionStyle}>{I18n.t('ExportAction')}</Text>
                         </TouchableOpacity>
                     </View>

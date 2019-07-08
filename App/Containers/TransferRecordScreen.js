@@ -17,13 +17,13 @@ import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 class TransferRecordScreen extends Component {
   static navigationOptions = {
-      title:I18n.t('TransferRecordTabTitle'),
+      title:I18n.t('TransferRecordTabTitle')
   }
 
   constructor(props){
       super(props);
       this.state = {
-          page: 1,
+          page: 1
       };
   }
 
@@ -34,7 +34,7 @@ class TransferRecordScreen extends Component {
       this.isUnlockListener = EventEmitter.addListener(EventKeys.NO_MORE_RECORD, ()=>{
           const {page} = this.state;
           this.setState({
-              page:page - 1,
+              page:page - 1
           });
       });
   }
@@ -87,7 +87,9 @@ class TransferRecordScreen extends Component {
       return (<TouchableOpacity style={styles.container}>
           <View style={styles.itemContainer}>
               <View style={styles.itemLeft}>
-                  <Image style={styles.symbolImg} source={{ uri: avatar_64 }}/>
+                  <Image style={styles.symbolImg}
+                      source={{ uri: avatar_64 }}
+                  />
                   <View style={styles.itemLeftView}>
                       <Text style={styles.titleStyle}>{title}</Text>
                       <Text style={styles.timeStyle}>{time}</Text>
@@ -95,8 +97,13 @@ class TransferRecordScreen extends Component {
               </View>
               <View style={styles.itemRight}>
                   <View style={styles.itemRightView}>
-                      <Text style={styles.titleStyle} numberOfLines={1}>{amount}</Text>
-                      <Text style={styles.timeStyle} numberOfLines={1} ellipsizeMode='middle'>{direction}</Text>
+                      <Text style={styles.titleStyle}
+                          numberOfLines={1}
+                      >{amount}</Text>
+                      <Text style={styles.timeStyle}
+                          numberOfLines={1}
+                          ellipsizeMode="middle"
+                      >{direction}</Text>
                   </View>
                   <View style={[styles.dotStyle, bgColor]}/>
               </View>
@@ -116,7 +123,9 @@ class TransferRecordScreen extends Component {
       const {symbol:mark} = currency;
       return(<View style={styles.headerContainer}>
           <View style={styles.leftSection}>
-              <Image style={styles.symbolImg} source={symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}/>
+              <Image style={styles.symbolImg}
+                  source={symbol === 'ETH' ? Images.ethIcon : Images.erc20Icon}
+              />
               <Text style={styles.titleStyle}>{symbol}</Text>
           </View>
           <View style={styles.rightSection}>
@@ -139,9 +148,9 @@ class TransferRecordScreen extends Component {
                       refreshing={refreshing}
                       onRefresh={this._onRefresh}
                       tintColor={Colors.textColor}
-                      title={ I18n.t('Refreshing')}
+                      title={I18n.t('Refreshing')}
                       titleColor={Colors.textColor}
-                  />}
+                                  />}
                   sections={txlist}
                   extraData={this.props}
                   keyExtractor={(item,index)=>''+index}
@@ -151,13 +160,15 @@ class TransferRecordScreen extends Component {
                   ListHeaderComponent={this._renderListHeader}
                   ListFooterComponent={txlist && txlist.length && <ListFooterComponent
                       loading={loading}
-                      onPress={this._loadMore}/>}
+                      onPress={this._loadMore}
+                                                                  />}
               />
               <View style={styles.bottomSection}>
                   <CommomBtnComponent
                       disabled={isBalance}
                       title={I18n.t('TransferAction')}
-                      onPress={()=>this._onPressBtn()}/>
+                      onPress={()=>this._onPressBtn()}
+                  />
               </View>
           </View>
       );
@@ -167,7 +178,7 @@ class TransferRecordScreen extends Component {
 const mapStateToProps = (state) => {
     const {
         user:{address, currency},
-        assets:{selectedToken, txlist, refreshing, loading},
+        assets:{selectedToken, txlist, refreshing, loading}
     } = state;
 
     return {selectedToken, txlist:sectionlize(txlist), address, refreshing, loading, currency};
@@ -175,7 +186,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     navigate: (route) => dispatch(NavigationActions.navigate({routeName: route})),
-    getTxlist: (params) => dispatch(AssetActions.getTxlistRequest(params)),
+    getTxlist: (params) => dispatch(AssetActions.getTxlistRequest(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransferRecordScreen);

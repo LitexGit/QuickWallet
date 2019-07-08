@@ -7,16 +7,26 @@ import I18n from '../I18n';
 export default class ScanScreen extends Component {
 
   static navigationOptions = {
-      title:I18n.t('ScanTabTitle'),
+      title:I18n.t('ScanTabTitle')
   };
 
   constructor(props) {
       super(props);
       this.data='';
       this.state = {
-          animation: new Animated.Value(0),
+          animation: new Animated.Value(0)
       };
   }
+
+  componentDidMount=()=>{
+    this.data='';
+    this._startAnimation();
+    setTimeout(()=>{
+        const {state} = this.props.navigation;
+        state.params.callback({data:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
+        this.props.navigation.goBack();
+    }, 3000);
+}
 
   _onBarCodeRead(e) {
       if (!e || !e.data) {
@@ -37,19 +47,11 @@ export default class ScanScreen extends Component {
       Animated.timing(this.state.animation,{
           toValue:1,
           duration:1500,
-          easing:Easing.linear,
+          easing:Easing.linear
       }).start(()=>this._startAnimation());
   }
 
-  componentDidMount=()=>{
-      this.data='';
-      this._startAnimation();
-      setTimeout(()=>{
-          const {state} = this.props.navigation;
-          state.params.callback({data:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
-          this.props.navigation.goBack();
-      }, 3000);
-  }
+
 
   render() {
       const contentView = (<View style={styles.container}>
@@ -57,7 +59,9 @@ export default class ScanScreen extends Component {
           <View style={styles.scanSection}>
               <View style={styles.scanBeside}></View>
               <View style={styles.scanerView}>
-                  <Image style={styles.scaner} source={require('../Images/icon_scan_rect.png')}/>
+                  <Image style={styles.scaner}
+                      source={require('../Images/icon_scan_rect.png')}
+                  />
                   <Animated.View style={[styles.animatedLine, {
                       transform: [{
                           translateY: this.state.animation.interpolate({
@@ -65,7 +69,8 @@ export default class ScanScreen extends Component {
                               outputRange: [0,250]
                           })
                       }]
-                  }]}/>
+                  }]}
+                  />
               </View>
               <View style={styles.scanBeside}></View>
           </View>
@@ -78,13 +83,15 @@ export default class ScanScreen extends Component {
           type={RNCamera.Constants.Type.back}
           barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
           flashMode={RNCamera.Constants.FlashMode.auto}
-          onBarCodeRead={(e) => this._onBarCodeRead(e)}>
+          onBarCodeRead={(e) => this._onBarCodeRead(e)}
+                                              >
           {contentView}
       </RNCamera>) : (<RNCamera style={styles.container}
           type={RNCamera.Constants.Type.back}
-          googleVisionBarcodeType = {RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
+          googleVisionBarcodeType={RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE}
           flashMode={RNCamera.Constants.FlashMode.auto}
-          onBarCodeRead={(e) => this._onBarCodeRead(e)}>
+          onBarCodeRead={(e) => this._onBarCodeRead(e)}
+                      >
           {contentView}
       </RNCamera>);
 

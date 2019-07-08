@@ -31,6 +31,7 @@
     "dependencies": {
         "apisauce": "^0.14.2",
         "escape-string-regexp": "^1.0.5",
+        "escope": "^3.6.0",
         "eslint-config-react-native": "^4.0.0",
         "ethers-utils": "^2.1.11",
         "etherscan-api": "^10.0.0",

@@ -24,7 +24,7 @@ export function* getTokenList(api) {
     const { data: result } = response;
     const { data, status, msg } = result;
     if (status) {
-      const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: "LXT", Tokenaddress: "0x641f543E76cD0Dfe81717d91Ab532831468FA3CE", Rate: "0.18" }
+      const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: 'LXT', Tokenaddress: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE', Rate: '0.18' }
       const { tokenList } = data;
       tokenList.push(lxt)
       console.log('==============tokenList======================');
@@ -54,7 +54,7 @@ export function* getTokenList(api) {
           if (status) {
             yield put(AssetActions.getTokenBalanceSuccess({
               symbol,
-              banance: result,
+              banance: result
             }));
           } else {
             yield put(AssetActions.getTokenBalanceFailure());
@@ -65,13 +65,13 @@ export function* getTokenList(api) {
       yield put(AssetActions.getTokenListFailure());
       Toast.show(msg, {
         shadow: true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
     }
   } catch (error) {
     Toast.show(error.message || error, {
       shadow: true,
-      position: Toast.positions.CENTER,
+      position: Toast.positions.CENTER
     });
     yield put(AssetActions.getTokenListFailure());
   }
@@ -96,7 +96,7 @@ export function* getBalance(action) {
     if (status) {
       yield put(AssetActions.getBalanceSuccess({
         symbol: 'ETH',
-        banance: result,
+        banance: result
       }));
       return;
     }
@@ -106,7 +106,7 @@ export function* getBalance(action) {
     const errMsg = error.message || error;
     Toast.show(errMsg, {
       shadow: true,
-      position: Toast.positions.CENTER,
+      position: Toast.positions.CENTER
     });
   }
 }
@@ -122,7 +122,7 @@ export function* getTokenBalance(action) {
     if (status) {
       yield put(AssetActions.getTokenBalanceSuccess({
         symbol: tokenname,
-        banance: result,
+        banance: result
       }));
       return;
     }
@@ -131,7 +131,7 @@ export function* getTokenBalance(action) {
     const errMsg = error.message || error;
     Toast.show(errMsg, {
       shadow: true,
-      position: Toast.positions.CENTER,
+      position: Toast.positions.CENTER
     });
     yield put(AssetActions.getTokenBalanceFailure());
   }

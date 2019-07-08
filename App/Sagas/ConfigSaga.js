@@ -12,7 +12,7 @@ export function * getConfig (api) {
     }
     Toast.show(msg, {
         shadow:true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
     });
     yield put(ConfigActions.getConfigFailure(data));
 }

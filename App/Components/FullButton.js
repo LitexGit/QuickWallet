@@ -12,8 +12,8 @@ import ExamplesRegistry from '../Services/ExamplesRegistry';
 /* istanbul ignore next */
 ExamplesRegistry.addComponentExample('Full Button', () =>
     (<FullButton
-        text='Hey there'
         onPress={() => window.alert('Full Button Pressed!')}
+        text="Hey there"
     />)
 );
 
@@ -26,7 +26,9 @@ export default class FullButton extends Component {
 
   render () {
       return (
-          <TouchableOpacity style={[styles.button, this.props.styles]} onPress={this.props.onPress}>
+          <TouchableOpacity onPress={this.props.onPress}
+              style={[styles.button, this.props.styles]}
+          >
               <Text style={styles.buttonText}>{this.props.text && this.props.text.toUpperCase()}</Text>
           </TouchableOpacity>
       );

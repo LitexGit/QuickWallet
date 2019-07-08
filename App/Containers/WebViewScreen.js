@@ -17,9 +17,10 @@ export default class WebViewScreen extends Component {
     title: 'WebView',
     headerRight: (
       <RightComponent
-        onPressRefresh={navigation.getParam('onPressRefresh')}
-        onPressShare={navigation.getParam('onPressShare')} />
-    ),
+          onPressRefresh={navigation.getParam('onPressRefresh')}
+          onPressShare={navigation.getParam('onPressShare')}
+      />
+    )
   });
 
   componentDidMount() {
@@ -51,9 +52,10 @@ export default class WebViewScreen extends Component {
     const { url = DEFAULT_URI } = params;
     return (
       <WebView useWebKit
-        ref={ref => this.webview = ref}
-        style={styles.container}
-        source={{ uri: url }} />
+          ref={ref => this.webview = ref}
+          style={styles.container}
+          source={{ uri: url }}
+      />
     );
   }
 }

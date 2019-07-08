@@ -183,7 +183,7 @@ export function *gethTransfer (action) {
 
         Toast.show(I18n.t('TransferSuccess'), {
             shadow:true,
-            position: Toast.positions.CENTER,
+            position: Toast.positions.CENTER
         });
 
         yield put(StackActions.pop());
@@ -201,7 +201,7 @@ function throwError (error){
       const msg = 'code:'+code+' '+'msg:'+I18n.t('InvalidPassword');
       Toast.show(msg, {
         shadow:true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
     }
       break;
@@ -212,7 +212,7 @@ function throwError (error){
       const msg = 'code:'+errCode+' '+'msg:'+I18n.t('SystemException');
       Toast.show(msg, {
         shadow:true,
-        position: Toast.positions.CENTER,
+        position: Toast.positions.CENTER
       });
     }
       break;

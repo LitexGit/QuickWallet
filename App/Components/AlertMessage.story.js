@@ -6,18 +6,18 @@ import AlertMessage from './AlertMessage';
 storiesOf('AlertMessage')
     .add('Default', () => (
         <AlertMessage
-            title='ALERT ALERT'
+            title="ALERT ALERT"
         />
     ))
     .add('Hidden', () => (
         <AlertMessage
-            title='ALERT ALERT'
             show={false}
+            title="ALERT ALERT"
         />
     ))
     .add('Custom Style', () => (
         <AlertMessage
-            title='ALERT ALERT'
             style={{ backgroundColor: 'red' }}
+            title="ALERT ALERT"
         />
     ));

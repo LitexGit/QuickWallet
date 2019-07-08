@@ -14,12 +14,12 @@ export default class SearchCompont extends Component {
         onPressScan: PropTypes.func,
         onSubmitEditing: PropTypes.func,
         placeholder: PropTypes.string,
-        setValue: PropTypes.string,
+        setValue: PropTypes.string
     }
 
     static defaultProps = {
         placeholder:I18n.t('SearchApplication'),
-        setValue:'',
+        setValue:''
     }
 
     componentDidMount=()=>{
@@ -35,20 +35,28 @@ export default class SearchCompont extends Component {
                 value={setValue}
                 placeholder={placeholder}
                 blurOnSubmit
-                returnKeyType='go'
-                keyboardType='url'
-                placeholderTextColor={ Colors.separateLineColor }
-                clearButtonMode='while-editing'
+                returnKeyType="go"
+                keyboardType="url"
+                placeholderTextColor={Colors.separateLineColor}
+                clearButtonMode="while-editing"
                 onChangeText={onChangeText}
-                onSubmitEditing={onSubmitEditing}/>
+                onSubmitEditing={onSubmitEditing}
+            />
         );
         return (
             <View style={styles.searchSection}>
-                <EvilIcons style={styles.searchIcon} name={'search'} size={24} color={'#A4A4A4'}/>
+                <EvilIcons style={styles.searchIcon}
+                    name={'search'}
+                    size={24}
+                    color={'#A4A4A4'}
+                />
                 {textInput}
                 <TouchableOpacity onPress={onPressScan}>
                     <View style={styles.scanSection}>
-                        <Ionicons name={'ios-qr-scanner'} size={24} color={'#A4A4A4'}/>
+                        <Ionicons name={'ios-qr-scanner'}
+                            size={24}
+                            color={'#A4A4A4'}
+                        />
                     </View>
                 </TouchableOpacity>
             </View>

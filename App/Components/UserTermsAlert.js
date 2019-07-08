@@ -14,9 +14,14 @@ class UserTermsAlert extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            isAgree:false,
+            isAgree:false
         };
     }
+
+    componentDidMount=()=>{
+      const {isAgree} = this.props;
+      this.setState({ isAgree });
+  }
 
     _onPressBtn=()=>{
         DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, true);
@@ -27,17 +32,18 @@ class UserTermsAlert extends Component {
         this.setState({ isAgree:!isAgree });
     }
 
-    componentDidMount=()=>{
-        const {isAgree} = this.props;
-        this.setState({ isAgree });
-    }
-
     render () {
         const remin001 = '我已仔细阅读并同意以上条款以及';
         const remin002 = 'Cookiss的使用说明';
 
         const {isAgree} = this.state;
-        const agreedImg = isAgree ? <AntDesign name={'checkcircle'} size={Metrics.icons.small} color={Colors.textColor}/> : <AntDesign name={'checkcircleo'} size={Metrics.icons.small} color={Colors.separateLineColor}/>;
+        const agreedImg = isAgree ? <AntDesign name={'checkcircle'}
+            size={Metrics.icons.small}
+            color={Colors.textColor}
+                                    /> : <AntDesign name={'checkcircleo'}
+                                        size={Metrics.icons.small}
+                                        color={Colors.separateLineColor}
+                                         />;
         const btnStyle = isAgree ? {backgroundColor:Colors.textColor} : {backgroundColor:Colors.dividingLineColor};
         return (
             <View style={styles.container}>
@@ -72,9 +78,11 @@ class UserTermsAlert extends Component {
                         <Text style={[styles.remind, {marginTop:Metrics.smallMargin, color:Colors.textColor}]}>{I18n.t('ConfirmRemind002')}</Text>
                     </View>
                 </View>
-                <TouchableOpacity disabled={!isAgree} onPress={()=>this._onPressBtn()}>
+                <TouchableOpacity disabled={!isAgree}
+                    onPress={()=>this._onPressBtn()}
+                >
                     <View style={[styles.bottomSection, btnStyle]}>
-                        <Text style={styles.btnTitle}>{ I18n.t('Continue')}</Text>
+                        <Text style={styles.btnTitle}>{I18n.t('Continue')}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -94,7 +102,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
+    saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params))
 
 });
 

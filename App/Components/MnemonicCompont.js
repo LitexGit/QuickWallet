@@ -20,16 +20,23 @@ class MnemonicCompont extends Component {
 
         this.state = {
             isCanPress:false,
-            isShowPassword:false,
+            isShowPassword:false
         };
     }
+
+    componentDidMount=()=>{
+      this.props.setLoading({loading:false});
+      this.mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
+      // this.mnemonic = '';
+      this._checkInputIsValid();
+  }
 
   _onPressBtn=()=>{
       if (!isValidMnemonic(this.mnemonic)) {
           const error = '请输入有效的助记词';
           Toast.show(error, {
               shadow:true,
-              position: Toast.positions.CENTER,
+              position: Toast.positions.CENTER
           });
           return;
       }
@@ -37,7 +44,7 @@ class MnemonicCompont extends Component {
           const error = '密码不少于8位字符';
           Toast.show(error, {
               shadow:true,
-              position: Toast.positions.CENTER,
+              position: Toast.positions.CENTER
           });
           return;
       }
@@ -45,7 +52,7 @@ class MnemonicCompont extends Component {
           const error = '密码输入不一致';
           Toast.show(error, {
               shadow:true,
-              position: Toast.positions.CENTER,
+              position: Toast.positions.CENTER
           });
           return;
       }
@@ -85,28 +92,31 @@ class MnemonicCompont extends Component {
     this.setState({isCanPress:false});
   }
 
-  componentDidMount=()=>{
-      this.props.setLoading({loading:false});
-      this.mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
-      // this.mnemonic = '';
-      this._checkInputIsValid();
-  }
-
   render () {
 
       const {isCanPress, isShowPassword} = this.state;
       const {loading} = this.props;
 
       const eyeImg = (
-          <TouchableOpacity onPress={()=>this._onPressEyeImg()} style={{justifyContent:'center'}}>
-              {isShowPassword ? <Ionicons name={'md-eye'} size={Metrics.icons.small} color={Colors.separateLineColor}/> : <Ionicons name={'md-eye-off'} size={Metrics.icons.small} color={Colors.separateLineColor}/>}
+          <TouchableOpacity onPress={()=>this._onPressEyeImg()}
+              style={{justifyContent:'center'}}
+          >
+              {isShowPassword ? <Ionicons name={'md-eye'}
+                  size={Metrics.icons.small}
+                  color={Colors.separateLineColor}
+                                /> : <Ionicons name={'md-eye-off'}
+                                    size={Metrics.icons.small}
+                                    color={Colors.separateLineColor}
+                                     />}
           </TouchableOpacity>);
 
       return (
           <View style={styles.container}>
-              <Spinner visible={loading} cancelable
+              <Spinner visible={loading}
+                  cancelable
                   textContent={'Loading...'}
-                  textStyle={styles.spinnerText}/>
+                  textStyle={styles.spinnerText}
+              />
               <ScrollView style={styles.container}>
                   <View style={styles.container}>
                       <View style={styles.remindView}>
@@ -116,34 +126,37 @@ class MnemonicCompont extends Component {
                       <View style={styles.mnemonicView}>
                           <TextInput
                               multiline
-                              placeholder={ I18n.t('EnterMnemonicRemind')}
-                              placeholderTextColor={ Colors.separateLineColor }
-                              underlineColorAndroid={ 'transparent' }
-                              style={ styles.mnemonicInput }
-                              value={ this.mnemonic }
-                              onChangeText={(text) => this._onChangeMnemonic(text)}/>
+                              placeholder={I18n.t('EnterMnemonicRemind')}
+                              placeholderTextColor={Colors.separateLineColor}
+                              underlineColorAndroid={'transparent'}
+                              style={styles.mnemonicInput}
+                              value={this.mnemonic}
+                              onChangeText={(text) => this._onChangeMnemonic(text)}
+                          />
                       </View>
                       <View style={styles.infoView}>
-                          <View style={ styles.sectionView }>
+                          <View style={styles.sectionView}>
                               <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
                               <TextInput style={styles.passwordInput}
                                   placeholder={I18n.t('WalletPassword')}
-                                  placeholderTextColor={ Colors.separateLineColor }
-                                  underlineColorAndroid={ 'transparent' }
-                                  clearButtonMode='while-editing'
+                                  placeholderTextColor={Colors.separateLineColor}
+                                  underlineColorAndroid={'transparent'}
+                                  clearButtonMode="while-editing"
                                   secureTextEntry={!isShowPassword}
-                                  maxLength={ 20 }
-                                  onChangeText={(text) => this._onChangePassword(text)}/>
+                                  maxLength={20}
+                                  onChangeText={(text) => this._onChangePassword(text)}
+                              />
                           </View>
                           <View style={styles.confirmView}>
                               <TextInput style={styles.confirmInput}
                                   placeholder={I18n.t('RepeatPassword')}
-                                  placeholderTextColor={ Colors.separateLineColor }
-                                  underlineColorAndroid={ 'transparent' }
-                                  clearButtonMode='while-editing'
+                                  placeholderTextColor={Colors.separateLineColor}
+                                  underlineColorAndroid={'transparent'}
+                                  clearButtonMode="while-editing"
                                   secureTextEntry={!isShowPassword}
-                                  maxLength={ 20 }
-                                  onChangeText={(text) => this._onChangeConfirm(text)}/>
+                                  maxLength={20}
+                                  onChangeText={(text) => this._onChangeConfirm(text)}
+                              />
                               {eyeImg}
                           </View>
                       </View>
@@ -153,7 +166,8 @@ class MnemonicCompont extends Component {
                   <CommomBtnComponent
                       disabled={!isCanPress}
                       title={I18n.t('Import')}
-                      onPress={()=>this._onPressBtn()}/>
+                      onPress={()=>this._onPressBtn()}
+                  />
               </View>
           </View>
       );
@@ -171,7 +185,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setLoading: (params) => dispatch(WalletActions.setLoading(params)),
-    gethImportMnemonic: (params) => dispatch(WalletActions.gethImportMnemonic(params)),
+    gethImportMnemonic: (params) => dispatch(WalletActions.gethImportMnemonic(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MnemonicCompont);

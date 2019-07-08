@@ -17,16 +17,21 @@ import RNExitApp from 'react-native-exit-app';
 class LanguageScreen extends Component {
 
   static navigationOptions = {
-      title:I18n.t('LanguageTabTitle'),
+      title:I18n.t('LanguageTabTitle')
   }
 
   constructor(props){
       super(props);
 
       this.state={
-          data:[],
+          data:[]
       };
   }
+
+  componentDidMount() {
+    const {language } = this.props;
+    this._setDataSouse(language);
+}
 
   _onPressItem=(item)=>{
       this._setDataSouse(item);
@@ -48,7 +53,10 @@ class LanguageScreen extends Component {
   _renderItem=({item})=>{
       const {title='', isSelected} = item;
       const nextImg = (<View>
-          <Feather name={'check'} size={Metrics.icons.small} color={Colors.textColor}/>
+          <Feather name={'check'}
+              size={Metrics.icons.small}
+              color={Colors.textColor}
+          />
       </View>);
 
       return ( <TouchableOpacity onPress={()=>this._onPressItem(item)}>
@@ -75,11 +83,6 @@ _setDataSouse=(item)=>{
     this.setState({ data });
 }
 
-componentDidMount() {
-    const {language } = this.props;
-    this._setDataSouse(language);
-}
-
 render () {
     const {data} = this.state;
     return (
@@ -87,9 +90,12 @@ render () {
             <FlatList style={styles.flatList}
                 data={data}
                 keyExtractor={(item,index)=>''+index}
-                renderItem={ this._renderItem }
-                ItemSeparatorComponent = {this._renderItemSeparator}/>
-            <ButtonComponent style={styles.btnStyle} onPress={this._onPressComplete}>
+                renderItem={this._renderItem}
+                ItemSeparatorComponent={this._renderItemSeparator}
+            />
+            <ButtonComponent style={styles.btnStyle}
+                onPress={this._onPressComplete}
+            >
                 <Text style={styles.btnTitle}>完成</Text>
             </ButtonComponent>
         </View>

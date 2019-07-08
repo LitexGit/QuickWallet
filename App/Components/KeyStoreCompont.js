@@ -19,22 +19,28 @@ class KeyStoreCompont extends Component {
 
         this.state = {
             isCanPress:false,
-            isShowPassword:false,
+            isShowPassword:false
         };
     }
 
+    componentDidMount=()=>{
+      this.props.setLoading({loading:false});
+      // this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
+      this.privateKey = '';
+      this._checkInputIsValid();
+  }
     _onPressBtn= async ()=>{
         if (this.password.length < 8 ||  this.confirm.length < 8) {
             Toast.show(I18n.t('PswdCheckError'), {
                 shadow:true,
-                position: Toast.positions.CENTER,
+                position: Toast.positions.CENTER
             });
             return;
         }
         if (this.password !== this.confirm) {
             Toast.show(I18n.t('PswdConsistentError'), {
                 shadow:true,
-                position: Toast.positions.CENTER,
+                position: Toast.positions.CENTER
             });
             return;
         }
@@ -63,13 +69,6 @@ class KeyStoreCompont extends Component {
         });
     }
 
-    componentDidMount=()=>{
-        this.props.setLoading({loading:false});
-        // this.privateKey = '0x1e1066173a1cf3467ec087577d2eca919cabef5cd7db5d004fb9945cc090abce';
-        this.privateKey = '';
-        this._checkInputIsValid();
-    }
-
     _checkInputIsValid=()=>{
         if (this.privateKey.length && this.password.length  &&  this.confirm.length) {
             this.setState({isCanPress:true});
@@ -83,15 +82,25 @@ class KeyStoreCompont extends Component {
         const {loading} = this.props;
 
         const eyeImg = (
-            <TouchableOpacity onPress={()=>this._onPressEyeImg()} style={{justifyContent:'center'}}>
-                {isShowPassword ? <Ionicons name={'md-eye'} size={Metrics.icons.small} color={Colors.separateLineColor}/> : <Ionicons name={'md-eye-off'} size={Metrics.icons.small} color={Colors.separateLineColor}/>}
+            <TouchableOpacity onPress={()=>this._onPressEyeImg()}
+                style={{justifyContent:'center'}}
+            >
+                {isShowPassword ? <Ionicons color={Colors.separateLineColor}
+                    name={'md-eye'}
+                    size={Metrics.icons.small}
+                                  /> : <Ionicons color={Colors.separateLineColor}
+                                      name={'md-eye-off'}
+                                      size={Metrics.icons.small}
+                                       />}
             </TouchableOpacity>);
 
         return (
             <View style={styles.container}>
-                <Spinner visible={loading} cancelable
+                <Spinner cancelable
                     textContent={'Loading...'}
-                    textStyle={styles.spinnerText}/>
+                    textStyle={styles.spinnerText}
+                    visible={loading}
+                />
                 <ScrollView style={styles.container}>
                     <View style={styles.container}>
                         <View style={styles.remindView}>
@@ -101,34 +110,37 @@ class KeyStoreCompont extends Component {
                         <View style={styles.mnemonicView}>
                             <TextInput
                                 multiline
+                                onChangeText={(text) => this._onChangePrivateKey(text)}
                                 placeholder={I18n.t('InputPrivateKey')}
-                                placeholderTextColor={ Colors.separateLineColor }
-                                underlineColorAndroid={ 'transparent' }
-                                style={ styles.privateKeyInput }
-                                value={ this.privateKey }
-                                onChangeText={(text) => this._onChangePrivateKey(text)}/>
+                                placeholderTextColor={Colors.separateLineColor}
+                                style={styles.privateKeyInput}
+                                underlineColorAndroid={'transparent'}
+                                value={this.privateKey}
+                            />
                         </View>
                         <View style={styles.infoView}>
-                            <View style={ styles.sectionView }>
+                            <View style={styles.sectionView}>
                                 <Text style={[styles.pathText, {lineHeight:Metrics.icons.tiny}]}>{I18n.t('SetPassword')}</Text>
-                                <TextInput style={styles.passwordInput}
-                                    placeholder={ I18n.t('WalletPassword')}
-                                    placeholderTextColor={ Colors.separateLineColor }
-                                    underlineColorAndroid={ 'transparent' }
-                                    clearButtonMode='while-editing'
+                                <TextInput clearButtonMode="while-editing"
+                                    maxLength={20}
+                                    onChangeText={(text) => this._onChangePassword(text)}
+                                    placeholder={I18n.t('WalletPassword')}
+                                    placeholderTextColor={Colors.separateLineColor}
                                     secureTextEntry={!isShowPassword}
-                                    maxLength={ 20 }
-                                    onChangeText={(text) => this._onChangePassword(text)}/>
+                                    style={styles.passwordInput}
+                                    underlineColorAndroid={'transparent'}
+                                />
                             </View>
                             <View style={styles.confirmView}>
-                                <TextInput style={styles.confirmInput}
+                                <TextInput clearButtonMode="while-editing"
+                                    maxLength={20}
+                                    onChangeText={(text) => this._onChangeConfirm(text)}
                                     placeholder={I18n.t('RepeatPassword')}
-                                    placeholderTextColor={ Colors.separateLineColor }
-                                    underlineColorAndroid={ 'transparent' }
-                                    clearButtonMode='while-editing'
+                                    placeholderTextColor={Colors.separateLineColor}
                                     secureTextEntry={!isShowPassword}
-                                    maxLength={ 20 }
-                                    onChangeText={(text) => this._onChangeConfirm(text)}/>
+                                    style={styles.confirmInput}
+                                    underlineColorAndroid={'transparent'}
+                                />
                                 {eyeImg}
                             </View>
                         </View>
@@ -137,8 +149,9 @@ class KeyStoreCompont extends Component {
                 <View style={styles.botttomSection}>
                     <CommomBtnComponent
                         disabled={!isCanPress}
+                        onPress={()=>this._onPressBtn()}
                         title={I18n.t('Import')}
-                        onPress={()=>this._onPressBtn()}/>
+                    />
                 </View>
             </View>
         );
@@ -157,7 +170,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setLoading: (params) => dispatch(WalletActions.setLoading(params)),
-    gethImportPrivateKey: (params) => dispatch(WalletActions.gethImportPrivateKey(params)),
+    gethImportPrivateKey: (params) => dispatch(WalletActions.gethImportPrivateKey(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KeyStoreCompont);

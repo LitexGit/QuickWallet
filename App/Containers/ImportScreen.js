@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from './Styles/ImportScreenStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors, Metrics } from '../Themes';
-import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import MnemonicCompont from '../Components/MnemonicCompont';
 import KeyStoreCompont from '../Components/KeyStoreCompont';
 import I18n from '../I18n';
@@ -15,12 +15,12 @@ class ImportScreen extends Component {
   constructor(props){
     super(props);
     this.state={
-      keyboardHeight:new Animated.Value(0),
+      keyboardHeight:new Animated.Value(0)
     }
   }
 
   static navigationOptions = {
-      title:I18n.t('ImportTabTitle'),
+      title:I18n.t('ImportTabTitle')
   }
 
   componentDidMount=()=>{
@@ -37,14 +37,14 @@ class ImportScreen extends Component {
     Animated.timing(this.state.keyboardHeight,{
         duration: event.duration,
         // toValue: event.endCoordinates.height,
-        toValue: 50,
+        toValue: 50
     }).start();
   }
 
   _keyboardWillHide=(event)=>{
     Animated.timing(this.state.keyboardHeight,{
         duration: event.duration,
-        toValue: 0,
+        toValue: 0
     }).start();
   }
 
@@ -52,28 +52,38 @@ class ImportScreen extends Component {
 
   render () {
       const {isAgree} = this.props;
-      const userTermsView = (!isAgree ? (<View zIndex={999} style={styles.userTermsStyle}>
+      const userTermsView = (!isAgree ? (<View zIndex={999}
+          style={styles.userTermsStyle}
+                                         >
           <UserTermsAlert/>
       </View>): null);
 
       const connect = <View style={styles.container}>
         <View style={styles.topSection}>
-                  <MaterialCommunityIcons name={'calendar-import'} size={30} color={Colors.separateLineColor}/>
+                  <MaterialCommunityIcons name={'calendar-import'}
+                      size={30}
+                      color={Colors.separateLineColor}
+                  />
                   <Text style={styles.titleStytle}>导入账户</Text>
               </View>
               <View style={styles.bottomSection}>
                   <ScrollableTabView
-                    initialPage={0}
-                    style={styles.tabBarStyle}
-                    tabBarActiveTextColor={Colors.textColor}
-                    tabBarInactiveTextColor={Colors.separateLineColor}
-                    tabBarUnderlineStyle={styles.tabBarUnderline}
-                    renderTabBar={() => <DefaultTabBar/>}
-                    onChangeTab={()=>this._onChangeTab()}>
-                    <View tabLabel={I18n.t('Mnemonic')} style={styles.container}>
+                      initialPage={0}
+                      style={styles.tabBarStyle}
+                      tabBarActiveTextColor={Colors.textColor}
+                      tabBarInactiveTextColor={Colors.separateLineColor}
+                      tabBarUnderlineStyle={styles.tabBarUnderline}
+                      renderTabBar={() => <DefaultTabBar/>}
+                      onChangeTab={()=>this._onChangeTab()}
+                  >
+                    <View tabLabel={I18n.t('Mnemonic')}
+                        style={styles.container}
+                    >
                         <MnemonicCompont/>
                     </View>
-                    <View tabLabel={I18n.t('PrivateKey')} style={styles.container}>
+                    <View tabLabel={I18n.t('PrivateKey')}
+                        style={styles.container}
+                    >
                         <KeyStoreCompont/>
                     </View>
                 </ScrollableTabView>

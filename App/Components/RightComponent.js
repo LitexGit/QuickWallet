@@ -9,7 +9,7 @@ export default class RightComponent extends Component {
 
     static propTypes = {
         onPressRefresh: PropTypes.func,
-        onPressShare: PropTypes.func,
+        onPressShare: PropTypes.func
     }
 
     componentDidMount=()=>{
@@ -21,10 +21,18 @@ export default class RightComponent extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={onPressRefresh}>
-                    <SimpleLineIcons name={'refresh'} size={Metrics.images.small} color={Colors.textColor}/>
+                    <SimpleLineIcons name={'refresh'}
+                        size={Metrics.images.small}
+                        color={Colors.textColor}
+                    />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btnStyle} onPress={onPressShare}>
-                    <SimpleLineIcons name={'share'} size={Metrics.images.small} color={Colors.textColor}/>
+                <TouchableOpacity style={styles.btnStyle}
+                    onPress={onPressShare}
+                >
+                    <SimpleLineIcons name={'share'}
+                        size={Metrics.images.small}
+                        color={Colors.textColor}
+                    />
                 </TouchableOpacity>
             </View>
         );
