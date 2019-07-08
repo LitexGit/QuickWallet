@@ -5,6 +5,8 @@ import { getToken } from '../Lib/Format';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+    update: ['data'],
+
     request: ['data'],
     success: ['data'],
 
@@ -24,7 +26,7 @@ const { Types, Creators } = createActions({
 
     getTxlistRequest: ['data'],
     getTxlistSuccess: ['data'],
-    getTxlistFailure: null,
+    getTxlistFailure: null
 });
 
 export const AssetTypes = Types;
@@ -50,15 +52,25 @@ export const INITIAL_STATE = Immutable({
     balances:[],
     txlist:[],
     ethBanance:'',
+    ethRate: ''
 });
 
 /* ------------- Selectors ------------- */
 export const AssetSelectors = {
     getBalances: state => state.assets.balances,
-    getTxlist: state => state.assets.txlist,
+    getTxlist: state => state.assets.txlist
 };
 
 /* ------------- Reducers ------------- */
+
+
+export const update = (state, {data}) =>{
+  console.log('===========params=========================');
+  console.log(state.merge(data));
+  console.log('===========params=========================');
+  return state.merge(data);
+}
+
 export const getBalanceSuccess = (state, { data }) =>{
     const {tokenList} = state;
     const {symbol:ETH, banance} = data;
@@ -130,5 +142,7 @@ export const reducer = createReducer(INITIAL_STATE, {
 
     [Types.GET_TXLIST_REQUEST]: request,
     [Types.GET_TXLIST_SUCCESS]: success,
-    [Types.GET_TXLIST_FAILURE]: failure
+    [Types.GET_TXLIST_FAILURE]: failure,
+
+    [Types.UPDATE]: update
 });

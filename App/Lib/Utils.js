@@ -1,4 +1,3 @@
-import Ramda from 'ramda';
 
 export function runGenerator(generatorFUN, initialValue) {
     const generator = generatorFUN(initialValue);

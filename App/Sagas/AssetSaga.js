@@ -27,19 +27,21 @@ export function* getTokenList(api) {
       // const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: 'LXT', Tokenaddress: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE', Rate: '0.18' }
       const { tokenList } = data;
       // tokenList.push(lxt)
-      // console.log('==============tokenList======================');
-      // console.log(tokenList);
-      // console.log('==============tokenList======================');
 
       const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
       const { key = 'CNY' } = currency;
+      let ethRate = undefined
       const tokenArray = tokenList.map((token) => {
-        let { Rate: rate = '0.18' } = token;
+        let { Rate: rate = '0.18', Symbol:symbol } = token;
         rate = JSON.parse(rate);
+        if (symbol === 'ETH') {
+          ethRate = rate[key];
+        }
         token.Rate = rate[key];
         return token;
       });
-      yield put(AssetActions.getTokenListSuccess(data));
+      yield put(AssetActions.update({ethRate}));
+      yield put(AssetActions.getTokenListSuccess(data, ethRate));
 
       for (const token of tokenArray) {
         const { Symbol: symbol, Tokenaddress: tokenAddress } = token;
@@ -149,16 +151,10 @@ export function* getTxlist(action) {
     let response = {};
     if (symbol === 'ETH') {
       response = yield call(api.account.txlist, address, startblock, endblock, page, offset, sort);
-      console.log('===========txlist=========================');
-      console.log(response);
-      console.log('===========txlist=========================');
     } else {
       if (page === 1) {
         response = yield call(api.account.tokentx, address, tokenAddress, startblock, endblock, sort);
       }
-      console.log('===========tokentx=========================');
-      console.log(response);
-      console.log('===========tokentx=========================');
     }
 
     const { status, message, result } = response;

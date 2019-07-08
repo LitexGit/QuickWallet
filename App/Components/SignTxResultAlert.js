@@ -9,7 +9,9 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Metrics, Colors } from '../Themes';
 import { connect } from 'react-redux';
 import I18n from '../I18n';
-import {getWei, getValue} from '../Lib/Format';
+import {getValue} from '../Lib/Format';
+import {toDecimal } from '../Lib/Helper'
+const BN = require('bn.js');
 
 class SignTxResultAlert extends Component {
   static propTypes = {
@@ -31,33 +33,49 @@ class SignTxResultAlert extends Component {
       gas:'0'
   }
 
-  componentDidMount=()=>{
-      console.log();
-  }
+  // address: "0xb5538753F2641A83409D2786790b42aC857C5340"
+  // balance: "742"
+  // currency: {key: "CNY", title: "CNY", symbol: "￥", merge: ƒ, replace: ƒ, …}
+  // dispatch: ƒ (action)
+  // gas: "100"
+  // isInit: false
+  // isWallet: true
+  // onPressCancel: ƒ onPressCancel()
+  // onPressConfirm: ƒ onPressConfirm()
+  // selectedToken: {Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: "LXT", …}
+  // to: "0x38bCc5B8b793F544d86a94bd2AE94196567b865c"
 
   render () {
-      const {isInit, isWallet=true, address='', to='', onPressCancel, onPressConfirm, currency, selectedToken} = this.props;
+      const {isInit, isWallet=true, address='', to='', onPressCancel, onPressConfirm, selectedToken, currency, ethRate} = this.props;
+      const {symbol:cny} = currency
+      const {Rate:rate='0.13', Symbol:symbol, Decimal: decimal} = selectedToken;
       let {balance='', gas=''} = this.props;
-      const {symbol:mark='ETH'} = currency;
-      const {Rate:rate='567'} = selectedToken;
 
       const gasLimit = 21000;
       if (isWallet) {
-          gas = getWei(gas, 9) * gasLimit / 1e18;
+        const gasPrice = new BN(gas).mul(new BN(10).pow(new BN(9)));
+        gas = gasPrice.mul(new BN(gasLimit));
+        gas = toDecimal({amount: gas.toString(), decimal})
       } else {
-          balance /= 1e18;
-          gas = gas * gasLimit / 1e18;
+        balance = toDecimal({amount: balance,  decimal})
+
+        gas = (new BN(gas)).mul(new BN(gasLimit));
+        gas = toDecimal({amount: gas.toString(), decimal})
       }
 
-      const totalBanance = parseFloat(balance) + gas;
-      const totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(gas, rate));
+      let totalBanance = undefined
+      if (symbol === 'ETH') {
+        totalBanance = parseFloat(balance) + parseFloat(gas) + ' ETH';
+      } else {
+        totalBanance = balance + ' ' +symbol + ' + ' + gas + ' ETH'
+      }
+      let totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(gas, ethRate));
+      totalValue = totalValue.toFixed(2)
 
-
-      const symbol = {key:'symbol', units:balance, value:getValue(balance, rate)};
-      const gasPrice = {key:'gasPrice', units:gas.toFixed(6), value:getValue(gas, rate)};
-      const txTotal = {key:'txTotal', units:totalBanance.toFixed(6), value:totalValue.toFixed(2)};
-
-      const items = [symbol, gasPrice, txTotal];
+      const mark = {key:'symbol', units:balance, value:getValue(balance, rate)};
+      const gasPrice = {key:'gasPrice', units:gas, value:getValue(gas, ethRate)};
+      const txTotal = {key:'txTotal', units:totalBanance, value:totalValue};
+      const items = [mark, gasPrice, txTotal];
 
       const signInfos = Object.values(SignInfoConfig).map((config, key)=>{
           for (const item of items) {
@@ -67,15 +85,15 @@ class SignTxResultAlert extends Component {
                   config.value = item.value;
               }
           }
+          const {title, units, value, key:index} = config;
 
-          const {title, units, value} = config;
           return (<View key={key}
               style={styles.infoItem}
                   >
-              <Text style={styles.itemTitle}>{title}</Text>
+              <Text style={styles.itemTitle}>{index === 'symbol' ? symbol : title}</Text>
               <View>
                   <Text style={styles.itemCount}>{units}</Text>
-                  <Text style={styles.itemValue}>{mark}{value}</Text>
+                  <Text style={styles.itemValue}>{cny}&nbsp;{value}</Text>
               </View>
           </View>);
       });
@@ -128,9 +146,9 @@ class SignTxResultAlert extends Component {
 const mapStateToProps = (state) => {
     const {
         user:{address, currency },
-        assets:{selectedToken}
+        assets:{selectedToken, ethRate}
     } = state;
-    return { address, currency, selectedToken };
+    return { address, currency, selectedToken, ethRate };
 };
 
 export default connect(mapStateToProps)(SignTxResultAlert);

@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "apisauce": "^0.14.2",
+        "bn.js": "^4.11.8",
         "escape-string-regexp": "^1.0.5",
         "escope": "^3.6.0",
         "eslint-config-react-native": "^4.0.0",
@@ -74,7 +75,8 @@
         "redux-saga": "^0.16.0",
         "reduxsauce": "0.7.0",
         "seamless-immutable": "^7.1.4",
-        "sprintf-js": "^1.1.2"
+        "sprintf-js": "^1.1.2",
+        "web3": "^1.0.0-beta.55"
     },
     "devDependencies": {
         "@storybook/addon-storyshots": "^3.4.0",

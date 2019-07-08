@@ -14,6 +14,10 @@ class AssetsScreen extends Component {
       title:I18n.t('AssetsTabTitle')
   }
 
+  componentDidMount=()=>{
+    this.props.getTokenList();
+  }
+
   _onRefresh=()=>{
       this.props.getTokenList();
   }
@@ -21,10 +25,6 @@ class AssetsScreen extends Component {
   _onPressItem=(item)=>{
       this.props.setSelectedToken({selectedToken:item});
       this.props.navigate('TransferRecordScreen');
-  }
-
-  componentDidMount=()=>{
-      this.props.getTokenList();
   }
 
   _renderItem=({item})=>{
