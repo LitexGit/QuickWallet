@@ -166,10 +166,13 @@ class Layer2WebScreen extends Component {
   }
 
   _onMessage = (evt) => {
-
-    console.log('==========JSON.parse(evt.nativeEvent.data)==========================');
-    console.log(JSON.parse(evt.nativeEvent.data));
-    console.log('=========JSON.parse(evt.nativeEvent.data)===========================');
+    let params = undefined
+    try {
+      params = JSON.parse(evt.nativeEvent.data)
+    } catch (error) {
+      console.log(error);
+      return
+    }
 
     const { isLoginInfo } = this.props;
     if (!isLoginInfo) {
@@ -179,10 +182,9 @@ class Layer2WebScreen extends Component {
       });
       return;
     }
-
-    const params = JSON.parse(evt.nativeEvent.data);
     this.signInfo = params;
     const { name } = params;
+
     switch (name) {
       case 'signMessage':
       case 'signPersonalMessage':
@@ -279,9 +281,9 @@ class Layer2WebScreen extends Component {
     const sprintf = require('sprintf-js').sprintf;
     // 登陆后才可以获取 address  Config.CONTACT_IP
     const signer = sprintf(layer1, address.toLocaleLowerCase(), 'http://39.96.8.192:8545', Config.CHAIN_ID);
-    console.log('==============signer======================');
-    console.log(signer);
-    console.log('==============signer======================');
+    // console.log('==============signer======================');
+    // console.log(signer);
+    // console.log('==============signer======================');
 
     const injectScript = web3Provider + '' + signer;
 
