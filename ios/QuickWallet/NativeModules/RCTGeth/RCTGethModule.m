@@ -4,7 +4,9 @@
 //
 //  Created by zhoujian on 2018/12/24.
 //  Copyright © 2018 Facebook. All rights reserved.
-//
+//  https://github.com/ethereum/go-ethereum
+//  https://github.com/miguelmota/ethereum-development-with-go-book
+
 
 #import "RCTGethModule.h"
 #import <Geth/Geth.h>
@@ -550,7 +552,8 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return nil;
   }
   
-  NSData *hexData = [OCWeb3Utils hexToData:message];
+  NSString *hex = [self hexToHexString: message];
+  NSData *hexData = [OCWeb3Utils hexToData:hex];
   GethAddress *address = [[GethAddress alloc] initFromHex:from];
   NSData *signData = [self.keyStore signHash:address hash:hexData error:&error];
 
@@ -572,10 +575,8 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return nil;
   }
   
-  NSMutableString *muMsg = [NSMutableString stringWithString:message];
-  NSString *personMsg = [muMsg stringByReplacingOccurrencesOfString:@"0x" withString:@""];
-  
-  NSData *info = [NSData dataWithHexString:personMsg];
+  NSString *hex = [self hexToHexString: message];
+  NSData *info = [NSData dataWithHexString:hex];
   NSData *fixData = [OCWeb3Utils getFixData:info];
   
   NSMutableData *data = [NSMutableData dataWithData:fixData];
@@ -629,8 +630,9 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   GethAddress *to = [[GethAddress alloc] initFromHex:model.to];
   GethBigInt *amount = [[GethBigInt alloc] init:[model.value longLongValue]];
   GethBigInt *gasPrice = [[GethBigInt alloc] init:[model.gasPrice longLongValue]];
-  NSData *data = [model.data dataUsingEncoding:NSUTF8StringEncoding];
-  
+  NSString *hex = [self hexToHexString: model.data];
+  NSData *data = [NSData dataWithHexString:hex];
+
   int64_t nonce = 0x0;
   GethContext *context = [[GethContext alloc] init];
   
@@ -668,31 +670,46 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   return hash;
 }
 
-- (NSString *)getLocalizedDescription:(NSError *)error{
-  NSString *msg = @"get LocalizedDescription exceptions";
-  @try {
-    NSDictionary *userInfo = error.userInfo;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:0];
-    NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    msg = dataStr;
-  } @catch (NSException *exception) {
-  } @finally {
-    return msg;
-  }
-}
 
-- (NSString*)serializeDeviceToken:(NSData*) deviceToken{
-  NSMutableString *str = [NSMutableString stringWithCapacity:64];
-  NSUInteger length = [deviceToken length];
-  char *bytes = malloc(sizeof(char) * length);
-  
-  [deviceToken getBytes:bytes length:length];
-  for (int i = 0; i < length; i++){
-    [str appendFormat:@"%02.2hhX", bytes[i]];
-  }
-  free(bytes);
-  return str;
-}
+/**
+ hex转hexString : 删除0x
 
+ @param hex 0xhexString
+ @return hexString
+ */
+- (NSString *)hexToHexString:(NSString *)hex{
+  NSMutableString *muHex = [[NSMutableString alloc] initWithString:hex];
+  NSRange range = NSMakeRange(0, 2);
+  [muHex deleteCharactersInRange:range];
+  return muHex;
+}
 
 @end
+
+
+//- (NSString*)serializeDeviceToken:(NSData*) deviceToken{
+//  NSMutableString *str = [NSMutableString stringWithCapacity:64];
+//  NSUInteger length = [deviceToken length];
+//  char *bytes = malloc(sizeof(char) * length);
+//
+//  [deviceToken getBytes:bytes length:length];
+//  for (int i = 0; i < length; i++){
+//    [str appendFormat:@"%02.2hhX", bytes[i]];
+//  }
+//  free(bytes);
+//  return str;
+//}
+
+//- (NSString *)getLocalizedDescription:(NSError *)error{
+//  NSString *msg = @"get LocalizedDescription exceptions";
+//  @try {
+//    NSDictionary *userInfo = error.userInfo;
+//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:0];
+//    NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//    msg = dataStr;
+//  } @catch (NSException *exception) {
+//  } @finally {
+//    return msg;
+//  }
+//}
+
