@@ -34,48 +34,44 @@ class SignTxResultAlert extends Component {
   }
 
   // address: "0xb5538753F2641A83409D2786790b42aC857C5340"
-  // balance: "742"
+  // balance: "1"
   // currency: {key: "CNY", title: "CNY", symbol: "￥", merge: ƒ, replace: ƒ, …}
   // dispatch: ƒ (action)
-  // gas: "100"
-  // isInit: false
+  // ethRate: "963.22"
+  // gas: "75"
+  // isInit: true
   // isWallet: true
   // onPressCancel: ƒ onPressCancel()
   // onPressConfirm: ƒ onPressConfirm()
-  // selectedToken: {Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: "LXT", …}
+  // selectedToken: {Id: 1, Symbol: "ETH", Tokenaddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", Decimal: 18, Description: "ethereum", …}
   // to: "0x38bCc5B8b793F544d86a94bd2AE94196567b865c"
 
   render () {
-      const {isInit, isWallet=true, address='', to='', onPressCancel, onPressConfirm, selectedToken, currency, ethRate} = this.props;
+      const {isInit, address='', to='', onPressCancel, onPressConfirm, selectedToken, currency, ethRate} = this.props;
       const {symbol:cny} = currency
       const {Rate:rate='0.13', Symbol:symbol, Decimal: decimal} = selectedToken;
-      let {balance='', gas=''} = this.props;
 
-      const gasLimit = 21000;
-      if (isWallet) {
-        const gasPrice = new BN(gas).mul(new BN(10).pow(new BN(9)));
-        gas = gasPrice.mul(new BN(gasLimit));
-        gas = toDecimal({amount: gas.toString(), decimal})
-      } else {
-        balance = toDecimal({amount: balance,  decimal})
+      let {balance='', gas: gasPrice = ''} = this.props;
+      const gas = 21000;
 
-        gas = (new BN(gas)).mul(new BN(gasLimit));
-        gas = toDecimal({amount: gas.toString(), decimal})
-      }
+      gasPrice = new BN(gasPrice).mul(new BN(10).pow(new BN(9)));
+      let gasPay = gasPrice.mul(new BN(gas));
+      gasPay = toDecimal({amount: gasPay.toString(), decimal, pos: 6})
+
 
       let totalBanance = undefined
       if (symbol === 'ETH') {
-        totalBanance = parseFloat(balance) + parseFloat(gas) + ' ETH';
+        totalBanance = parseFloat(balance) + parseFloat(gasPay) + ' ETH';
       } else {
-        totalBanance = balance + ' ' +symbol + ' + ' + gas + ' ETH'
+        totalBanance = balance + ' ' +symbol + ' + ' + gasPay + ' ETH'
       }
-      let totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(gas, ethRate));
+      let totalValue = parseFloat(getValue(balance, rate)) + parseFloat(getValue(gasPay, ethRate));
       totalValue = totalValue.toFixed(2)
 
       const mark = {key:'symbol', units:balance, value:getValue(balance, rate)};
-      const gasPrice = {key:'gasPrice', units:gas, value:getValue(gas, ethRate)};
+      const price = {key:'gasPrice', units:gasPay, value:getValue(gasPay, ethRate)};
       const txTotal = {key:'txTotal', units:totalBanance, value:totalValue};
-      const items = [mark, gasPrice, txTotal];
+      const items = [mark, price, txTotal];
 
       const signInfos = Object.values(SignInfoConfig).map((config, key)=>{
           for (const item of items) {

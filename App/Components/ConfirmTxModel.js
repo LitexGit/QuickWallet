@@ -104,9 +104,9 @@ class ConfirmTxModel extends Component {
               </View>
               <AccountComponent address={to} />
             </View>
-            <View style={styles.txSection}>
+            {/* <View style={styles.txSection}>
               <Text style={styles.dataContent}>{data}</Text>
-            </View>
+            </View> */}
             <View style={styles.txSection}>
               {signInfos}
             </View>
