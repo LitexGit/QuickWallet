@@ -22,7 +22,7 @@ import Colors from '../Themes/Colors';
 
 const BottomTabNav = createBottomTabNavigator({
     Found: { screen: FoundScreen },
-    Mine: { screen: MineScreen },
+    Mine: { screen: MineScreen }
 }, {
     tabBarPosition: 'bottom',
     animationEnabled: false,
@@ -36,7 +36,7 @@ const BottomTabNav = createBottomTabNavigator({
         }
     },
     navigationOptions:{
-        header:null,
+        header:null
     }
 });
 
@@ -45,77 +45,77 @@ const PrimaryNav = createStackNavigator({
     TransferScreen: { screen: TransferScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     TransferRecordScreen: { screen: TransferRecordScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     CurrencyScreen: { screen: CurrencyScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     LanguageScreen: { screen: LanguageScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     SettingScreen: { screen: SettingScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     AssetsScreen: { screen: AssetsScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     BackupScreen: { screen: BackupScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     PreBackupScreen: { screen: PreBackupScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     ImportScreen: { screen: ImportScreen,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         } },
     NewWalletScreen: { screen: NewWalletScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     AccountScreen: { screen: AccountScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     ScanScreen: { screen: ScanScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     ExportScreen: { screen: ExportScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     WebViewScreen: { screen: WebViewScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }},
     Layer2WebScreen: { screen: Layer2WebScreen ,
         navigationOptions:{
             headerStyle: styles.header,
-            headerTintColor: Colors.darkColor,
+            headerTintColor: Colors.darkColor
         }}
 }, {
     headerMode: 'float',
@@ -123,7 +123,7 @@ const PrimaryNav = createStackNavigator({
     initialRouteName: 'BottomTab',
     navigationOptions:{
         headerStyle: styles.header,
-        headerTintColor: Colors.darkColor,
+        headerTintColor: Colors.darkColor
     }
 });
 

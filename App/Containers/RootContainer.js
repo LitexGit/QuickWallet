@@ -4,6 +4,7 @@ import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import styles from './Styles/RootContainerStyles';
 
+import AssetActions from '../Redux/AssetRedux';
 import WalletActions from '../Redux/WalletRedux';
 import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 
@@ -14,11 +15,7 @@ import { Preferences, PrefKeys } from '../Lib/Preferences';
 
 class RootContainer extends Component {
 
-  componentDidMount() {
-    console.log('=============01==RootContainer=====================');
-    this._initializes();
-  }
-  _initializes = async () => {
+  async componentDidMount() {
     this.props.getInjectScript();
 
     const language = Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
@@ -38,6 +35,8 @@ class RootContainer extends Component {
 
     const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
     this.props.getUserInfoRequest({ address });
+
+    this.props.getTokenList();
   }
 
   render() {
@@ -62,7 +61,8 @@ const mapDispatchToProps = (dispatch) => ({
   getInjectScript: () => dispatch(UserActions.getInjectScript()),
   getConfigRequest: () => dispatch(ConfigActions.getConfigRequest()),
   saveUserInfo: (params) => dispatch(UserActions.saveUserInfo(params)),
-  gethInit: () => dispatch(WalletActions.gethInit())
+  gethInit: () => dispatch(WalletActions.gethInit()),
+  getTokenList: () => dispatch(AssetActions.getTokenListRequest())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, RefreshControl, Image, TouchableOpacity } from 'react-native';
+import { NavigationActions, NavigationEvents } from 'react-navigation';
 import { connect } from 'react-redux';
 import styles from './Styles/AssetsScreenStyle';
 import ListEmptyComponent from '../Components/ListEmptyComponent';
 import { Colors, Images } from '../Themes';
-import { NavigationActions } from 'react-navigation';
+
 import AssetActions from '../Redux/AssetRedux';
 import I18n from '../I18n';
 import { getValue } from '../Lib/Format';
+
 
 class AssetsScreen extends Component {
   static navigationOptions = {
@@ -15,6 +17,7 @@ class AssetsScreen extends Component {
   }
 
   componentDidMount = () => {
+    console.log('===========componentDidMount=========================');
     this.props.getTokenList();
   }
 
@@ -59,6 +62,12 @@ class AssetsScreen extends Component {
 
     return (
       <View style={styles.container}>
+        <NavigationEvents
+            onWillFocus={payload => console.log('-->will focus<--',payload)}
+            onDidFocus={payload => console.log('did focus',payload)}
+            onWillBlur={payload => console.log('will blur',payload)}
+            onDidBlur={payload => console.log('did blur',payload)}
+        />
         <FlatList style={styles.flatList}
             refreshControl={<RefreshControl
                 refreshing={refreshing}

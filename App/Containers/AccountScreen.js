@@ -7,7 +7,7 @@ import {AccountConfig} from '../Config/MineConfig';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Metrics , Colors } from '../Themes';
 import QRCode from 'react-native-qrcode-svg';
-import { NavigationActions, NavigationEvents } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 import WalletActions from '../Redux/WalletRedux';
 import UserActions from '../Redux/UserRedux';
 import I18n from '../I18n';
@@ -32,12 +32,6 @@ class AccountScreen extends Component {
 
   componentDidMount=()=>{
       this.props.setLoading({loading:false});
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', () =>{
-          // console.log('===========willFocus=========================');
-      });
-      this.didFocusSubscription = this.props.navigation.addListener('didFocus', () =>{
-          // console.log('===========didFocus=========================');
-      });
   }
 
   componentWillUnmount=()=>{
@@ -139,21 +133,6 @@ class AccountScreen extends Component {
 
       return (
           <View style={styles.container}>
-              <NavigationEvents
-                  onWillFocus={()=>{
-                      // console.log('====NavigationEvents=====onWillFocus===========================');
-                  }}
-                  onDidFocus={()=>{
-                      // console.log('====NavigationEvents=====onDidFocus===========================');
-                  }}
-                  onWillBlur={()=>{
-                      // console.log('====NavigationEvents=====onWillBlur===========================');
-                  }}
-                  onDidBlur={()=>{
-                      // console.log('====NavigationEvents=====onDidBlur===========================');
-                  }}
-              >
-              </NavigationEvents>
               <Spinner visible={loading}
                   cancelable
                   textContent={'Loading...'}
