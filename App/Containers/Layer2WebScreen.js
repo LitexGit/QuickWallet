@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styles from './Styles/Layer2WebScreenStyle';
 import RightComponent from '../Components/RightComponent';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
-import SignTxResultAlert from '../Components/SignTxResultAlert';
+import ConfirmTxModel from '../Components/ConfirmTxModel';
 import SignMsgResultAlert from '../Components/SignMsgResultAlert';
 import WalletActions from '../Redux/WalletRedux';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
@@ -173,6 +173,9 @@ class Layer2WebScreen extends Component {
       console.log(error);
       return
     }
+    console.log('===========params=========================');
+    console.log(params);
+    console.log('===========params=========================');
 
     const { isLoginInfo } = this.props;
     if (!isLoginInfo) {
@@ -199,7 +202,7 @@ class Layer2WebScreen extends Component {
   }
 
   _signInfo = () => {
-    const { name, id = 8888, object = {} } = this.signInfo;
+    const { name, id = 8888, object } = this.signInfo;
     switch (name) {
       case 'signTransaction': {
         const signInfo = getDisplayTxInfo(object);
@@ -281,28 +284,27 @@ class Layer2WebScreen extends Component {
     const sprintf = require('sprintf-js').sprintf;
     // 登陆后才可以获取 address  Config.CONTACT_IP
     const signer = sprintf(layer1, address.toLocaleLowerCase(), 'http://39.96.8.192:8545', Config.CHAIN_ID);
-    // console.log('==============signer======================');
-    // console.log(signer);
-    // console.log('==============signer======================');
 
     const injectScript = web3Provider + '' + signer;
 
-    const { object = {} } = this.signInfo;
-    const { data = '' } = object;
+    const {object={}} = this.signInfo;
+    const {data=''} = object;
     const signInfo = getDisplayTxInfo(object);
-
     const { to = '', value = '', gasPrice = '' } = signInfo;
 
     return (
       <SafeAreaView style={styles.container}>
-        <SignTxResultAlert
+        <ConfirmTxModel
             isInit={isShowSignTx}
             isWallet={false}
+            signInfo={signInfo}
+            onPressCancel={() => this._signTxCancel()}
+            onPressConfirm={() => this._signTxConfirm()}
+
             to={to}
             balance={value}
             gas={gasPrice}
-            onPressCancel={() => this._signTxCancel()}
-            onPressConfirm={() => this._signTxConfirm()}
+
         />
         <SignMsgResultAlert
             isInit={isShowSignMsg}

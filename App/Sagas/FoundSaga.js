@@ -5,9 +5,6 @@ import Toast from 'react-native-root-toast';
 export function * getBanner (api) {
 
     const response = yield call(api.getBanner);
-    console.log('===========response=========================');
-    console.log(response);
-    console.log('===========response=========================');
     const {data:result} = response;
     const {data, msg, status} = result;
     if (status) {

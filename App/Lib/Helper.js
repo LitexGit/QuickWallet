@@ -19,7 +19,6 @@ export function weiToDecimal (x, n, fixed) {
   if (dm.mod.lte(new BN(0))) {
     dm.mod = dm.mod.mul(new BN(-1))
   }
-
   let decimal = dm.mod.toString(10, n)
   if (decimal.length <= fixed) {
     decimal = utils.padRight(decimal, fixed)

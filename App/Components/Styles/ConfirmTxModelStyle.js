@@ -83,5 +83,12 @@ export default StyleSheet.create({
         fontSize:Fonts.size.tiny,
         color:Colors.separateLineColor,
         textAlign:'right'
+    },
+    dataContent: {
+      fontSize:Fonts.size.small,
+      color:Colors.textColor,
+      textAlign:'left',
+      marginVertical: Metrics.smallMargin
     }
 });
+

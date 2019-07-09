@@ -73,27 +73,6 @@ export function toFixed(value, fixed=2) {
     return result;
 }
 
-export function getDisplayTxInfo(signInfo) {
-    let {data='', gas='', gasPrice='', value=''} = signInfo;
-    gas = parseInt(gas, 16).toString();
-    if (!gas || isNaN(gas)) {
-        gas = '21000';
-    }
-    gasPrice = parseInt(gasPrice, 16).toString();
-    if (!gasPrice || isNaN(gasPrice)) {
-        gasPrice = 1e9 + '';
-    }
-    value = parseInt(value, 16).toString();
-    if (!value || isNaN(value)) {
-        value = '0';
-    }
-    if (!data || isNaN(data)) {
-      data=''
-    }
-    const info = {...signInfo, gas, gasPrice, value, data};
-    return info;
-}
-
 export function getDisplayFiat(inputFiat) {
     if (!inputFiat || isNaN(inputFiat)) {
         inputFiat = '0.00';
@@ -108,6 +87,28 @@ export const isInt = n => Number(n) === n && n % 1 === 0;
 export const isFloat = n => Number(n) === n && n % 1 !== 0;
 
 
+export function getDisplayTxInfo(signInfo) {
+  let {data, gas, gasPrice, value} = signInfo;
+  if (gas) {
+    gas = parseInt(gas, 16).toString();
+  } else {
+    gas = '21000';
+  }
+  if (gasPrice) {
+    gasPrice = parseInt(gasPrice, 16).toString();
+  } else {
+    gasPrice = 1e9 + '';
+  }
+  if (value) {
+    value = parseInt(value, 16).toString();
+  } else {
+    value = '0';
+  }
+  if (!data) data=''
+
+  const info = {...signInfo, gas, gasPrice, value, data};
+  return info;
+}
 
 
 

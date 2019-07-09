@@ -4,7 +4,7 @@ import { Colors, Metrics, Fonts } from '../../Themes/';
 export default StyleSheet.create({
     container: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
 
     },
     avatar:{
@@ -12,14 +12,14 @@ export default StyleSheet.create({
         width:30,
         height:30,
         borderRadius: 15,
-        margin: Metrics.smallMargin,
+        margin: Metrics.smallMargin
     },
     content:{
         flex: 1,
         fontSize:Fonts.size.small,
-        color:Colors.textColor,
+        color:Colors.textColor
     },
     imageStyle:{
-        flex:1,
+        flex:1
     }
 });

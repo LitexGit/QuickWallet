@@ -65,9 +65,6 @@ export const AssetSelectors = {
 
 
 export const update = (state, {data}) =>{
-  console.log('===========params=========================');
-  console.log(state.merge(data));
-  console.log('===========params=========================');
   return state.merge(data);
 }
 
