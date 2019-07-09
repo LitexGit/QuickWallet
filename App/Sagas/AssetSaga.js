@@ -11,7 +11,6 @@ import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 
 import Moment from 'moment';
-import cn from 'moment/locale/zh-cn';
 Moment.locale('zh-cn');
 
 const apiKey = Config.ETHERSCAN_API_KEY;
@@ -24,9 +23,9 @@ export function* getTokenList(api) {
     const { data: result } = response;
     const { data, status, msg } = result;
     if (status) {
-      // const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: 'LXT', Tokenaddress: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE', Rate: '0.18' }
+      const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: 'LXT', Tokenaddress: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE', Rate: '0.18' }
       const { tokenList } = data;
-      // tokenList.push(lxt)
+      tokenList.push(lxt)
 
       const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
       const { key = 'CNY' } = currency;
@@ -197,27 +196,6 @@ export function* getTxlist(action) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // {
 //   "message": "OK",
 //   "result": [
@@ -244,6 +222,8 @@ export function* getTxlist(action) {
 //   ],
 //   "status": "1"
 // }
+
+
 
 // {
 //   message: "OK"

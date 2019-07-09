@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *to;
 
+@property (nonatomic, strong) NSString *gasLimit;
+
 @property (nonatomic, strong) NSString *value;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

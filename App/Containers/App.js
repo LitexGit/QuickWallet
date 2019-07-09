@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import RootContainer from './RootContainer';
 import createStore from '../Redux';
-import ScheduleTasks from '../Lib/ScheduleTasks';
 
 
 // create our store
@@ -22,11 +21,7 @@ const store = createStore();
 class App extends Component {
 
   componentDidMount=()=>{
-      ScheduleTasks.executeOnceInLifetime();
-      ScheduleTasks.executeOncePerVersion();
-      ScheduleTasks.executeOnceDaily();
-      ScheduleTasks.executeOncePerLaunch();
-      ScheduleTasks.executeOncePerSession();
+      console.log('===========02====App=====================');
   }
 
   render () {

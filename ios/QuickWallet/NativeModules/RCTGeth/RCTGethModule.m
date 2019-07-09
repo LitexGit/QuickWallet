@@ -6,6 +6,9 @@
 //  Copyright © 2018 Facebook. All rights reserved.
 //  https://github.com/ethereum/go-ethereum
 //  https://github.com/miguelmota/ethereum-development-with-go-book
+//  https://goethereumbook.org/zh/
+//  - (BOOL)estimateGas:(GethContext*)ctx msg:(GethCallMsg*)msg gas:(int64_t*)gas error:(NSError**)error;
+
 
 
 #import "RCTGethModule.h"
@@ -278,15 +281,13 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
 
   GethAddress *to = [[GethAddress alloc] initFromHex:toAddress];
   GethBigInt *amount = [[GethBigInt alloc] init:[value longLongValue]];
-  ino64_t gasLimit = 21000;
-  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas longLongValue]];;
+  
+  GethBigInt *gasPrice = [[GethBigInt alloc] init:[gas longLongValue]];
   
   NSData *data = [NSData data];
-  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
-//  NSString *classStr = @"GethTransaction";
-  NSLog(@"===>%@",NSStringFromClass([GethTransaction class]));
+  ino64_t gasLimit = [self getGasLimit:toAddress data:data];
   
-//  NSStringFromClass([transaction class])
+  GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
 //    reject(@"1009", self.errMsg, error);
@@ -367,15 +368,7 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   }
   [callMsg setData:tokenData];
 
-  int64_t gasLimit = 21000;
-  BOOL isLimit = [self.ethClient estimateGas:context msg:callMsg gas:&gasLimit error:&error];
-  if (!isLimit || error) {
-//    reject(@"1012", [self getLocalizedDescription:error], error);
-    reject(@"1012", @"1012", error);
-    return;
-  }
-  gasLimit *= 10;
-  
+  int64_t gasLimit = [self getGasLimit:tokenAddress data:tokenData];
   
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:tokenData];
   
@@ -645,9 +638,7 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     return nil;
   }
   
-  ino64_t gasLimit = [model.gas longLongValue];
-  gasLimit *= 100;
-  
+  ino64_t gasLimit = [model.gasLimit longLongValue];
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
@@ -670,6 +661,31 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   return hash;
 }
 
+/**
+ 估计燃气上限
+ 
+ @param to toAddress
+ @param data data
+ @return 燃气上限
+ */
+- (int64_t)getGasLimit:(NSString *)to data:(NSData *)data{
+  if (!self.ethClient) {
+    self.ethClient = [self getEthClient];
+  }
+  GethContext *context = [[GethContext alloc] init];
+  GethCallMsg *msg = [[GethCallMsg alloc] init];
+  GethAddress *address = [[GethAddress alloc] initFromHex:to];
+  [msg setTo:address];
+  [msg setData:data];
+
+  NSError *err = nil;
+  int64_t gasLimit = 21000;
+  BOOL isLimit = [self.ethClient estimateGas:context msg:msg gas:&gasLimit error:&err];
+  if (!isLimit) {
+    return 21000;
+  }
+  return gasLimit;
+}
 
 /**
  hex转hexString : 删除0x

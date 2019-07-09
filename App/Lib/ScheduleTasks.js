@@ -1,5 +1,4 @@
-import {runGenerator} from '../Lib/Utils';
-import {getConfig} from '../Sagas/ConfigSaga';
+
 import GethModule from '../Lib/NativeBridge/WalletUtils';
 
 function executeOnceInLifetime() {
@@ -26,6 +25,6 @@ export default {
     executeOncePerVersion,
     executeOnceDaily,
     executeOncePerLaunch,
-    executeOncePerSession,
+    executeOncePerSession
 };
 
