@@ -68,6 +68,7 @@ ethers
 ios/main.jsbundle.meta
 android/app/release
 android/app/src/main/assets/index.android.bundle*
+android/app/geth.aar
 .env.production
 .env.staging
 android/keystore.propertiess
