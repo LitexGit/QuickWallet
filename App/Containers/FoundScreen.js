@@ -66,7 +66,7 @@ class FoundScreen extends Component {
   }
 
   _onPressItem = (item)=>{
-      // Url:url,
+      // Url:url
       const {Name:title} = item;
       const url = 'http://192.168.51.230:8080/#/';
       // const url = 'http:baidu.com';

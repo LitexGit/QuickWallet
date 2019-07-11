@@ -520,7 +520,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             long gas  = Long.parseLong(signInfo.getString("gasPrice"));
             BigInt gasPrice = new BigInt(gas);
 
-            long gasLimit  = Long.parseLong(signInfo.getString("gas")) * 10;
+            long gasLimit  = Long.parseLong(signInfo.getString("gasLimit"));
 
             long number = -1;
             long nonce = ethClient.getNonceAt(Geth.newContext(), from, number);

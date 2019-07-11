@@ -33,8 +33,7 @@ class ConfirmTxModel extends Component {
   // object:
   //     chainType: "ETH"
   //     data: "0x56c49c88000000000000000000000000793f178be9966cbf18937f05849685161a5ecaa5"
-  //     from: "0xb5538753f2641a83409d2786790b42ac857c5340"
-  //     gas: "21000"
+  //     from: "0xb5538753f2641a83409d2786790b42ac857c5340"s
   //     gasLimit: 300000
   //     gasPrice: "1100000000"
   //     to: "0x095a2E786206Bb8Fc5a50a53F11B4F79CF356A18"
@@ -42,12 +41,12 @@ class ConfirmTxModel extends Component {
 
   render() {
     const { isInit, onPressCancel, onPressConfirm, currency, ethRate, signInfo } = this.props;
-    const { chainType, data, from, gas, gasPrice, to, value } = signInfo;
+    const { chainType, from, gasLimit, gasPrice, to, value } = signInfo; // data,
     const { symbol: cny } = currency;
 
     const balance = toDecimal({ amount: value })
 
-    let gasPay = (new BN(gas)).mul(new BN(gasPrice));
+    let gasPay = (new BN(gasLimit)).mul(new BN(gasPrice));
     gasPay = toDecimal({ amount: gasPay.toString(), pos: 6 })
 
     const totalBanance = parseFloat(balance) + parseFloat(gasPay) + ' ETH';

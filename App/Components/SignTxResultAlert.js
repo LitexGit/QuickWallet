@@ -52,10 +52,10 @@ class SignTxResultAlert extends Component {
       const {Rate:rate='0.13', Symbol:symbol, Decimal: decimal} = selectedToken;
 
       let {balance='', gas: gasPrice = ''} = this.props;
-      const gas = 21000;
+      const gasLimit = 21000;
 
       gasPrice = new BN(gasPrice).mul(new BN(10).pow(new BN(9)));
-      let gasPay = gasPrice.mul(new BN(gas));
+      let gasPay = gasPrice.mul(new BN(gasLimit));
       gasPay = toDecimal({amount: gasPay.toString(), decimal, pos: 6})
 
 

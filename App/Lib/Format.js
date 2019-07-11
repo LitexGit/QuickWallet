@@ -88,16 +88,12 @@ export const isFloat = n => Number(n) === n && n % 1 !== 0;
 
 
 export function getDisplayTxInfo(signInfo) {
-  let {data, gas, gasPrice, value} = signInfo;
-  if (gas) {
-    gas = parseInt(gas, 16).toString();
-  } else {
-    gas = '21000';
-  }
+  let {data, gasLimit,gasPrice, value} = signInfo;
+  gasLimit = gasLimit + '';
   if (gasPrice) {
     gasPrice = parseInt(gasPrice, 16).toString();
   } else {
-    gasPrice = 1e9 + '';
+    gasPrice = '';
   }
   if (value) {
     value = parseInt(value, 16).toString();
@@ -106,7 +102,7 @@ export function getDisplayTxInfo(signInfo) {
   }
   if (!data) data=''
 
-  const info = {...signInfo, gas, gasPrice, value, data};
+  const info = {...signInfo, gasLimit, gasPrice, value, data};
   return info;
 }
 
