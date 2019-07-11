@@ -58,6 +58,13 @@ async function transfer({symbol='ETH', passphrase='', fromAddress='', toAddress=
     return await gethModule.transferTokens(passphrase, fromAddress, toAddress, tokenAddress, amount, price);
 }
 
+function getResolveMap(params){
+  if (Platform.OS === 'ios') {
+      const result = Ramda.head(params);
+      return result;
+  }
+  return params;
+}
 
 async function signMessage({address, message}){
     const result = await gethModule.signMessage(address, message);
@@ -73,14 +80,6 @@ async function signTransaction({passphrase, signInfo}){
     // const {chainType='ETH'} = signInfo;
     const result = await gethModule.signTransaction(passphrase, signInfo);
     return getResolveMap(result);
-}
-
-function getResolveMap(params){
-    if (Platform.OS === 'ios') {
-        const result = Ramda.head(params);
-        return result;
-    }
-    return params;
 }
 
 function getDisplayedPrivateKey(key){
@@ -112,5 +111,5 @@ export default {
     getResolveMap,
     signMessage,
     signPersonalMessage,
-    signTransaction,
+    signTransaction
 };

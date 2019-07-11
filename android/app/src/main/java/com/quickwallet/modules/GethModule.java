@@ -40,7 +40,7 @@ public class GethModule extends ReactContextBaseJavaModule {
     private final String CHAIN_ID_KEY = "chain_id_key";
     private final String KEY_DIR = "key_dir";
 
-    private final long SCRYPT_N = Geth.StandardScryptN / 2;
+    private final long SCRYPT_N = Geth.StandardScryptN / 16;
     private final long SCRYPT_P = Geth.StandardScryptP;
 
     private static final String PERSONAL_MESSAGE_PREFIX = "\u0019Ethereum Signed Message:\n";
@@ -520,12 +520,13 @@ public class GethModule extends ReactContextBaseJavaModule {
             long gas  = Long.parseLong(signInfo.getString("gasPrice"));
             BigInt gasPrice = new BigInt(gas);
 
-            long gasLimit  = Long.parseLong(signInfo.getString("gas"));
+            long gasLimit  = Long.parseLong(signInfo.getString("gas")) * 10;
 
             long number = -1;
             long nonce = ethClient.getNonceAt(Geth.newContext(), from, number);
 
-            byte [] data = signInfo.getString("data").getBytes();
+            String dataHex = signInfo.getString("data").replace("0x", "");
+            byte[] data = hexStringToByteArray(dataHex);
 
             Transaction transaction = new Transaction(nonce, to, amount, gasLimit, gasPrice, data);
 

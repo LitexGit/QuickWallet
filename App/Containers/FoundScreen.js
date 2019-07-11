@@ -54,7 +54,7 @@ class FoundScreen extends Component {
 
   _onSubmitEditing=()=>{
       const {webLink:url} = this.state;
-      this.props.navigate('Layer2WebScreen', {url, title:''});
+      this.props.navigate('Layer2WebScreen', {url, title:''});s
   }
 
   _onPressBanner = (item)=>{
@@ -68,8 +68,10 @@ class FoundScreen extends Component {
   _onPressItem = (item)=>{
       // Url:url,
       const {Name:title} = item;
-      const url = 'http://192.168.50.230:8080/#/';
-      // const url = 'http://192.168.50.230:8082/#/';
+      const url = 'http://192.168.51.230:8080/#/';
+      // const url = 'http:baidu.com';
+      // const url = 'http://192.168.51.230:8082/#/';
+      // const url = 'https://pkt.red/#/';
       this.props.navigate('Layer2WebScreen', {url, title});
   }
 

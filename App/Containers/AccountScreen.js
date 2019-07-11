@@ -35,8 +35,6 @@ class AccountScreen extends Component {
   }
 
   componentWillUnmount=()=>{
-      this.willFocusSubscription.remove();
-      this.didFocusSubscription.remove();
   }
 
   _onPressCancel=()=>{
