@@ -72,3 +72,4 @@ android/app/geth.aar
 .env.production
 .env.staging
 android/keystore.propertiess
+yarn.lock
