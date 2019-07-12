@@ -169,7 +169,7 @@ dependencies {
     compile project(':react-native-device-info')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:0.57.7'
     // From node_modules
     implementation(name: 'geth', ext: 'aar')
     compile ('org.web3j:core:3.3.1-android')
