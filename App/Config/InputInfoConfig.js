@@ -10,7 +10,7 @@ const InputInfoConfig = {
         clearButtonMode:'never',
         maxLength:20,
         keyboardType:'default',
-        returnKeyType:'next',
+        returnKeyType:'next'
     },
     password:{
         key:'password',
@@ -19,7 +19,7 @@ const InputInfoConfig = {
         clearButtonMode:'while-editing',
         maxLength:20,
         keyboardType:'default',
-        returnKeyType:'next',
+        returnKeyType:'next'
     },
     confirm:{
         key:'confirm',
@@ -28,7 +28,7 @@ const InputInfoConfig = {
         clearButtonMode:'while-editing',
         maxLength:20,
         keyboardType:'default',
-        returnKeyType:'done',
+        returnKeyType:'done'
     }
 };
 export default InputInfoConfig;

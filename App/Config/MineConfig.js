@@ -5,26 +5,26 @@ export const MineConfig = {
         key:'setting',
         index:0,
         title: I18n.t('UseSetting'),
-        isNext:true,
+        isNext:true
     },
     help:{
         key:'help',
         index:1,
         title:I18n.t('HelpFeedback'),
-        isNext:true,
+        isNext:true
     },
     agreement:{
         key:'agreement',
         index:2,
         title:I18n.t('UserAgreement'),
-        isNext:true,
+        isNext:true
     },
     share:{
         key:'share',
         index:3,
         title:I18n.t('Share'),
-        isNext:false,
-    },
+        isNext:false
+    }
 };
 
 export const AccountConfig = {
@@ -33,21 +33,21 @@ export const AccountConfig = {
         index:0,
         title:I18n.t('Avatar'),
         details:'',
-        type:1,
+        type:1
     },
     account:{
         key:'account',
         index:1,
         title:I18n.t('AccountName'),
         details:'',
-        type:2,
+        type:2
     },
     inviteCode:{
         key:'inviteCode',
         index:2,
         title:I18n.t('InviteCode'),
         details:'',
-        type:2,
+        type:2
     }
 };
 

@@ -52,7 +52,7 @@ export function *gethUnlockAccount (action) {
         const map = GethModule.getResolveMap(result);
         const {address} = map;
 
-        DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
+        DeviceStorage.setItem(Keys.WALLET_ADDRESS, address);
         yield put(WalletActions.saveAddress({address}));
         yield put(UserActions.saveUserInfo({isLoginInfo:true}));
         EventEmitter.emit(EventKeys.WALLET_UNLOCKED);

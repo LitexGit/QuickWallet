@@ -7,19 +7,21 @@ export default StyleSheet.create({
         height: Metrics.screenHeight * 0.25 + Metrics.statusBarHeight,
         backgroundColor:Colors.backColor,
         justifyContent:'center',
-        alignItems:'center',
+        alignItems:'center'
     },
     bottomSection:{
-        flex:3,
+        flex:1
     },
     buttonStyle:{
         height:40,
         marginTop: 50,
         marginHorizontal:60,
+        alignItems:'center',
+        justifyContent:'center'
     },
     titleStyle:{
         color:'#FFFFFF',
         fontSize:Fonts.size.h6,
-        marginTop: 10,
-    },
+        marginTop: 10
+    }
 });

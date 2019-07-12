@@ -18,7 +18,7 @@ const { Types, Creators } = createActions({
     getUserInfoFailure: null,
     logout:['data'],
 
-    getInjectScript: null,
+    getInjectScript: null
 });
 
 export const UserTypes = Types;
@@ -51,11 +51,11 @@ export const INITIAL_STATE = Immutable({
     },
     currency:{
         key:'CNY',
-        title:'CNY',
+        title:'CNY'
     },
 
     web3Provider:'',
-    defaultRate:'',
+    defaultRate:''
 });
 
 /* ------------- Selectors ------------- */
@@ -63,7 +63,7 @@ export const INITIAL_STATE = Immutable({
 export const UserSelectors = {
     getNickname: state => state.user.nickname,
     getSharecode: state => state.user.sharecode,
-    getAddress: state => state.user.address,
+    getAddress: state => state.user.address
 
 };
 
@@ -105,5 +105,5 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_USER_INFO_SUCCESS]: success,
     [Types.GET_USER_INFO_FAILURE]: failure,
 
-    [Types.SAVE_USER_INFO]: saveUserInfo,
+    [Types.SAVE_USER_INFO]: saveUserInfo
 });

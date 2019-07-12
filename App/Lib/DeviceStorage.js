@@ -7,8 +7,9 @@ import StorageKeys from '../Config/constant/StorageKeys';
  * @param value
  * @returns {*}
  */
-function saveItem(key, value) {
-    return AsyncStorage.setItem(key, JSON.stringify(value));
+function setItem(key, value) {
+    const data = JSON.stringify(value);
+    return AsyncStorage.setItem(key, data);
 }
 /**
  * 删
@@ -18,6 +19,17 @@ function saveItem(key, value) {
 function deleteItem(key) {
     return AsyncStorage.removeItem(key);
 }
+
+/**
+* 查
+* @param key
+* @returns {Promise<T>|*|Promise.<TResult>}
+*/
+async function getItem(key) {
+  const item = await AsyncStorage.getItem(key);
+  return JSON.parse(item);
+}
+
 /**
 * 改
 * @param key
@@ -31,21 +43,13 @@ async function updateItem(key, value) {
     }
     return AsyncStorage.setItem(key, JSON.stringify(value));
 }
-/**
-* 查
-* @param key
-* @returns {Promise<T>|*|Promise.<TResult>}
-*/
-async function getItem(key) {
-    const item = await AsyncStorage.getItem(key);
-    return JSON.parse(item);
-}
+
 
 export  const DeviceStorage = {
-    saveItem,
+    setItem,
     deleteItem,
     updateItem,
-    getItem,
+    getItem
 };
 export const Keys = StorageKeys;
 

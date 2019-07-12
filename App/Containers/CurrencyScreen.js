@@ -35,7 +35,7 @@ class CurrencyScreen extends Component {
   }
 
   _onPressComplete=()=>{
-      DeviceStorage.saveItem(Keys.MONETARY_UNIT, this.currencyItem);
+      DeviceStorage.setItem(Keys.MONETARY_UNIT, this.currencyItem);
       this.props.saveUserInfo({currency:this.currencyItem});
       this.props.getTokenList();
       this.props.pop();
@@ -88,7 +88,7 @@ class CurrencyScreen extends Component {
               <ButtonComponent style={styles.btnStyle}
                   onPress={this._onPressComplete}
               >
-                  <Text style={styles.btnTitle}>完成</Text>
+                  <Text style={styles.btnTitle}>{I18n.t('Complete')}</Text>
               </ButtonComponent>
           </View>
       );

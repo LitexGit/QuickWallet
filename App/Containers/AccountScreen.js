@@ -16,6 +16,7 @@ import Toast from 'react-native-root-toast';
 import  Identicon from 'identicon.js';
 import { Avatar } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {getAccountConfigTitle} from '../Lib/Transfer'
 
 class AccountScreen extends Component {
   static navigationOptions = {
@@ -124,7 +125,7 @@ class AccountScreen extends Component {
           return (<View key={index}
               style={styles.itemView}
                   >
-              <Text style={styles.titleStyle}>{title}</Text>
+              <Text style={styles.titleStyle}>{getAccountConfigTitle(key)}</Text>
               {rightView}
           </View>);
       });

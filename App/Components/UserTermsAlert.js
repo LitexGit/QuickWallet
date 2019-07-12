@@ -24,7 +24,7 @@ class UserTermsAlert extends Component {
   }
 
     _onPressBtn=()=>{
-        DeviceStorage.saveItem(Keys.IS_AGREED_TERMS_OF_USE, true);
+        DeviceStorage.setItem(Keys.IS_AGREED_TERMS_OF_USE, true);
         this.props.saveUserInfo({isAgreeInfo:true});
     }
     _onPressReadBtn=()=>{

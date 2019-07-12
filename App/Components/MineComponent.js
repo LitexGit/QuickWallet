@@ -18,6 +18,7 @@ import Identicon from 'identicon.js';
 import I18n from '../I18n';
 import { toFixed } from '../Lib/Format';
 import AssetActions from '../Redux/AssetRedux';
+import {getMineConfigTitle} from '../Lib/Transfer';
 
 class MineComponent extends Component {
 
@@ -85,7 +86,7 @@ class MineComponent extends Component {
   }
 
   _renderItem = ({ item }) => {
-    const { key = '', title = '', isNext = false } = item;
+    const { key = '', isNext = false } = item;
     const nextImg = isNext ? (<View>
       <MaterialIcons color={Colors.textColor}
           name={'navigate-next'}
@@ -126,7 +127,7 @@ class MineComponent extends Component {
       <View style={styles.itemContainer}>
         <View style={styles.itemLeft}>
           {typeImg}
-          <Text style={styles.titleColor}>{title}</Text>
+          <Text style={styles.titleColor}>{getMineConfigTitle(key)}</Text>
         </View>
         {nextImg}
       </View>

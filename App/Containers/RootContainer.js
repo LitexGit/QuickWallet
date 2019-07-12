@@ -11,16 +11,20 @@ import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
 import { LanguageConfig, CurrencyConfig } from '../Config/MineConfig';
-import { Preferences, PrefKeys } from '../Lib/Preferences';
+import I18n from '../I18n';
+
 
 class RootContainer extends Component {
 
   async componentDidMount() {
     this.props.getInjectScript();
 
-    const language = Preferences.getPrefsObjectBy(PrefKeys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
+    const language = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
+    const {locale = 'zh'} = language;
+    I18n.locale = locale;
+
     const currency = await DeviceStorage.getItem(Keys.MONETARY_UNIT) || CurrencyConfig.CNY;
-    this.props.saveUserInfo({ language, currency });
+    this.props.saveUserInfo({ currency, language });
 
     const isAgree = await DeviceStorage.getItem(Keys.IS_AGREED_TERMS_OF_USE) || false;
     this.props.saveUserInfo({ isAgreeInfo: isAgree });

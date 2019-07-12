@@ -7,6 +7,7 @@ import { Metrics , Colors } from '../Themes';
 import { NavigationActions } from 'react-navigation';
 import I18n from '../I18n';
 import styles from './Styles/SettingScreenStyle';
+import {getSettingConfigTitle} from '../Lib/Transfer'
 
 class SettingScreen extends Component {
 
@@ -40,7 +41,7 @@ class SettingScreen extends Component {
 
       return ( <TouchableOpacity onPress={()=>this._onPressItem(key)}>
           <View style={styles.itemContainer}>
-              <Text style={styles.titleStyle}>{title}</Text>
+              <Text style={styles.titleStyle}>{getSettingConfigTitle(key)}</Text>
               <View style={styles.rightSection}>
                   <Text style={styles.detailsStyle}>{details}</Text>
                   {nextImg}

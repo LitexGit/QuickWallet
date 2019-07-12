@@ -32,8 +32,8 @@ export function * register (api, action) {
         if (status) {
             yield put(UserActions.registerSuccess(data));
 
-            DeviceStorage.saveItem(Keys.IS_USER_LOGINED, true);
-            DeviceStorage.saveItem(Keys.WALLET_ADDRESS, address);
+            DeviceStorage.setItem(Keys.IS_USER_LOGINED, true);
+            DeviceStorage.setItem(Keys.WALLET_ADDRESS, address);
 
             yield put(WalletActions.saveAddress({address}));
             yield put(UserActions.saveUserInfo({isLoginInfo:true}));
@@ -92,9 +92,9 @@ export function * getUserInfo (api, action) {
 
 
 export function * logout () {
-    DeviceStorage.saveItem(Keys.IS_USER_LOGINED, false);
-    DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, false);
-    DeviceStorage.saveItem(Keys.WALLET_ADDRESS, '');
+    DeviceStorage.setItem(Keys.IS_USER_LOGINED, false);
+    DeviceStorage.setItem(Keys.IS_NEW_SCREEN_DID_MOUNT, false);
+    DeviceStorage.setItem(Keys.WALLET_ADDRESS, '');
 
     yield put(UserActions.saveUserInfo({
         isLoginInfo:false,

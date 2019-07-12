@@ -6,13 +6,12 @@ import {LanguageConfig} from '../Config/MineConfig';
 import Feather from 'react-native-vector-icons/Feather';
 import styles from './Styles/LanguageScreenStyle';
 import { Metrics , Colors } from '../Themes';
-import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 import { StackActions } from 'react-navigation';
 import ButtonComponent from '../Components/ButtonComponent';
 import UserActions from '../Redux/UserRedux';
 import ConfigActions from '../Redux/ConfigRedux';
-import {Preferences, PrefKeys} from '../Lib/Preferences';
-import RNExitApp from 'react-native-exit-app';
+import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
+// import RNExitApp from 'react-native-exit-app';
 
 class LanguageScreen extends Component {
 
@@ -37,17 +36,14 @@ class LanguageScreen extends Component {
       this._setDataSouse(item);
   }
 
-  _onPressComplete=()=>{
+  _onPressComplete= async ()=>{
       const {locale} = this.languageItem;
       I18n.locale = locale;
-
       this.props.saveConfig({locale});
-
       this.props.saveUserInfo({language:this.languageItem});
-      Preferences.setPrefsObjectFor(PrefKeys.LANGUAGE_ENVIRONMENT, this.languageItem);
-
-      RNExitApp.exitApp();
+      DeviceStorage.setItem(Keys.LANGUAGE_ENVIRONMENT, this.languageItem);
       this.props.pop();
+      // RNExitApp.exitApp();
   }
 
   _renderItem=({item})=>{
@@ -96,7 +92,7 @@ render () {
             <ButtonComponent style={styles.btnStyle}
                 onPress={this._onPressComplete}
             >
-                <Text style={styles.btnTitle}>完成</Text>
+                <Text style={styles.btnTitle}>{I18n.t('Complete')}</Text>
             </ButtonComponent>
         </View>
     );

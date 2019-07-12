@@ -19,6 +19,7 @@ import Toast from 'react-native-root-toast';
 import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+import {getInputConfigTitle} from '../Lib/Transfer'
 
 class NewWalletScreen extends Component {
 
@@ -40,7 +41,7 @@ class NewWalletScreen extends Component {
   }
 
   componentDidMount = () => {
-    DeviceStorage.saveItem(Keys.IS_NEW_SCREEN_DID_MOUNT, true);
+    DeviceStorage.setItem(Keys.IS_NEW_SCREEN_DID_MOUNT, true);
     this.props.setLoading({ loading: false });
     this.isUnlockListener = EventEmitter.addListener(EventKeys.IS_NEW_WALLET_SUCCESS, ({ status, msg }) => {
       if (!status) {
@@ -148,7 +149,7 @@ class NewWalletScreen extends Component {
             style={styles.inputView}
         >
           <TextInput style={styles.textInput}
-              placeholder={placeholder}
+              placeholder={getInputConfigTitle(key)}
               placeholderTextColor={placeholderColor}
               clearButtonMode={clearButtonMode}
               maxLength={maxLength}
