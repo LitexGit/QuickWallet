@@ -12,7 +12,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, NavigationEvents } from 'react-navigation';
 import UserActions from '../Redux/UserRedux';
 import Identicon from 'identicon.js';
 import I18n from '../I18n';
@@ -25,30 +25,16 @@ class MineComponent extends Component {
   componentDidMount = () => {
     const { address } = this.props;
     this.props.getUserInfo({ address });
-    this.props.getTokenList();
-  }
-
-  _onPressAvatar = () => {
-    this.props.navigate('AccountScreen');
-  }
-
-  _onPressAssets = () => {
-    this.props.navigate('AssetsScreen');
+    this.props.getTokenList()
   }
 
   _onPressHelper = () => {
     const telegroup = Config.TELEGRAM_GROUP;
     Linking.canOpenURL(telegroup)
       .then((supported) => {
-        console.log('==========supported==========================');
-        console.log(supported);
-        console.log('==========supported==========================');
+        console.log('supported===>'+supported);
         return Linking.openURL(telegroup);
-      }).catch((err) => {
-        console.log('========openURL============================');
-        console.log(err);
-        console.log('========openURL============================');
-      });
+      }).catch((err) => console.log(err));
   }
 
   _onPressShare = () => {
@@ -151,8 +137,9 @@ class MineComponent extends Component {
     const data = Object.values(MineConfig);
     return (
       <View style={styles.container}>
+        <NavigationEvents onDidFocus={()=> this.props.updateBalance()}/>
         <View style={styles.topSection}>
-          <TouchableOpacity onPress={() => this._onPressAvatar()}
+          <TouchableOpacity onPress={() => this.props.navigate('AccountScreen')}
               style={styles.avatarSection}
           >
             <View style={styles.avatarSection}>
@@ -162,7 +149,7 @@ class MineComponent extends Component {
               <Text style={styles.nameText}>{nickname}</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this._onPressAssets()}
+          <TouchableOpacity onPress={() => this.props.navigate('AssetsScreen')}
               style={styles.assetsSection}
           >
             <Text style={styles.assetsStyle}>{I18n.t('AssetsValue')} {symbol} {toFixed(banance)}</Text>
@@ -194,7 +181,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   navigate: (route) => dispatch(NavigationActions.navigate({ routeName: route })),
   getUserInfo: (params) => dispatch(UserActions.getUserInfoRequest(params)),
-  getTokenList: () => dispatch(AssetActions.getTokenListRequest())
+  getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
+  updateBalance: () => dispatch(AssetActions.updateBalance())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineComponent);

@@ -26,7 +26,9 @@ const { Types, Creators } = createActions({
 
     getTxlistRequest: ['data'],
     getTxlistSuccess: ['data'],
-    getTxlistFailure: null
+    getTxlistFailure: null,
+
+    updateBalance: null
 });
 
 export const AssetTypes = Types;
@@ -58,7 +60,8 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 export const AssetSelectors = {
     getBalances: state => state.assets.balances,
-    getTxlist: state => state.assets.txlist
+    getTxlist: state => state.assets.txlist,
+    tokens: state => state.assets.tokenList
 };
 
 /* ------------- Reducers ------------- */

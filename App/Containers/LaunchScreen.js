@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, Image, View } from 'react-native';
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js';
+import { NavigationEvents } from 'react-navigation';
 
 import { Images } from '../Themes';
 
@@ -13,7 +14,13 @@ export default class LaunchScreen extends Component {
   }
   render () {
       return (
-          <View style={styles.mainContainer}>
+          <View style={[styles.mainContainer, {backgroundColor: 'cyan'}]}>
+              <NavigationEvents
+                  onWillFocus={payload => console.log('-->will focus<--',payload)}
+                  onDidFocus={payload => console.log('-->did focus<--',payload)}
+                  onWillBlur={payload => console.log('-->will blur<--',payload)}
+                  onDidBlur={payload => console.log('-->did blur<--',payload)}
+              />
               <Image source={Images.background}
                   style={styles.backgroundImage}
                   resizeMode="stretch"

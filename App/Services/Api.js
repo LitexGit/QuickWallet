@@ -76,7 +76,7 @@ const create = (baseURL = Config.API_URL) => {
 
     getRoot,
     getRate,
-    getUser,
+    getUser
   };
 };
 

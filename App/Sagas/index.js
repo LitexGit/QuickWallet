@@ -18,7 +18,7 @@ import { GithubTypes } from '../Redux/GithubRedux';
 import { getBanner, getApps}  from './FoundSaga';
 import { register, getUserInfo, logout, getInjectScript} from './UserSaga';
 import { getConfig } from './ConfigSaga';
-import { getTokenList, getTxlist, getBalance, getTokenBalance} from './AssetSaga';
+import { getTokenList, getTxlist, getBalance, getTokenBalance, updateBalance} from './AssetSaga';
 import {
     gethInit,
     gethUnInit,
@@ -57,6 +57,7 @@ export default function * root () {
         takeLatest(AssetTypes.GET_TOKEN_BALANCE_REQUEST, getTokenBalance),
         takeLatest(AssetTypes.GET_TXLIST_REQUEST, getTxlist),
         takeLatest(AssetTypes.GET_TOKEN_LIST_REQUEST, getTokenList, api),
+        takeLatest(AssetTypes.UPDATE_BALANCE, updateBalance),
         takeLatest(WalletTypes.GETH_INIT, gethInit),
         takeLatest(WalletTypes.GETH_IMPORT_MNEMONIC, gethImportMnemonic),
         takeLatest(WalletTypes.GETH_IMPORT_PRIVATE_KEY, gethImportPrivateKey),
