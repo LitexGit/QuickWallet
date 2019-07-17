@@ -2025,7 +2025,7 @@
 					"$(PROJECT_DIR)/QuickWallet/Frameworks",
 					"$(PROJECT_DIR)/Frameworks",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/QuickWallet/Swift/PrefixHeader.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
