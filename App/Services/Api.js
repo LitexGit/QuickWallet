@@ -4,6 +4,9 @@ import Config from 'react-native-config';
 import Ramda from 'ramda';
 
 const create = (baseURL = Config.API_URL) => {
+  console.log('============Config.API_URL========================');
+  console.log(Config);
+  console.log('============Config.API_URL========================');
   const api = apisauce.create({
     baseURL,
     headers: { 'Cache-Control': 'no-cache' },

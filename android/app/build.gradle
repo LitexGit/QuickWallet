@@ -98,7 +98,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 repositories {
     flatDir {
@@ -107,6 +107,11 @@ repositories {
 }
 
 android {
+
+    //关闭AS校验我们的资源文件，或者说是PNG等图片
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
@@ -121,6 +126,16 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'quickwallet'
+            keyPassword '11111111'
+            storeFile file('/Users/zhoujian/release.keystore.jks')
+            storePassword '11111111'
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -131,9 +146,14 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled enableProguardInReleaseBuilds
+//            minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
+//        debug {
+//            minifyEnabled false
+//            applicationIdSuffix ".debug"
+//        }
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -186,5 +206,11 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:support-v4:27.1.0'
+    }
 }
 
