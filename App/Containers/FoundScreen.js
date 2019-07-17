@@ -54,22 +54,26 @@ class FoundScreen extends Component {
 
   _onSubmitEditing=()=>{
       const {webLink:url} = this.state;
-      this.props.navigate('Layer2WebScreen', {url, title:''});s
+      console.log('=========_onSubmitEditing===========================');
+      console.log(url);
+      console.log('=========_onSubmitEditing===========================');
+      this.props.navigate('Layer2WebScreen', {url, title:''});
   }
 
   _onPressBanner = (item)=>{
       const {Url:url} = item;
-      console.log('=========url===========================');
+      console.log('=========_onPressBanner===========================');
       console.log(url);
-      console.log('==========url==========================');
+      console.log('==========_onPressBanner==========================');
       this.props.navigate('WebViewScreen', {url});
   }
 
   _onPressItem = (item)=>{
-      // Url:url
-      const {Name:title} = item;
-      const url = 'http://192.168.51.230:8080/#/';
-      // const url = 'http:baidu.com';
+      const {Name:title, Url:url} = item;
+      console.log('=========_onPressItem===========================');
+      console.log(url);
+      console.log('==========_onPressItem==========================');
+      // const url = 'http://192.168.51.230:8080/#/';
       // const url = 'http://192.168.51.230:8082/#/';
       // const url = 'https://pkt.red/#/';
       this.props.navigate('Layer2WebScreen', {url, title});

@@ -91,13 +91,21 @@ class Layer2WebScreen extends Component {
     const { sharecode } = this.props;
     let shareParams = {};
     if (Platform.OS === 'ios') {
-      const shareUrl = url + '?sharecode=' + sharecode;
-      const message = '待分享的信息';
-      shareParams = { shareUrl, message };
+      // const shareUrl = url + '?sharecode=' + sharecode;
+      // const message = '待分享的信息';
+      // shareParams = { shareUrl, message };
+      const message = url + '?sharecode=' + sharecode;
+      shareParams = { message };
+      console.log('===========shareParams=========================');
+      console.log(shareParams);
+      console.log('===========shareParams=========================');
     } else {
       const shareUrl = 'android 分享的 Url';
       const message = url + '?sharecode=' + sharecode;
       shareParams = { shareUrl, message };
+      console.log('===========shareParams=========================');
+      console.log(shareParams);
+      console.log('===========shareParams=========================');
     }
     Share.share(shareParams);
   };
@@ -280,6 +288,10 @@ class Layer2WebScreen extends Component {
     const { loading, web3Provider, address } = this.props;
 
     const { url } = this.props.navigation.state.params;
+
+    console.log('==============params======================');
+    console.log(url);
+    console.log('==============params======================');
 
     const sprintf = require('sprintf-js').sprintf;
     // 登陆后才可以获取 address  Config.CONTACT_IP
