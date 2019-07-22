@@ -53,7 +53,6 @@ RCT_EXPORT_METHOD(init:(BOOL)isLogin contactIp:(NSString *)contactIp chainId:(NS
   if (!contactIp || !contactIp.length) return;
   if (self.account && self.ethClient) return;
   self.ethClient = [self getEthClient];
-  NSLog(@"====init======>%@",self.ethClient);
 }
 
 RCT_EXPORT_METHOD(unInit) {
@@ -73,16 +72,7 @@ RCT_EXPORT_METHOD(unInit) {
   [FileManager removeFileAtPath:keydir];
 }
 
-
-RCT_EXPORT_METHOD(newWallet:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
-  // mnemonic
-  // address
-  resolver(@[@{@"mnemonic":@"mnemonic mnemonic mnemonic mnemonic",@"address":@"0xaddress"}]);
-}
-
-
 RCT_EXPORT_METHOD(isUnlockAccount:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
-
   if (!self.account || !self.keyStore || !self.ethClient) {
     resolver(@[@{@"isUnlock":@NO}]);
     return;
@@ -111,22 +101,19 @@ RCT_EXPORT_METHOD(unlockAccount:(NSString *)passphrase resolver:(RCTPromiseResol
 
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
-//    reject(@"1003", [self getLocalizedDescription:error], error);
     reject(@"1003", @"1003", error);
     return;
   }
-
+  
   NSString *address = [[self.account getAddress] getHex];
   resolver(@[@{@"address":address}]);
 }
 
 
 RCT_EXPORT_METHOD(randomMnemonic:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
-
   NSError *error =nil;
   NSString *mnemonic = GethCreateRandomMnemonic(&error);
   if (error) {
-//    reject(@"1004", [self getLocalizedDescription:error], error);
     reject(@"1004", @"1004", error);
     return;
   }
@@ -138,10 +125,6 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
 
   NSError * error = nil;
 
-//  if (!self.ethClient) {
-//    self.ethClient = [self getEthClient];
-//  }
-
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
   [FileManager createDirectoryIfNotExists:keydir];
@@ -151,7 +134,6 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
 
   self.account = [self.keyStore importECDSAKey:ECDSAKey passphrase:passphrase error:&error];
   if (error) {
-//    reject(@"-1005", [self getLocalizedDescription:error], error);
     reject(@"-1005", @"1005", error);
     return;
   }
@@ -160,7 +142,6 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
 
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
-    //    reject(@"1003", [self getLocalizedDescription:error], error);
     reject(@"1003", @"1003", error);
     return;
   }
@@ -170,13 +151,7 @@ RCT_EXPORT_METHOD(importPrivateKey:(NSString *)privateKey passphrase:(NSString *
 }
 
 RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)passphrase resolver:(RCTPromiseResolveBlock)resolver rejecter:(RCTPromiseRejectBlock)reject) {
-
-  // mnemonic = @"tag fee recycle palace nominee van dawn mail approve crash opinion scheme";
   NSError *error = nil;
-
-//  if (!self.ethClient) {
-//    self.ethClient = [self getEthClient];
-//  }
 
   NSString *keydir = [DOCUMENT_PATH stringByAppendingPathComponent:@"keystore"];
   [FileManager removeFileAtPath:keydir];
@@ -185,7 +160,6 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
 
   NSData *privateKey = GethGetPrivateKeyFromMnemonic(mnemonic, &error);;
   if (error) {
-//    reject(@"1006", [self getLocalizedDescription:error], error);
     reject(@"1006", @"1006", error);
     return;
   }
@@ -228,14 +202,12 @@ RCT_EXPORT_METHOD(exportPrivateKey:(NSString *)passphrase resolver:(RCTPromiseRe
   }
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
-    //    reject(@"1003", [self getLocalizedDescription:error], error);
     reject(@"1003", @"1003", error);
     return;
   }
 
   NSString *privateKey = [self.keyStore exportECSDAKeyHex:self.account passphrase:passphrase error:&error];
   if (error) {
-//    reject(@"1007", [self getLocalizedDescription:error], error);
     reject(@"1007", @"1007", error);
     return;
   }
@@ -263,7 +235,6 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
 
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
-    //    reject(@"1003", [self getLocalizedDescription:error], error);
     reject(@"1003", @"1003", error);
     return;
   }
@@ -274,7 +245,6 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   int64_t nonce = 0x0;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
   if (!isGet || error) {
-//    reject(@"1008", [self getLocalizedDescription:error], error);
     reject(@"1008", @"1008", error);
     return;
   }
@@ -290,14 +260,12 @@ RCT_EXPORT_METHOD(transferEth:(NSString *)passphrase fromAddress:(NSString *)fro
   GethTransaction *transaction = [[GethTransaction alloc] init:nonce to:to amount:amount gasLimit:gasLimit gasPrice:gasPrice data:data];
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-//    reject(@"1009", self.errMsg, error);
     reject(@"1009", self.errMsg, error);
     return;
   }
 
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
   if (!isSend || error) {
-//    reject(@"1010", [self getLocalizedDescription:error], error);
     reject(@"1010", @"1010", error);
     return;
   }
@@ -340,7 +308,6 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   NSError *nonceErr = nil;
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&nonceErr];
   if (!isGet || nonceErr) {
-//    reject(@"1008", [self getLocalizedDescription:error], error);
     reject(@"1008", @"1008", error);
     return;
   }
@@ -362,7 +329,6 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 
   NSData *tokenData = GethGenerateERC20TransferData(dataAddress, dataAmount, &error);
   if (error || !tokenData) {
-//    reject(@"1011", [self getLocalizedDescription:error], error);
     reject(@"1011", @"1011", error);
     return;
   }
@@ -374,14 +340,12 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
-//    reject(@"1009", self.errMsg, error);
     reject(@"1009", self.errMsg, error);
     return;
   }
 
   BOOL isSend = [self.ethClient sendTransaction:context tx:signedTx error:&error];
   if (!isSend || error) {
-//    reject(@"1010", [self getLocalizedDescription:error], error);
     reject(@"1010", @"1010", error);
     return;
   }
@@ -400,7 +364,6 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
   GethTransaction *signedTx = [keyStore signTxPassphrase:account passphrase:passphrase tx:transaction chainID:chainID error:&error];
   if (error) {
     self.error = error;
-//    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1009";
     return nil;
   }
@@ -582,7 +545,6 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
 
   if (error) {
     self.error = error;
-    //    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1013";
     return nil;
   }
@@ -613,7 +575,6 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
     self.error = error;
-//    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1003";
     return nil;
   }
@@ -633,7 +594,6 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   BOOL isGet = [self.ethClient getNonceAt:context account:from number:number nonce:&nonce  error:&error];
   if (!isGet || error) {
     self.error = error;
-//    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1008";
     return nil;
   }
@@ -644,8 +604,6 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   GethTransaction *signedTx = [self signTxWithKeyStore:self.keyStore Account:self.account passphrase:passphrase transaction:transaction];
   if (!signedTx) {
     self.error = error;
-//    error = [NSError errorWithDomain:NSCocoaErrorDomain code:-1017 userInfo:@{@"info":@"Signature abnormal"}];
-//    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1009";
     return nil;
   }

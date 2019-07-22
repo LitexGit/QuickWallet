@@ -10,6 +10,31 @@ import {UserSelectors} from '../Redux/UserRedux';
 import I18n from '../I18n';
 import { Platform } from 'react-native';
 
+function throwError (error){
+
+  const code = error.message;
+  switch (code) {
+    case '1003':{
+      const msg = 'code:'+code+' '+'msg:'+I18n.t('InvalidPassword');
+      Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER
+      });
+    }
+      break;
+
+    default:{
+      const errCode = Platform.OS === 'ios' ? code : '1111';
+
+      const msg = 'code:'+errCode+' '+'msg:'+I18n.t('SystemException');
+      Toast.show(msg, {
+        shadow:true,
+        position: Toast.positions.CENTER
+      });
+    }
+      break;
+  }
+}
 
 export function *gethInit () {
     try {
@@ -193,29 +218,5 @@ export function *gethTransfer (action) {
     }
 }
 
-function throwError (error){
 
-  const code = error.message;
-  switch (code) {
-    case '1003':{
-      const msg = 'code:'+code+' '+'msg:'+I18n.t('InvalidPassword');
-      Toast.show(msg, {
-        shadow:true,
-        position: Toast.positions.CENTER
-      });
-    }
-      break;
-
-    default:{
-      const errCode = Platform.OS === 'ios' ? code : '1111';
-
-      const msg = 'code:'+errCode+' '+'msg:'+I18n.t('SystemException');
-      Toast.show(msg, {
-        shadow:true,
-        position: Toast.positions.CENTER
-      });
-    }
-      break;
-  }
-}
 

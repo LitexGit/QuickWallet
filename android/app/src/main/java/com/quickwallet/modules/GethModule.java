@@ -99,15 +99,6 @@ public class GethModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void newWallet(String passphrase, Promise promise) {
-
-        WritableMap map = Arguments.createMap();
-        map.putString("mnemonic","mnemonic");
-        map.putString("address","address");
-        promise.resolve(map);
-    }
-
-    @ReactMethod
     public void isUnlockAccount(Promise promise) {
         if (account == null || keyStore == null || ethClient == null){
             WritableMap map = Arguments.createMap();

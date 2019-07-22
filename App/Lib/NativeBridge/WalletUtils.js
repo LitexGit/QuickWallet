@@ -29,10 +29,6 @@ async function unlockAccount({passphrase}){
     return await gethModule.unlockAccount(passphrase);
 }
 
-async function  newAccount({passphrase}){
-    return await gethModule.newAccount(passphrase);
-}
-
 async function  randomMnemonic(){
     return await gethModule.randomMnemonic();
 }
@@ -100,7 +96,6 @@ export default {
     unInit,
     isUnlockAccount,
     unlockAccount,
-    newAccount,
     randomMnemonic,
     importMnemonic,
     importPrivateKey,

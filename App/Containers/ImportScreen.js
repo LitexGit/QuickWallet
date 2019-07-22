@@ -12,15 +12,16 @@ import UserTermsAlert from '../Components/UserTermsAlert';
 
 
 class ImportScreen extends Component {
+
+  static navigationOptions = {
+    title:I18n.t('ImportTabTitle')
+  }
+
   constructor(props){
     super(props);
     this.state={
       keyboardHeight:new Animated.Value(0)
     }
-  }
-
-  static navigationOptions = {
-      title:I18n.t('ImportTabTitle')
   }
 
   componentDidMount=()=>{
