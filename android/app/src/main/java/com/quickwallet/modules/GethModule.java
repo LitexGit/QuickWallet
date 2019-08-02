@@ -2,7 +2,6 @@ package com.quickwallet.modules;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -15,8 +14,6 @@ import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
-import org.web3j.crypto.Hash;
-import org.web3j.protocol.Web3j;
 import org.web3j.utils.Numeric;
 
 import java.io.File;
@@ -47,9 +44,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
 
     private static final String UNLOCK_ERROR = "1001";
-
-
-
+    
 
     private static final String E_UNLOCK_ACCOUNT_ERROR = "E_UNLOCK_ACCOUNT_ERROR";
     private static final String E_UNLOCK_WALLET_ERROR = "E_UNLOCK_WALLET_ERROR";
@@ -408,13 +403,12 @@ public class GethModule extends ReactContextBaseJavaModule {
                 promise.reject(E_WALLET_UNLOCK_ERROR,err);
                 return;
             }
-
+            // message ==> 0x(hash) -> hex ==>  Geth ->(byte)
             byte[] hashByte = Numeric.hexStringToByteArray(message);
 
             Address address = new Address(from);
             byte[] signByte =  keyStore.signHash(address, hashByte);
 
-//            keyStore.signHashPassphrase(account, passphrase, unSignHash);
             String data = Numeric.toHexString(signByte);
 
             WritableMap map = Arguments.createMap();
@@ -467,8 +461,6 @@ public class GethModule extends ReactContextBaseJavaModule {
             promise.reject(E_SIGN_HASH_ERROR,e);
         }
     }
-
-    //  keyStore.signHashPassphrase(account, passphrase, unSignHash);
 
     @ReactMethod
     public void signTransaction(

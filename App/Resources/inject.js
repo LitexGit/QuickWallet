@@ -76,7 +76,9 @@ web3.eth.getCoinbase = function(cb) {
 };
 `;
 
-export const layer2 = '';
+export const getDocumentTitle = `
+  window.postMessage(JSON.stringify({'name': 'getDocumentTitle', 'title' : document.title}));
+`;
 
 
 

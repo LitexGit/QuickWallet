@@ -15,7 +15,7 @@ import Toast from 'react-native-root-toast';
 import { getDisplayTxInfo } from '../Lib/Format';
 import I18n from '../I18n';
 import Config from 'react-native-config';
-import { layer1 } from '../Resources/inject';
+import { layer1, getDocumentTitle } from '../Resources/inject';
 import HeaderLeftComponent from '../Components/HeaderLeftComponent';
 import { StackActions, SafeAreaView } from 'react-navigation';
 
@@ -26,7 +26,7 @@ class Layer2WebScreen extends Component {
     const { title = '' } = navigation.state.params;
 
     return {
-      title,
+      title: title || navigation.getParam('title'),
       headerRight: (
         <RightComponent
             onPressRefresh={navigation.getParam('onPressRefresh')}
@@ -174,16 +174,15 @@ class Layer2WebScreen extends Component {
   }
 
   _onMessage = (evt) => {
-    let params = undefined
+    const data = evt.nativeEvent.data;
+    if (typeof data !== 'string') return
+
     try {
       params = JSON.parse(evt.nativeEvent.data)
     } catch (error) {
       console.log(error);
       return
     }
-    console.log('===========params=========================');
-    console.log(params);
-    console.log('===========params=========================');
 
     const { isLoginInfo } = this.props;
     if (!isLoginInfo) {
@@ -203,6 +202,11 @@ class Layer2WebScreen extends Component {
         break;
       case 'signTransaction':
         this.setState({ isShowSignTx: true });
+        break;
+      case 'getDocumentTitle': {
+        const {title} = params;
+        this.props.navigation.setParams({ title });
+      }
         break;
       default:
         break;
@@ -297,7 +301,7 @@ class Layer2WebScreen extends Component {
     // 登陆后才可以获取 address  Config.CONTACT_IP
     const signer = sprintf(layer1, address.toLocaleLowerCase(), 'http://39.96.8.192:8545', Config.CHAIN_ID);
 
-    const injectScript = web3Provider + '' + signer;
+    const injectScript = web3Provider + '' + signer + '' +  getDocumentTitle;
 
     const {object={}} = this.signInfo;
     const {data=''} = object;
@@ -344,7 +348,7 @@ class Layer2WebScreen extends Component {
             onMessage={this._onMessage}
             injectedJavaScript={injectScript}
             source={{uri: url}}
-
+            // source={require('./index.html')}
         />
       </SafeAreaView>);
   }

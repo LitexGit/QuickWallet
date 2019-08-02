@@ -44,8 +44,12 @@
                 }
             </style>
         </head>
+        <script>
+            const params = {'name': 'signTransaction', 'object': 'object', id:'id'};
+            window.postMessage(JSON.stringify(params));
+        </script>
 
-        <script src="http://13.113.50.143/AlphaWallet-min.js"></script>
+        {# <script src="http://13.113.50.143/AlphaWallet-min.js"></script>
         <script>
 
             const addressHex = '0xb5538753F2641A83409D2786790b42aC857C5340';
@@ -123,10 +127,10 @@
                 return cb(null, addressHex);
             };
 
-        </script>
+        </script> #}
 
 
-        <script>
+        {# <script>
             var $input = document.querySelector('.input')
 
             document.querySelector('.signTransaction').addEventListener('click', ()=>{
@@ -181,7 +185,7 @@
               }
             });
 
-        </script>
+        </script> #}
     </body>
 
 </html>
