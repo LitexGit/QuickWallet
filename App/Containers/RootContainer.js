@@ -17,6 +17,8 @@ import I18n from '../I18n';
 class RootContainer extends Component {
 
   async componentDidMount() {
+    this.props.gethInit();
+
     this.props.getConfigRequest();
     this.props.getInjectScript();
 
@@ -37,7 +39,6 @@ class RootContainer extends Component {
     const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
     this.props.getUserInfoRequest({ address });
 
-    this.props.gethInit();
     this.props.getTokenList();
   }
 

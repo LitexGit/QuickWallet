@@ -14,8 +14,6 @@ import com.quickwallet.utils.ByteUtil;
 import com.quickwallet.utils.FileUtil;
 import com.quickwallet.utils.SharedPreferencesHelper;
 
-import org.web3j.utils.Numeric;
-
 import java.io.File;
 
 import geth.Account;
@@ -44,7 +42,7 @@ public class GethModule extends ReactContextBaseJavaModule {
 
 
     private static final String UNLOCK_ERROR = "1001";
-    
+
 
     private static final String E_UNLOCK_ACCOUNT_ERROR = "E_UNLOCK_ACCOUNT_ERROR";
     private static final String E_UNLOCK_WALLET_ERROR = "E_UNLOCK_WALLET_ERROR";
@@ -404,12 +402,12 @@ public class GethModule extends ReactContextBaseJavaModule {
                 return;
             }
             // message ==> 0x(hash) -> hex ==>  Geth ->(byte)
-            byte[] hashByte = Numeric.hexStringToByteArray(message);
+            byte[] hashByte = Geth.hexToBytes(message);
 
             Address address = new Address(from);
             byte[] signByte =  keyStore.signHash(address, hashByte);
 
-            String data = Numeric.toHexString(signByte);
+            String data = Geth.bytesToHex(signByte);
 
             WritableMap map = Arguments.createMap();
             map.putString("data",data);
@@ -442,7 +440,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             byte[] msgByte = arraycat(fixByte, info);
 
 
-            byte[] hash256 = org.web3j.crypto.Hash.sha3(msgByte);
+            byte[] hash256 = Geth.keccak256(msgByte);
 
             Address address = new Address(from);
             byte[] signData =  keyStore.signHash(address, hash256);
@@ -451,8 +449,7 @@ public class GethModule extends ReactContextBaseJavaModule {
             if (subv < 27) {
                 subv += 27;
             }
-
-            String data = Numeric.toHexString(signData);
+            String data = Geth.bytesToHex(signData);
 
             WritableMap map = Arguments.createMap();
             map.putString("data",data);

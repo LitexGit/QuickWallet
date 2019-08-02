@@ -12,6 +12,10 @@ import { Platform } from 'react-native';
 
 function throwError (error){
 
+  console.log('===========error=========================');
+  console.log(error);
+  console.log('============error========================');
+
   const code = error.message;
   switch (code) {
     case '1003':{

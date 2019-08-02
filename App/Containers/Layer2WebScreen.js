@@ -180,6 +180,7 @@ class Layer2WebScreen extends Component {
     try {
       params = JSON.parse(evt.nativeEvent.data)
     } catch (error) {
+      console.log(evt.nativeEvent);
       console.log(error);
       return
     }

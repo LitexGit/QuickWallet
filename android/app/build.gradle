@@ -210,7 +210,6 @@ dependencies {
     implementation 'com.facebook.react:react-native:0.57.7'
     // From node_modules
     implementation(name: 'geth', ext: 'aar')
-    compile ('org.web3j:core:3.3.1-android')
 
     compile 'com.qianwen:update-app:3.5.2'
     compile 'com.lzy.net:okgo:3.0.4'
