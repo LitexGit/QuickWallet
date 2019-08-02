@@ -26,8 +26,8 @@ class MnemonicCompont extends Component {
 
     componentDidMount=()=>{
       this.props.setLoading({loading:false});
-      // this.mnemonic = 'tag fee recycle palace nominee van dawn mail approve crash opinion scheme';
-      this.mnemonic = '';
+      this.mnemonic = 'method sphere envelope family mask flush exchange cabbage depth occur reform witness';
+      // this.mnemonic = '';
       this._checkInputIsValid();
   }
 

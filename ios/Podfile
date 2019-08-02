@@ -6,8 +6,7 @@ target 'QuickWallet' do
   use_frameworks!
 
   # Pods for QuickWallet
-  pod 'web3swift'
-
+    pod 'web3swift'
   # pod 'RNFS', :path => '../node_modules/react-native-fs'
 
 end

@@ -17,7 +17,6 @@
 #import <React/RCTConvert.h>
 #import "SignModel.h"
 #import <CommonCrypto/CommonDigest.h>
-#import "Web3swift-Swift.h"
 #import "NSData+Category.h"
 #import <Foundation/Foundation.h>
 
@@ -167,14 +166,12 @@ RCT_EXPORT_METHOD(importMnemonic:(NSString *)mnemonic passphrase:(NSString *)pas
   self.keyStore = [[GethKeyStore alloc] init:keydir scryptN:GethStandardScryptN / 2 scryptP:GethStandardScryptP];
   self.account = [self.keyStore importECDSAKey:privateKey passphrase:passphrase error:&error];
   if (error) {
-//    reject(@"1005", [self getLocalizedDescription:error], error);
     reject(@"1005", @"1005", error);
     return;
   }
 
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
-    //    reject(@"1003", [self getLocalizedDescription:error], error);
     reject(@"1003", @"1003", error);
     return;
   }
@@ -296,7 +293,6 @@ RCT_EXPORT_METHOD(transferTokens:(NSString *)passphrase fromAddress:(NSString *)
 
   BOOL isUnlock = [self.keyStore unlock:self.account passphrase:passphrase error:&error];
   if (!isUnlock || error) {
-    //    reject(@"1003", [self getLocalizedDescription:error], error);
     reject(@"1003", @"1003", error);
     return;
   }
@@ -448,7 +444,6 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   self.account = [self.keyStore importKey:data passphrase:passphrase newPassphrase:passphrase error:&error];
   if (error) {
     self.error = error;
-    //    self.errMsg = @"keyStore importKey error";
     self.errMsg = @"1002";
     return nil;
   }
@@ -509,19 +504,23 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   }
 
   NSString *hex = [self hexToHexString: message];
-  NSData *hexData = [OCWeb3Utils hexToData:hex];
+  NSData *hexData = GethHexToBytes(hex, &error);
+  
   GethAddress *address = [[GethAddress alloc] initFromHex:from];
   NSData *signData = [self.keyStore signHash:address hash:hexData error:&error];
 
   if (error) {
     self.error = error;
-//    self.errMsg = [self getLocalizedDescription:error];
     self.errMsg = @"1013";
     return nil;
   }
-  NSData *configData = [OCWeb3Utils getConfigurableData:signData];
-  NSString *hash = [OCWeb3Utils hex:configData];
-  return hash;
+  
+  Byte *signByte = (Byte *)[signData bytes];
+  signByte[64] += 27;
+  NSData *comData = [[NSData alloc] initWithBytes:signByte length:signData.length];
+
+  NSString *signedHex = GethBytesToHex(comData, &error);
+  return signedHex;
 }
 
 - (NSString *)signPersonalMessage:(NSString *)from message:(NSString *)message{
@@ -537,9 +536,11 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
 
   NSMutableData *data = [NSMutableData dataWithData:fixData];
   [data appendData:info];
-
-  NSData *hash256 = [OCWeb3Utils keccak256:data];
-
+  
+  NSData *hash256 = GethKeccak256(data, &error);
+  if (error) {
+    return nil;
+  }
   GethAddress *address = [[GethAddress alloc] initFromHex:from];
   NSData *signData = [self.keyStore signHash:address hash:hash256 error:&error];
 
@@ -548,9 +549,13 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
     self.errMsg = @"1013";
     return nil;
   }
-  NSData *configData = [OCWeb3Utils getConfigurableData:signData];
-  NSString *hash = [OCWeb3Utils hex:configData];
-  return hash;
+  
+  Byte *signByte = (Byte *)[signData bytes];
+  signByte[64] += 27;
+  NSData *comData = [[NSData alloc] initWithBytes:signByte length:signData.length];
+
+  NSString *signedHex = GethBytesToHex(comData, &error);
+  return signedHex;
 }
 
 
@@ -658,32 +663,10 @@ RCT_EXPORT_METHOD(signTransaction:(NSString *)passphrase signInfo:(NSDictionary 
   return muHex;
 }
 
+
+
 @end
 
 
-//- (NSString*)serializeDeviceToken:(NSData*) deviceToken{
-//  NSMutableString *str = [NSMutableString stringWithCapacity:64];
-//  NSUInteger length = [deviceToken length];
-//  char *bytes = malloc(sizeof(char) * length);
-//
-//  [deviceToken getBytes:bytes length:length];
-//  for (int i = 0; i < length; i++){
-//    [str appendFormat:@"%02.2hhX", bytes[i]];
-//  }
-//  free(bytes);
-//  return str;
-//}
 
-//- (NSString *)getLocalizedDescription:(NSError *)error{
-//  NSString *msg = @"get LocalizedDescription exceptions";
-//  @try {
-//    NSDictionary *userInfo = error.userInfo;
-//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:0];
-//    NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-//    msg = dataStr;
-//  } @catch (NSException *exception) {
-//  } @finally {
-//    return msg;
-//  }
-//}
 
