@@ -8,11 +8,6 @@ const DEFAULT_URI = 'http://litex.io/';
 
 export default class WebViewScreen extends Component {
 
-  constructor(props) {
-    super(props);
-    this.invoke = createInvoke(() => this.webview);
-  }
-
   static navigationOptions = ({ navigation }) => ({
     title: 'WebView',
     headerRight: (
@@ -22,6 +17,11 @@ export default class WebViewScreen extends Component {
       />
     )
   });
+
+  constructor(props) {
+    super(props);
+    this.invoke = createInvoke(() => this.webview);
+  }
 
   componentDidMount() {
     this.props.navigation.setParams({ onPressRefresh: this._onPressRefresh });

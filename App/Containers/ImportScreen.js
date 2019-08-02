@@ -13,8 +13,10 @@ import UserTermsAlert from '../Components/UserTermsAlert';
 
 class ImportScreen extends Component {
 
-  static navigationOptions = {
-    title:I18n.t('ImportTabTitle')
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('ImportTabTitle')
+      }
   }
 
   constructor(props){
@@ -124,7 +126,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImportScreen);

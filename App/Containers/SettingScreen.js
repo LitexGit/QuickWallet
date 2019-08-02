@@ -11,8 +11,10 @@ import {getSettingConfigTitle} from '../Lib/Transfer'
 
 class SettingScreen extends Component {
 
-  static navigationOptions = {
-      title:I18n.t('SettingTabTitle')
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('SettingTabTitle')
+      }
   }
 
   _onPressItem=(key)=>{
@@ -31,7 +33,7 @@ class SettingScreen extends Component {
 
 
   _renderItem=({item})=>{
-      const {key='', title='', details=''} = item;
+      const {key='', details=''} = item;
       const nextImg = (<View>
           <MaterialIcons name={'navigate-next'}
               size={Metrics.icons.medium}

@@ -23,8 +23,10 @@ import {getInputConfigTitle} from '../Lib/Transfer'
 
 class NewWalletScreen extends Component {
 
-  static navigationOptions = {
-    title: I18n.t('NewWalletTabTitle')
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('NewWalletTabTitle')
+      }
   }
 
   constructor(props) {
@@ -132,7 +134,7 @@ class NewWalletScreen extends Component {
 
 
     const inputs = Object.values(InputInfoConfig).map((config, index) => {
-      const { key, placeholder, placeholderColor, clearButtonMode, maxLength, keyboardType, returnKeyType } = config;
+      const { key, placeholderColor, clearButtonMode, maxLength, keyboardType, returnKeyType } = config;
 
       const eyeImg = (
         <TouchableOpacity onPress={() => this._onPressEyeImg()}>

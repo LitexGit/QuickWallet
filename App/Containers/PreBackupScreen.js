@@ -12,10 +12,14 @@ import MnemonicWarningAlert from '../Components/MnemonicWarningAlert';
 
 
 class PreBackupScreen extends Component {
-  static navigationOptions = {
-    title: I18n.t('PreBackupTabTitle'),
-    headerLeft: null
+
+  static navigationOptions = () => {
+      return {
+        title: I18n.t('PreBackupTabTitle'),
+        headerLeft: null
+      }
   }
+
   _onPressBtn = () => {
     this.props.navigate('BackupScreen');
   }

@@ -11,14 +11,16 @@ import MineComponent from '../Components/MineComponent';
 
 
 class MineScreen extends Component {
-  static navigationOptions = {
-      tabBarLabel: I18n.t('MineTabBarLabel'),
-      tabBarIcon: ({tintColor}) => (
-          <Ionicons name={'md-person'}
-              size={Metrics.bottomTabIconSize}
-              color={tintColor}
-          />
-      )
+  static navigationOptions = () => {
+      return {
+        tabBarLabel: I18n.t('MineTabBarLabel'),
+        tabBarIcon: ({tintColor}) => (
+            <Ionicons name={'md-person'}
+                size={Metrics.bottomTabIconSize}
+                color={tintColor}
+            />
+        )
+      }
   }
 
   componentDidMount=()=>{
@@ -54,8 +56,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineScreen);

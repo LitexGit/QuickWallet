@@ -6,9 +6,12 @@ import I18n from '../I18n';
 
 export default class ScanScreen extends Component {
 
-  static navigationOptions = {
-      title:I18n.t('ScanTabTitle')
-  };
+  static navigationOptions = () => {
+      return {
+        title: I18n.t('ScanTabTitle'),
+        headerLeft: null
+      }
+  }
 
   constructor(props) {
       super(props);

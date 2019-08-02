@@ -16,8 +16,11 @@ import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 
 
 class TransferRecordScreen extends Component {
-  static navigationOptions = {
-      title:I18n.t('TransferRecordTabTitle')
+
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('TransferRecordTabTitle')
+      }
   }
 
   constructor(props){

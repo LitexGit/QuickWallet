@@ -19,9 +19,11 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {getAccountConfigTitle} from '../Lib/Transfer'
 
 class AccountScreen extends Component {
-  static navigationOptions = {
-      title:I18n.t('AccountTabTitle'),
-      backgroundColor: 'red'
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('AccountTabTitle'),
+        backgroundColor: 'red'
+      }
   }
 
   constructor(props){
@@ -97,7 +99,7 @@ class AccountScreen extends Component {
       const infoView = Object.values(AccountConfig).map((config, index)=>{
           const { key='' } = config;
           config.details = settings[key];
-          const { title='', type=1, details='', index:itemIndex=0 } = config;
+          const { details='', index:itemIndex=0 } = config;
           let rightView = null;
           switch (itemIndex) {
           case 0:

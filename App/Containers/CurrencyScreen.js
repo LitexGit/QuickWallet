@@ -13,8 +13,11 @@ import UserActions from '../Redux/UserRedux';
 import AssetActions from '../Redux/AssetRedux';
 
 class CurrencyScreen extends Component {
-  static navigationOptions = {
-      title:I18n.t('CurrencyTabTitle')
+
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('CurrencyTabTitle')
+      }
   }
 
   constructor(props){

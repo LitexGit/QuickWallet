@@ -12,8 +12,11 @@ import Toast from 'react-native-root-toast';
 
 
 class BackupScreen extends Component {
-  static navigationOptions = {
-      title:I18n.t('BackupTabTitle')
+
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('BackupTabTitle')
+      }
   }
 
   constructor (props) {

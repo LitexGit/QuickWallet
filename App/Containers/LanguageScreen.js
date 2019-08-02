@@ -15,8 +15,10 @@ import {DeviceStorage, Keys} from '../Lib/DeviceStorage';
 
 class LanguageScreen extends Component {
 
-  static navigationOptions = {
-      title:I18n.t('LanguageTabTitle')
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('LanguageTabTitle')
+      }
   }
 
   constructor(props){

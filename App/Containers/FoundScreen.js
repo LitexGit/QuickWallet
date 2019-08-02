@@ -11,16 +11,17 @@ import { NavigationActions } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
 
 class FoundScreen extends Component {
-  static navigationOptions = {
-      tabBarLabel: I18n.t('FoundTabBarLabel'),
-      tabBarIcon: ({tintColor}) => (
-          <Material name={'cube-outline'}
-              size={Metrics.bottomTabIconSize}
-              color={tintColor}
-          />
-      )
+  static navigationOptions = () => {
+      return {
+        tabBarLabel: I18n.t('FoundTabBarLabel'),
+        tabBarIcon: ({tintColor}) => (
+            <Material name={'cube-outline'}
+                size={Metrics.bottomTabIconSize}
+                color={tintColor}
+            />
+        )
+      }
   }
-
   constructor(props) {
       super(props);
       this.state = {

@@ -13,8 +13,10 @@ import CommomBtnComponent from '../Components/CommomBtnComponent';
 
 class ExportScreen extends Component {
 
-  static navigationOptions = {
-      title:I18n.t('ExportTabTitle')
+  static navigationOptions = () => {
+      return {
+        title:I18n.t('ExportTabTitle')
+      }
   }
 
   constructor(props){
