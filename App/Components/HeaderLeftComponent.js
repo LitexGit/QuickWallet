@@ -9,11 +9,11 @@ export default class HeaderLeftComponent extends Component {
 
     static propTypes = {
         headerBackTitle: PropTypes.string,
-        onPress:PropTypes.func,
+        onPress:PropTypes.func
     }
 
     static defaultProps = {
-        headerBackTitle: 'Back'
+        headerBackTitle: ''
     }
 
     componentDidMount=()=>{
@@ -23,10 +23,16 @@ export default class HeaderLeftComponent extends Component {
     render () {
         const {headerBackTitle, onPress} = this.props;
         const leftBtn =  Platform.OS === 'ios' ? (<View style={styles.container}>
-            <Ionicons name={'ios-arrow-back'} size={Fonts.size.h3} color='#333333'/>
+            <Ionicons name={'ios-arrow-back'}
+                size={Fonts.size.h3}
+                color="#333333"
+            />
             <Text style={styles.backTitle}>{headerBackTitle}</Text>
         </View>) : (<View style={[styles.container, {marginLeft:Metrics.smallMargin}]}>
-            <Ionicons name={'md-arrow-back'} size={Fonts.size.h4} color='#333333'/>
+            <Ionicons name={'md-arrow-back'}
+                size={Fonts.size.h4}
+                color="#333333"
+            />
         </View>);
 
         return (

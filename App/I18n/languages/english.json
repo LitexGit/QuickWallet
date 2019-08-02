@@ -24,12 +24,8 @@
    "noItems": "No Items",
    "search": "Search",
 
-
-
-
-
   "FoundTabBarLabel":"Discover",
-  "MineTabBarLabel":"Me",
+  "MineTabBarLabel":"Mine",
 
   "FoundTabTitle":"Discover",
   "AccountTabTitle":"My Account",

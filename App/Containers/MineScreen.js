@@ -9,38 +9,36 @@ import I18n from '../I18n';
 import PreMineComponent from '../Components/PreMineComponent';
 import MineComponent from '../Components/MineComponent';
 
+import { NavigationEvents } from 'react-navigation';
 
 class MineScreen extends Component {
-  static navigationOptions = () => {
-      return {
-        tabBarLabel: I18n.t('MineTabBarLabel'),
-        tabBarIcon: ({tintColor}) => (
-            <Ionicons name={'md-person'}
-                size={Metrics.bottomTabIconSize}
-                color={tintColor}
-            />
-        )
-      }
+  static navigationOptions = ({navigation}) => {
+    return {
+      tabBarLabel: navigation.getParam('tabBarLabel') || I18n.t('MineTabBarLabel'),
+      tabBarIcon: ({tintColor}) => (
+          <Ionicons name={'md-person'}
+              size={Metrics.bottomTabIconSize}
+              color={tintColor}
+          />
+      )
+    }
   }
 
   componentDidMount=()=>{
-      this.willFocusSubscription = this.props.navigation.addListener('willFocus', () =>{
-          // console.log('===========willFocus=========================');
-      });
-      this.didFocusSubscription = this.props.navigation.addListener('didFocus', () =>{
-          // console.log('===========didFocus=========================');
-      });
+    this._updateTitle();
   };
 
-  componentWillUnmount=()=>{
-      this.willFocusSubscription.remove();
-      this.didFocusSubscription.remove();
+  _updateTitle= async ()=>{
+    this.props.navigation.setParams({
+      tabBarLabel: I18n.t('MineTabBarLabel')
+    });
   }
 
   render () {
       const {isLoginInfo} = this.props;
       return (
           <View style={styles.container}>
+              <NavigationEvents onDidFocus={()=> this._updateTitle()}/>
               {isLoginInfo ? <MineComponent/> : <PreMineComponent/>}
           </View>
       );

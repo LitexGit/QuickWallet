@@ -11,10 +11,24 @@ import {getSettingConfigTitle} from '../Lib/Transfer'
 
 class SettingScreen extends Component {
 
-  static navigationOptions = () => {
+  static navigationOptions = ({navigation}) => {
       return {
-        title:I18n.t('SettingTabTitle')
+        title: navigation.getParam('title') || I18n.t('SettingTabTitle')
       }
+  }
+
+  componentDidMount=()=>{
+
+    setTimeout(() => {
+      console.log('====================================');
+      console.log(I18n.t('FoundTabBarLabel'));
+      console.log(I18n.t('SettingTabTitle'));
+      console.log('====================================');
+    }, 1000);
+
+      this.props.navigation.setParams({
+        title: I18n.t('SettingTabTitle')
+      });
   }
 
   _onPressItem=(key)=>{

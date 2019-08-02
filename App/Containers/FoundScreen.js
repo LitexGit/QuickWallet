@@ -7,13 +7,14 @@ import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
 import SearchBar from '../Components/SearchCompont';
 import styles from './Styles/FoundScreenStyle';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, NavigationEvents } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
+import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 
 class FoundScreen extends Component {
-  static navigationOptions = () => {
+  static navigationOptions = ({navigation}) => {
       return {
-        tabBarLabel: I18n.t('FoundTabBarLabel'),
+        tabBarLabel: navigation.getParam('tabBarLabel'),
         tabBarIcon: ({tintColor}) => (
             <Material name={'cube-outline'}
                 size={Metrics.bottomTabIconSize}
@@ -29,9 +30,19 @@ class FoundScreen extends Component {
       };
   }
 
-  componentDidMount=()=>{
-      this.props.getBanner();
-      this.props.getApps();
+  componentDidMount= ()=>{
+    this.props.getBanner();
+    this.props.getApps();
+    this._updateTitle();
+  }
+
+  _updateTitle= async ()=>{
+    const language = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
+    const {locale = 'zh'} = language;
+    I18n.locale = locale;
+    this.props.navigation.setParams({
+      tabBarLabel: I18n.t('FoundTabBarLabel')
+    });
   }
 
   _onChangeText=(text)=>{
@@ -127,6 +138,7 @@ class FoundScreen extends Component {
 
       return (
           <View style={styles.container}>
+              <NavigationEvents onDidFocus={()=> this._updateTitle()}/>
               <View style={styles.topSection}>
                   {swiper}
               </View>

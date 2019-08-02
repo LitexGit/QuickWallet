@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StatusBar, Text } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import ReduxNavigation from '../Navigation/ReduxNavigation';
 import { connect } from 'react-redux';
 import styles from './Styles/RootContainerStyles';
@@ -17,6 +17,7 @@ import I18n from '../I18n';
 class RootContainer extends Component {
 
   async componentDidMount() {
+    this.props.getConfigRequest();
     this.props.getInjectScript();
 
     const language = await DeviceStorage.getItem(Keys.LANGUAGE_ENVIRONMENT) || LanguageConfig.zh;
@@ -32,14 +33,11 @@ class RootContainer extends Component {
     const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
     this.props.saveUserInfo({ isLoginInfo: isLogin });
 
-    this.props.getConfigRequest();
-
-    this.props.gethInit();
     if (!isLogin) return;
-
     const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
     this.props.getUserInfoRequest({ address });
 
+    this.props.gethInit();
     this.props.getTokenList();
   }
 
