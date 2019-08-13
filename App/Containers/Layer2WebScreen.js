@@ -18,6 +18,7 @@ import Config from 'react-native-config';
 import { layer1, getDocumentTitle } from '../Resources/inject';
 import HeaderLeftComponent from '../Components/HeaderLeftComponent';
 import { StackActions, SafeAreaView } from 'react-navigation';
+import { formateUrl } from '../Lib/Format'
 
 // https://stackoverrun.com/cn/q/12932611
 
@@ -49,6 +50,7 @@ class Layer2WebScreen extends Component {
     };
     this.signInfo = {};
     this.passphrase = '';
+    this.title = '';
   }
 
   componentDidMount() {
@@ -86,28 +88,19 @@ class Layer2WebScreen extends Component {
     this.webview.reload();
   }
 
-  _onPressShare = () => {
+  _onPressShare = async () => {
     const { url } = this.props.navigation.state.params;
     const { sharecode } = this.props;
+    const info = this.title === 'LITEX Store' ? '?sharecode=' + sharecode : '';
+    const message = formateUrl(url) + info;
+
     let shareParams = {};
     if (Platform.OS === 'ios') {
-      // const shareUrl = url + '?sharecode=' + sharecode;
-      // const message = '待分享的信息';
-      // shareParams = { shareUrl, message };
-      const message = url + '?sharecode=' + sharecode;
-      shareParams = { message };
-      console.log('===========shareParams=========================');
-      console.log(shareParams);
-      console.log('===========shareParams=========================');
+      shareParams = { url: message, title: this.title };
     } else {
-      const shareUrl = 'android 分享的 Url';
-      const message = url + '?sharecode=' + sharecode;
-      shareParams = { shareUrl, message };
-      console.log('===========shareParams=========================');
-      console.log(shareParams);
-      console.log('===========shareParams=========================');
+      shareParams = { message, title: this.title };
     }
-    Share.share(shareParams);
+    await Share.share(shareParams);
   };
 
   _onNavigationStateChange = (navState) => {
@@ -126,7 +119,7 @@ class Layer2WebScreen extends Component {
   _pswdConfirm = (passphrase) => {
     this.passphrase = passphrase;
     this.setState({
-      isShowPassphrase: false
+      isShowPassphrase: falses
     });
     const { name } = this.signInfo;
     switch (name) {
@@ -206,6 +199,7 @@ class Layer2WebScreen extends Component {
         break;
       case 'getDocumentTitle': {
         const {title} = params;
+        this.title = title;
         this.props.navigation.setParams({ title });
       }
         break;
@@ -294,10 +288,6 @@ class Layer2WebScreen extends Component {
 
     const { url } = this.props.navigation.state.params;
 
-    console.log('==============params======================');
-    console.log(url);
-    console.log('==============params======================');
-
     const sprintf = require('sprintf-js').sprintf;
     // 登陆后才可以获取 address  Config.CONTACT_IP
     const signer = sprintf(layer1, address.toLocaleLowerCase(), 'http://39.96.8.192:8545', Config.CHAIN_ID);
@@ -348,7 +338,7 @@ class Layer2WebScreen extends Component {
             allowFileAccess
             onMessage={this._onMessage}
             injectedJavaScript={injectScript}
-            source={{uri: url}}
+            source={{uri: formateUrl(url)}}
             // source={require('./index.html')}
         />
       </SafeAreaView>);

@@ -13,8 +13,9 @@ import SignTxResultAlert from '../Components/SignTxResultAlert';
 import PassphraseInputAlert from '../Components/PassphraseInputAlert';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
-import { isValidAddress, isValidTransferAmount } from '../Lib/Utils';
+import { formateAddress, isValidTransferAmount } from '../Lib/Utils';
 import { getDisplayFiat } from '../Lib/Format';
+
 
 class TransferScreen extends Component {
 
@@ -44,7 +45,7 @@ class TransferScreen extends Component {
     this.props.setLoading({ loading: false });
   }
 
-  _onPressBtn = () => {
+  _onPressBtn = async () => {
     const { selectedToken } = this.props;
     const { count } = selectedToken;
     const { inputBalance, inputAddress } = this.state;
@@ -56,7 +57,8 @@ class TransferScreen extends Component {
       return;
     }
 
-    if (!isValidAddress(inputAddress)) {
+    const address = await formateAddress(inputAddress)
+    if (!address) {
       Toast.show(I18n.t('InvalidAddressError'), {
         shadow: true,
         position: Toast.positions.CENTER
@@ -64,6 +66,7 @@ class TransferScreen extends Component {
       return;
     }
     this.setState({
+      inputAddress: address,
       isShowSignTx: true
     });
   }
@@ -88,6 +91,7 @@ class TransferScreen extends Component {
     this.props.navigate('ScanScreen', {
       callback: (params) => {
         const { data = '' } = params;
+
         this.setState({
           inputAddress: data
         });

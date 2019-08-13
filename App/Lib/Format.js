@@ -106,6 +106,26 @@ export function getDisplayTxInfo(signInfo) {
   return info;
 }
 
+function checkUrl(urlString){
+  if(urlString!=''){
+      var reg=/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
+      if(!reg.test(urlString)){
+          return false;
+      }
+      return true;
+  }
+  return falses;
+}
+
+export function formateUrl (url) {
+  if (!url) return ''
+  if (checkUrl(url)) return url;
+  return 'https://' + url;
+}
+
+
+
+
 
 
 

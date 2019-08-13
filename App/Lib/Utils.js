@@ -1,22 +1,11 @@
 
-export function runGenerator(generatorFUN, initialValue) {
-    const generator = generatorFUN(initialValue);
-    iterate(generator);
-    function iterate(generator) {
-        step();
-        function step(arg, isError) {
-            const {value: express, done} = isError ? generator.throw(arg) : generator.next(arg);
-            let response;
-            if (!done) {
-                if (typeof express === 'function') {
-                    response = express();
-                } else {
-                    response = express;
-                }
-                Promise.resolve(response).then(step, err => step(err, true));
-            }
-        }
-    }
+import * as utils from 'web3-utils'
+
+export async function formateAddress(input) {
+  const index = input.lastIndexOf(':');
+  const address  = input.substring( index + 1, input.length);
+  const isAddress  = await utils.isAddress(address)
+  return isAddress ? address : undefined
 }
 
 /**

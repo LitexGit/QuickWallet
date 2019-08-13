@@ -24,11 +24,11 @@ export default class ScanScreen extends Component {
   componentDidMount=()=>{
     this.data='';
     this._startAnimation();
-    // setTimeout(()=>{
-    //     const {state} = this.props.navigation;
-    //     state.params.callback({data:'0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
-    //     this.props.navigation.goBack();
-    // }, 3000);
+    setTimeout(()=>{
+        const {state} = this.props.navigation;
+        state.params.callback({data:'ethereum:0x38bCc5B8b793F544d86a94bd2AE94196567b865c'});
+        this.props.navigation.goBack();
+    }, 3000);
 }
 
   _onBarCodeRead(e) {
@@ -37,7 +37,6 @@ export default class ScanScreen extends Component {
           return;
       }
       if (this.data.length) return;
-      // TODO 002: 校验 是否为 url
       const {data} = e;
       this.data = data;
       const {state} = this.props.navigation;
