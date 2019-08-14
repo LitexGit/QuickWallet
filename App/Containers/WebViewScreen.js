@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { WebView, Share, Platform } from 'react-native';
 import styles from './Styles/WebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
-import createInvoke from 'react-native-webview-invoke/native';
+import { getDocumentTitle } from '../Resources/inject';
 
 const DEFAULT_URI = 'http://litex.io/';
 
 export default class WebViewScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'WebView',
+    title: '' || navigation.getParam('title'),
     headerRight: (
       <RightComponent
           onPressRefresh={navigation.getParam('onPressRefresh')}
@@ -20,7 +20,6 @@ export default class WebViewScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.invoke = createInvoke(() => this.webview);
   }
 
   componentDidMount() {
@@ -47,14 +46,35 @@ export default class WebViewScreen extends Component {
     Share.share(shareParams);
   }
 
+  _onMessage = (evt) => {
+    const data = evt.nativeEvent.data;
+    if (typeof data !== 'string') return
+
+    try {
+      params = JSON.parse(evt.nativeEvent.data)
+    } catch (error) {
+      console.log(evt.nativeEvent);
+      console.log(error);
+      return
+    }
+
+    const { name } = params;
+    if (name !== 'getDocumentTitle') return
+    const {title} = params;
+    this.props.navigation.setParams({ title })
+  }
+
   render() {
-    const { params } = this.props.navigation.state;
-    const { url = DEFAULT_URI } = params;
+    // const { params } = this.props.navigation.state;
+    // const { url = DEFAULT_URI } = params;
+    const injectScript = getDocumentTitle;
     return (
       <WebView useWebKit
           ref={ref => this.webview = ref}
           style={styles.container}
-          source={{ uri: url }}
+          injectedJavaScript={injectScript}
+          onMessage={this._onMessage}
+          source={{ uri: DEFAULT_URI }}
       />
     );
   }

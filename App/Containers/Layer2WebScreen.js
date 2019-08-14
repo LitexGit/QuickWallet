@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Share, Platform, View, WebView } from 'react-native';
+import { Share, Platform, WebView } from 'react-native';
 import { connect } from 'react-redux';
 import styles from './Styles/Layer2WebScreenStyle';
 import RightComponent from '../Components/RightComponent';
