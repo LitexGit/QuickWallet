@@ -1,9 +1,9 @@
-import { StyleSheet, PixelRatio } from 'react-native'
+import { StyleSheet, PixelRatio, Platform } from 'react-native'
 import { isIphoneX, isBeforeAndroid21 } from '../../Lib/Adapter'
 import { Colors, Fonts } from '../../Themes/';
 
 const NAVBARHEIGHT = 44;
-const PADDINGTOP = isIphoneX() ? 44 : (isBeforeAndroid21?0:20);
+const PADDINGTOP = isIphoneX() ? 44 : ( (Platform.OS === 'android' && isBeforeAndroid21) ? 0 : 20 );
 
 export default StyleSheet.create({
   container: {

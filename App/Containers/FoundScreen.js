@@ -135,7 +135,7 @@ class FoundScreen extends Component {
               </View>
               <View style={[styles.search, {backgroundColor:''}]}>
                 <SearchView onPressScan={this._onPressScan}
-                    onPressSearch={()=>this.props.navigate('SearchListScreen')}
+                    onPressSearch={()=>this.props.navigate('SearchListScreen', {url:''})}
                 />
               </View>
               <ScrollView style={styles.scrollView}

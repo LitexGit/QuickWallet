@@ -21,29 +21,28 @@ export default class HeaderComponent extends Component {
     const {setValue, placeholder, onChangeText, onSubmitEditing} = this.props;
     return (
       <View style={styles.container}>
-        <StatusBar
+        <StatusBar style={{backgroundColor: 'red'}}
             barStyle="dark-content"
             backgroundColor="red"
         />
         <View style={[styles.content]}>
           <View style={styles.search}>
-            <EvilIcons style={{marginLeft: 6}}
-                name={'search'}
-                size={24}
-                color={'#A4A4A4'}
-            />
-            <TextInput style={styles.textInput}
-                ref={(ref)=>this.textInput = ref}
-                value={setValue}
-                placeholder={placeholder}
-                blurOnSubmit
-                returnKeyType="go"
-                keyboardType="url"
-                clearButtonMode="while-editing"
-                onChangeText={onChangeText}
-                onSubmitEditing={onSubmitEditing}
-            />
-
+              <EvilIcons style={{marginLeft: 6}}
+                  name={'search'}
+                  size={24}
+                  color={'#A4A4A4'}
+              />
+              <TextInput style={styles.textInput}
+                  ref={(ref)=>this.textInput = ref}
+                  value={setValue}
+                  placeholder={placeholder}
+                  blurOnSubmit
+                  returnKeyType="go"
+                  keyboardType="url"
+                  clearButtonMode="while-editing"
+                  onChangeText={onChangeText}
+                  onSubmitEditing={onSubmitEditing}
+              />
           </View>
           <TouchableOpacity onPress={this.props.onPressCancel}>
             <Text style={styles.cancel}>取消</Text>

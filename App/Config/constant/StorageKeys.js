@@ -9,5 +9,8 @@ export default {
     MONETARY_UNIT:'monetary_unit',
 
     // object
-    LANGUAGE_ENVIRONMENT:'language_environment'
+    LANGUAGE_ENVIRONMENT:'language_environment',
+
+    // array
+    SEARCH_HISTORY: 'search_history'
 };
