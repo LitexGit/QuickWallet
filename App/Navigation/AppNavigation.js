@@ -16,6 +16,7 @@ import ScanScreen from '../Containers/ScanScreen';
 import ExportScreen from '../Containers/ExportScreen';
 import WebViewScreen from '../Containers/WebViewScreen';
 import Layer2WebScreen from '../Containers/Layer2WebScreen';
+import SearchListScreen from '../Containers/SearchListScreen';
 
 import styles from './Styles/NavigationStyles';
 import Colors from '../Themes/Colors';
@@ -57,7 +58,8 @@ const PrimaryNav = createStackNavigator({
     ScanScreen: { screen: ScanScreen },
     ExportScreen: { screen: ExportScreen },
     WebViewScreen: { screen: WebViewScreen },
-    Layer2WebScreen: { screen: Layer2WebScreen }
+    Layer2WebScreen: { screen: Layer2WebScreen },
+    SearchListScreen: { screen: SearchListScreen }
 }, {
     headerMode: 'float',
     cardStyle: {shadowColor: 'BottomTab'},

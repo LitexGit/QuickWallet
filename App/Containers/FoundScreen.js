@@ -5,11 +5,12 @@ import I18n from '../I18n';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Metrics } from '../Themes';
 import Swiper from 'react-native-swiper';
-import SearchBar from '../Components/SearchCompont';
+import SearchView from '../Components/SearchView';
 import styles from './Styles/FoundScreenStyle';
 import { NavigationActions, NavigationEvents } from 'react-navigation';
 import FoundActions from '../Redux/FoundRedux';
 import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
+import { checkUrl } from '../Lib/Format'
 
 class FoundScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -26,7 +27,7 @@ class FoundScreen extends Component {
   constructor(props) {
       super(props);
       this.state = {
-          webLink:''
+          scanInfo:''
       };
   }
 
@@ -45,38 +46,29 @@ class FoundScreen extends Component {
     });
   }
 
-  _onChangeText=(text)=>{
-      this.setState({
-          webLink:text
-      });
-  }
-
   _onPressScan=()=>{
-      this.props.navigate('ScanScreen',{
-          callback:(params)=>{
-              const {data=''} = params;
-              this.setState({
-                  webLink:data
-              },()=>{
-                  // TODO 003: Url 合法校验 ==> 自动打开链接
-              });
-          }
-      });
-  }
-
-  _onSubmitEditing=()=>{
-      const {webLink:url} = this.state;
-      console.log('=========_onSubmitEditing===========================');
-      console.log(url);
-      console.log('=========_onSubmitEditing===========================');
-      this.props.navigate('Layer2WebScreen', {url, title:''});
+    let accept = true;
+    this.props.navigate('ScanScreen',{
+        callback:(params)=>{
+            if (!accept) return
+            accept = false
+            const {data=''} = params;
+            this.setState({
+              scanInfo:data
+            },()=>{
+              const {scanInfo} = this.state;
+              if (checkUrl(scanInfo)) {
+                this.props.navigate('Layer2WebScreen', {url:scanInfo});
+              } else {
+                this.props.navigate('SearchListScreen', {url:scanInfo, valid:false})
+              }
+            });
+        }
+    });
   }
 
   _onPressBanner = (item)=>{
       const {Url:url} = item;
-      console.log('=========_onPressBanner===========================');
-      console.log(url);
-      console.log('==========_onPressBanner==========================');
       this.props.navigate('WebViewScreen', {url});
   }
 
@@ -124,7 +116,6 @@ class FoundScreen extends Component {
 
   render () {
       const {bannerList, appList} = this.props;
-      const {webLink} = this.state;
 
       const  swiper = (
           <Swiper key={bannerList.length}
@@ -142,14 +133,10 @@ class FoundScreen extends Component {
               <View style={styles.topSection}>
                   {swiper}
               </View>
-              <View style={styles.searchBar}>
-                  <SearchBar
-                      ref={(ref)=>this.searchBar = ref}
-                      setValue={webLink}
-                      onChangeText={(text)=>this._onChangeText(text)}
-                      onPressScan={this._onPressScan}
-                      onSubmitEditing={this._onSubmitEditing}
-                  />
+              <View style={[styles.search, {backgroundColor:''}]}>
+                <SearchView onPressScan={this._onPressScan}
+                    onPressSearch={()=>this.props.navigate('SearchListScreen')}
+                />
               </View>
               <ScrollView style={styles.scrollView}
                   contentContainerStyle={styles.contentContainer}

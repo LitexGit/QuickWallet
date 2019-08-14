@@ -3,7 +3,7 @@ import { WebView, Share, Platform } from 'react-native';
 import styles from './Styles/WebViewScreenStyle';
 import RightComponent from '../Components/RightComponent';
 import { getDocumentTitle } from '../Resources/inject';
-
+import { SafeAreaView } from 'react-navigation';
 const DEFAULT_URI = 'http://litex.io/';
 
 export default class WebViewScreen extends Component {
@@ -32,19 +32,16 @@ export default class WebViewScreen extends Component {
     this.webview.reload();
   }
 
-  _onPressShare = () => {
-    const shareUrl = 'http://litex.io/';
-    const { sharecode } = this.props;
+  _onPressShare = async () => {
+    const { url } = this.props.navigation.state.params;
     let shareParams = {};
     if (Platform.OS === 'ios') {
-      const url = shareUrl + '?sharecode=' + sharecode;
-      shareParams = { url };
+      shareParams = { url, title: this.title };
     } else {
-      const message = shareUrl + '?sharecode=' + sharecode;
-      shareParams = { message };
+      shareParams = { message: url, title: this.title };
     }
-    Share.share(shareParams);
-  }
+    await Share.share(shareParams);
+  };
 
   _onMessage = (evt) => {
     const data = evt.nativeEvent.data;
@@ -61,6 +58,7 @@ export default class WebViewScreen extends Component {
     const { name } = params;
     if (name !== 'getDocumentTitle') return
     const {title} = params;
+    this.title = title;
     this.props.navigation.setParams({ title })
   }
 
@@ -69,13 +67,15 @@ export default class WebViewScreen extends Component {
     // const { url = DEFAULT_URI } = params;
     const injectScript = getDocumentTitle;
     return (
-      <WebView useWebKit
-          ref={ref => this.webview = ref}
-          style={styles.container}
-          injectedJavaScript={injectScript}
-          onMessage={this._onMessage}
-          source={{ uri: DEFAULT_URI }}
-      />
+      <SafeAreaView style={styles.container}>
+        <WebView useWebKit
+            ref={ref => this.webview = ref}
+            style={styles.container}
+            injectedJavaScript={injectScript}
+            onMessage={this._onMessage}
+            source={{ uri: DEFAULT_URI }}
+        />
+      </SafeAreaView>
     );
   }
 }

@@ -3,7 +3,7 @@ import { Colors, Fonts, Metrics } from '../../Themes/';
 
 export default StyleSheet.create({
     container: {
-        flex:1,
+        flex:1
     },
     searchSection:{
         flex:1,
@@ -15,21 +15,21 @@ export default StyleSheet.create({
         justifyContent:'center',
         borderRadius:20,
         borderColor:Colors.separateLineColor,
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1/PixelRatio.get()
     },
     searchIcon:{
-        marginHorizontal:Metrics.smallMargin,
+        marginHorizontal:Metrics.smallMargin
     },
     textInput:{
         flex:1,
         fontSize:Fonts.size.medium,
-        color:Colors.textColor,
+        color:Colors.textColor
     },
     scanSection:{
         width: 40,
         height:'100%',
         justifyContent:'center',
-        alignContent: 'center',
+        alignContent: 'center'
     }
 });
 

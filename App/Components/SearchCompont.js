@@ -23,7 +23,6 @@ export default class SearchCompont extends Component {
     }
 
     componentDidMount=()=>{
-        console.log('SearchCompont->componentDidMount ');
         // this.textInput.focus();
     }
 

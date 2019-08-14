@@ -9,16 +9,16 @@ const create = (baseURL = Config.API_URL) => {
   // console.log('============Config.API_URL========================');
   const api = apisauce.create({
     baseURL,
-    headers: { 'Cache-Control': 'no-cache' },
-    timeout: 10000
+    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+    timeout: 10000,
+    mode: 'no-cors'
   });
-  // , 'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/x-www-form-urlencoded'
 
-  api.addRequestTransform((request) => {
-    // console.log('==========request==========================');
-    // console.log(request);
-    // console.log('===========request=========================');
-  });
+  // api.addRequestTransform((request) => {
+  //   console.log('==========request==========================');
+  //   console.log(request);
+  //   console.log('===========request=========================');
+  // });
 
   api.addResponseTransform(response => {
     // console.log('===========response=========================');
