@@ -172,7 +172,7 @@ class MineComponent extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    user: { nickname, address, sharecode, currency },
+    user: { nickname='', address='12345678900987654321', sharecode='', currency },
     assets: { tokenList }
   } = state;
   return { nickname, address, sharecode, currency, tokenList };

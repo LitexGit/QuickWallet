@@ -24,7 +24,7 @@ class AssetsScreen extends Component {
   }
 
   _onPressItem = (item) => {
-    this.props.setSelectedToken({ selectedToken: item });
+    this.props.update({ selectedToken: item });
     this.props.navigate('TransferRecordScreen');
   }
 
@@ -91,7 +91,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   navigate: (route) => dispatch(NavigationActions.navigate({ routeName: route })),
   getTokenList: () => dispatch(AssetActions.getTokenListRequest()),
-  setSelectedToken: ({ selectedToken }) => dispatch(AssetActions.setSelectedToken({ selectedToken })),
+  update: ({ selectedToken }) => dispatch(AssetActions.update({ selectedToken })),
   updateBalance: () => dispatch(AssetActions.updateBalance())
 });
 

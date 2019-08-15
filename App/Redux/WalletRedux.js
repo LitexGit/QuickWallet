@@ -45,12 +45,12 @@ export const INITIAL_STATE = Immutable({
     failure: null,
     error: null,
     mnemonic:'',
-    privateKey:'',
+    privateKey:''
 });
 
 /* ------------- Selectors ------------- */
 export const WalletSelectors = {
-    getMnemonic: state => state.user.mnemonic,
+    getMnemonic: state => state.user.mnemonic
 };
 
 /* ------------- Reducers ------------- */
@@ -90,5 +90,5 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.SET_LOADING]: setLoading,
     [Types.GETH_RANDOM_MNEMONIC_SUCCESS]:gethRandomMnemonicSuccess,
     [Types.SAVE_PRIVATE_KEY]:savePrivateKey,
-    [Types.SAVE_ADDRESS]:saveAddress,
+    [Types.SAVE_ADDRESS]:saveAddress
 });

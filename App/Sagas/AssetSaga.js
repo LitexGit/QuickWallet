@@ -8,6 +8,7 @@ import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 import { CurrencyConfig } from '../Config/MineConfig';
 import I18n from '../I18n';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
+import Ramda from 'ramda';
 
 
 import Moment from 'moment';
@@ -18,7 +19,6 @@ const environment = 'rinkeby';
 const timeout = 10000;
 
 export function* updateBalance() {
-  console.log('======updateBalance======updateBalance======updateBalance==================');
   try {
     const tokens = yield select(AssetSelectors.tokens);
 
@@ -50,11 +50,12 @@ export function* updateBalance() {
 export function* getTokenList(api) {
   try {
     const response = yield call(api.getTokenList);
-    const { data: result } = response;
-    const { data, status, msg } = result;
+    const { status, msg, data } = response.data;
+    const res = Ramda.head(data);
+
     if (status) {
       // const lxt = { Id: 2, Decimal: 18, Sort: 2, Status: 1, Symbol: 'LXT', Tokenaddress: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE', Rate: '0.18' }
-      const { tokenList } = data;
+      const { tokenList } = res;
       // tokenList.push(lxt)
 
       const currency = (yield DeviceStorage.getItem(Keys.MONETARY_UNIT)) || CurrencyConfig.CNY;
@@ -69,9 +70,9 @@ export function* getTokenList(api) {
         token.Rate = rate[key];
         return token;
       });
-      data.tokenList = tokenArray;
+      res.tokenList = tokenArray;
       yield put(AssetActions.update({ethRate}));
-      yield put(AssetActions.getTokenListSuccess(data, ethRate));
+      yield put(AssetActions.getTokenListSuccess(res, ethRate));
 
       console.log('======getTokenList========getTokenList======================');
       yield put(AssetActions.updateBalance());

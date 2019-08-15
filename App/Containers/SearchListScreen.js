@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, SectionList, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import HeaderComponent from '../Components/HeaderComponent';
-import { StackActions } from 'react-navigation';
+import { NavigationActions, StackActions, NavigationEvents } from 'react-navigation';
 import styles from './Styles/SearchListScreenStyle'
-import { NavigationActions } from 'react-navigation';
 import SearchConfig from '../Config/SearchConfig';
 import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -29,7 +28,7 @@ class SearchListScreen extends Component {
     };
   }
 
-  async componentDidMount(){
+  componentDidMount(){
     const {input} = this.state;
     this.props.navigation.setParams({
       inputInfo: ()=> input,
@@ -51,7 +50,10 @@ class SearchListScreen extends Component {
     if (!valid) {
       this.props.navigation.setParams({inputInfo: url})
     }
+    this._updateHistory();
+  }
 
+  _updateHistory= async ()=>{
     const historyData = await DeviceStorage.getItem(Keys.SEARCH_HISTORY) || [];
     this.setState({historyData})
   }
@@ -100,6 +102,7 @@ class SearchListScreen extends Component {
     ]
     return (
       <View style={styles.container}>
+          <NavigationEvents onDidFocus={()=> this._updateHistory()}/>
           <SectionList style={styles.container}
               sections={sections}
               extraData={this.props}

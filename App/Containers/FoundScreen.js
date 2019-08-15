@@ -74,9 +74,6 @@ class FoundScreen extends Component {
 
   _onPressItem = (item)=>{
       const {Name:title, Url:url} = item;
-      console.log('=========_onPressItem===========================');
-      console.log(url);
-      console.log('==========_onPressItem==========================');
       // const url = 'http://192.168.51.230:8080/#/';
       // const url = 'http://192.168.51.230:8082/#/';
       // const url = 'https://pkt.red/#/';

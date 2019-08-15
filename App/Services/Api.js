@@ -1,12 +1,10 @@
 
 import apisauce from 'apisauce';
 import Config from 'react-native-config';
-import Ramda from 'ramda';
+// import Ramda from 'ramda';
+// import Toast from 'react-native-root-toast';
 
 const create = (baseURL = Config.API_URL) => {
-  // console.log('============Config.API_URL========================');
-  // console.log(Config);
-  // console.log('============Config.API_URL========================');
   const api = apisauce.create({
     baseURL,
     headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
@@ -20,16 +18,18 @@ const create = (baseURL = Config.API_URL) => {
   //   console.log('===========request=========================');
   // });
 
-  api.addResponseTransform(response => {
-    // console.log('===========response=========================');
-    // console.log(response);
-    // console.log('============response========================');
-    const { data } = response;
-    const { status, msg, data: array } = data;
-    if (!array) return response;
-    response.data = { status, msg, data: Ramda.head(array) };
-    return response;
-  });
+  // api.addResponseTransform(response => {
+  //   const { status = 0, msg = 'error', data } = response.data;
+  //   if (!data) return response;
+  //   if (!status) {
+  //     Toast.show(msg, {
+  //         shadow:true,
+  //         position: Toast.positions.CENTER
+  //     });
+  //     return response;
+  //   }
+  //   return Ramda.head(data);
+  // });
 
   /**
    * 用户信息注册接口
@@ -75,7 +75,6 @@ const create = (baseURL = Config.API_URL) => {
     getApps,
     getConfig,
     getTokenList,
-
 
     getRoot,
     getRate,

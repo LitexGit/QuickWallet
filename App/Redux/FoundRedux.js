@@ -4,40 +4,25 @@ import Immutable from 'seamless-immutable';
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    request: ['data'],
-    success: ['data'],
-
     getBannerRequest: ['data'],
     getBannerSuccess: ['data'],
     getBannerFailure: null,
 
     getAppsRequest: ['data'],
     getAppsSuccess: ['data'],
-    getAppsFailure: null,
+    getAppsFailure: null
 });
 
 export const FoundTypes = Types;
 export default Creators;
 
 /* ------------- Initial State ------------- */
-/**
- * banner
- *
- * url   点击banner后打开的连接
- * image banner图片
- * type  1用webview打开链接 2跳转到app特定页面
- */
-
-const bannerList = [];
-const appList = [];
 
 export const INITIAL_STATE = Immutable({
-    refreshing: null,
-    loading: null,
-    failure: null,
-    error: null,
-    bannerList,
-    appList
+    refreshing: false,
+    loading: false,
+    bannerList: [],
+    appList: []
 });
 
 /* ------------- Selectors ------------- */
@@ -49,19 +34,18 @@ export const GithubSelectors = {
 /* ------------- Reducers ------------- */
 
 // request the avatar for a user
-export const request = (state, { data }) =>
-    state.merge({ refreshing: true, data, payload: null })
-;
+export const request = (state, action) => {
+  return state.merge({ refreshing: true, error: true })
+};
 
 // successful avatar lookup
-export const success = (state, action) => {
-    const { data } = action;
-    return state.merge({ refreshing: false, loading: false, error: null, ...data });
+export const success = (state, { data }) => {
+    return state.merge({ refreshing: false, loading: false, data });
 };
 
 // failed to get the avatar
 export const failure = (state) =>
-    state.merge({ refreshing: false, loading: false,  error: true, payload: null });
+    state.merge({ refreshing: false, loading: false, payload: null });
 
 /* ------------- Hookup Reducers To Types ------------- */
 

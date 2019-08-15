@@ -119,7 +119,7 @@ class Layer2WebScreen extends Component {
   _pswdConfirm = (passphrase) => {
     this.passphrase = passphrase;
     this.setState({
-      isShowPassphrase: falses
+      isShowPassphrase: false
     });
     const { name } = this.signInfo;
     switch (name) {

@@ -1,4 +1,4 @@
-import { call, put, select, all } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import UserActions from '../Redux/UserRedux';
 import DeviceInfo from 'react-native-device-info';
 import { DeviceStorage, Keys } from '../Lib/DeviceStorage';
@@ -8,12 +8,13 @@ import Toast from 'react-native-root-toast';
 import BundleModule from '../Lib/NativeBridge/BundleModule';
 import { EventEmitter, EventKeys } from '../Lib/EventEmitter';
 import I18n from '../I18n';
+import Ramda from 'ramda';
 
 
 export function * register (api, action) {
     try {
         const {data:params} = action;
-        const {address='', type=1, nickname='', sharecode='', isPopToTop=true} = params;
+        const {address='', type=1, nickname='', isPopToTop=true} = params;
 
         const os = DeviceInfo.getSystemName();
         const info = {
@@ -27,10 +28,11 @@ export function * register (api, action) {
         };
         const phoneinfo = JSON.stringify(info);
         const response = yield call(api.register, {address, type, os, phoneinfo, nickname});
-        const {data:result} = response;
-        const {data, status, msg} = result;
+        const { status, msg, data } = response.data;
+        const res = Ramda.head(data);
+
         if (status) {
-            yield put(UserActions.registerSuccess(data));
+            yield put(UserActions.registerSuccess(res));
 
             DeviceStorage.setItem(Keys.IS_USER_LOGINED, true);
             DeviceStorage.setItem(Keys.WALLET_ADDRESS, address);
@@ -47,49 +49,51 @@ export function * register (api, action) {
                 };
                 EventEmitter.emit(EventKeys.IS_NEW_WALLET_SUCCESS, params);
             }
-            return;
+        } else {
+          Toast.show(msg, {
+              shadow:true,
+              position: Toast.positions.CENTER
+          });
+          yield put(UserActions.registerFailure());
         }
-        Toast.show(msg, {
-            shadow:true,
-            position: Toast.positions.CENTER
-        });
-        yield put(UserActions.registerFailure());
     } catch (error) {
         Toast.show(error.message, {
             shadow:true,
             position: Toast.positions.CENTER
         });
-        yield put(UserActions.registerFailure());
     }
 }
 
-export function * getUserInfo (api, action) {
+export function *getUserInfo (api, action) {
     try {
-        const {data:params} = action;
-        const {address} = params;
+        const { data : params } = action;
+        const { address } = params;
         const response = yield call(api.getUserInfo, {address});
-
-        const {data:result} = response;
-        const {data, status, msg} = result;
+        const { status, msg, data } = response.data;
+        const res = Ramda.head(data);
         if (status) {
-            yield put(UserActions.getUserInfoSuccess(data));
-            return;
+            yield put(UserActions.getUserInfoSuccess(res));
+        } else {
+          Toast.show(msg, {
+              shadow:true,
+              position: Toast.positions.CENTER
+          });
+          yield put(UserActions.getUserInfoFailure());
         }
-        Toast.show(msg, {
-            shadow:true,
-            position: Toast.positions.CENTER
-        });
-        yield put(UserActions.getUserInfoFailure());
     } catch (error) {
         Toast.show(error.message, {
             shadow:true,
             position: Toast.positions.CENTER
         });
-        yield put(UserActions.getUserInfoFailure());
     }
 
 }
 
+export function * getInjectScript () {
+  const web3 = yield call(BundleModule.readWeb3Provider);
+  const {web3Provider} = web3;
+  yield put(UserActions.saveUserInfo({web3Provider}));
+}
 
 export function * logout () {
     DeviceStorage.setItem(Keys.IS_USER_LOGINED, false);
@@ -104,16 +108,11 @@ export function * logout () {
     }));
 
     yield put(WalletActions.savePrivateKey({privateKey:''}));
-
     yield put(WalletActions.gethUnInit());
     yield put(StackActions.popToTop());
 }
 
-export function * getInjectScript () {
-    const web3 = yield call(BundleModule.readWeb3Provider);
-    const {web3Provider} = web3;
-    yield put(UserActions.saveUserInfo({web3Provider}));
-}
+
 
 
 

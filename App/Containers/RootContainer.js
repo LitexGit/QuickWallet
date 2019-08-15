@@ -35,10 +35,9 @@ class RootContainer extends Component {
     const isLogin = await DeviceStorage.getItem(Keys.IS_USER_LOGINED) || false;
     this.props.saveUserInfo({ isLoginInfo: isLogin });
 
-    if (!isLogin) return;
     const address = await DeviceStorage.getItem(Keys.WALLET_ADDRESS) || '';
     this.props.getUserInfoRequest({ address });
-
+    if (!isLogin) return;
     this.props.getTokenList();
   }
 
