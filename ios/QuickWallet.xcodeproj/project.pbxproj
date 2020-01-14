@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00694586862547F391B87D51 /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86665A73F0F64570B1BE0D35 /* libRNSVG-tvOS.a */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -1959,7 +1960,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-6";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-7";
 				PRODUCT_NAME = QuickWallet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QuickWallet/Swift/QuickWallet-Bridging-Header.h";
@@ -2014,7 +2015,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-6";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.QuickWallet-7";
 				PRODUCT_NAME = QuickWallet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "QuickWallet/Swift/QuickWallet-Bridging-Header.h";
